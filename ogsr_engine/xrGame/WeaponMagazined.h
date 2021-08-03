@@ -21,6 +21,7 @@ private:
 protected:
 	// Media :: sounds
 	HUD_SOUND		sndShow;
+	HUD_SOUND		sndBlyat;
 	HUD_SOUND		sndHide;
 	HUD_SOUND		sndShot;
 	HUD_SOUND		sndEmptyClick;
@@ -91,6 +92,7 @@ public:
 
 	virtual void	SetDefaults		();
 	virtual void	FireStart		();
+	int blyat;
 	virtual void	FireEnd			();
 	virtual void	Reload			();
 	

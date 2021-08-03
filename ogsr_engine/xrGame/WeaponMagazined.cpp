@@ -131,7 +131,9 @@ void CWeaponMagazined::Load	(LPCSTR section)
 		HUD_SOUND::LoadSound(section, "snd_reload_partly", sndReloadPartly, m_eSoundReload);
 		sndReloadPartlyExist = true;
 	}
-	
+
+	if ( pSettings->line_exist( section, "snd_blyat" ) )
+		HUD_SOUND::LoadSound( section, "snd_blyat", sndBlyat, m_eSoundEmptyClick );
 	if ( pSettings->line_exist( section, "snd_fire_modes" ) )
 		HUD_SOUND::LoadSound( section, "snd_fire_modes", sndFireModes, m_eSoundEmptyClick );
 	if ( pSettings->line_exist( section, "snd_zoom_change" ) )
@@ -208,7 +210,15 @@ void CWeaponMagazined::FireStart		()
 	}
 	else if ( IsMisfire() ) {
 	  if ( smart_cast<CActor*>( this->H_Parent() ) && Level().CurrentViewEntity() == H_Parent() )
+	  {
+		  ++blyat;
 	    HUD().GetUI()->AddInfoMessage( "gun_jammed" );
+		if(blyat == 2)
+		{
+			blyat = 0;
+			PlaySound(sndBlyat, get_LastFP());
+		}
+	  }
 	  OnEmptyClick();
 	  // Callbacks added by Cribbledirge.
 	  StateSwitchCallback( GameObject::eOnActorWeaponJammed, GameObject::eOnNPCWeaponJammed );
