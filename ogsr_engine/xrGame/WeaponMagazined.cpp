@@ -630,7 +630,7 @@ void CWeaponMagazined::state_Fire	(float dt)
 //	Msg("%d && %d && (%d || %d) && (%d || %d)", !m_magazine.empty(), fTime<=0, IsWorking(), m_bFireSingleShot, m_iQueueSize < 0, m_iShotNum < m_iQueueSize);
 	while (!m_magazine.empty() && fTime<=0 && (IsWorking() || m_bFireSingleShot) && (m_iQueueSize < 0 || m_iShotNum < m_iQueueSize))
 	{
-		if ( bMisfire ) {
+		if ( bMisfire || (bAfterUnjam && CheckForMisfire()) ) {
 			OnEmptyClick();
 			StopShooting();
 			return;
