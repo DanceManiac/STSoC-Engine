@@ -66,7 +66,7 @@
 //#define DX10_FLUID_ENABLE
 
 // Включить использование ЗП-конфигов погоды
-#define USE_COP_WEATHER_CONFIGS
+// #define USE_COP_WEATHER_CONFIGS
 
 // Включает логику у анимированных объектов (пример: вентилятор в ЧН-подземке агропрома)
 #define ANIMATED_PHYSICS_OBJECT_SUPPORT
