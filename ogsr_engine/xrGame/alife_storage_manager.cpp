@@ -31,6 +31,7 @@ CALifeStorageManager::~CALifeStorageManager	()
 {
 }
 
+#include "STSOC_WP_Flags.h"
 void CALifeStorageManager::save	(LPCSTR save_name, bool update_name)
 {
 	strcpy_s(g_last_saved_game, save_name);
@@ -71,9 +72,9 @@ void CALifeStorageManager::save	(LPCSTR save_name, bool update_name)
 	FS.update_path				(temp,"$game_saves$",m_save_name);
 	IWriter						*writer = FS.w_open(temp);
 	if(Core.Features.test(xrCore::Feature::any_addons_installed))
-		writer->w_u32				(u32(-1255437568765342));
+		writer->w_u32				(u32(-SAVE_SEED_ADDONS));
 	else
-		writer->w_u32				(u32(-498248457289524));
+		writer->w_u32				(u32(-SAVE_SEED));
 	writer->w_u32				(ALIFE_VERSION);
 	
 	writer->w_u32				(source_count);
