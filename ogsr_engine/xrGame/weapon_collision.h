@@ -1,9 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////
 //	Файл		: weapon_collision.h
 //	Создан		: 12/10/2012
-//	Изменен 	: 15.07.21
+//	Изменен 	: 10.08.21
 //	Автор		: lost alpha (SkyLoader)
-//	Описание	: Коллизия худа оружия
+//	Описание	: Коллизия, стрейфы и т.д. у худа оружия
 //	
 //	Правки и адаптация под player_hud
 //			i-love-kfc
@@ -16,11 +16,15 @@ public:
 		CWeaponCollision();
 		virtual ~CWeaponCollision();
 		void Load();
-		void Update(Fmatrix &o, float range/*, bool is_zoom*/);
+		void Update(Fmatrix &o, float range);
 		void CheckState();
 private:
 		float	fReminderDist;
 		float	fReminderNeedDist;
+		float	fReminderStrafe;
+		float	fReminderNeedStrafe;
+		float	fReminderMoving;
+		float	fReminderNeedMoving;
 		bool	bFirstUpdate;
 		u32	dwMState;
 		bool	is_limping;

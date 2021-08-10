@@ -663,8 +663,7 @@ void player_hud::update(const Fmatrix& cam_trans)
 		m_bobbing->Update(m_attach_offset, m_attached_items[0]);
 
 	collide::rq_result& RQ = HUD().GetCurrentRayQuery();
-	CActor* pActor;
-		if(pActor)
+	if (collision_allowed())
 		m_collision->Update(m_attach_offset, RQ.range);
 	m_transform.mul(trans, m_attach_offset);
 	// insert inertion here
@@ -949,6 +948,11 @@ bool player_hud::bobbing_allowed()
 		return hi->m_parent_hud_item->HudBobbingAllowed();
 	}
 	return Core.Features.test(xrCore::Feature::wpn_bobbing);
+}
+
+bool player_hud::collision_allowed()
+{
+	return true; //-> TODO: Вынести в конфиг
 }
 
 void player_hud::OnMovementChanged(ACTOR_DEFS::EMoveCommand cmd)

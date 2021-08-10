@@ -225,6 +225,7 @@ private:
 	void update_additional(Fmatrix& trans);
 	bool inertion_allowed();
 	bool bobbing_allowed();
+	bool collision_allowed();
 
 private:
 	shared_str m_sect_name;

@@ -514,48 +514,6 @@ void CWeapon::Load		(LPCSTR section)
 	    }
 	  }
 	}
-
-	////////////////////////////////////////////
-	//--#SM+# Begin--
-	string16 _prefix = { "" };
-	//xr_sprintf(_prefix, "%s", UI()->is_widescreen() ? "_16x9" : ""); //KRodin: на мой взгляд это лишнее.
-
-	string128 val_name;
-
-	// Смещение в стрейфе
-	m_strafe_offset[0][0] = READ_IF_EXISTS(pSettings, r_fvector3, section, xr_strconcat(val_name, "strafe_hud_offset_pos", _prefix), Fvector().set(0.015f, 0.f, 0.f));
-	m_strafe_offset[1][0] = READ_IF_EXISTS(pSettings, r_fvector3, section, xr_strconcat(val_name, "strafe_hud_offset_rot", _prefix), Fvector().set(0.f, 0.f, 4.5f));
-
-	// Поворот в стрейфе
-	m_strafe_offset[0][1] = READ_IF_EXISTS(pSettings, r_fvector3, section, xr_strconcat(val_name, "strafe_aim_hud_offset_pos", _prefix), Fvector().set(0.005f, 0.f, 0.f));
-	m_strafe_offset[1][1] = READ_IF_EXISTS(pSettings, r_fvector3, section, xr_strconcat(val_name, "strafe_aim_hud_offset_rot", _prefix), Fvector().set(0.f, 0.f, 2.5f));
-
-	// Смещение при движении вперёд/назад
-	m_longitudinal_offset[0] = READ_IF_EXISTS(pSettings, r_float, section, xr_strconcat(val_name, "longitudinal_hud_offset", _prefix), READ_IF_EXISTS(pSettings, r_float, "features", "default_longitudinal_hud_offset", 0.02f));
-	m_longitudinal_offset[1] = READ_IF_EXISTS(pSettings, r_float, section, xr_strconcat(val_name, "longitudinal_hud_offset_aim", _prefix), m_longitudinal_offset[0]);
-
-	// Параметры стрейфа
-	float fFullStrafeTime     = READ_IF_EXISTS(pSettings, r_float, section, "strafe_transition_time", 0.25f);
-	float fFullStrafeTime_aim = READ_IF_EXISTS(pSettings, r_float, section, "strafe_aim_transition_time", 0.15f);
-	bool bStrafeEnabled       = READ_IF_EXISTS(pSettings, r_bool, section, "strafe_enabled", READ_IF_EXISTS(pSettings, r_bool, "features", "default_strafe_enabled", true));
-	bool bStrafeEnabled_aim   = READ_IF_EXISTS(pSettings, r_bool, section, "strafe_aim_enabled", false);
-
-	// Параметры движения вперёд/назад
-	float fFullLongitudinalTime = READ_IF_EXISTS(pSettings, r_float, section, "longitudinal_transition_time", 0.18f);
-	float fFullLongitudinalTime_aim = READ_IF_EXISTS(pSettings, r_float, section, "longitudinal_transition_time_aim", fFullLongitudinalTime);
-	bool bLongitudinalOffsetEnabled = READ_IF_EXISTS(pSettings, r_bool, section, "longitudinal_offset_enabled",
-		READ_IF_EXISTS(pSettings, r_bool, "features", "default_longitudinal_offset_enabled", true));
-	bool bLongitudinalOffsetEnabled_aim = READ_IF_EXISTS(pSettings, r_bool, section, "longitudinal_offset_aim_enabled", bLongitudinalOffsetEnabled);
-
-	m_strafe_offset[2][0].set(bStrafeEnabled, fFullStrafeTime, 0.f); // normal
-	m_strafe_offset[2][1].set(bStrafeEnabled_aim, fFullStrafeTime_aim, 0.f); // aim-GL
-
-	m_longitudinal_offset[2] = fFullLongitudinalTime;
-	m_longitudinal_offset[3] = fFullLongitudinalTime_aim;
-	m_longitudinal_offset[4] = bLongitudinalOffsetEnabled;
-	m_longitudinal_offset[5] = bLongitudinalOffsetEnabled_aim;
-	//--#SM+# End--
-	////////////////////////////////////////////
 }
 
 void CWeapon::LoadFireParams		(LPCSTR section, LPCSTR prefix)
@@ -1812,146 +1770,7 @@ void CWeapon::UpdateHudAdditonal		(Fmatrix& trans)
 		}
 		clamp(m_fZoomRotationFactor, 0.f, 1.f);
 	}
-
-	// Боковой стрейф с оружием
 	clamp(idx, 0ui8, 1ui8);
-	bool bForAim = (idx == 1);
-
-	// Рассчитываем фактор боковой ходьбы
-	float fStrafeMaxTime = /*hi->m_measures.*/m_strafe_offset[2][idx].y; // Макс. время в секундах, за которое мы наклонимся из центрального положения
-	if (fStrafeMaxTime <= EPS)
-		fStrafeMaxTime = 0.01f;
-
-	float fLongitudinalMaxTime = m_longitudinal_offset[2 + idx];
-	if (fLongitudinalMaxTime <= EPS)
-		fLongitudinalMaxTime = 0.01f;
-
-	float fStepPerUpd = Device.fTimeDelta / fStrafeMaxTime; // Величина изменение фактора поворота
-	float fStepPerUpdLongitudinal = Device.fTimeDelta / fLongitudinalMaxTime; // ^ смещения при передвижении вперёд/назад
-
-    // Добавляем боковой наклон от движения камеры
-    float fCamReturnSpeedMod = 1.5f; // Восколько ускоряем нормализацию наклона, полученного от движения камеры (только от бедра)
-    float fCamLimitNoAim = 0.5f; // Максимальный фактор наклона от камеры от бедра
-    float fYMag = pActor->fFPCamYawMagnitude;
-
-    if (fYMag != 0.0f)
-    { //--> Камера крутится по оси Y
-        m_fLR_CameraFactor -= (fYMag * 0.025f);
-
-        float fCamLimitBlend = 1.0f - ((1.0f - fCamLimitNoAim) * (1.0f - m_fZoomRotationFactor));
-        clamp(m_fLR_CameraFactor, -fCamLimitBlend, fCamLimitBlend);
-    }
-    else
-    { //--> Камера не поворачивается - убираем наклон
-        if (m_fLR_CameraFactor < 0.0f)
-        {
-            m_fLR_CameraFactor += fStepPerUpd * (bForAim ? 1.0f : fCamReturnSpeedMod);
-            clamp(m_fLR_CameraFactor, -1.0f, 0.0f);
-        }
-        else
-        {
-            m_fLR_CameraFactor -= fStepPerUpd * (bForAim ? 1.0f : fCamReturnSpeedMod);
-            clamp(m_fLR_CameraFactor, 0.0f, 1.0f);
-        }
-    }
-
-    // Добавляем боковой наклон от ходьбы вбок
-    float fChangeDirSpeedMod = 3; // Восколько быстро меняем направление направление наклона, если оно в другую сторону от текущего
-	u32 iMovingState = pActor->MovingState();
-	if ((iMovingState & mcLStrafe) != 0)
-	{ // Движемся влево
-		float fVal = (m_fLR_MovingFactor > 0.f ? fStepPerUpd * fChangeDirSpeedMod : fStepPerUpd);
-		m_fLR_MovingFactor -= fVal;
-	}
-	else if ((iMovingState & mcRStrafe) != 0)
-	{ // Движемся вправо
-		float fVal = (m_fLR_MovingFactor < 0.f ? fStepPerUpd * fChangeDirSpeedMod : fStepPerUpd);
-		m_fLR_MovingFactor += fVal;
-	}
-	else
-	{ // Двигаемся в любом другом направлении
-		if (m_fLR_MovingFactor < 0.0f)
-		{
-			m_fLR_MovingFactor += fStepPerUpd;
-			clamp(m_fLR_MovingFactor, -1.0f, 0.0f);
-		}
-		else
-		{
-			m_fLR_MovingFactor -= fStepPerUpd;
-			clamp(m_fLR_MovingFactor, 0.0f, 1.0f);
-		}
-	}
-	if ((iMovingState & mcBack) != 0)
-	{
-		// Движемся назад
-		float fVal = m_fFB_MovingFactor < 0.0f ? fStepPerUpdLongitudinal * 3 : fStepPerUpdLongitudinal;
-		m_fFB_MovingFactor += fVal;
-	}
-	else if ((iMovingState & mcFwd) != 0)
-	{
-		// Движемся вперёд
-		float fVal = m_fFB_MovingFactor > 0.0f ? fStepPerUpdLongitudinal * 3 : fStepPerUpdLongitudinal;
-		m_fFB_MovingFactor -= fVal;
-	}
-	else
-	{
-		if (m_fFB_MovingFactor < 0.0f)
-		{
-			m_fFB_MovingFactor += fStepPerUpdLongitudinal;
-			clamp(m_fFB_MovingFactor, -1.0f, 0.0f);
-		}
-		else
-		{
-			m_fFB_MovingFactor -= fStepPerUpdLongitudinal;
-			clamp(m_fFB_MovingFactor, 0.0f, 1.0f);
-		}
-	}
-
-	clamp(m_fLR_MovingFactor, -1.0f, 1.0f); // Фактор боковой ходьбы не должен превышать эти лимиты
-	clamp(m_fFB_MovingFactor, -1.0f, 1.0f); // ^   *вперёд/назад*
-
-    // Вычисляем и нормализируем итоговый фактор наклона
-    float fLR_Factor = m_fLR_MovingFactor + m_fLR_CameraFactor;
-    clamp(fLR_Factor, -1.0f, 1.0f); // Фактор боковой ходьбы не должен превышать эти лимиты
-
-	// Производим наклон ствола для нормального режима и аима
-	for (int _idx = 0; _idx <= 1; _idx++)
-	{
-		bool bEnabled = m_strafe_offset[2][_idx].x;
-		if (!bEnabled)
-			continue;
-
-		Fvector curr_offs, curr_rot;
-
-		// Смещение позиции худа в стрейфе
-        curr_offs = m_strafe_offset[0][_idx]; // pos
-        curr_offs.mul(fLR_Factor); // Умножаем на фактор стрейфа
-
-		// Поворот худа в стрейфе
-        curr_rot = m_strafe_offset[1][_idx]; // rot
-        curr_rot.mul(-PI / 180.f); // Преобразуем углы в радианы
-        curr_rot.mul(fLR_Factor); // Умножаем на фактор стрейфа
-
-		curr_offs.mul(1.f);
-		curr_rot.mul(1.f);
-
-		Fmatrix hud_rotation;
-		Fmatrix hud_rotation_y;
-
-		hud_rotation.identity();
-		hud_rotation.rotateX(curr_rot.x);
-
-		hud_rotation_y.identity();
-		hud_rotation_y.rotateY(curr_rot.y);
-		hud_rotation.mulA_43(hud_rotation_y);
-
-		hud_rotation_y.identity();
-		hud_rotation_y.rotateZ(curr_rot.z);
-		hud_rotation.mulA_43(hud_rotation_y);
-
-		hud_rotation.translate_over(curr_offs);
-		trans.mulB_43(hud_rotation);
-	}
 
 	static float fAvgTimeDelta = Device.fTimeDelta;
 	attachable_hud_item* hi = HudItemData();
@@ -2041,22 +1860,6 @@ void CWeapon::UpdateHudAdditonal		(Fmatrix& trans)
         hud_rotation.translate_over(curr_offs);
         trans.mulB_43(hud_rotation);
     }
-	
-	// Смещение худа при движении вперёд/назад
-	for (int i = 0; i <= 1; i++)
-	{
-		bool bEnabled = m_longitudinal_offset[4 + idx];
-		if (!bEnabled)
-			continue;
-		float curr_offs;
-		curr_offs = m_longitudinal_offset[idx];
-		curr_offs *= m_fFB_MovingFactor;
-
-		Fmatrix hud_position;
-
-		hud_position.translate(0.0f, 0.0f, curr_offs);
-		trans.mulB_43(hud_position);
-	}
 }
 
 // Добавить эффект сдвига оружия от выстрела
