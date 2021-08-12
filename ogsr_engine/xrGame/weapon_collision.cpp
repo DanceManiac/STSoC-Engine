@@ -30,10 +30,10 @@ void CWeaponCollision::Load()
 	fReminderDist		= 0;
 	fReminderNeedDist	= 0;
 	bFirstUpdate		= true;
-	fReminderStrafe		= 0.f;
-	fReminderNeedStrafe	= 0.f;
-	fReminderMoving		= 0.f;
-	fReminderNeedMoving	= 0.f;
+	fReminderStrafe		= 0;
+	fReminderNeedStrafe	= 0;
+	fReminderMoving		= 0;
+	fReminderNeedMoving	= 0;
 }
 
 static const float SPEED_REMINDER = 0.62f;
@@ -65,19 +65,16 @@ void CWeaponCollision::Update(Fmatrix &o, float range)
 
     float fYMag = Actor()->fFPCamYawMagnitude;
 	//-> Поворот при стрейфе
-	if (dwMState&ACTOR_DEFS::mcLStrafe || dwMState&ACTOR_DEFS::mcRStrafe || fYMag != 0.0f)
+	if ((dwMState&ACTOR_DEFS::mcLStrafe || dwMState&ACTOR_DEFS::mcRStrafe || fYMag != 0.0f) && !Actor()->IsZoomAimingMode())
 	{
 		float k	= ((dwMState & ACTOR_DEFS::mcCrouch) ? 0.5f : 1.f);
 		if (dwMState&ACTOR_DEFS::mcLStrafe || fYMag > 0.f)
-			k *= -1;
-		if (Actor()->IsZoomAimingMode()) k = 0.f;
+			k *= -1.f;
 
-		if (isActorAccelerated(dwMState, Actor()->IsZoomAimingMode()))
-			fReminderNeedStrafe	= dir.z + (STRAFE_ANGLE * k * 0.9f);
-		else if (is_limping)
-			fReminderNeedStrafe	= dir.z + (STRAFE_ANGLE * k * 0.75f);
-		else
-			fReminderNeedStrafe	= dir.z + (STRAFE_ANGLE * k);
+		fReminderNeedStrafe = dir.z + (STRAFE_ANGLE * k);
+
+		if (dwMState & ACTOR_DEFS::mcFwd || dwMState & ACTOR_DEFS::mcBack)
+			fReminderNeedStrafe /= 2.f;
 
 	} else fReminderNeedStrafe = 0.f;
 
@@ -86,15 +83,8 @@ void CWeaponCollision::Update(Fmatrix &o, float range)
 	{
 		float f	= ((dwMState & ACTOR_DEFS::mcCrouch) ? 0.5f : 1.f);
 		if (dwMState&ACTOR_DEFS::mcFwd)
-			f *= -1;
-
-		if (isActorAccelerated(dwMState, Actor()->IsZoomAimingMode()))
-			fReminderNeedMoving	= xyz.z + (STRAFE_ANGLE * f * 0.9f * 0.5f);
-		else if (is_limping)
-			fReminderNeedMoving	= xyz.z + (STRAFE_ANGLE * f * 0.75f * 0.5f);
-		else
-			fReminderNeedMoving	= xyz.z + (STRAFE_ANGLE * f * 0.5f);
-
+			f *= -1.f;
+		fReminderNeedMoving = xyz.z + (STRAFE_ANGLE * f * 0.5f);
 	} else fReminderNeedMoving = 0.f;
 
 	//-> Поворот при стрейфе
@@ -133,7 +123,9 @@ void CWeaponCollision::Update(Fmatrix &o, float range)
 		dir.z 		= fReminderStrafe;
 		Fmatrix m;
 		m.setHPB(dir.x,dir.y,dir.z);
-		o.mul_43 (o,m);
+		Fmatrix tmp;
+		tmp.mul_43(o, m);
+		o.set(tmp);
 	}
 
 	//-> Высчитываем координаты позиции худа оружия
