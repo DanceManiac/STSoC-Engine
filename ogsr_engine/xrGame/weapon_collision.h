@@ -20,11 +20,13 @@ public:
 		void CheckState();
 private:
 		float	fReminderDist;
+		float	fReminderWPNUP;
 		float	fReminderNeedDist;
 		float	fReminderStrafe;
 		float	fReminderNeedStrafe;
 		float	fReminderMoving;
 		float	fReminderNeedMoving;
+		float	fReminderNeedWPNUP;
 		bool	bFirstUpdate;
 		u32	dwMState;
 		bool	is_limping;
