@@ -34,6 +34,7 @@ void CWeaponCollision::Load()
 	fReminderNeedStrafe	= 0;
 	fReminderMoving		= 0;
 	fReminderNeedMoving	= 0;
+	fReminderNeedWPNUP	= 0;
 }
 
 static const float SPEED_REMINDER = 0.62f;
@@ -130,11 +131,20 @@ void CWeaponCollision::Update(Fmatrix &o, float range)
 
 	//-> Высчитываем координаты позиции худа оружия
 	if (range < 0.8f && !Actor()->IsZoomAimingMode())
+	{
 		fReminderNeedDist	= xyz.z - ((1 - range - 0.2) * 0.6);
+		fReminderNeedWPNUP	= dir.y + ((1 - range - 0.2) * 0.6);
+	}
 	else if(dwMState&ACTOR_DEFS::mcFwd || dwMState&ACTOR_DEFS::mcBack)
+	{
 		fReminderNeedDist	= fReminderNeedMoving;
+		fReminderNeedWPNUP	= dir.y;
+	}
 	else
+	{
 		fReminderNeedDist	= xyz.z;
+		fReminderNeedWPNUP	= dir.y;
+	}
 
 	if (!fsimilar(fReminderDist, fReminderNeedDist)) {
 		if (fReminderDist < fReminderNeedDist) {
@@ -148,9 +158,32 @@ void CWeaponCollision::Update(Fmatrix &o, float range)
 		}
 	}
 
+	if (!fsimilar(fReminderWPNUP, fReminderNeedWPNUP)) {
+		if (fReminderWPNUP < fReminderNeedWPNUP) {
+			fReminderWPNUP += SPEED_REMINDER * Device.fTimeDelta;
+			if (fReminderWPNUP > fReminderNeedWPNUP)
+				fReminderWPNUP = fReminderNeedWPNUP;
+		} else if (fReminderWPNUP > fReminderNeedWPNUP) {
+			fReminderWPNUP -= SPEED_REMINDER * Device.fTimeDelta;
+			if (fReminderWPNUP < fReminderNeedWPNUP)
+				fReminderWPNUP = fReminderNeedWPNUP;
+		}
+	}
+
 	if (!fsimilar(fReminderDist, xyz.z))
 	{
 		xyz.z = fReminderDist;
 		o.c.set(xyz);
+	}
+	
+	//-> Высчитываем координаты поднимания оружия
+	if (!fsimilar(fReminderWPNUP, dir.y))
+	{
+		dir.y 		= fReminderWPNUP;
+		Fmatrix m;
+		m.setHPB(dir.x,dir.y,dir.z);
+		Fmatrix tmp;
+		tmp.mul_43(o, m);
+		o.set(tmp);
 	}
 }

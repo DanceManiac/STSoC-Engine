@@ -64,7 +64,7 @@ CWeapon::CWeapon(LPCSTR name) : /*mod_name(NULL),*/ m_fLR_MovingFactor(0.f), m_f
 
 	eHandDependence			= hdNone;
 
-	m_fZoomFactor = Core.Features.test(xrCore::Feature::ogse_wpn_zoom_system) ? 1.f : g_fov;
+	m_fZoomFactor = 1.f;
 
 	m_fZoomRotationFactor	= 0.f;
 
@@ -1071,7 +1071,7 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 
 void CWeapon::GetZoomData(const float scope_factor, float& delta, float& min_zoom_factor)
 {
-	float def_fov = Core.Features.test(xrCore::Feature::ogse_wpn_zoom_system) ? 1.f : g_fov;
+	float def_fov = 1.f;
 	float delta_factor_total = def_fov-scope_factor;
 	VERIFY(delta_factor_total>0);
 	min_zoom_factor = def_fov-delta_factor_total*m_fMinZoomK;
@@ -1107,14 +1107,14 @@ void CWeapon::ZoomChange(bool inc)
 
 		const float currentZoomFactor = m_fZoomFactor;
 
-		if (Core.Features.test(xrCore::Feature::ogse_wpn_zoom_system)) {
+		//if (Core.Features.test(xrCore::Feature::ogse_wpn_zoom_system)) {
 			m_fZoomFactor += delta * (inc ? 1 : -1);
 			clamp(m_fZoomFactor, min_zoom_factor, m_fScopeZoomFactor);
-		}
-		else {
+		//}
+		/*else {
 			m_fZoomFactor -= delta * (inc ? 1 : -1);
 			clamp(m_fZoomFactor, m_fScopeZoomFactor, min_zoom_factor);
-		}
+		}*/
 
 		wasChanged = !fsimilar(currentZoomFactor, m_fZoomFactor);
 
@@ -1491,7 +1491,7 @@ void CWeapon::OnZoomIn()
 
 void CWeapon::OnZoomOut()
 {
-	m_fZoomFactor = Core.Features.test(xrCore::Feature::ogse_wpn_zoom_system) ? 1.f : g_fov;
+	m_fZoomFactor = 1.f;
 
 	if ( m_bZoomMode ) {
 
