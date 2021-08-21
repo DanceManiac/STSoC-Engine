@@ -116,6 +116,7 @@ struct attachable_hud_item
 	shared_str m_visual_name;
 	IKinematics* m_model{};
 	u16 m_attach_place_idx{};
+	bool m_bad_inertion_fix;
 	hud_item_measures m_measures;
 
 	// runtime positioning
