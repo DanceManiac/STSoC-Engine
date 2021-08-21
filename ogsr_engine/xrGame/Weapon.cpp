@@ -811,9 +811,6 @@ void CWeapon::OnActiveItem ()
 void CWeapon::OnHiddenItem ()
 {
 	inherited::OnHiddenItem();
-	if(IsShowing())
-		return;
-
 	SetState					(eHidden);
 	SetNextState				(eHidden);
 	m_set_next_ammoType_on_reload	= u32(-1);
@@ -2020,9 +2017,6 @@ u32 CWeapon::Cost() const
 
 void CWeapon::Hide(bool now)
 {
-	if(IsShowing())
-		return;
-
 	if (now)
 	{
 		OnStateSwitch(eHidden, GetState());
