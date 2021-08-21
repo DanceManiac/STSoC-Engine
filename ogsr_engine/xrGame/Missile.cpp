@@ -111,8 +111,6 @@ void CMissile::OnActiveItem()
 
 void CMissile::OnHiddenItem()
 {
-	if(IsShowing())
-		return;
 	SwitchState				(eHiding);
 	inherited::OnHiddenItem	();
 	SetState				(eHidden);
@@ -451,8 +449,6 @@ void CMissile::Show( bool now )
 
 void CMissile::Hide( bool now )
 {
-  if(IsShowing())
-	return;
   if ( now ) {
     OnAnimationEnd( eHiding );
     StopHUDSounds();

@@ -267,6 +267,8 @@ void hud_item_measures::load(const shared_str& sect_name, IKinematics* K)
 	xr_sprintf(_prefix, "%s", is_16x9 ? "_16x9" : "");
 	string128 val_name;
 
+	
+
 	strconcat(sizeof(val_name), val_name, "hands_position", _prefix);
 	if (is_16x9 && !pSettings->line_exist(sect_name, val_name))
 		xr_strcpy(val_name, "hands_position");
@@ -390,11 +392,12 @@ void attachable_hud_item::load(const shared_str& sect_name)
 	m_sect_name = sect_name;
 
 	// Visual
-		m_visual_name = pSettings->r_string(sect_name, "item_visual");
+	m_visual_name = pSettings->r_string(sect_name, "item_visual");
 
 	m_model = smart_cast<IKinematics*>(::Render->model_Create(m_visual_name.c_str()));
 
 	m_attach_place_idx = READ_IF_EXISTS(pSettings, r_u16, sect_name, "attach_place_idx", 0);
+	m_bad_inertion_fix = READ_IF_EXISTS(pSettings, r_bool, sect_name, "bad_inertion_fix", false); // Костыльный фикс дерганной инерции у некоторых видов оружия (у некоторых норм, у некоторых - хуйня, хз почему)
 	m_measures.load(sect_name, m_model);
 }
 
