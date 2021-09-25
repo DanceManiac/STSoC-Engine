@@ -328,6 +328,7 @@
     <ClInclude Include="DiscordRPC.hpp">
       <Filter>Discord</Filter>
     </ClInclude>
+    <ClInclude Include="exDeMODER_cocu_xyu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="defines.cpp">

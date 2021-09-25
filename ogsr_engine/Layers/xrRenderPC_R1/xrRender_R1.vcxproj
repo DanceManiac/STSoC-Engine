@@ -22,6 +22,7 @@
     <ProjectGuid>{57A498C9-A741-4DDF-8EFC-BFB9EB6B00E2}</ProjectGuid>
     <RootNamespace>xrRender_R1</RootNamespace>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>$(LatestTargetPlatformVersion)</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <Import Project="..\..\Engine_properties.props" />
@@ -31,7 +32,7 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
@@ -184,7 +185,7 @@
       <DisableSpecificWarnings>4456;4457;4458;4995;4577;4315;</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>xrRenewal.lib;d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Renewal-Engine.lib;d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <MapFileName>
       </MapFileName>
       <SubSystem>Windows</SubSystem>

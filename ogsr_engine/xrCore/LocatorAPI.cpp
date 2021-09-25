@@ -508,10 +508,11 @@ bool CLocatorAPI::Recurse( const char* path, const bool log_if_found )
     return true;
 }
 
-
-
 void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder, LPCSTR fs_name)
 {
+////////////////настоящий пидорас нахуй//////////////////////////
+	Log("exdemoder pidoras ohuel sovsem");
+/////////////////////////////////////////////////////////////////
 	char _delimiter = '|'; //','
 	if (m_Flags.is(flReady))return;
 	CTimer t;

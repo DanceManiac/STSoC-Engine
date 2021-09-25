@@ -690,6 +690,10 @@ void CWeaponMagazined::SetDefaults	()
 
 void CWeaponMagazined::OnShot		()
 {
+	//-> Если ГГ бегает, останавливаем его
+	if (ParentIsActor())
+		Actor()->set_state_wishful(Actor()->get_state_wishful() & (~mcSprint) );
+
 	// Отключаем бул bAfterUnjam
 	bAfterUnjam = false;
 	

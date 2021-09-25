@@ -20,6 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2578C6D8-660D-48AE-9322-7422F8664F06}</ProjectGuid>
+    <WindowsTargetPlatformVersion>$(LatestTargetPlatformVersion)</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <Import Project="..\Engine_properties.props" />
@@ -71,7 +72,7 @@
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <TargetName>xrRenewal</TargetName>
+    <TargetName>Renewal-Engine</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <TargetName>xrRenewal</TargetName>
@@ -487,6 +488,7 @@
     <ClCompile Include="Environment_render.cpp" />
     <ClCompile Include="xrHemisphere.cpp" />
     <ClCompile Include="Rain.cpp" />
+    <ClInclude Include="exDeMODER_cocu_xyu.cpp" />
     <ClCompile Include="thunderbolt.cpp" />
     <ClCompile Include="xr_efflensflare.cpp" />
     <ClCompile Include="CameraBase.cpp" />
