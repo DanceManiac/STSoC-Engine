@@ -6,7 +6,7 @@
 #include <sys\stat.h>
 #include <share.h>
 
-void*			FileDownload	(LPCSTR fn, u32* pdwSize=NULL);
+void* FileDownload(LPCSTR fn, u32* pdwSize = NULL);
 
 class CFileWriter : public IWriter
 {

@@ -201,8 +201,8 @@ IReader*	IReader::open_chunk(u32 ID)
 	if (dwSize!=0) {
 		if (bCompressed) {
 			BYTE*		dest;
-			unsigned	dest_sz;
-			_decompressLZ(&dest,&dest_sz,pointer(),dwSize);
+			size_t	dest_sz;
+			_decompressLZ(&dest, &dest_sz, pointer(), dwSize);
 			return xr_new<CTempReader>	(dest,		dest_sz,		tell()+dwSize);
 		} else {
 			return xr_new<IReader>		(pointer(),	dwSize,			tell()+dwSize);
@@ -235,8 +235,8 @@ IReader*	IReader::open_chunk_iterator	(u32& ID, IReader* _prev)
 	{
 		// compressed
 		u8*				dest	;
-		unsigned		dest_sz	;
-		_decompressLZ	(&dest,&dest_sz,pointer(),_size);
+		size_t		dest_sz	;
+		_decompressLZ(&dest, &dest_sz, pointer(), _size);
 		return xr_new<CTempReader>	(dest,		dest_sz,	tell()+_size);
 	} else {
 		// normal

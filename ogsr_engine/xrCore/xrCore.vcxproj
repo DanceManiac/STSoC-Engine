@@ -214,7 +214,7 @@
       </CompileAsManaged>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4456;4457;4458;4995;4577;</DisableSpecificWarnings>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -297,6 +297,7 @@
   <ItemGroup>
     <ClCompile Include="..\Layers\xrAPI\xrAPI.cpp" />
     <ClCompile Include="FTimer.cpp" />
+    <ClCompile Include="trivial_encryptor.cpp" />
     <ClCompile Include="stacktrace_collector.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -357,6 +358,7 @@
     <ClInclude Include="XML_Parser\xrXMLParser.h" />
     <ClInclude Include="xrCore.h" />
     <ClInclude Include="xrCore_platform.h" />
+    <ClInclude Include="trivial_encryptor.h" />
     <ClInclude Include="xrMemoryDebug.h" />
     <ClInclude Include="_bitwise.h" />
     <ClInclude Include="_color.h" />

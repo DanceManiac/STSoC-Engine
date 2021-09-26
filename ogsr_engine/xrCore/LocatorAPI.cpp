@@ -9,11 +9,13 @@
 #include <direct.h>
 #include <fcntl.h>
 #include <sys\stat.h>
+#include <future>
 #pragma warning(default:4995)
 
 #include "FS_internal.h"
 #include "stream_reader.h"
 #include "file_stream_reader.h"
+#include "trivial_encryptor.h"
 
 constexpr u32 BIG_FILE_READER_WINDOW_SIZE	= 1024*1024;
 
@@ -242,118 +244,165 @@ void CLocatorAPI::Register		(LPCSTR name, u32 vfs, u32 crc, u32 ptr, u32 size_re
 	}
 }
 
-IReader* open_chunk(void* ptr, u32 ID)	
+IReader* open_chunk(void* ptr, u32 ID, pcstr archiveName, size_t archiveSize, bool shouldDecrypt = false)
 {
-	BOOL			res;
-	u32				dwType, dwSize;
-	DWORD			read_byte;
-	u32 pt			= SetFilePointer(ptr,0,0,FILE_BEGIN); VERIFY(pt!=INVALID_SET_FILE_POINTER);
-	while (true){
-		res			= ReadFile	(ptr,&dwType,4,&read_byte,0); 
-		VERIFY(res&&(read_byte==4));
-		res			= ReadFile	(ptr,&dwSize,4,&read_byte,0); 
-		VERIFY(res&&(read_byte==4));
-		if ((dwType&(~CFS_CompressMark)) == ID) {
-			u8* src_data	= xr_alloc<u8>(dwSize);
-			res				= ReadFile	(ptr,src_data,dwSize,&read_byte,0); VERIFY(res&&(read_byte==dwSize));
-			if (dwType&CFS_CompressMark) {
-				BYTE*			dest;
-				unsigned		dest_sz;
-				if (g_temporary_stuff)
-					g_temporary_stuff	(src_data,dwSize,src_data);
-				_decompressLZ	(&dest,&dest_sz,src_data,dwSize);
-				xr_free			(src_data);
-				return xr_new<CTempReader>(dest,dest_sz,0);
-			} else {
-				return xr_new<CTempReader>(src_data,dwSize,0);
-			}
-		}else{ 
-			pt		= SetFilePointer(ptr,dwSize,0,FILE_CURRENT); 
-			if (pt==INVALID_SET_FILE_POINTER) return 0;
-		}
-	}
-	return 0;
+    u32 dwType = INVALID_SET_FILE_POINTER;
+    size_t dwSize = 0;
+    DWORD read_byte;
+    u32 pt = SetFilePointer(ptr, 0, nullptr, FILE_BEGIN);
+    VERIFY(pt != INVALID_SET_FILE_POINTER);
+
+    while (true)
+    {
+        bool res = ReadFile(ptr, &dwType, 4, &read_byte, nullptr);
+
+        if (read_byte == 0)
+            return nullptr;
+        //. VERIFY(res&&(read_byte==4));
+
+        u32 tempSize = 0;
+        res = ReadFile(ptr, &tempSize, 4, &read_byte, nullptr);
+        dwSize = tempSize;
+
+        if (read_byte == 0)
+            return nullptr;
+        //. VERIFY(res&&(read_byte==4));
+
+        if ((dwType & ~CFS_CompressMark) == ID)
+        {
+            u8* src_data = xr_alloc<u8>(dwSize);
+            res = ReadFile(ptr, src_data, dwSize, &read_byte, nullptr);
+
+            VERIFY(res && (read_byte == dwSize));
+            if (dwType & CFS_CompressMark)
+            {
+                u8* dest = nullptr;
+                size_t dest_sz = 0;
+
+                if (shouldDecrypt) // Try WW key first
+                    g_trivial_encryptor.decode(src_data, dwSize, src_data);
+
+                bool result = _decompressLZ(&dest, &dest_sz, src_data, dwSize, archiveSize);
+
+                if (!result && shouldDecrypt)
+                {
+                    // Let's try to decode with RU key
+                    g_trivial_encryptor.encode(src_data, dwSize, src_data); // rollback
+                    g_trivial_encryptor.decode(src_data, dwSize, src_data, trivial_encryptor::key_flag::russian);
+                    result = _decompressLZ(&dest, &dest_sz, src_data, dwSize, archiveSize);
+                }
+                R_ASSERT3(result, "Can't decompress archive", archiveName);
+
+                xr_free(src_data);
+                return xr_new<CTempReader>(dest, dest_sz, 0);
+            }
+            return xr_new<CTempReader>(src_data, dwSize, 0);
+        }
+
+        pt = SetFilePointer(ptr, dwSize, nullptr, FILE_CURRENT);
+        if (pt == INVALID_SET_FILE_POINTER)
+            return nullptr;
+    }
+    return nullptr;
 };
 
 
 void CLocatorAPI::ProcessArchive(LPCSTR _path, LPCSTR base_path)
 {
 	// find existing archive
-	shared_str path				= _path;
-
-	for (archives_it it=archives.begin(); it!=archives.end(); ++it)
-		if (it->path==path)	
-				return;
-
-	DUMMY_STUFF	*g_temporary_stuff_subst = NULL;
-	if( strstr(_path,".xdb") )
+	if (strstr(_path, "gamedata\\")) 
 	{
-		g_temporary_stuff_subst		= g_temporary_stuff;
-		g_temporary_stuff			= NULL;
+		Msg("CLocatorAPI::ProcessArchive ignoring file %s", _path); // aiaaaeaii alpet: i?aaioa?auaao exception i?e ?aniaeiaaiiie gamedata
+		return;
+	}
+
+	shared_str path = _path;
+
+	for (archives_it it = archives.begin(); it != archives.end(); ++it)
+		if (it->path == path)
+			return;
+
+	DUMMY_STUFF* g_temporary_stuff_subst = NULL;
+	if (strstr(_path, ".xdb"))
+	{
+		g_temporary_stuff_subst = g_temporary_stuff;
+		g_temporary_stuff = NULL;
 	}
 	// open archive
-	auto& A = archives.emplace_back();
-	A.path					= path;
+	archives.push_back(archive());
+	archive& A = archives.back();
+	A.path = path;
 	// Open the file
-	A.hSrcFile		= CreateFile		(*path, GENERIC_READ, FILE_SHARE_READ|FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);
-	R_ASSERT							(A.hSrcFile!=INVALID_HANDLE_VALUE);
-	A.hSrcMap		= CreateFileMapping	(A.hSrcFile, 0, PAGE_READONLY, 0, 0, 0);
-	R_ASSERT							(A.hSrcMap!=INVALID_HANDLE_VALUE);
-	A.size			= GetFileSize		(A.hSrcFile,0);
-	R_ASSERT							(A.size>0);
+	A.hSrcFile = CreateFile(*path, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);
+	R_ASSERT(A.hSrcFile != INVALID_HANDLE_VALUE);
+	A.hSrcMap = CreateFileMapping(A.hSrcFile, 0, PAGE_READONLY, 0, 0, 0);
+	R_ASSERT(A.hSrcMap != INVALID_HANDLE_VALUE);
+	A.size = GetFileSize(A.hSrcFile, 0);
+	R_ASSERT(A.size > 0);
+
+	Msg("CLocatorAPI::ProcessArchive, path = %s ", *path);
 
 	// Create base path
 	string_path			base;
-	if(!base_path)
+	if (!base_path)
 	{
-		strcpy_s(base, *path);
-		if (strext(base))	*strext(base)	= 0;
-	}else
-	{
-		strcpy_s(base, base_path);
+		strcpy_s(base, sizeof(base), *path);
+		if (strext(base))	*strext(base) = 0;
 	}
-	strcat_s(base,"\\");
+	else
+	{
+		strcpy_s(base, sizeof(base), base_path);
+}
+	strcat(base, "\\");
 
 	// Read headers
-	IReader* hdr		= open_chunk(A.hSrcFile,1); R_ASSERT(hdr);
+	BOOL shouldDecrypt = false;
+	
+    if (!strstr(A.path.c_str(), ".xdb"))
+    {
+        shouldDecrypt = true;
+    }
+	
+    IReader* hdr = open_chunk(A.hSrcFile, 1, A.path.c_str(), A.size, shouldDecrypt); R_ASSERT(hdr);
+
 	RStringVec	fv;
 	while (!hdr->eof())
 	{
-		string_path		name,full;
+		string_path		name, full;
 
 		string1024		buffer_start;
-		u16				buffer_size	= hdr->r_u16();
-		VERIFY			(buffer_size < sizeof(name) + 4*sizeof(u32));
-		VERIFY			(buffer_size < sizeof(buffer_start));
-		u8				*buffer = (u8*)&*buffer_start;
-		hdr->r			(buffer,buffer_size);
+		u16				buffer_size = hdr->r_u16();
+		VERIFY(buffer_size < sizeof(name) + 4 * sizeof(u32));
+		VERIFY(buffer_size < sizeof(buffer_start));
+		u8* buffer = (u8*)&*buffer_start;
+		hdr->r(buffer, buffer_size);
 
-		u32 size_real	= *(u32*)buffer;
-		buffer			+= sizeof(size_real);
+		u32 size_real = *(u32*)buffer;
+		buffer += sizeof(size_real);
 
-		u32 size_compr	= *(u32*)buffer;
-		buffer			+= sizeof(size_compr);
+		u32 size_compr = *(u32*)buffer;
+		buffer += sizeof(size_compr);
 
-		u32 crc			= *(u32*)buffer;
-		buffer			+= sizeof(crc);
+		u32 crc = *(u32*)buffer;
+		buffer += sizeof(crc);
 
-		u32				name_length = buffer_size - 4*sizeof(u32);
-		Memory.mem_copy	(name,buffer,name_length);
+		u32				name_length = buffer_size - 4 * sizeof(u32);
+		Memory.mem_copy(name, buffer, name_length);
 		name[name_length] = 0;
-		buffer			+= buffer_size - 4*sizeof(u32);
+		buffer += buffer_size - 4 * sizeof(u32);
 
-		u32 ptr			= *(u32*)buffer;
-		buffer			+= sizeof(ptr);
+		u32 ptr = *(u32*)buffer;
+		buffer += sizeof(ptr);
 
-		strconcat		(sizeof(full),full,base,name);
-		size_t vfs		= archives.size()-1;
+		strconcat(sizeof(full), full, base, name);
+		size_t vfs = archives.size() - 1;
 
-		Register		(full,(u32)vfs,crc,ptr,size_real,size_compr,0);
+		Register(full, (u32)vfs, crc, ptr, size_real, size_compr, 0);
 	}
-	hdr->close			();
+	hdr->close();
 
-	if(g_temporary_stuff_subst)
-		g_temporary_stuff		= g_temporary_stuff_subst;
+	if (g_temporary_stuff_subst)
+		g_temporary_stuff = g_temporary_stuff_subst;
 }
 
 IC bool pred_str_ff(const _finddata_t& x, const _finddata_t& y) { return xr_strcmp(x.name, y.name) < 0; }
@@ -385,28 +434,24 @@ bool ignore_name(const char* _name)
     return false;
 }
 
-void CLocatorAPI::ProcessOne	(const char* path, const _finddata_t& F)
+void CLocatorAPI::ProcessOne(const char* path, const _finddata_t& F)
 {
 	string_path	N;
-	strcpy_s(N, path);
-	strcat_s		(N,F.name);
-	xr_strlwr	(N);
+	strcpy_s(N, sizeof(N), path);
+	strcat_s(N, F.name);
+	xr_strlwr(N);
 
-    bool ignore = ignore_name(N);
+	if (F.attrib & _A_HIDDEN)			return;
 
-    if (ignore)
-        return;
-
-	if (F.attrib&_A_HIDDEN)			return;
-
-	if (F.attrib&_A_SUBDIR) {
+	if (F.attrib & _A_SUBDIR) {
 		if (bNoRecurse)				return;
-		if (0==xr_strcmp(F.name,"."))	return;
-		if (0==xr_strcmp(F.name,"..")) return;
-		strcat_s(N,"\\");
-		Register	(N,0xffffffff,0,0,F.size,F.size,(u32)F.time_write);
-		Recurse		(N);
-	} else {
+		if (0 == xr_strcmp(F.name, "."))	return;
+		if (0 == xr_strcmp(F.name, "..")) return;
+		strcat(N, "\\");
+		Register(N, 0xffffffff, 0, 0, F.size, F.size, (u32)F.time_write);
+		Recurse(N);
+	}
+	else {
 		if (!m_Flags.is(flTargetFolderOnly) && strext(N) && 0 == strncmp(strext(N), ".db", 3)) {
 			Msg("--Found base arch: [%s], size: [%u]", N, F.size);
 			ProcessArchive(N);
@@ -1103,68 +1148,71 @@ T *CLocatorAPI::r_open_impl	(LPCSTR path, LPCSTR _fname)
 	return					(R);
 }
 
-CStreamReader* CLocatorAPI::rs_open	(LPCSTR path, LPCSTR _fname)
+CStreamReader* CLocatorAPI::rs_open(LPCSTR path, LPCSTR _fname)
 {
-	return					(r_open_impl<CStreamReader>(path,_fname));
+	auto r = std::async(std::launch::async, &CLocatorAPI::r_open_impl<CStreamReader>, this, path, _fname);
+	return					r.get();
 }
 
-IReader *CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
+IReader* CLocatorAPI::r_open(LPCSTR path, LPCSTR _fname)
 {
-	return					(r_open_impl<IReader>(path,_fname));
+	auto r = std::async(std::launch::async, &CLocatorAPI::r_open_impl<IReader>, this, path, _fname);
+	return					r.get();
 }
 
-void	CLocatorAPI::r_close	(IReader* &fs)
-{
-	if( m_Flags.test(flDumpFileActivity) )
-		_unregister_open_file	(fs);
 
-	xr_delete					(fs);
+void	CLocatorAPI::r_close(IReader*& fs)
+{
+	if (m_Flags.test(flDumpFileActivity))
+		_unregister_open_file(fs);
+
+	xr_delete(fs);
 }
 
-void	CLocatorAPI::r_close	(CStreamReader* &fs)
+void	CLocatorAPI::r_close(CStreamReader*& fs)
 {
-	if( m_Flags.test(flDumpFileActivity) )
-		_unregister_open_file	(fs);
+	if (m_Flags.test(flDumpFileActivity))
+		_unregister_open_file(fs);
 
-	fs->close					();
+	fs->close();
 }
 
-IWriter* CLocatorAPI::w_open	(LPCSTR path, LPCSTR _fname)
+IWriter* CLocatorAPI::w_open(LPCSTR path, LPCSTR _fname)
 {
 	string_path	fname;
-	strcpy_s(fname,_fname);
+	strcpy_s(fname, _fname);
 	xr_strlwr(fname);//,".$");
-	if (path&&path[0]) update_path(fname,path,fname);
-    CFileWriter* W 	= xr_new<CFileWriter>(fname,false); 
+	if (path && path[0]) update_path(fname, path, fname);
+	CFileWriter* W = xr_new<CFileWriter>(fname, false);
 	return W;
 }
 
-IWriter* CLocatorAPI::w_open_ex	(LPCSTR path, LPCSTR _fname)
+IWriter* CLocatorAPI::w_open_ex(LPCSTR path, LPCSTR _fname)
 {
 	string_path	fname;
-	strcpy_s(fname,_fname);
+	strcpy_s(fname, _fname);
 	xr_strlwr(fname);//,".$");
-	if (path&&path[0]) update_path(fname,path,fname);
-	CFileWriter* W 	= xr_new<CFileWriter>(fname,true); 
+	if (path && path[0]) update_path(fname, path, fname);
+	CFileWriter* W = xr_new<CFileWriter>(fname, true);
 	return W;
 }
 
-void	CLocatorAPI::w_close(IWriter* &S)
+void	CLocatorAPI::w_close(IWriter*& S)
 {
-	if (S){
-        R_ASSERT	(S->fName.size());
-        string_path	fname;
-		strcpy_s(fname, *S->fName);
-		bool bReg	= S->valid();
-		xr_delete	(S);
+	if (S) {
+		R_ASSERT(S->fName.size());
+		string_path	fname;
+		strcpy_s(fname, sizeof(fname), *S->fName);
+		bool bReg = S->valid();
+		xr_delete(S);
 
-		if(bReg)
+		if (bReg)
 		{
 			struct _stat st;
-			_stat		(fname,&st);
-			Register	(fname,0xffffffff,0,0,st.st_size,st.st_size,(u32)st.st_mtime);
+			_stat(fname, &st);
+			Register(fname, 0xffffffff, 0, 0, st.st_size, st.st_size, (u32)st.st_mtime);
 		}
-    }
+	}
 }
 
 CLocatorAPI::files_it CLocatorAPI::file_find_it(LPCSTR fname)

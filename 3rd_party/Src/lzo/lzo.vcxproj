@@ -93,7 +93,7 @@
       <StringPooling>true</StringPooling>
       <ExceptionHandling />
       <DisableSpecificWarnings>4456;4457;4458;4577;</DisableSpecificWarnings>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

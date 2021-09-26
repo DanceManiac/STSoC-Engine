@@ -160,6 +160,7 @@
     <ClCompile Include="Event.cpp">
       <Filter>Threading</Filter>
     </ClCompile>
+    <ClCompile Include="trivial_encryptor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FTimer.h">
@@ -379,6 +380,7 @@
     <ClInclude Include="buffer_vector_inline.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="trivial_encryptor.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuildStep Include="FileSystem.h">
