@@ -23,6 +23,7 @@
     <RootNamespace>luabind</RootNamespace>
     <Keyword>Win32Proj</Keyword>
     <ProjectName>Luabind</ProjectName>
+    <WindowsTargetPlatformVersion>$(LatestTargetPlatformVersion)</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <Import Project="..\Engine_properties.props" />
@@ -70,6 +71,7 @@
       <FunctionLevelLinking Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</FunctionLevelLinking>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -172,6 +174,7 @@
     <ClCompile Include="src\luabind_memory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="luabind\cdecl_cast.hpp" />
     <ClInclude Include="luabind\detail\calc_has_arg.hpp" />
     <ClInclude Include="luabind\detail\policy_cons.hpp" />
     <ClInclude Include="luabind\adopt_policy.hpp" />

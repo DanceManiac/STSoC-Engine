@@ -256,7 +256,7 @@ public:
     const T* operator-> () const noexcept {
         return std::addressof(get());
     }
-
+/*
     void swap(option& that) noexcept(std::is_nothrow_swappable_v<T&>         &&
                                      std::is_nothrow_move_constructible_v<T> &&
                                      std::is_nothrow_destructible_v<T>) {
@@ -337,7 +337,7 @@ public:
             return option();
         }
     }
-
+*/
 private:
     const T* pointer() const noexcept {
         return reinterpret_cast<const T*>(std::addressof(storage));

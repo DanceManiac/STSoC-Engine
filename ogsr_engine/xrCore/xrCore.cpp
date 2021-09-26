@@ -147,7 +147,7 @@ const char* xrCore::GetEngineVersion() {
 	if (strlen(APPVEYOR_BUILD_VERSION))
 		std::snprintf(buff, sizeof(buff), APPVEYOR_BUILD_VERSION " (%s) from repo: [" APPVEYOR_REPO_NAME "]", GetBuildConfiguration());
 	else
-		std::snprintf(buff, sizeof(buff), "[X-Ray Renewal Engine %s (ver. 1.0)", GetBuildConfiguration());
+		std::snprintf(buff, sizeof(buff), "[X-Ray Renewal Engine %s (ver. 1.0)]", GetBuildConfiguration());
 	return buff;
 }
 
