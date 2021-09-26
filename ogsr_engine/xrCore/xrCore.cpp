@@ -100,7 +100,7 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs,
 
 		FS._initialize		(flags,0,fs_fname);
 
-		Msg("[OGSR Engine (%s)] build date: [" __DATE__ " " __TIME__ "]", GetBuildConfiguration());
+		Msg("[X-Ray Renewal Engine v1.0]", GetBuildConfiguration());
 		if (strlen(APPVEYOR_BUILD_VERSION))
 			Log("[AppVeyor] build version: [" APPVEYOR_BUILD_VERSION "], repo: [" APPVEYOR_REPO_NAME "]");
 
@@ -147,7 +147,7 @@ const char* xrCore::GetEngineVersion() {
 	if (strlen(APPVEYOR_BUILD_VERSION))
 		std::snprintf(buff, sizeof(buff), APPVEYOR_BUILD_VERSION " (%s) from repo: [" APPVEYOR_REPO_NAME "]", GetBuildConfiguration());
 	else
-		std::snprintf(buff, sizeof(buff), "[OGSR Engine %s (build: " __DATE__ " " __TIME__ ")]", GetBuildConfiguration());
+		std::snprintf(buff, sizeof(buff), "[X-Ray Renewal Engine %s (ver. 1.0)", GetBuildConfiguration());
 	return buff;
 }
 

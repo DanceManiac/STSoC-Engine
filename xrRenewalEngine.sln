@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30128.74
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31521.260
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libvorbis_static", "3rd_party\Src\Xiph\libvorbis\win32\VS2010\libvorbis\libvorbis_static.vcxproj", "{0F3163C6-FAE6-4FBD-BF88-037EB0420DAF}"
 EndProject
@@ -229,7 +229,6 @@ Global
 		{57A498C9-A741-4DDF-8EFC-BFB9EB6B00E2}.Debug|x64.ActiveCfg = Debug|x64
 		{57A498C9-A741-4DDF-8EFC-BFB9EB6B00E2}.Debug|x86.ActiveCfg = Debug|Win32
 		{57A498C9-A741-4DDF-8EFC-BFB9EB6B00E2}.Release|x64.ActiveCfg = Release|x64
-		{57A498C9-A741-4DDF-8EFC-BFB9EB6B00E2}.Release|x64.Build.0 = Release|x64
 		{57A498C9-A741-4DDF-8EFC-BFB9EB6B00E2}.Release|x86.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
