@@ -14,7 +14,6 @@
 #include "actor.h"
 #include "ActorCondition.h"
 #include "Weapon.h"
-#include "player_hud.h"
 
 CWeaponCollision::CWeaponCollision()
 {
@@ -36,7 +35,6 @@ void CWeaponCollision::Load()
 	fReminderMoving		= 0;
 	fReminderNeedMoving	= 0;
 	fReminderNeedWPNUP	= 0;
-	fReminderWPNUP		= 0;
 }
 
 static const float SPEED_REMINDER = 0.62f;
@@ -63,22 +61,18 @@ void CWeaponCollision::Update(Fmatrix &o, float range)
 		fReminderNeedDist	= xyz.z;
 		fReminderMoving		= xyz.z;
 		fReminderNeedMoving	= xyz.z;
-		fReminderNeedWPNUP	= dir.y;
-		fReminderWPNUP		= dir.y;
 		bFirstUpdate		= false;
 	}
 
     float fYMag = Actor()->fFPCamYawMagnitude;
-	attachable_hud_item* hi;
 	//-> Поворот при стрейфе
-	if ((dwMState&ACTOR_DEFS::mcLStrafe || dwMState&ACTOR_DEFS::mcRStrafe || fYMag != 0.0f || hi->m_bad_inertion_fix) && !Actor()->IsZoomAimingMode())
+	if ((dwMState&ACTOR_DEFS::mcLStrafe || dwMState&ACTOR_DEFS::mcRStrafe || fYMag != 0.0f) && !Actor()->IsZoomAimingMode())
 	{
 		float k	= ((dwMState & ACTOR_DEFS::mcCrouch) ? 0.5f : 1.f);
 		if (dwMState&ACTOR_DEFS::mcLStrafe || fYMag > 0.f)
 			k *= -1.f;
 
 		fReminderNeedStrafe = dir.z + (STRAFE_ANGLE * k);
-			k *= -0.01f;
 
 		if (dwMState & ACTOR_DEFS::mcFwd || dwMState & ACTOR_DEFS::mcBack)
 			fReminderNeedStrafe /= 2.f;
