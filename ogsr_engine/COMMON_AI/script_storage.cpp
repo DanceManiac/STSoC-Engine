@@ -330,7 +330,7 @@ bool CScriptStorage::do_file(const char* caScriptName, const char* caNameSpaceNa
 	if (l_iErrorCode)
 	{
 		print_output(lua(), caScriptName, l_iErrorCode);
-		R_ASSERT(false); //НЕ ЗАКОММЕНТИРОВАТЬ!
+		Debug.fatal(DEBUG_INFO, "Some scripts have errors. See log!"); //НЕ УДАЛЯТЬ!
 		return false;
 	}
 	return true;
