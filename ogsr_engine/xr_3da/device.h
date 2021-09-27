@@ -9,7 +9,7 @@
 
 extern u32 g_dwFPSlimit;
 
-#define VIEWPORT_NEAR 0.05f
+#define VIEWPORT_NEAR 0.2f
 #define HUD_VIEWPORT_NEAR 0.05f
 
 #define DEVICE_RESET_PRECACHE_FRAME_COUNT 10
@@ -264,10 +264,6 @@ public:
 	void ShutDown							(void);
 
 	void time_factor(const float& time_factor); //--#SM+#--
-	/*inline const float time_factor() const {
-		VERIFY(Timer.time_factor() == TimerGlobal.time_factor());
-		return (Timer.time_factor());
-	}*/
 
 private:
 	// Multi-threading
