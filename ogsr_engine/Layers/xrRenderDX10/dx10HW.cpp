@@ -552,6 +552,17 @@ void fill_vid_mode_list(CHW* _hw)
 		DXGI_MODE_DESC &desc = modes[i];
 		string32		str;
 
+		//-> Удаляем поддержку 4:3
+		if(!(desc.Width != 640 &&
+			desc.Width != 800 &&
+			desc.Width != 720 &&
+			desc.Width != 1024 &&
+			desc.Width != 1152 &&
+			(desc.Width != 1280 ||
+				desc.Height == 720 ||
+				desc.Height == 768)))
+			continue;
+
 		xr_sprintf(str, sizeof(str), "%dx%d", desc.Width, desc.Height);
 
 		if(_tmp.end() != std::find_if(_tmp.begin(), _tmp.end(), _uniq_mode(str)))

@@ -700,7 +700,17 @@ void fill_vid_mode_list(CHW* _hw)
 		string32		str;
 
 		_hw->pD3D->EnumAdapterModes(_hw->DevAdapter, _hw->Caps.fTarget, i, &Mode);
-		if(Mode.Width < 800)		continue;
+
+		//-> Удаляем поддержку 4:3
+		if(!(Mode.Width != 640 &&
+			Mode.Width != 800 &&
+			Mode.Width != 720 &&
+			Mode.Width != 1024 &&
+			Mode.Width != 1152 &&
+			(Mode.Width != 1280 ||
+				Mode.Height == 720 ||
+				Mode.Height == 768)))
+			continue;
 
 		xr_sprintf						(str,sizeof(str),"%dx%d", Mode.Width, Mode.Height);
 	
