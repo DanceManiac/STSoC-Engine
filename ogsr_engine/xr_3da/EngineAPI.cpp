@@ -7,6 +7,10 @@
 #include "xr_ioconsole.h"
 #include "xr_ioc_cmd.h"
 
+/*Отключает Второй рендер*/
+	#define EXCLUDE_R2
+/*-----------------------*/
+
 extern xr_token* vid_quality_token;
 
 //////////////////////////////////////////////////////////////////////
@@ -70,7 +74,9 @@ void CEngineAPI::Initialize()
 #ifndef EXCLUDE_R1
 	constexpr LPCSTR r1_name = "xrRender_R1.dll";
 #endif
+#ifndef EXCLUDE_R2
 	constexpr LPCSTR r2_name = "xrRender_R2.dll";
+#endif
 	constexpr LPCSTR r3_name = "xrRender_R3.dll";
 	constexpr LPCSTR r4_name = "xrRender_R4.dll";
 
@@ -83,13 +89,17 @@ void CEngineAPI::Initialize()
 		{
 			// try to load R1
 			Msg("!![%s] Can't load module: [%s]! Error: %s", __FUNCTION__, r4_name, Debug.error2string(GetLastError()));
-			psDeviceFlags.set(rsR2, TRUE);
+			psDeviceFlags.set(rsR3, TRUE);
 		}
 		else
 			g_current_renderer = 4;
 	}
 
+#ifdef EXCLUDE_R2
+	if (!hRender)
+#else
 	if (psDeviceFlags.test(rsR3))
+#endif
 	{
 		// try to initialize R3
 		Msg("--Loading DLL: [%s]", r3_name);
@@ -97,13 +107,17 @@ void CEngineAPI::Initialize()
 		if (!hRender)
 		{
 			// try to load R1
+#ifndef EXCLUDE_R2
 			Msg("!![%s] Can't load module: [%s]! Error: %s", __FUNCTION__, r3_name, Debug.error2string(GetLastError()));
 			psDeviceFlags.set(rsR2, TRUE);
+#else
+			FATAL("!![%s] Can't load module: [%s]! Error: %s", __FUNCTION__, r3_name, Debug.error2string(GetLastError()));
+#endif
 		}
 		else
 			g_current_renderer = 3;
 	}
-
+#ifndef EXCLUDE_R2
 #ifdef EXCLUDE_R1
 	if (!hRender)
 #else
@@ -132,7 +146,7 @@ void CEngineAPI::Initialize()
 		else
 			g_current_renderer = 2;
 	}
-
+#endif
 #ifndef EXCLUDE_R1
 	if (!hRender)
 	{
@@ -214,10 +228,14 @@ void CEngineAPI::CreateRendererList()
 {
 	std::vector<std::string> RendererTokens;
 
+#ifdef EXCLUDE_R2
+	size_t i = 3;
+#else
 #ifdef EXCLUDE_R1
 	size_t i = 2;
 #else
 	size_t i = 1;
+#endif
 #endif
 	for (; i <= 4; i++)
 	{
