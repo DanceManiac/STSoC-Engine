@@ -232,7 +232,7 @@ bool CWeaponShotgun::Action			(s32 cmd, u32 flags)
 	{
 		switch (cmd)
 		{
-		case kWPN_ZOOM:
+		case kWPN_DUPLET:
 		{
 			if (flags&CMD_START)
 			{

@@ -52,6 +52,7 @@ std::vector<_action> actions = {
 	DEF_ACTION("wpn_zoom_inc",		kWPN_ZOOM_INC)
 	DEF_ACTION("wpn_zoom_dec",		kWPN_ZOOM_DEC)
 	DEF_ACTION("wpn_reload",		kWPN_RELOAD)
+	DEF_ACTION("wpn_duplet",		kWPN_DUPLET)
 	DEF_ACTION("wpn_func",			kWPN_FUNC)
 	DEF_ACTION("wpn_firemode_prev",	kWPN_FIREMODE_PREV)
 	DEF_ACTION("wpn_firemode_next",	kWPN_FIREMODE_NEXT)

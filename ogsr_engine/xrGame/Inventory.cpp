@@ -585,6 +585,7 @@ bool CInventory::Action(s32 cmd, u32 flags)
 		case kWPN_NEXT:
 		case kWPN_RELOAD:
 		case kWPN_FIRE:
+		case kWPN_DUPLET:
 		case kWPN_FUNC:
 		case kWPN_FIREMODE_NEXT:
 		case kWPN_FIREMODE_PREV:
