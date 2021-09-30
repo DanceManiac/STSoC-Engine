@@ -45,7 +45,7 @@ LPCSTR _CopyVal ( LPCSTR src, LPSTR dst, char separator )
 	LPCSTR	p;
 	size_t	n;
 	p			= strchr	( src, separator );
-	n			= (p>0) ? (p-src) : xr_strlen(src);
+	n			= (p>(LPCSTR)0) ? (p-src) : xr_strlen(src);
 	strncpy		( dst, src, n );
 	dst[n]		= 0;
 	return		dst;
@@ -247,7 +247,7 @@ LPCSTR _CopyVal ( LPCSTR src, xr_string& dst, char separator )
 	LPCSTR		p;
 	ptrdiff_t	n;
 	p			= strchr	( src, separator );
-	n			= (p>0) ? (p-src) : xr_strlen(src);
+	n			= (p>(LPCSTR)0) ? (p-src) : xr_strlen(src);
 	dst			= src;
 	dst			= dst.erase	(n,dst.length());
 	return		dst.c_str();

@@ -34,7 +34,9 @@ BOOL g_show_wnd_rect = FALSE;
 BOOL g_show_wnd_rect2 = FALSE;
 void clean_wnd_rects()
 {
+#if 0
 	DRender->DestroyDebugShader(IDebugRender::dbgShaderWindow);
+#endif
 }
 
 void add_rect_to_draw(Frect r)

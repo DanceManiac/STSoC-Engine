@@ -571,7 +571,9 @@ void CLevel::OnRender()
 	}
 #endif
 
+#if 0
 	debug_renderer().render();
+#endif
 
 #ifdef DEBUG
 

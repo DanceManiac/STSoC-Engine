@@ -326,6 +326,7 @@
       <Filter>Discord</Filter>
     </ClInclude>
     <ClInclude Include="exDeMODER_cocu_xyu.cpp" />
+    <ClInclude Include="trivial_encryptor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="defines.cpp">

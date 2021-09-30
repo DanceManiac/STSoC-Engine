@@ -1304,5 +1304,6 @@
     <ClCompile Include="..\xrRender\RenderTargetPhaseSSSS.cpp">
       <Filter>Core_Target</Filter>
     </ClCompile>
+    <ClCompile Include="r3_globals.cpp" />
   </ItemGroup>
 </Project>

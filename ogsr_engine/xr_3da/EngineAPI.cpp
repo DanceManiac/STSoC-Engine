@@ -11,6 +11,25 @@
 	#define EXCLUDE_R2
 /*-----------------------*/
 
+/* Перед сборкой нужно активировать один из этих дефайнов */
+#define BUILD_R4
+//#define BUILD_R3
+
+/* Оба сразу активировать нельзя! */
+#if defined(BUILD_R4) && defined(BUILD_R3)
+#error Select only one render define plz
+#endif
+
+#if !defined(BUILD_R4) && !defined(BUILD_R3)
+#error Select render define plz
+#endif
+
+#ifdef BUILD_R4
+#pragma comment(lib, "xrRender_R4.lib")
+#elif defined(BUILD_R3)
+#pragma comment(lib, "xrRender_R3.lib")
+#endif
+
 extern xr_token* vid_quality_token;
 
 //////////////////////////////////////////////////////////////////////
@@ -68,9 +87,31 @@ extern "C" {
 
 void CEngineAPI::Initialize()
 {
+#ifdef XRRENDER_STATIC
+#ifdef BUILD_R4
+	void AttachR4();
+	AttachR4();
+
+	psDeviceFlags.set(rsR2, FALSE);
+	psDeviceFlags.set(rsR3, FALSE);
+	psDeviceFlags.set(rsR4, TRUE);
+	g_current_renderer = 4;
+
 	CCC_LoadCFG_custom pTmp("renderer ");
 	pTmp.Execute(Console->ConfigFile);
+#elif defined(BUILD_R3)
+	void AttachR3();
+	AttachR3();
 
+	psDeviceFlags.set(rsR2, FALSE);
+	psDeviceFlags.set(rsR4, FALSE);
+	psDeviceFlags.set(rsR3, TRUE);
+	g_current_renderer = 3;
+
+	CCC_LoadCFG_custom pTmp("renderer ");
+	pTmp.Execute(Console->ConfigFile);
+#endif
+#else
 #ifndef EXCLUDE_R1
 	constexpr LPCSTR r1_name = "xrRender_R1.dll";
 #endif
@@ -162,6 +203,7 @@ void CEngineAPI::Initialize()
 		g_current_renderer = 1;
 	}
 #endif
+#endif //XRRENDER_STATIC
 
 	Device.ConnectToRender();
 

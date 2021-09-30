@@ -408,7 +408,7 @@ static void *__cdecl luabind_allocator(luabind::memory_allocation_function_param
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-void LuaLog(const char* caMessage) { Log(caMessage); }
+static void LuaLog(const char* caMessage) { Log(caMessage); }
 
 // export
 void	CResourceManager::LS_Load			()
