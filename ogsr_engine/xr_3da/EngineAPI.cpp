@@ -13,7 +13,7 @@
 
 /* Перед сборкой нужно активировать один из этих дефайнов */
 //#define BUILD_R4			//-> DirectX 11
-//#define BUILD_R3			//-> DirectX 10
+#define BUILD_R3			//-> DirectX 10
 
 /* Оба сразу активировать нельзя! */
 #if defined(BUILD_R4) && defined(BUILD_R3)

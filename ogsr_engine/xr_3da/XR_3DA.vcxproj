@@ -246,7 +246,7 @@
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalIncludeDirectories>..\xrCore\;$(SolutionDir)\3rd_party\Src\d3dx;$(SolutionDir)\3rd_party\Src\Xiph\libogg\include;$(SolutionDir)\3rd_party\Src\Xiph\libtheora\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>XRCORE_STATIC;XRCDB_STATIC;XRGAME_STATIC;XRRENDER_STATIC;ENGINE_BUILD;NDEBUG;_WINDOWS;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LUABIND_STATIC;XRCORE_STATIC;XRCDB_STATIC;XRGAME_STATIC;XRRENDER_STATIC;ENGINE_BUILD;NDEBUG;_WINDOWS;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>
       </ExceptionHandling>
@@ -274,7 +274,7 @@
       <Culture>0x0422</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>libogg_static.lib;libtheora_static.lib;vfw32.lib;winmm.lib;dinput8.lib;dxguid.lib;xrGame.lib;xrSound.lib;xrCore.lib;ode.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libogg_static.lib;libtheora_static.lib;vfw32.lib;winmm.lib;dinput8.lib;dxguid.lib;xrGame.lib;xrSound.lib;xrCore.lib;ode.lib;Luabind.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>libcmt;</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>

@@ -219,7 +219,7 @@
       <OmitFramePointers>false</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <PreprocessorDefinitions>XRCORE_STATIC;XRCDB_STATIC;XRGAME_STATIC;XRGAME_EXPORTS;NDEBUG;_WINDOWS;_USRDLL;dSINGLE;MSVC;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LUABIND_STATIC;XRCORE_STATIC;XRCDB_STATIC;XRGAME_STATIC;XRGAME_EXPORTS;NDEBUG;_WINDOWS;_USRDLL;dSINGLE;MSVC;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>
       </ExceptionHandling>
