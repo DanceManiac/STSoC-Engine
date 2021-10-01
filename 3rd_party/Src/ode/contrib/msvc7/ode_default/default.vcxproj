@@ -25,7 +25,7 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseOfAtl>false</UseOfAtl>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -48,6 +48,9 @@
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
     <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</PostBuildEventUseInBuild>
     <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</PostBuildEventUseInBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)\ogsr_engine\_LIB\Engine\$(Configuration)\$(Platform)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
@@ -165,6 +168,10 @@
       <AdditionalDependencies>User32.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent />
+    <Lib>
+      <AdditionalDependencies>User32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\3rd_party\_LIB\$(Configuration)\$(Platform);$(SolutionDir)\ogsr_engine\_LIB\Engine\$(Configuration)\$(Platform);$(SolutionDir)\3rd_party\Src\dxsdk_libs\$(PlatformShortName);$(SolutionDir)\3rd_party\Src\OpenAL_Soft\libs\$(PlatformShortName);$(SolutionDir)\3rd_party\_LIB\Release\$(Platform);$(SolutionDir)\ogsr_engine\_LIB\Engine\Release\$(Platform);</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\ode\src\array.h" />

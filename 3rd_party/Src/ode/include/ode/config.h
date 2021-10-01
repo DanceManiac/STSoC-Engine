@@ -74,9 +74,9 @@ extern "C" {
 #endif
 
 
-#define SHAREDLIBIMPORT __declspec (dllimport)
+#define SHAREDLIBIMPORT// __declspec (dllimport)
 
-#define SHAREDLIBEXPORT __declspec (dllexport)
+#define SHAREDLIBEXPORT// __declspec (dllexport)
 
 
 

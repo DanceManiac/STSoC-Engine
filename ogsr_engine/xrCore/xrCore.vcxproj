@@ -37,7 +37,7 @@
     <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
@@ -68,6 +68,9 @@
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)\ogsr_engine\_LIB\Engine\$(Configuration)\$(Platform)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -190,7 +193,7 @@
       <OmitFramePointers>false</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;XRCORE_EXPORTS;_SECURE_SCL=0;APPVEYOR_BUILD_VERSION="$(APPVEYOR_BUILD_VERSION)";APPVEYOR_REPO_NAME="$(APPVEYOR_REPO_NAME)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;XRCORE_STATIC;_SECURE_SCL=0;APPVEYOR_BUILD_VERSION="$(APPVEYOR_BUILD_VERSION)";APPVEYOR_REPO_NAME="$(APPVEYOR_REPO_NAME)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>
       </ExceptionHandling>
@@ -235,6 +238,10 @@
 		copy /Y "$(SolutionDir)\Game\dlls\discord-rpc_x64.dll" "$(OutDir)discord-rpc.dll"
 	  </Command>
     </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>lzo.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\3rd_party\_LIB\$(Configuration)\$(Platform);$(SolutionDir)\ogsr_engine\_LIB\Engine\$(Configuration)\$(Platform);$(SolutionDir)\3rd_party\Src\dxsdk_libs\$(PlatformShortName);$(SolutionDir)\3rd_party\Src\OpenAL_Soft\libs\$(PlatformShortName);$(SolutionDir)\3rd_party\_LIB\Release\$(Platform);$(SolutionDir)\ogsr_engine\_LIB\Engine\Release\$(Platform);</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

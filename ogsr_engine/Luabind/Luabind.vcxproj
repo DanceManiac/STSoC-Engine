@@ -55,7 +55,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>false</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
-      <PreprocessorDefinitions>_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;LUABIND_BUILDING;NDEBUG;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>XRCORE_STATIC;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;LUABIND_BUILDING;NDEBUG;</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir);..\LuaJIT\src;..\xrCore;</AdditionalIncludeDirectories>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -71,7 +71,7 @@
       <FunctionLevelLinking Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</FunctionLevelLinking>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpplatest</LanguageStandard>
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -79,7 +79,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <AdditionalDependencies>xrCore.lib;</AdditionalDependencies>
+      <AdditionalDependencies>xrCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
       <LinkTimeCodeGeneration />
     </Link>
