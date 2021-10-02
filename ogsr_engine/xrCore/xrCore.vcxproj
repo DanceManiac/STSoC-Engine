@@ -119,12 +119,6 @@
       <AdditionalDependencies>lzo.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
     </Link>
-    <PostBuildEvent>
-      <Command>
-		copy /Y "$(SolutionDir)\Game\dlls\dbghelp_x86.dll" "$(OutDir)dbghelp.dll"
-		copy /Y "$(SolutionDir)\Game\dlls\discord-rpc_x86.dll" "$(OutDir)discord-rpc.dll"
-	  </Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -177,12 +171,6 @@
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
       <IgnoreSpecificDefaultLibraries>msvcrt</IgnoreSpecificDefaultLibraries>
     </Link>
-    <PostBuildEvent>
-      <Command>
-		copy /Y "$(SolutionDir)\Game\dlls\dbghelp_x86.dll" "$(OutDir)dbghelp.dll"
-		copy /Y "$(SolutionDir)\Game\dlls\discord-rpc_x86.dll" "$(OutDir)discord-rpc.dll"
-	  </Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -232,12 +220,6 @@
       </LinkTimeCodeGeneration>
       <AdditionalDependencies>lzo.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <PostBuildEvent>
-      <Command>
-		copy /Y "$(SolutionDir)\Game\dlls\dbghelp_x64.dll" "$(OutDir)dbghelp.dll"
-		copy /Y "$(SolutionDir)\Game\dlls\discord-rpc_x64.dll" "$(OutDir)discord-rpc.dll"
-	  </Command>
-    </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>lzo.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\3rd_party\_LIB\$(Configuration)\$(Platform);$(SolutionDir)\ogsr_engine\_LIB\Engine\$(Configuration)\$(Platform);$(SolutionDir)\3rd_party\Src\dxsdk_libs\$(PlatformShortName);$(SolutionDir)\3rd_party\Src\OpenAL_Soft\libs\$(PlatformShortName);$(SolutionDir)\3rd_party\_LIB\Release\$(Platform);$(SolutionDir)\ogsr_engine\_LIB\Engine\Release\$(Platform);</AdditionalLibraryDirectories>
@@ -294,12 +276,6 @@
       <AdditionalDependencies>lzo.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>msvcrt</IgnoreSpecificDefaultLibraries>
     </Link>
-    <PostBuildEvent>
-      <Command>
-		copy /Y "$(SolutionDir)\Game\dlls\dbghelp_x64.dll" "$(OutDir)dbghelp.dll"
-		copy /Y "$(SolutionDir)\Game\dlls\discord-rpc_x64.dll" "$(OutDir)discord-rpc.dll"
-	  </Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Layers\xrAPI\xrAPI.cpp" />
