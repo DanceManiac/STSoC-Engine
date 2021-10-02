@@ -6,6 +6,7 @@
 
 // you must define ENGINE_BUILD then building the engine itself
 // and not define it if you are about to build DLL
+#define XRENGINE_STATIC
 #ifdef XRENGINE_STATIC
 #	define DLL_API
 #	define ENGINE_API
