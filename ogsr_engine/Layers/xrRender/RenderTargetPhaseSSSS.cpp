@@ -12,7 +12,7 @@ void CRenderTarget::PhaseSSSS()
 	Fvector4 params{ 0.0f, 0.0f, 0.0f, 0.0f };
 	string_unordered_map<const char*, Fvector4*> consts{ { "ssss_params", &params } };
 
-	if (ps_r_sunshafts_mode == SS_SS_MANOWAR)
+	if (ps_r_sunshafts_mode == SS_SS_MANOWAR || ps_r_sunshafts_mode == SS_VOLUMETRIC_MRMNWAR)
 	{
 		// Mask
 		RenderScreenQuad(Device.dwWidth, Device.dwHeight, rt_SunShaftsMask, s_ssss_mrmnwar->E[0]);
@@ -33,23 +33,11 @@ void CRenderTarget::PhaseSSSS()
 		params.x = intensity;
 		params.y = ps_r_prop_ss_blend;
 
-/*#if defined(USE_DX10) || defined(USE_DX11)
-		RenderScreenQuad(Device.dwWidth, Device.dwHeight, rt_Generic, s_ssss_mrmnwar->E[4], &consts);
-		HW.pContext->CopyResource(rt_Generic_0->pTexture->surface_get(), rt_Generic->pTexture->surface_get());
-#else
-		RenderScreenQuad(Device.dwWidth, Device.dwHeight, rt_Generic_0, s_ssss_mrmnwar->E[4], &consts);
-#endif*/
-#if defined(USE_DX10) || defined(USE_DX11)
 		ref_rt& dest_rt = RImplementation.o.dx10_msaa ? rt_Generic : rt_Color;
-#else
-		ref_rt& dest_rt = rt_Generic_0;
-#endif
 		RenderScreenQuad(Device.dwWidth, Device.dwHeight, dest_rt, s_ssss_mrmnwar->E[4], &consts);
-#if defined(USE_DX10) || defined(USE_DX11)
 		HW.pContext->CopyResource(rt_Generic_0->pTexture->surface_get(), dest_rt->pTexture->surface_get());
-#endif
 	}
-	else if (ps_r_sunshafts_mode == SS_SS_OGSE)
+	else if (ps_r_sunshafts_mode == SS_SS_OGSE || ps_r_sunshafts_mode == SS_VOLUMETRIC_OGSE)
 	{
 		// ***MASK GENERATION***
 		// In this pass generates geometry mask
@@ -77,20 +65,8 @@ void CRenderTarget::PhaseSSSS()
 		// Combining sunshafts texture and image for further processing
 		params.z = 0.0f;
 
-/*#if defined(USE_DX10) || defined(USE_DX11)
-		RenderScreenQuad(Device.dwWidth, Device.dwHeight, rt_Generic, s_ssss_ogse->E[4], &consts);
-		HW.pContext->CopyResource(rt_Generic_0->pTexture->surface_get(), rt_Generic->pTexture->surface_get());
-#else
-		RenderScreenQuad(Device.dwWidth, Device.dwHeight, rt_Generic_0, s_ssss_ogse->E[4], &consts);
-#endif*/
-#if defined(USE_DX10) || defined(USE_DX11)
 		ref_rt& dest_rt = RImplementation.o.dx10_msaa ? rt_Generic : rt_Color;
-#else
-		ref_rt& dest_rt = rt_Generic_0;
-#endif
 		RenderScreenQuad(Device.dwWidth, Device.dwHeight, dest_rt, s_ssss_ogse->E[4], &consts);
-#if defined(USE_DX10) || defined(USE_DX11)
 		HW.pContext->CopyResource(rt_Generic_0->pTexture->surface_get(), dest_rt->pTexture->surface_get());
-#endif
 	}
 }

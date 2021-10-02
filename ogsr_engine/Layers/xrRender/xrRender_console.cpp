@@ -23,13 +23,15 @@ constexpr xr_token pp_aa_mode_token[] = {
 	{ nullptr, 0 },
 };
 
-u32 ps_r_sunshafts_mode = SS_SS_MANOWAR;
+u32 ps_r_sunshafts_mode = SS_VOLUMETRIC_MRMNWAR;
 constexpr xr_token sunshafts_mode_token[] =
 {
 	{ "st_opt_off", SS_OFF        },
 	{ "volumetric", SS_VOLUMETRIC },
 	{ "ss_ogse",    SS_SS_OGSE    },
 	{ "ss_manowar", SS_SS_MANOWAR },
+	{ "ss_vol_ssmanowar", SS_VOLUMETRIC_MRMNWAR },
+	{ "ss_vol_ogse", SS_VOLUMETRIC_OGSE },
 	{ nullptr, 0 }
 };
 // Sunshafts
