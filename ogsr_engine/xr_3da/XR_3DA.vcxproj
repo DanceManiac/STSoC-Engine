@@ -274,7 +274,7 @@
       <Culture>0x0422</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>libogg_static.lib;libtheora_static.lib;vfw32.lib;winmm.lib;dinput8.lib;dxguid.lib;xrGame.lib;xrSound.lib;xrCore.lib;ode.lib;Luabind.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libtheora_static.lib;vfw32.lib;winmm.lib;dinput8.lib;dxguid.lib;xrGame.lib;Luabind.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>libcmt;</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
