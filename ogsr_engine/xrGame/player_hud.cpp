@@ -119,16 +119,26 @@ void player_hud_motion_container::load(attachable_hud_item* parent, IKinematicsA
 	}
 }
 
-Fvector& attachable_hud_item::hands_attach_pos() { return m_measures.m_hands_attach[0]; }
-Fvector& attachable_hud_item::hands_attach_rot() { return m_measures.m_hands_attach[1]; }
+Fvector& attachable_hud_item::hands_attach_pos()
+{
+	return m_measures.m_hands_attach[0];
+}
+
+Fvector& attachable_hud_item::hands_attach_rot()
+{
+	return m_measures.m_hands_attach[1];
+}
+
 Fvector& attachable_hud_item::hands_offset_pos()
 {
-	return m_measures.m_hands_offset[hud_item_measures::m_hands_offset_pos][m_parent_hud_item->GetCurrentHudOffsetIdx()];
+	u8 idx = m_parent_hud_item->GetCurrentHudOffsetIdx();
+	return m_measures.m_hands_offset[0][idx];
 }
 
 Fvector& attachable_hud_item::hands_offset_rot()
 {
-	return m_measures.m_hands_offset[hud_item_measures::m_hands_offset_rot][m_parent_hud_item->GetCurrentHudOffsetIdx()];
+	u8 idx = m_parent_hud_item->GetCurrentHudOffsetIdx();
+	return m_measures.m_hands_offset[1][idx];
 }
 
 void attachable_hud_item::set_bone_visible(const shared_str& bone_name, BOOL bVisibility, BOOL bSilent)
@@ -656,40 +666,6 @@ u32 player_hud::motion_length(const motion_descr& M, const CMotionDef*& md, floa
 
 void player_hud::update(const Fmatrix& cam_trans)
 {
-	/*Fmatrix trans = cam_trans;
-    if (psHUD_Flags.test(HUD_LEFT_HANDED))
-    {
-        trans.m[0][0] = -(trans.m[0][0]);
-        trans.m[0][1] = -(trans.m[0][1]);
-        trans.m[0][2] = -(trans.m[0][2]);
-        trans.m[0][3] = -(trans.m[0][3]);
-    }
-	update_inertion(trans);
-	update_additional(trans);
-
-	Fmatrix trans = cam_trans;
-
-	Fvector ypr;
-	if (m_attached_items[0])
-		ypr = m_attached_items[0]->hands_attach_rot();
-	else if (m_attached_items[1])
-		ypr = m_attached_items[1]->hands_attach_rot();
-	else
-		ypr = Fvector().set(0.f, 0.f, 0.f);
-
-	ypr.mul(PI / 180.f);
-	m_attach_offset.setHPB(ypr.x, ypr.y, ypr.z);
-
-	Fvector tmp;
-	if (m_attached_items[0])
-		tmp = m_attached_items[0]->hands_attach_pos();
-	else if (m_attached_items[1])
-		tmp = m_attached_items[1]->hands_attach_pos();
-	else
-		tmp = Fvector().set(0.f, 0.f, 0.f);
-
-	m_attach_offset.translate_over(tmp);
-*/
 	Fmatrix trans = cam_trans;
 	Fvector m1pos = attach_pos(0);
 	Fvector m2pos = attach_pos(1);
@@ -704,6 +680,8 @@ void player_hud::update(const Fmatrix& cam_trans)
 	
 	if(m_attached_items[1])
 		m_attached_items[1]->update_hud_additional(trans_2);
+	else
+		trans_2 = trans;
 
 	// override hand offset for single hand animation
 	m1rot.mul(PI / 180.f);
@@ -728,12 +706,9 @@ void player_hud::update(const Fmatrix& cam_trans)
 	m_transform_2.mul(trans_2, m_attach_offset_2);
 	// insert inertion here
 
-	if (m_model)
-	{
-		m_model->UpdateTracks();
-		m_model->dcast_PKinematics()->CalculateBones_Invalidate();
-		m_model->dcast_PKinematics()->CalculateBones(TRUE);
-	}
+	m_model->UpdateTracks();
+	m_model->dcast_PKinematics()->CalculateBones_Invalidate();
+	m_model->dcast_PKinematics()->CalculateBones(TRUE);
 
 	m_model_2->UpdateTracks();
 	m_model_2->dcast_PKinematics()->CalculateBones_Invalidate();

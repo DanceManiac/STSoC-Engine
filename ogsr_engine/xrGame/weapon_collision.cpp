@@ -38,9 +38,9 @@ void CWeaponCollision::Load()
 	fReminderWPNUP		= 0;
 }
 
-static const float SPEED_REMINDER = 0.62f;
-static const float SPEED_REMINDER_STRAFE = 0.5f;
-static const float STRAFE_ANGLE = 0.15f;
+static const float SPEED_REMINDER = 0.31f;
+static const float SPEED_REMINDER_STRAFE = 0.25f;
+static const float STRAFE_ANGLE = 0.075f;
 
 void CWeaponCollision::CheckState()
 {
