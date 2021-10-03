@@ -35,6 +35,7 @@ void CWeaponCollision::Load()
 	fReminderMoving		= 0;
 	fReminderNeedMoving	= 0;
 	fReminderNeedWPNUP	= 0;
+	fReminderWPNUP		= 0;
 }
 
 static const float SPEED_REMINDER = 0.62f;
