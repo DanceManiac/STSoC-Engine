@@ -180,7 +180,7 @@ void CWeaponCollision::Update(Fmatrix &o, float range)
 	//-> Высчитываем координаты поднимания оружия
 	if (!fsimilar(fReminderWPNUP, dir.y))
 	{
-		dir.y 		= fReminderWPNUP;
+		dir.y 		= fReminderWPNUP * 1.5f;
 		Fmatrix m;
 		m.setHPB(dir.x,dir.y,dir.z);
 		Fmatrix tmp;

@@ -683,6 +683,9 @@ void player_hud::update(const Fmatrix& cam_trans)
 	else
 		trans_2 = trans;
 
+	update_inertion(trans);
+	update_inertion(trans_2);
+
 	// override hand offset for single hand animation
 	m1rot.mul(PI / 180.f);
 	m_attach_offset.setHPB(m1rot.x, m1rot.y, m1rot.z);
