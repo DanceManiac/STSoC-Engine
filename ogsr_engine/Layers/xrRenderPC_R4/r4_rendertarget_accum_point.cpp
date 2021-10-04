@@ -13,6 +13,24 @@ void CRenderTarget::accum_point		(light* L)
       shader_msaa    = s_accum_point_msaa;
 	}	
 
+	Fmatrix Pold = Fidentity;
+	Fmatrix FTold = Fidentity;
+
+	if (L->flags.bHudMode)
+	{
+		extern ENGINE_API float psHUD_FOV;
+		Pold = Device.mProject;
+		FTold = Device.mFullTransform;
+		Device.mProject.build_projection(
+			deg2rad(psHUD_FOV * 83.f),
+			Device.fASPECT, HUD_VIEWPORT_NEAR,
+			g_pGamePersistent->Environment().CurrentEnv->far_plane);
+
+		Device.mFullTransform.mul(Device.mProject, Device.mView);
+		RCache.set_xform_project(Device.mProject);
+		RImplementation.rmNear();
+	}   
+
 	// Common
 	Fvector		L_pos;
 	float		L_spec;
