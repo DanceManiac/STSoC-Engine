@@ -85,11 +85,6 @@ void CCustomOutfit::Load(LPCSTR section)
 	else
 		m_ActorVisual = NULL;
 
-	if (pSettings->line_exist(section, "actor_visual_legs"))
-		m_ActorVisual_legs = pSettings->r_string(section, "actor_visual_legs");
-	else
-		m_ActorVisual_legs = NULL;
-
 	m_ef_equipment_type		= pSettings->r_u32(section,"ef_equipment_type");
 	if (pSettings->line_exist(section, "power_loss"))
 		m_fPowerLoss = pSettings->r_float(section, "power_loss");
@@ -155,53 +150,16 @@ void	CCustomOutfit::OnMoveToSlot		()
 	inherited::OnMoveToSlot();
 	if (m_pCurrentInventory)
 	{
-		shared_str NewVisual = NULL;
 		CActor* pActor = smart_cast<CActor*> (m_pCurrentInventory->GetOwner());
 		if (pActor)
 		{
-			CTorch* pTorch = smart_cast<CTorch*>(pActor->inventory().ItemFromSlot(TORCH_SLOT));
-			if(pTorch)
+			if (m_ActorVisual.size())
 			{
-				pTorch->SwitchNightVision(false);
+				pActor->ChangeVisual(m_ActorVisual);
 			}
-
-			if (pActor->IsFirstEye())
-			{
-				if (m_ActorVisual_legs.size())
-				{
-					shared_str NewVisual = m_ActorVisual_legs;
-					pActor->ChangeVisual(NewVisual);
-				} 
-				else 
-				{
-					shared_str NewVisual = pActor->GetDefaultVisualOutfit_legs();
-					pActor->ChangeVisual(NewVisual);
-				}
-				if(pSettings->line_exist(cNameSect(),"bones_koeff_protection"))
-				{
-					m_boneProtection->reload( pSettings->r_string(cNameSect(),"bones_koeff_protection"), smart_cast<IKinematics*>(pActor->Visual()) );
-				};
-			} 
-			else 
-			{
-				if (m_ActorVisual.size())
-					shared_str NewVisual = NULL;
-			}
-
-			/*if (!NewVisual.size())
-			{
-				NewVisual = m_ActorVisual;
-				pActor->ChangeVisual(NewVisual);
-			} 
-			else 
-			{
-				shared_str NewVisual = pActor->GetDefaultVisualOutfit();
-				pActor->ChangeVisual(NewVisual);
-			}*/
-			if(pSettings->line_exist(cNameSect(),"bones_koeff_protection"))
-			{
+			if(pSettings->line_exist(cNameSect(),"bones_koeff_protection")){
 				m_boneProtection->reload( pSettings->r_string(cNameSect(),"bones_koeff_protection"), smart_cast<IKinematics*>(pActor->Visual()) );
-			};
+			}
 
 			if (pSettings->line_exist(cNameSect(), "player_hud_section"))
 				g_player_hud->load(pSettings->r_string(cNameSect(), "player_hud_section"));
@@ -219,27 +177,17 @@ void CCustomOutfit::OnDropOrMoveToRuck() {
 		CActor* pActor = smart_cast<CActor*> (m_pCurrentInventory->GetOwner());
 		if (pActor)
 		{
-			CCustomOutfit* outfit	= pActor->GetOutfit();
-			if (!outfit)
+			CTorch* pTorch = smart_cast<CTorch*>(pActor->inventory().ItemFromSlot(TORCH_SLOT));
+			if (pTorch)
 			{
-				CTorch* pTorch = smart_cast<CTorch*>(pActor->inventory().ItemFromSlot(TORCH_SLOT));
-				if(pTorch)
+				pTorch->SwitchNightVision(false);
+			}
+			if (m_ActorVisual.size())
+			{
+				shared_str DefVisual = pActor->GetDefaultVisualOutfit();
+				if (DefVisual.size())
 				{
-					pTorch->SwitchNightVision(false);
-				}
-				if (pActor->IsFirstEye())
-				{
-					shared_str DefVisual = pActor->GetDefaultVisualOutfit_legs();
-					if (DefVisual.size())
-					{
-						pActor->ChangeVisual(DefVisual);
-					}
-				} else {
-					shared_str DefVisual = pActor->GetDefaultVisualOutfit();
-					if (DefVisual.size())
-					{
-						pActor->ChangeVisual(DefVisual);
-					}
+					pActor->ChangeVisual(DefVisual);
 				}
 			}
 

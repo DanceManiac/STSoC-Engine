@@ -640,8 +640,6 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	}
 */	
 	SetDefaultVisualOutfit(cNameVisual());
-	ChangeVisual(m_DefaultVisualOutfit_legs);
-	m_bFirstEye = true;
 
 	smart_cast<IKinematics*>(Visual())->CalculateBones();
 
@@ -733,7 +731,6 @@ void CActor::net_Destroy	()
 	m_holderID=u16(-1);
 	
 	SetDefaultVisualOutfit(NULL);
-	SetDefaultVisualOutfit_legs(NULL);
 
 	if(g_actor == this) g_actor= NULL;
 
