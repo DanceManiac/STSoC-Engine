@@ -244,7 +244,7 @@ void CRenderDevice::on_idle		()
 		if (Begin())				{
 
 			seqRender.Process						(rp_Render);
-			if (psDeviceFlags.test(rsCameraPos) || psDeviceFlags.test(rsStatistic) || Statistic->errors.size())	
+		if (psDeviceFlags.test(rsCameraPos) || psDeviceFlags.test(rsStatistic) || psDeviceFlags.test(rsDrawFPS) || psDeviceFlags.test(rsDrawMemory)/* || draw_fps == TRUE || draw_Memory == TRUE*/ || Statistic->errors.size())
 				Statistic->Show						();
 
 			Statistic->Show_HW_Stats();

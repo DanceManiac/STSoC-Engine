@@ -35,6 +35,9 @@ enum {
 	rsR3							= (1ul<<17ul),
 	rsR4							= (1ul<<18ul),
 
+	rsDrawFPS = (1ul << 22ul),
+	rsDrawMemory = (1ul << 23ul),
+
 	rsExclusiveMode = 1ul << 19ul,
 };
 

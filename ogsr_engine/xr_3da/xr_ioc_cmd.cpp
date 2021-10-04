@@ -664,6 +664,10 @@ void CCC_Register()
 	CMD3(CCC_Mask,		"rs_render_dynamics",	&psDeviceFlags,		rsDrawDynamic			);
 #endif
 
+	// Counters
+	CMD3(CCC_Mask, "rs_draw_fps", &psDeviceFlags, rsDrawFPS);
+	CMD3(CCC_Mask, "rs_draw_memory", &psDeviceFlags, rsDrawMemory);
+
 	// Render device states
 	CMD3(CCC_Mask, "rs_always_active", &psDeviceFlags, rsAlwaysActive);
 	CMD3(CCC_Token, "r_fps_lock", &g_dwFPSlimit, FpsLockToken);

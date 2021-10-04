@@ -17,7 +17,7 @@
 
 /* Оба сразу активировать нельзя! */
 #if defined(BUILD_R4) && defined(BUILD_R3)
-#error Select only one render define plz
+#error Select only one render define plz //БЕЗ ЭТОГО РЕНДЕРЫ НЕ РАБОТАЮТ! НЕ УБИРАТЬ!!!
 #endif
 
 #ifdef BUILD_R4
