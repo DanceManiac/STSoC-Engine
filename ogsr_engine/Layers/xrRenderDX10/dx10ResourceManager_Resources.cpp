@@ -189,10 +189,7 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR _name)
 
 		VERIFY(SUCCEEDED(_hr));
 
-		CHECK_OR_EXIT			(
-			!FAILED(_hr),
-			make_string("Your video card doesn't meet game requirements.\n\nTry to lower game settings.")
-		);
+		R_ASSERT3(SUCCEEDED(_hr), "Can't compile shader", name);
 
 		return					_vs;
 	}

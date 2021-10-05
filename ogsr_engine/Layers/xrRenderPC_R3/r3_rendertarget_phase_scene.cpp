@@ -19,6 +19,11 @@ void	CRenderTarget::phase_scene_prepare	()
 			HW.pContext->ClearDepthStencilView(rt_MSAADepth->pZRT, D3D_CLEAR_DEPTH | D3D_CLEAR_STENCIL, 1.0f, 0);
 	}
 
+	FLOAT ColorRGBA[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+	// DWM: clear rt_Position
+	HW.pContext->ClearRenderTargetView(rt_Position->pRT, ColorRGBA);
+
 	//	Igor: for volumetric lights
 	m_bHasActiveVolumetric				= false;
 	//	Clear later if try to draw volumetric
