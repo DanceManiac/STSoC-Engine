@@ -505,7 +505,7 @@ player_hud::~player_hud()
 	
     v = m_model_2->dcast_RenderVisual();
     ::Render->model_Delete(v);
-    m_model = nullptr;
+    m_model_2 = nullptr;
 
 	xr_vector<attachable_hud_item*>::iterator it = m_pool.begin();
 	xr_vector<attachable_hud_item*>::iterator it_e = m_pool.end();
@@ -696,7 +696,10 @@ void player_hud::update(const Fmatrix& cam_trans)
 	m_attach_offset_2.translate_over(m2pos);
 
 	if (bobbing_allowed())
+	{
 		m_bobbing->Update(m_attach_offset, m_attached_items[0]);
+		m_bobbing->Update(m_attach_offset_2, m_attached_items[1]);
+	}
 
 	collide::rq_result& RQ = HUD().GetCurrentRayQuery();
 	if (collision_allowed())
