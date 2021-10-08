@@ -474,7 +474,7 @@ u32 renderer_value = 1;
 #else
 u32 renderer_value = 2;
 #endif
-
+#include "../render_selection.h"
 class CCC_r2 : public CCC_Token
 {
 	typedef CCC_Token inherited;
@@ -489,29 +489,19 @@ public:
 
 		inherited::Execute		(args);
 		Msg("--[%s] Executing renderer: [%s], renderer_value: [%u]", __FUNCTION__, args, renderer_value);
-#ifdef EXCLUDE_R1
 		//	0..2 - r2
 		//	3 - r3
 		//	4 - r4
-		psDeviceFlags.set(rsR2, ((renderer_value >= 0) && renderer_value < 3));
-		psDeviceFlags.set(rsR3, (renderer_value == 3));
-		psDeviceFlags.set(rsR4, (renderer_value == 4));
-
-		r2_sun_static = renderer_value == 0;
-
-		r2_advanced_pp = renderer_value >= 2;
-#else
-		//	0 - r1
-		//	1..3 - r2
-		//	4 - r3
-		psDeviceFlags.set		(rsR2, ((renderer_value>0) && renderer_value<4) );
-		psDeviceFlags.set		(rsR3, (renderer_value==4) );
-		psDeviceFlags.set		(rsR4, (renderer_value>=5) );
-
-		r2_sun_static	= (renderer_value<2);
-
-		r2_advanced_pp  = (renderer_value>=3);
+		psDeviceFlags.set(rsR2, false);
+#ifdef BUILD_R3
+		psDeviceFlags.set(rsR3, true);
+		psDeviceFlags.set(rsR4, false);
+#elif defined(BUILD_R4)
+		psDeviceFlags.set(rsR4, true);
+		psDeviceFlags.set(rsR3, false);
 #endif
+		r2_sun_static = false;
+		r2_advanced_pp = true;
 	}
 
 	virtual void	Save	(IWriter *F)	
