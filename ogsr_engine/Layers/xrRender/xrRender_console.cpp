@@ -41,7 +41,7 @@ constexpr xr_token sunshafts_mode_token[] =
 	{ "volumetric", SS_VOLUMETRIC },
 	{ "ss_ogse",    SS_SS_OGSE    },
 	{ "ss_manowar", SS_SS_MANOWAR },
-	{ "ss_vol_ssmanowar", SS_VOLUMETRIC_MRMNWAR },
+	{ "ss_vol_manowar", SS_VOLUMETRIC_MRMNWAR },
 	{ "ss_vol_ogse", SS_VOLUMETRIC_OGSE },
 	{ nullptr, 0 }
 };
