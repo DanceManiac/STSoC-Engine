@@ -52,10 +52,10 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 
 extern "C"
 {
-	bool _declspec(dllexport) SupportsDX11Rendering();
+	bool /*_declspec(dllexport)*/ SupportsDX11Rendering();
 };
 
-bool _declspec(dllexport) SupportsDX11Rendering()
+bool /*_declspec(dllexport)*/ SupportsDX11Rendering()
 {
 	return xrRender_test_hw()?true:false;
 	/*

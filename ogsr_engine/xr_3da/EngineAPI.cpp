@@ -75,8 +75,8 @@ void CEngineAPI::Initialize()
 	psDeviceFlags.set(rsR4, TRUE);
 	g_current_renderer = 4;
 
-	CCC_LoadCFG_custom pTmp("renderer ");
-	pTmp.Execute(Console->ConfigFile);
+	//CCC_LoadCFG_custom pTmp("renderer ");
+	//pTmp.Execute(Console->ConfigFile);
 #elif defined(BUILD_R3)
 	void AttachR3();
 	AttachR3();
@@ -86,8 +86,8 @@ void CEngineAPI::Initialize()
 	psDeviceFlags.set(rsR3, TRUE);
 	g_current_renderer = 3;
 
-	CCC_LoadCFG_custom pTmp("renderer ");
-	pTmp.Execute(Console->ConfigFile);
+	//CCC_LoadCFG_custom pTmp("renderer ");
+	//pTmp.Execute(Console->ConfigFile);
 #endif
 #else
 #ifndef EXCLUDE_R1
