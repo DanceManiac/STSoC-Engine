@@ -31,22 +31,14 @@ bool CSavedGameWrapper::saved_game_exist		(LPCSTR saved_game_name)
 	return						(!!FS.exist(saved_game_full_name(saved_game_name,file_name)));
 }
 
-#include "STSOC_WP_Flags.h"
 bool CSavedGameWrapper::valid_saved_game		(IReader &stream)
 {
 	if (stream.length() < 8)
 		return					(false);
 
-	if(Core.Features.test(xrCore::Feature::any_addons_installed))
-	{
-		if (stream.r_u32() != u32(-SAVE_SEED_ADDONS))
-			return					(false);
-	}
-	else
-	{
-		if (stream.r_u32() != u32(-SAVE_SEED))
-			return					(false);
-	}
+	u32 mod_id = pSettings->r_u32("saved_games_settings", "mod_id");
+	if(stream.r_u32() != mod_id)
+		return					(false);
 
 	if (stream.r_u32() != 0x0009)
 		return					(false);

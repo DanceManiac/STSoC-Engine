@@ -62,7 +62,6 @@ void CALifeObjectRegistry::save				(IWriter &memory_stream, CSE_ALifeDynamicObje
 #include "script_callback_ex.h"
 #include "script_game_object.h"
 #include "Actor.h"
-#include "STSOC_WP_Flags.h"
 
 void CALifeObjectRegistry::save				(IWriter &memory_stream)
 {
@@ -74,10 +73,9 @@ void CALifeObjectRegistry::save				(IWriter &memory_stream)
 	memory_stream.open_chunk	(OBJECT_CHUNK_DATA);
 
 	u32							position = memory_stream.tell();
-	if(Core.Features.test(xrCore::Feature::any_addons_installed))
-		memory_stream.w_u32			(u32(-SAVE_SEED_ADDONS));
-	else
-		memory_stream.w_u32			(u32(-SAVE_SEED));
+	
+	u32 mod_id = pSettings->r_u32("saved_games_settings", "mod_id");
+	memory_stream.w_u32			(mod_id);
 
 	u32							object_count = 0;
 	OBJECT_REGISTRY::iterator	I = m_objects.begin();
