@@ -80,7 +80,7 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 		u16 vers 				= MP->r_u16();
 		u16 part_bone_cnt		= 0;
 		string128 				buf;
-		R_ASSERT3				(vers<=xrOGF_SMParamsVersion,"Invalid OGF/OMF version:",N);
+		R_ASSERT3				(vers<=/*xrOGF_SMParamsVersion*/5,"Invalid OGF/OMF version:",N);
 		
 		// partitions
 		u16						part_count;
@@ -207,7 +207,7 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
             if (M.test_flag(flTKeyPresent))	
             {
                 u32 crc_t		= MS->r_u32	();
-                if(M.test_flag(flTKey16IsBit))
+                if(M.test_flag(flTKey16IsBit) || M.test_flag(flTKeyIsNewOMFformat))
                 {
                     M._keysT16.create	(crc_t,dwLen,(CKeyQT16*)MS->pointer());
                     MS->advance			(dwLen * sizeof(CKeyQT16));

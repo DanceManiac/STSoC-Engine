@@ -16,9 +16,10 @@ typedef void	( * PlayCallback)		(CBlend*		P);
 
 //*** Key frame definition ************************************************************************
 enum{
-    flTKeyPresent 	= (1<<0),
-    flRKeyAbsent 	= (1<<1),
-    flTKey16IsBit 	= (1<<2),
+    flTKeyPresent 			= (1<<0),
+    flRKeyAbsent 			= (1<<1),
+    flTKey16IsBit 			= (1<<2),
+	flTKeyIsNewOMFformat 	= (1<<3),
 };
 #pragma pack(push,2)
 struct  CKey

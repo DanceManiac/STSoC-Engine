@@ -98,7 +98,7 @@ IC void Dequantize(CKey& K,const CBlend& BD,const CMotion& M)
 	if (M.test_flag(flTKeyPresent))
 	{
        Fvector T1,T2;
-       if(M.test_flag(flTKey16IsBit))
+       if(M.test_flag(flTKey16IsBit) || M.test_flag(flTKeyIsNewOMFformat))
        {
             const CKeyQT16*	K1t	= &M._keysT16[(frame+0)%count];
             const CKeyQT16*	K2t	= &M._keysT16[(frame+1)%count];
