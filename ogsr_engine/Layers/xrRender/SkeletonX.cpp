@@ -165,7 +165,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 	xr_vector<u16>			bids;
 
 	// Load vertices
-	R_ASSERT				(data->find_chunk(OGF_VERTICES));
+	R_ASSERT				(data->find_chunk(OGF_VERTICES) || data->find_chunk(OGF_VERTICES_NEW));
 			
 	//u16			hw_bones_cnt		= u16((HW.Caps.geometry.dwRegisters-22)/3);
 	//	Igor: some shaders in r1 need more free constant registers

@@ -16,6 +16,9 @@ enum MT {
 	MT_TREE_PM				=11,
 
 	MT_3DFLUIDVOLUME = 12,
+
+	MT_SKELETON_GEOMDEF_PM_NEW	=13,
+	MT_SKELETON_GEOMDEF_ST_NEW	=14,
 };
 
 enum OGF_Chuncks {
@@ -43,7 +46,10 @@ enum OGF_Chuncks {
 	OGF_FASTPATH			= 22,	// * extended/fast geometry
 	OGF_S_LODS 				= 23,	// * For skeletons only (Ini-file)
 	OGF_S_MOTION_REFS2		= 24,	// * changes in format
-    OGF_forcedword			= 0xFFFFFFFF         
+    OGF_forcedword			= 0xFFFFFFFF,      
+
+	OGF_TEXTURE_NEW				= 27,
+	OGF_VERTICES_NEW			= 28,	      
 };							
 
 enum OGF_SkeletonVertType	{

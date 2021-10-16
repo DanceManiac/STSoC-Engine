@@ -54,6 +54,12 @@ dxRender_Visual*	CModelPool::Instance_Create(u32 type)
 	case MT_SKELETON_GEOMDEF_ST:
 		V	= xr_new<CSkeletonX_ST>			();
 		break;
+	case MT_SKELETON_GEOMDEF_PM_NEW:
+		V	= xr_new<CSkeletonX_PM>			();
+		break;
+	case MT_SKELETON_GEOMDEF_ST_NEW:
+		V	= xr_new<CSkeletonX_ST>			();
+		break;
 	case MT_PARTICLE_EFFECT:
 		V	= xr_new<PS::CParticleEffect>	();
 		break;

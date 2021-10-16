@@ -118,7 +118,7 @@ void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
 			vFormat				= RImplementation.getVB_Format	(ID);
 #endif
 		} else {
-			R_ASSERT			(data->find_chunk(OGF_VERTICES));
+			R_ASSERT			(data->find_chunk(OGF_VERTICES) || data->find_chunk(OGF_VERTICES_NEW));
 			vBase				= 0;
 			u32 fvf				= data->r_u32				();
 			CHK_DX				(D3DXDeclaratorFromFVF(fvf,dcl));

@@ -59,7 +59,7 @@ void dxRender_Visual::Load		(const char* N, IReader *data, u32 )
 	}
 
 	// Shader
-	if (data->find_chunk(OGF_TEXTURE)) {
+	if (data->find_chunk(OGF_TEXTURE) || data->find_chunk(OGF_TEXTURE_NEW)) {
 		string256		fnT,fnS;
 		data->r_stringZ	(fnT,sizeof(fnT));
 		data->r_stringZ	(fnS,sizeof(fnS));
