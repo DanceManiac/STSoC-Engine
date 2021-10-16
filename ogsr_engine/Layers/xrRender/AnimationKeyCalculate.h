@@ -82,7 +82,7 @@ IC void Dequantize(CKey& K,const CBlend& BD,const CMotion& M)
 	float			delta	=	time-float(frame);
 	u32				count	=	M.get_count();
 	// rotation
-	if (M.test_flag(flRKeyAbsent)){
+	if (M.test_flag(flRKeyAbsent) || M.test_flag(flRKeyAbsentNew)){
 		const CKeyQR *		K		=	&M._keysR[0];
 		QR2Quat(*K,D->Q);
 	}else{
@@ -95,7 +95,7 @@ IC void Dequantize(CKey& K,const CBlend& BD,const CMotion& M)
 	}
 
 	// translate
-	if (M.test_flag(flTKeyPresent))
+	if (M.test_flag(flTKeyPresent) || M.test_flag(flTKeyPresentNew))
 	{
        Fvector T1,T2;
        if(M.test_flag(flTKey16IsBit) || M.test_flag(flTKeyIsNewOMFformat))

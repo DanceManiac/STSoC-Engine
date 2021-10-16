@@ -35,12 +35,12 @@ extern "C" {
 
 #ifdef DIRECTSOUND_VERSION
 #if DIRECTSOUND_VERSION == 0x0900
-		__declspec(dllimport) HRESULT WINAPI EAXDirectSoundCreate8(GUID*, LPDIRECTSOUND8*, IUnknown FAR *);
+		/*__declspec(dllimport)*/ HRESULT WINAPI EAXDirectSoundCreate8(GUID*, LPDIRECTSOUND8*, IUnknown FAR *);
 		typedef HRESULT (FAR PASCAL *LPEAXDIRECTSOUNDCREATE8)(GUID*, LPDIRECTSOUND8*, IUnknown FAR*);
 #endif
 #endif
 
-	__declspec(dllimport) HRESULT WINAPI EAXDirectSoundCreate(GUID*, LPDIRECTSOUND*, IUnknown FAR *);
+	/*__declspec(dllimport)*/ HRESULT WINAPI EAXDirectSoundCreate(GUID*, LPDIRECTSOUND*, IUnknown FAR *);
 	typedef HRESULT (FAR PASCAL *LPEAXDIRECTSOUNDCREATE)(GUID*, LPDIRECTSOUND*, IUnknown FAR*);
 
 #else

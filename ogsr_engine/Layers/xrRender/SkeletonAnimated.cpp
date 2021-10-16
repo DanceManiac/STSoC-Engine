@@ -776,7 +776,7 @@ const	CBlendInstance::BlendSVec	&Blend				= BLEND_INST.blend_vector();
 			CMotion			&M						= *LL_GetMotion(B->motionID,SelfID);
 			Dequantize(*D,*B,M);
 			QR2Quat( M._keysR[0], BK[channel][b_count].Q	);
-			if(M.test_flag(flTKeyPresent))
+			if(M.test_flag(flTKeyPresent) || M.test_flag(flTKeyPresentNew))
             {
             	if(M.test_flag(flTKey16IsBit) || M.test_flag(flTKeyIsNewOMFformat))
 					QT16_2T(M._keysT16[0] ,M ,BK[channel][b_count].T );

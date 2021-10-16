@@ -22,9 +22,9 @@
 
 // Do not define the symbol EAXAC3_EXPORTS in any projects that use the EAX-AC3 Open AL Extension
 #ifdef EAXAC3_EXPORTS
-#define EAXAC3_API __declspec(dllexport)
+#define EAXAC3_API// __declspec(dllexport)
 #else
-#define EAXAC3_API __declspec(dllimport)
+#define EAXAC3_API// __declspec(dllimport)
 #endif
 
 #ifdef __cplusplus

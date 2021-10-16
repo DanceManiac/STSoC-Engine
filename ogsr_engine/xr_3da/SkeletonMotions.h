@@ -20,6 +20,8 @@ enum{
     flRKeyAbsent 			= (1<<1),
     flTKey16IsBit 			= (1<<2),
 	flTKeyIsNewOMFformat 	= (1<<3),
+    flTKeyPresentNew 	= (1<<4),
+    flRKeyAbsentNew 	= (1<<5),
 };
 #pragma pack(push,2)
 struct  CKey

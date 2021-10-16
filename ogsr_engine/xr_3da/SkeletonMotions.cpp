@@ -194,7 +194,7 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 			M.set_count			(dwLen);
 			M.set_flags			(MS->r_u8());
             
-            if (M.test_flag(flRKeyAbsent))	{
+            if (M.test_flag(flRKeyAbsent) || M.test_flag(flRKeyAbsentNew))	{
                 CKeyQR* r 		= (CKeyQR*)MS->pointer();
 				u32 crc_q		= crc32(r,sizeof(CKeyQR));
 				M._keysR.create	(crc_q,1,r);
@@ -204,7 +204,7 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
                 M._keysR.create	(crc_q,dwLen,(CKeyQR*)MS->pointer());
                 MS->advance		(dwLen * sizeof(CKeyQR));
             }
-            if (M.test_flag(flTKeyPresent))	
+            if (M.test_flag(flTKeyPresent) || M.test_flag(flTKeyPresentNew))	
             {
                 u32 crc_t		= MS->r_u32	();
                 if(M.test_flag(flTKey16IsBit) || M.test_flag(flTKeyIsNewOMFformat))
