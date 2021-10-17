@@ -74,7 +74,7 @@ void CALifeObjectRegistry::save				(IWriter &memory_stream)
 
 	u32							position = memory_stream.tell();
 	
-	u32 mod_id = pSettings->r_u32("saved_games_settings", "mod_id");
+	u32 mod_id = pSettings->r_u32("engine_settings", "mod_id");
 	memory_stream.w_u32			(mod_id);
 
 	u32							object_count = 0;

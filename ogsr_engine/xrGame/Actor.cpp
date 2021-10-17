@@ -951,11 +951,16 @@ void CActor::UpdateCL	()
 		g_player_hud->update(trans);
 }
 
-#if defined(OGSR_MOD) || defined(DSH_MOD)
-constexpr u32 TASKS_UPDATE_TIME = 500u;
-#else
-constexpr u32 TASKS_UPDATE_TIME = 1u;
-#endif
+constexpr u32 TASKS_UPDATE_TIME_OGSR = 500u;
+constexpr u32 TASKS_UPDATE_TIME_SOC = 1u;
+
+u32 TASKS_UPDATE_TIME()
+{
+	if (pSettings->r_string_wb("engine_settings", "engine_mode") == "ogsr_mod")
+		return TASKS_UPDATE_TIME_OGSR;
+	else
+		return TASKS_UPDATE_TIME_SOC;
+};
 
 float	NET_Jump = 0;
 void CActor::shedule_Update	(u32 DT)
@@ -1002,7 +1007,7 @@ void CActor::shedule_Update	(u32 DT)
 	UpdateInventoryOwner			(DT);
 
 	static u32 tasks_update_time = 0;
-	if ( tasks_update_time > TASKS_UPDATE_TIME ) {
+	if ( tasks_update_time > TASKS_UPDATE_TIME()) {
 	  tasks_update_time = 0;
 	  GameTaskManager().UpdateTasks();
 	}

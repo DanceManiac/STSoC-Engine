@@ -71,7 +71,7 @@ void CALifeStorageManager::save	(LPCSTR save_name, bool update_name)
 	FS.update_path				(temp,"$game_saves$",m_save_name);
 	IWriter						*writer = FS.w_open(temp);
 
-	u32 mod_id = pSettings->r_u32("saved_games_settings", "mod_id");
+	u32 mod_id = pSettings->r_u32("engine_settings", "mod_id");
 	writer->w_u32				(mod_id);
 
 	writer->w_u32				(ALIFE_VERSION);

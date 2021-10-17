@@ -333,15 +333,14 @@ void CRenderDevice::Run			()
 	Log				("		https://github.com/OGSR/OGSR-Engine			");
 	Log				("									");
 	Log				("			Starting...				");
-	
-	bool any_addons_installed = Core.Features.test(xrCore::Feature::any_addons_installed) ? true : false;
-	if (any_addons_installed)
+
+	if (pSettings->r_string_wb("engine_settings", "engine_mode") == "ogsr_mod")
 	{
-		Log("addons present");
+		Log("Engine Mode: OGSR Mod");
 	}
 	else
 	{
-		Log("addons absent");
+		Log("Engine Mode: SOC");
 	}
 	
 	set_current_thread_name("X-RAY Primary thread");
