@@ -297,8 +297,8 @@ void					CRender::create					()
 
 	//	MSAA option dependencies
 
-#pragma todo("MSAA на R4 как известно, не работает правильно, поэтому выключен. Если вдруг когда-то пофиксится, сделать чтоб он не конфликтовал с SSLR.")
-	o.dx10_msaa = 0; //!!ps_r3_msaa;
+//#pragma todo("MSAA на R4 как известно, не работает правильно, поэтому выключен. Если вдруг когда-то пофиксится, сделать чтоб он не конфликтовал с SSLR.")
+	o.dx10_msaa = ps_r3_msaa && pSettings->r_string_wb("engine_settings", "render_mode") == "r3";
 	o.dx10_msaa_samples = (1 << ps_r3_msaa);
 
 	o.dx10_msaa_opt		= ps_r2_ls_flags.test(R3FLAG_MSAA_OPT);
@@ -1325,7 +1325,7 @@ HRESULT	CRender::shader_compile			(
    }
    sh_name[len]='0'+char(o.dx10_sm4_1); ++len;
 
-   R_ASSERT						( HW.FeatureLevel>=D3D_FEATURE_LEVEL_11_0 );
+   //R_ASSERT						( HW.FeatureLevel>=D3D_FEATURE_LEVEL_11_0 );
    if( HW.FeatureLevel>=D3D_FEATURE_LEVEL_11_0 )
    {
 	   defines[def_it].Name		=	"SM_5";
@@ -1351,13 +1351,13 @@ HRESULT	CRender::shader_compile			(
 	sh_name[len] = '0'; ++len;
 #endif
 
-	if (ps_r2_ls_flags_ext.test(R2FLAGEXT_SSLR))
+	if (ps_r2_ls_flags_ext.test(R2FLAGEXT_SSLR) && pSettings->r_string_wb("engine_settings", "render_mode") == "r4")
 	{
 		defines[def_it].Name = "SSLR_ENABLED";
 		defines[def_it].Definition = "1";
 		def_it++;
 	}
-	sh_name[len] = '0' + char(ps_r2_ls_flags_ext.test(R2FLAGEXT_SSLR)); ++len;
+	sh_name[len] = '0' + char(ps_r2_ls_flags_ext.test(R2FLAGEXT_SSLR) && pSettings->r_string_wb("engine_settings", "render_mode") == "r4"); ++len;
 
 
 	//Be carefull!!!!! this should be at the end to correctly generate

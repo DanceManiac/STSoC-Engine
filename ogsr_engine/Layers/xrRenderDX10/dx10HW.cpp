@@ -155,29 +155,49 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 #endif
 
 #ifdef USE_DX11
-	constexpr D3D_FEATURE_LEVEL featureLevels[] =
-	{
-		D3D_FEATURE_LEVEL_11_1,
-		D3D_FEATURE_LEVEL_11_0,
-	};
-	constexpr auto count = std::size(featureLevels);
+	HRESULT R;
+	
+    D3D_FEATURE_LEVEL featureLevels[] =
+    {
+        D3D_FEATURE_LEVEL_11_1,
+        D3D_FEATURE_LEVEL_11_0,
+        D3D_FEATURE_LEVEL_10_1,
+        D3D_FEATURE_LEVEL_10_0
+    };
+    D3D_FEATURE_LEVEL featureLevels2[] =
+    {
+        D3D_FEATURE_LEVEL_11_0,
+        D3D_FEATURE_LEVEL_10_1,
+        D3D_FEATURE_LEVEL_10_0
+    };
 
-	const auto createDevice = [&](const D3D_FEATURE_LEVEL* level, const u32 levels)
-	{
-		return D3D11CreateDevice(m_pAdapter, D3D_DRIVER_TYPE_UNKNOWN, // Если мы выбираем конкретный адаптер, то мы обязаны использовать D3D_DRIVER_TYPE_UNKNOWN.
-			nullptr, createDeviceFlags, level, levels,
-			D3D11_SDK_VERSION, &pDevice, &FeatureLevel, &pContext);
-	};
+    D3D_FEATURE_LEVEL featureLevels3[] =
+    {
+        D3D_FEATURE_LEVEL_10_1,
+        D3D_FEATURE_LEVEL_10_0
+    };
 
-	HRESULT R = createDevice(featureLevels, count);
-	if (FAILED(R))
-		R_CHK(createDevice(&featureLevels[1], count - 1));
+    const auto createDevice = [&](const D3D_FEATURE_LEVEL* level, const u32 levels)
+    {
+        return D3D11CreateDevice(m_pAdapter, D3D_DRIVER_TYPE_UNKNOWN,
+            nullptr, createDeviceFlags, level, levels,
+            D3D11_SDK_VERSION, &pDevice, &FeatureLevel, &pContext);
+    };
+
+    if (DX10Only)
+        R = createDevice(featureLevels3, std::size(featureLevels3));
+    else
+    {
+        R = createDevice(featureLevels, std::size(featureLevels));
+        if (FAILED(R))
+            R = createDevice(featureLevels2, std::size(featureLevels2));
+    }
 
 	R_CHK(pFactory->CreateSwapChain(pDevice, &sd, &m_pSwapChain));
 
 	if (FeatureLevel != D3D_FEATURE_LEVEL_11_1)
 	{
-		R_ASSERT(FeatureLevel == D3D_FEATURE_LEVEL_11_0); //На всякий случай
+		//R_ASSERT(FeatureLevel == D3D_FEATURE_LEVEL_11_0); //На всякий случай
 		Msg("!![%s] DirectX 11.1 not supported!", __FUNCTION__);
 	}
 

@@ -105,13 +105,18 @@ bool TestDX11Present()
 	return SUCCEEDED(hr);
 }
 
-BOOL	xrRender_test_hw		()
+BOOL	xrRender_test_hw_DX11		()
 {
-	//CHW							_HW;
-	//HRESULT						hr;
-	//_HW.CreateD3D				()		;
-	//hr = _HW.m_pAdapter->CheckInterfaceSupport(__uuidof(ID3DDevice), 0);
-	//_HW.DestroyD3D				()		;
+	return TestDX11Present();
+}
 
-	return	TestDX11Present();//SUCCEEDED(hr);
+BOOL	xrRender_test_hw_DX10		()
+{
+	CHW							_HW;
+	HRESULT						hr;
+	_HW.CreateD3D				()		;
+	hr = _HW.m_pAdapter->CheckInterfaceSupport(__uuidof(ID3D10Device), 0);
+	_HW.DestroyD3D				()		;
+
+	return	SUCCEEDED(hr);
 }

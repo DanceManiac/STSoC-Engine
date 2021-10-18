@@ -67,8 +67,8 @@ void CEngineAPI::Initialize()
 {
 #ifdef XRRENDER_STATIC
 #ifdef BUILD_R4
-	void AttachR4();
-	AttachR4();
+	void AttachRender();
+	AttachRender();
 
 	psDeviceFlags.set(rsR2, FALSE);
 	psDeviceFlags.set(rsR3, FALSE);

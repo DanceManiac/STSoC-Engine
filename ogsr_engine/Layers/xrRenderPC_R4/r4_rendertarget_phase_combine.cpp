@@ -380,7 +380,7 @@ void	CRenderTarget::phase_combine	()
    if (ps_r_pp_aa_mode)
 	   PhaseAA();
 
-   if (ps_r2_ls_flags_ext.test(R2FLAGEXT_SSLR))
+   if (ps_r2_ls_flags_ext.test(R2FLAGEXT_SSLR) && pSettings->r_string_wb("engine_settings", "render_mode") == "r4")
 	   phase_SSLR();
 
    // Rain droplets on screen
