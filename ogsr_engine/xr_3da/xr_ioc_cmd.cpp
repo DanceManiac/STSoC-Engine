@@ -474,7 +474,6 @@ u32 renderer_value = 1;
 #else
 u32 renderer_value = 2;
 #endif
-#include "../render_selection.h"
 class CCC_r2 : public CCC_Token
 {
 	typedef CCC_Token inherited;
@@ -493,13 +492,8 @@ public:
 		//	3 - r3
 		//	4 - r4
 		psDeviceFlags.set(rsR2, false);
-#ifdef BUILD_R3
-		psDeviceFlags.set(rsR3, true);
-		psDeviceFlags.set(rsR4, false);
-#elif defined(BUILD_R4)
 		psDeviceFlags.set(rsR4, true);
 		psDeviceFlags.set(rsR3, false);
-#endif
 		r2_sun_static = false;
 		r2_advanced_pp = true;
 	}

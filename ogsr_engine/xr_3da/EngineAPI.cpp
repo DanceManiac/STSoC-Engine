@@ -6,7 +6,6 @@
 #include "EngineAPI.h"
 #include "xr_ioconsole.h"
 #include "xr_ioc_cmd.h"
-#include "../render_selection.h"
 
 extern xr_token* vid_quality_token;
 
@@ -66,7 +65,6 @@ extern "C" {
 void CEngineAPI::Initialize()
 {
 #ifdef XRRENDER_STATIC
-#ifdef BUILD_R4
 	void AttachRender();
 	AttachRender();
 
@@ -74,21 +72,6 @@ void CEngineAPI::Initialize()
 	psDeviceFlags.set(rsR3, FALSE);
 	psDeviceFlags.set(rsR4, TRUE);
 	g_current_renderer = 4;
-
-	//CCC_LoadCFG_custom pTmp("renderer ");
-	//pTmp.Execute(Console->ConfigFile);
-#elif defined(BUILD_R3)
-	void AttachR3();
-	AttachR3();
-
-	psDeviceFlags.set(rsR2, FALSE);
-	psDeviceFlags.set(rsR4, FALSE);
-	psDeviceFlags.set(rsR3, TRUE);
-	g_current_renderer = 3;
-
-	//CCC_LoadCFG_custom pTmp("renderer ");
-	//pTmp.Execute(Console->ConfigFile);
-#endif
 #else
 #ifndef EXCLUDE_R1
 	constexpr LPCSTR r1_name = "xrRender_R1.dll";
