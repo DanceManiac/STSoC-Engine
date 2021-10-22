@@ -279,7 +279,8 @@ void CEngineAPI::CreateRendererList()
 		}
 		else if (i == 4) {
 			auto test_dx11_rendering = (SupportsDX11Rendering*)RenderModule.GetProcAddress("SupportsDX11Rendering");
-			R_ASSERT(test_dx11_rendering);
+			auto test_dx10_rendering = (SupportsDX10Rendering*)RenderModule.GetProcAddress("SupportsDX10Rendering");
+			R_ASSERT(test_dx10_rendering || test_dx11_rendering);
 			if (test_dx11_rendering())
 				RendererTokens.emplace_back("renderer_r4");
 			else {
