@@ -9,7 +9,6 @@ void AttachRender()
 {
 	//	Can't call CreateDXGIFactory from DllMain
 	//if (!xrRender_test_hw())	return FALSE;
-	HW.DX10Only = pSettings->r_string_wb("engine_settings", "render_mode") == "r3";;
 	::Render = &RImplementation;
 	::RenderFactory = &RenderFactoryImpl;
 	::DU = &DUImpl;

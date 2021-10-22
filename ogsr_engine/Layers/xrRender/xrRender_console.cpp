@@ -3,6 +3,14 @@
 #include	"xrRender_console.h"
 #include	"dxRenderDeviceRender.h"
 
+u32 ps_r_renderer_mode = RENDERER_MODE_DX10;
+constexpr xr_token renderer_mode_token[] =
+{
+	{ "mode_dx10", RENDERER_MODE_DX10 },
+	{ "mode_dx11", RENDERER_MODE_DX11 },
+	{ nullptr, 0 }
+};
+
 // DWM: DT SSR quality option
 u32			dt_ssr_samp = 16;
 xr_token							qdt_ssr_samp_token[] = {
@@ -45,6 +53,7 @@ constexpr xr_token sunshafts_mode_token[] =
 	{ "ss_vol_ogse", SS_VOLUMETRIC_OGSE },
 	{ nullptr, 0 }
 };
+
 // Sunshafts
 u32 ps_r_sun_shafts = 3;
 float ps_r_ss_sunshafts_length = 0.9f; // 1.0f;
@@ -768,6 +777,8 @@ public:
 //-----------------------------------------------------------------------
 void		xrRender_initconsole	()
 {
+	CMD3(CCC_Token, "renderer_mode", &ps_r_renderer_mode, renderer_mode_token);
+	
 	CMD3(CCC_Preset,	"_preset",				&ps_Preset,	qpreset_token	);
 
 	CMD4(CCC_Integer,	"rs_skeleton_update",	&psSkeletonUpdate,	2,		128	);

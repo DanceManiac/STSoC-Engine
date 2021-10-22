@@ -6,6 +6,8 @@ extern ECORE_API	xr_token	qdt_ssr_samp_token[];
 
 
 // Common
+extern ECORE_API u32 ps_r_renderer_mode;
+
 extern ECORE_API u32 r2_SmapSize;
 
 extern ECORE_API u32 ps_r_pp_aa_mode;
@@ -228,6 +230,12 @@ enum
 
 extern void						xrRender_initconsole	();
 extern BOOL						xrRender_test_hw		();
+
+enum
+{
+	RENDERER_MODE_DX10,
+	RENDERER_MODE_DX11,
+};
 
 // Postprocess anti-aliasing types
 enum

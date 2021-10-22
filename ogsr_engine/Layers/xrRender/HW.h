@@ -67,7 +67,8 @@ public:
 	DXGI_SWAP_CHAIN_DESC	m_ChainDesc;	//	DevPP equivalent
 	D3D_FEATURE_LEVEL		FeatureLevel;
 	
-    bool DX10Only = false;
+    bool DX10Only() const;
+    bool DX11Only() const;
 #elif defined(USE_DX10)
 public:
 	IDXGIFactory* pFactory = nullptr;
@@ -86,7 +87,8 @@ public:
 	DXGI_SWAP_CHAIN_DESC	m_ChainDesc;	//	DevPP equivalent
 	D3D_FEATURE_LEVEL		FeatureLevel;
 	
-    bool DX10Only = false;
+    bool DX10Only() const;
+    bool DX11Only() const;
 #else
 private:
 	HINSTANCE 				hD3D;
@@ -105,7 +107,8 @@ public:
 	D3DDEVTYPE				DevT{};
 	D3DPRESENT_PARAMETERS	DevPP{};
 	
-    bool DX10Only = false;
+    bool DX10Only() const;
+    bool DX11Only() const;
 #endif	//	USE_DX10
 
 #ifndef _MAYA_EXPORT

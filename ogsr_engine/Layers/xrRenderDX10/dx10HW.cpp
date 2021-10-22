@@ -159,10 +159,8 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 	
     D3D_FEATURE_LEVEL featureLevels[] =
     {
-        D3D_FEATURE_LEVEL_11_1,
-        D3D_FEATURE_LEVEL_11_0,
-        D3D_FEATURE_LEVEL_10_1,
-        D3D_FEATURE_LEVEL_10_0
+		D3D_FEATURE_LEVEL_11_1,
+		D3D_FEATURE_LEVEL_11_0,
     };
     D3D_FEATURE_LEVEL featureLevels2[] =
     {
@@ -184,13 +182,13 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
             D3D11_SDK_VERSION, &pDevice, &FeatureLevel, &pContext);
     };
 
-    if (DX10Only)
+    if (DX10Only())
         R = createDevice(featureLevels3, std::size(featureLevels3));
     else
     {
         R = createDevice(featureLevels, std::size(featureLevels));
-        if (FAILED(R))
-            R = createDevice(featureLevels2, std::size(featureLevels2));
+		if (FAILED(R))
+			R = createDevice(featureLevels2, std::size(featureLevels2));
     }
 
 	R_CHK(pFactory->CreateSwapChain(pDevice, &sd, &m_pSwapChain));
@@ -209,7 +207,7 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 #else
 	HRESULT R = D3DX10CreateDeviceAndSwapChain(m_pAdapter,
                                           m_DriverType,
-                                          NULL,
+                                          nullptr,
                                           createDeviceFlags,
                                           &sd,
                                           &m_pSwapChain,
@@ -265,7 +263,7 @@ void CHW::DestroyDevice()
 //#endif
 
 	//	Must switch to windowed mode to release swap chain
-	if (!m_ChainDesc.Windowed) m_pSwapChain->SetFullscreenState( FALSE, NULL);
+	if (!m_ChainDesc.Windowed) m_pSwapChain->SetFullscreenState( FALSE, nullptr);
 	_SHOW_REF				("refCount:m_pSwapChain",m_pSwapChain);
 	_RELEASE				(m_pSwapChain);
 
@@ -298,7 +296,7 @@ void CHW::Reset (HWND hwnd)
 
 	cd.Windowed = bWindowed;
 
-	m_pSwapChain->SetFullscreenState(!bWindowed, NULL);
+	m_pSwapChain->SetFullscreenState(!bWindowed, nullptr);
 
 	DXGI_MODE_DESC	&desc = m_ChainDesc.BufferDesc;
 
@@ -437,7 +435,7 @@ void CHW::OnAppDeactivate()
 {
 	if ( m_pSwapChain && !m_ChainDesc.Windowed )
 	{
-		m_pSwapChain->SetFullscreenState( FALSE, NULL );
+		m_pSwapChain->SetFullscreenState( FALSE, nullptr );
 		ShowWindow( m_ChainDesc.OutputWindow, SW_MINIMIZE );
 	}
 }
@@ -540,12 +538,12 @@ void free_vid_mode_list()
 		xr_free					(vid_mode_token[i].name);
 	}
 	xr_free						(vid_mode_token);
-	vid_mode_token				= NULL;
+	vid_mode_token				= nullptr;
 }
 
 void fill_vid_mode_list(CHW* _hw)
 {
-	if(vid_mode_token != NULL)		return;
+	if(vid_mode_token != nullptr)		return;
 	xr_vector<LPCSTR>	_tmp;
 	xr_vector<DXGI_MODE_DESC>	modes;
 
@@ -588,13 +586,13 @@ void fill_vid_mode_list(CHW* _hw)
 		if(_tmp.end() != std::find_if(_tmp.begin(), _tmp.end(), _uniq_mode(str)))
 			continue;
 
-		_tmp.push_back				(NULL);
+		_tmp.push_back				(nullptr);
 		_tmp.back()					= xr_strdup(str);
 	}
 	
 
 
-//	_tmp.push_back				(NULL);
+//	_tmp.push_back				(nullptr);
 //	_tmp.back()					= xr_strdup("1024x768");
 
 	u32 _cnt						= _tmp.size()+1;
@@ -602,7 +600,7 @@ void fill_vid_mode_list(CHW* _hw)
 	vid_mode_token					= xr_alloc<xr_token>(_cnt);
 
 	vid_mode_token[_cnt-1].id			= -1;
-	vid_mode_token[_cnt-1].name		= NULL;
+	vid_mode_token[_cnt-1].name		= nullptr;
 
 #ifdef DEBUG
 	Msg("Available video modes[%d]:",_tmp.size());
@@ -628,14 +626,14 @@ void CHW::UpdateViews()
 	R = m_pSwapChain->GetBuffer( 0, __uuidof( ID3DTexture2D ), (LPVOID*)&pBuffer );
 	R_CHK(R);
 
-	R = pDevice->CreateRenderTargetView( pBuffer, NULL, &pBaseRT);
+	R = pDevice->CreateRenderTargetView( pBuffer, nullptr, &pBaseRT);
 	pBuffer->Release();
 	R_CHK(R);
 
 	//	Create Depth/stencil buffer
 	//	HACK: DX10: hard depth buffer format
 	//R_CHK	(pDevice->GetDepthStencilSurface	(&pBaseZB));
-	ID3DTexture2D* pDepthStencil = NULL;
+	ID3DTexture2D* pDepthStencil = nullptr;
 	D3D_TEXTURE2D_DESC descDepth;
 	descDepth.Width = sd.BufferDesc.Width;
 	descDepth.Height = sd.BufferDesc.Height;
@@ -649,13 +647,27 @@ void CHW::UpdateViews()
 	descDepth.CPUAccessFlags = 0;
 	descDepth.MiscFlags = 0;
 	R = pDevice->CreateTexture2D( &descDepth,       // Texture desc
-		NULL,                  // Initial data
+		nullptr,                  // Initial data
 		&pDepthStencil ); // [out] Texture
 	R_CHK(R);
 
 	//	Create Depth/stencil view
-	R = pDevice->CreateDepthStencilView( pDepthStencil, NULL, &pBaseZB );
+	R = pDevice->CreateDepthStencilView( pDepthStencil, nullptr, &pBaseZB );
 	R_CHK(R);
 
 	pDepthStencil->Release();
+}
+
+bool CHW::DX10Only() const
+{
+	if(ps_r_renderer_mode == RENDERER_MODE_DX10)
+		return true;
+	return false;
+}
+
+bool CHW::DX11Only() const
+{
+	if(ps_r_renderer_mode == RENDERER_MODE_DX11)
+		return true;
+	return false;
 }
