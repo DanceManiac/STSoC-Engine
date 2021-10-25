@@ -14,6 +14,7 @@
 #include "script_game_object.h"
 #include "ui/UIDialogWnd.h"
 #include "ui/UIInventoryWnd.h"
+#include "player_hud.h"
 
 /* Декларация о стиле экспорта свойств и методов:
      * Свойства объектов экспортируются по возможности так, как они выглядят в файлах конфигурации (*.ltx), а не так как они названы в исходниках движка
@@ -328,9 +329,11 @@ void COutfitScript::script_register(lua_State *L)
 
 }
 
-#ifdef NLC_EXTENSIONS
-extern void attach_upgrades(lua_State *L);
-#endif
+int			get_fire_bone(hud_item_measures *hud)  { return hud->m_fire_bone;  }
+int			get_fire_bone_2(hud_item_measures* hud) { return hud->m_fire_bone2; }
+const Fvector&	get_fire_point1 (hud_item_measures *hud) { return hud->m_fire_point_offset; }
+const Fvector&	get_fire_point2 (hud_item_measures *hud) { return hud->m_fire_point2_offset; }
+shared_str get_hud_visual(attachable_hud_item *hud)   { return hud->m_visual_name; }
 
 SRotation& CWeaponScript::FireDeviation(CWeapon *wpn)
 {
@@ -411,11 +414,19 @@ void set_grenade_launcher_name(CWeapon *item, LPCSTR text)
 
 void CWeaponScript::script_register(lua_State *L)
 {
-#ifdef NLC_EXTENSIONS
-	attach_upgrades (L);
-#endif
 	module(L)
 		[
+			class_<player_hud>("player_hud")
+			.property("fire_bone"						,			&get_fire_bone)
+			.property("fire_bone_2"						,			&get_fire_bone_2)
+			.property("fire_point"						,			&get_fire_point1)
+			.property("fire_point2"						,			&get_fire_point2)
+			
+			.property("visual"							,			&get_hud_visual)
+			.def_readonly("transform_1"					,			&player_hud::m_transform)
+			.def_readonly("transform_2"					,			&player_hud::m_transform_2)
+			,
+			
 			class_<CWeapon,	CInventoryItemObject>		("CWeapon")
 			// из неэкспортируемого класса CHudItemObject:
 			.property("state", &CHudItemObject::GetState)

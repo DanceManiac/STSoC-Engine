@@ -238,9 +238,10 @@ private:
 	Fmatrix m_attach_offset;
 	Fmatrix m_attach_offset_2;
 
-private:
+public:
 	Fmatrix m_transform;
 	Fmatrix m_transform_2;
+private:
 	IKinematicsAnimated* m_model{};
 	IKinematicsAnimated* m_model_2{};
 	xr_vector<u16> m_ancors;
