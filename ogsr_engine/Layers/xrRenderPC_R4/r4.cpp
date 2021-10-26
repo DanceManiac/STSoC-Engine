@@ -1359,6 +1359,13 @@ HRESULT	CRender::shader_compile			(
 	}
 	sh_name[len] = '0' + char(ps_r2_ls_flags_ext.test(R2FLAGEXT_SSLR) && HW.DX11Only()); ++len;
 
+	if (ps_r2_ls_flags_ext.test(R24LAGEXT_R4_RAINBOW))
+	{
+		defines[def_it].Name = "R4_RAINBOW";
+		defines[def_it].Definition = "1";
+		def_it++;
+	}
+	//sh_name[len] = '0' + char(ps_r2_ls_flags_ext.test(R24LAGEXT_R4_RAINBOW)); ++len;
 
 	//Be carefull!!!!! this should be at the end to correctly generate
 	//compiled shader name;

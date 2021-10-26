@@ -226,6 +226,7 @@ enum
 	R2FLAGEXT_SSLR 					= 1 << 15,
 	R2FLAG_VISOR_REFL				= 1 << 16,
 	R2FLAG_VISOR_REFL_CONTROL		= 1 << 17,
+	R24LAGEXT_R4_RAINBOW			= 1 << 18,
 };
 
 extern void						xrRender_initconsole	();

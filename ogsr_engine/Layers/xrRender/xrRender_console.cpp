@@ -310,8 +310,12 @@ float		dm_current_fade = 47.5;	//float(2*dm_current_size)-.5f;
 float		ps_current_detail_density = 0.6;
 float		ps_current_detail_scale = 1.f;
 
-float ps_r2_gloss_factor = 10.0f;
-float ps_r2_gloss_min = 0.0f;
+
+#ifdef USE_COP_WEATHER_CONFIGS
+float ps_r2_gloss_factor = 4.0f;
+#else
+float ps_r2_gloss_factor = 1.0f;
+#endif
 
 // textures 
 int psTextureLOD = 0;
@@ -837,6 +841,7 @@ void		xrRender_initconsole	()
 	CMD2(CCC_tf_MipBias, "r__tf_mipbias", &ps_r__tf_Mipbias); // {-3 +3}
 
 	CMD3(CCC_Mask, "r__actor_shadow", &ps_r2_ls_flags_ext, R2FLAGEXT_ACTOR_SHADOW);
+	CMD3(CCC_Mask, "r4_rainbow", &ps_r2_ls_flags_ext, R24LAGEXT_R4_RAINBOW);
 
 	// R1
 	CMD4(CCC_Float,		"r1_ssa_lod_a",			&ps_r1_ssaLOD_A,			16,		96		);
@@ -887,8 +892,7 @@ void		xrRender_initconsole	()
 	CMD3(CCC_Mask,		"r2_allow_r1_lights",	&ps_r2_ls_flags,			R2FLAG_R1LIGHTS	);
 
 	//- Mad Max
-	CMD4(CCC_Float,		"r2_gloss_factor",		&ps_r2_gloss_factor,		.0f,	20.f	);
-	CMD4(CCC_Float, "r2_gloss_min", &ps_r2_gloss_min, .001f, 1.0f);
+	CMD4(CCC_Float,		"r2_gloss_factor",		&ps_r2_gloss_factor,		.0f,	10.f	);
 	//- Mad Max
 
 #ifdef DEBUG
