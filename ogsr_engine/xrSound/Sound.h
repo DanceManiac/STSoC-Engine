@@ -143,7 +143,7 @@ public:
 	{
 	}
 
-	IC CSound_source* _handle() const { return _p ? _p->handle : NULL; }
+	IC CSound_source* _handle() const { return _p ? _p->handle : nullptr; }
 	IC CSound_emitter* _feedback() { return _p ? _p->feedback : 0; }
 	IC CObject* _g_object()
 	{
@@ -454,7 +454,7 @@ IC const CSound_params* ref_sound::get_params()
 {
 	VERIFY(!::Sound->i_locked());
 	if (_feedback()) return _feedback()->get_params();
-	else return NULL;
+	else return nullptr;
 }
 
 IC void ref_sound::set_params(CSound_params* p)

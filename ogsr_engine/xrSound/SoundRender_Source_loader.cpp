@@ -70,7 +70,7 @@ bool CSoundRender_Source::LoadWave(LPCSTR pName)
 	ov_callbacks ovc = {ov_read_func, ov_seek_func, ov_close_func, ov_tell_func};
 	IReader* wave = FS.r_open(pname.c_str());
 	R_ASSERT3(wave&&wave->length(), "Can't open wave file:", pname.c_str());
-	ov_open_callbacks(wave, &ovf,NULL, 0, ovc);
+	ov_open_callbacks(wave, &ovf,nullptr, 0, ovc);
 
 	vorbis_info* ovi = ov_info(&ovf, -1);
 	// verify

@@ -192,7 +192,7 @@ CSoundRender_Environment* SoundEnvironment_LIB::Get(LPCSTR name)
 {
 	for (SE_IT it = library.begin(); it != library.end(); it++)
 		if (0 == stricmp(name, *(*it)->name)) return *it;
-	return NULL;
+	return nullptr;
 }
 
 CSoundRender_Environment* SoundEnvironment_LIB::Get(int id)
