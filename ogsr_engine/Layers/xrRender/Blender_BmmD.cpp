@@ -14,13 +14,13 @@
 CBlender_BmmD::CBlender_BmmD	()
 {
 	description.CLS		= B_BmmD;
-	xr_strcpy				(oT2_Name,	"$null");
-	xr_strcpy				(oT2_xform,	"$null");
+	xr_strcpy				(oT2_Name,	"$nullptr");
+	xr_strcpy				(oT2_xform,	"$nullptr");
 	description.version	= 3;
-	xr_strcpy				(oR_Name,	"detail\\detail_grnd_grass");	//"$null");
-	xr_strcpy				(oG_Name,	"detail\\detail_grnd_asphalt");	//"$null");
-	xr_strcpy				(oB_Name,	"detail\\detail_grnd_earth");	//"$null");
-	xr_strcpy				(oA_Name,	"detail\\detail_grnd_yantar");	//"$null");
+	xr_strcpy				(oR_Name,	"detail\\detail_grnd_grass");	//"$nullptr");
+	xr_strcpy				(oG_Name,	"detail\\detail_grnd_asphalt");	//"$nullptr");
+	xr_strcpy				(oB_Name,	"detail\\detail_grnd_earth");	//"$nullptr");
+	xr_strcpy				(oA_Name,	"detail\\detail_grnd_yantar");	//"$nullptr");
 }
 
 CBlender_BmmD::~CBlender_BmmD	()
@@ -75,14 +75,14 @@ void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 			C.StageBegin		();
 			C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);   
 			C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
-			C.StageSET_TMC		(oT_Name,oT_xform,"$null",0);
+			C.StageSET_TMC		(oT_Name,oT_xform,"$nullptr",0);
 			C.StageEnd			();
 			
 			// Stage2 - Second texture
 			C.StageBegin		();
 			C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_CURRENT);
 			C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,	D3DTA_CURRENT);
-			C.StageSET_TMC		(oT2_Name,oT2_xform,"$null",0);
+			C.StageSET_TMC		(oT2_Name,oT2_xform,"$nullptr",0);
 			C.StageEnd			();
 		}
 		C.PassEnd			();

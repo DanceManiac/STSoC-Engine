@@ -88,7 +88,7 @@ void dx103DFluidObstacles::InitShaders()
 	{
 		CBlender_fluid_obst		Blender;
 		ref_shader				shader;
-		shader.create(&Blender, "null");
+		shader.create(&Blender, "nullptr");
 		for (int i=0; i<2; ++i)
 			m_ObstacleTechnique[OS_OOBB+i] = shader->E[i];
 	}

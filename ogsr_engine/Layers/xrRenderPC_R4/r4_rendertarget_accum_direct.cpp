@@ -663,9 +663,9 @@ void CRenderTarget::accum_direct_blend	()
 	if (!RImplementation.o.fp16_blend)	{
 		VERIFY(0);
       if( ! RImplementation.o.dx10_msaa )
-		   u_setrt						(rt_Accumulator,NULL,NULL,HW.pBaseZB);
+		   u_setrt						(rt_Accumulator,nullptr,nullptr,HW.pBaseZB);
       else
-         u_setrt						(rt_Accumulator,NULL,NULL,rt_MSAADepth->pZRT);
+         u_setrt						(rt_Accumulator,nullptr,nullptr,rt_MSAADepth->pZRT);
 
 		//	TODO: DX10: remove half pixel offset
 		// Common calc for quad-rendering
@@ -737,9 +737,9 @@ void CRenderTarget::accum_direct_f		(u32 sub_phase)
 	}
 	phase_accumulator					();
 	if( ! RImplementation.o.dx10_msaa )
-		u_setrt								(rt_Generic_0,NULL,NULL,HW.pBaseZB);
+		u_setrt								(rt_Generic_0,nullptr,nullptr,HW.pBaseZB);
 	else
-		u_setrt								(rt_Generic_0_r,NULL,NULL,RImplementation.Target->rt_MSAADepth->pZRT);
+		u_setrt								(rt_Generic_0_r,nullptr,nullptr,RImplementation.Target->rt_MSAADepth->pZRT);
 
 	// *** assume accumulator setted up ***
 	light*			fuckingsun			= (light*)RImplementation.Lights.sun_adapted._get()	;
@@ -766,7 +766,7 @@ void CRenderTarget::accum_direct_f		(u32 sub_phase)
 	if (SE_SUN_NEAR==sub_phase)	//.
 	{
 		// For sun-filter - clear to zero
-		//CHK_DX	(HW.pDevice->Clear	( 0L, NULL, D3DCLEAR_TARGET, 0, 1.0f, 0L));
+		//CHK_DX	(HW.pDevice->Clear	( 0L, nullptr, D3DCLEAR_TARGET, 0, 1.0f, 0L));
 		FLOAT ColorRGBA[4] = {0.0f, 0.0f, 0.0f, 0.0f};
 		HW.pContext->ClearRenderTargetView(RCache.get_RT(), ColorRGBA);
 
@@ -835,9 +835,9 @@ void CRenderTarget::accum_direct_f		(u32 sub_phase)
 	// Perform lighting
 	{
 		if( ! RImplementation.o.dx10_msaa )
-			u_setrt								(rt_Generic_0,NULL,NULL,HW.pBaseZB);  // enshure RT setup
+			u_setrt								(rt_Generic_0,nullptr,nullptr,HW.pBaseZB);  // enshure RT setup
 		else
-			u_setrt								(rt_Generic_0_r,NULL,NULL,RImplementation.Target->rt_MSAADepth->pZRT);  // enshure RT setup
+			u_setrt								(rt_Generic_0_r,nullptr,nullptr,RImplementation.Target->rt_MSAADepth->pZRT);  // enshure RT setup
 		RCache.set_CullMode					(CULL_NONE	);
 		RCache.set_ColorWriteEnable			();
 

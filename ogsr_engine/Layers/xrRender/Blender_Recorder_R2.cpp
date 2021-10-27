@@ -29,19 +29,19 @@ void	CBlender_Compile::r_Pass		(LPCSTR _vs, LPCSTR _ps, bool bFog, BOOL bZtest, 
 	dest.ps					= ps;
 	dest.vs					= vs;
 #if defined(USE_DX10) || defined(USE_DX11)
-	SGS* gs					= DEV->_CreateGS			("null");
+	SGS* gs					= DEV->_CreateGS			("nullptr");
 	dest.gs					= gs;
 #	ifdef USE_DX11
-	dest.hs = DEV->_CreateHS("null");
-	dest.ds = DEV->_CreateDS("null");
-	dest.cs = DEV->_CreateCS("null");
+	dest.hs = DEV->_CreateHS("nullptr");
+	dest.ds = DEV->_CreateDS("nullptr");
+	dest.cs = DEV->_CreateCS("nullptr");
 #	endif
 #endif	//	USE_DX10
 	ctable.merge			(&ps->constants);
 	ctable.merge			(&vs->constants);
 
 	// Last Stage - disable
-	if (0==stricmp(_ps,"null"))	{
+	if (0==stricmp(_ps,"nullptr"))	{
 		RS.SetTSS				(0,D3DTSS_COLOROP,D3DTOP_DISABLE);
 		RS.SetTSS				(0,D3DTSS_ALPHAOP,D3DTOP_DISABLE);
 	}
@@ -85,7 +85,7 @@ u32		CBlender_Compile::i_Sampler		(LPCSTR _name)
 	u32 stage				= C->samp.index;
 
 	// Create texture
-	// while (stage>=passTextures.size())	passTextures.push_back		(NULL);
+	// while (stage>=passTextures.size())	passTextures.push_back		(nullptr);
 	return					stage;
 }
 void	CBlender_Compile::i_Texture		(u32 s, LPCSTR name)

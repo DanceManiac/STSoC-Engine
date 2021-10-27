@@ -127,18 +127,18 @@ void					CRender::create					()
 	o.mrt				= (HW.Caps.raster.dwMRT_count >= 3);
 	o.mrtmixdepth		= (HW.Caps.raster.b_MRT_mixdepth);
 
-	// Check for NULL render target support
+	// Check for nullptr render target support
 	//	DX10 disabled
-	//D3DFORMAT	nullrt	= (D3DFORMAT)MAKEFOURCC('N','U','L','L');
-	//o.nullrt			= HW.support	(nullrt,			D3DRTYPE_SURFACE, D3DUSAGE_RENDERTARGET);
-	o.nullrt = false;
+	//D3DFORMAT	nullptrrt	= (D3DFORMAT)MAKEFOURCC('N','U','L','L');
+	//o.nullptrrt			= HW.support	(nullptrrt,			D3DRTYPE_SURFACE, D3DUSAGE_RENDERTARGET);
+	o.nullptrrt = false;
 	/*
-	if (o.nullrt)		{
-	Msg				("* NULLRT supported and used");
+	if (o.nullptrrt)		{
+	Msg				("* nullptrRT supported and used");
 	};
 	*/
-	if (o.nullrt)		{
-		Msg				("* NULLRT supported");
+	if (o.nullptrrt)		{
+		Msg				("* nullptrRT supported");
 
 		//.	    _tzset			();
 		//.		??? _strdate	( date, 128 );	???
@@ -146,7 +146,7 @@ void					CRender::create					()
 		if (0)
 		{
 			u32 device_id	= HW.Caps.id_device;
-			bool disable_nullrt = false;
+			bool disable_nullptrrt = false;
 			switch (device_id)	
 			{
 			case 0x190:
@@ -157,7 +157,7 @@ void					CRender::create					()
 			case 0x197:
 			case 0x19D:
 			case 0x19E:{
-				disable_nullrt = true;	//G80
+				disable_nullptrrt = true;	//G80
 				break;
 					   }
 			case 0x400:
@@ -168,7 +168,7 @@ void					CRender::create					()
 			case 0x405:
 			case 0x40E:
 			case 0x40F:{
-				disable_nullrt = true;	//G84
+				disable_nullptrrt = true;	//G84
 				break;
 					   }
 			case 0x420:
@@ -179,13 +179,13 @@ void					CRender::create					()
 			case 0x42D:
 			case 0x42E:
 			case 0x42F:{
-				disable_nullrt = true;	// G86
+				disable_nullptrrt = true;	// G86
 				break;
 					   }
 			}
-			if (disable_nullrt)	o.nullrt=false;
+			if (disable_nullptrrt)	o.nullptrrt=false;
 		};
-		if (o.nullrt)	Msg				("* ...and used");
+		if (o.nullptrrt)	Msg				("* ...and used");
 	};
 
 
@@ -556,7 +556,7 @@ void					CRender::model_Delete			(IRender_DetailModel* & F)
 		CDetail*	D	= (CDetail*)F;
 		D->Unload		();
 		xr_delete		(D);
-		F				= NULL;
+		F				= nullptr;
 	}
 }
 IRenderVisual*			CRender::model_CreatePE			(LPCSTR name)	
@@ -1543,13 +1543,13 @@ HRESULT	CRender::shader_compile			(
 	if (FAILED(_result))
 	{
 		includer					Includer;
-		LPD3DBLOB					pShaderBuf	= NULL;
-		LPD3DBLOB					pErrorBuf	= NULL;
+		LPD3DBLOB					pShaderBuf	= nullptr;
+		LPD3DBLOB					pErrorBuf	= nullptr;
 		_result						= 
 			D3DCompile( 
 				pSrcData, 
 				SrcDataLen,
-				"",//NULL, //LPCSTR pFileName,	//	NVPerfHUD bug workaround.
+				"",//nullptr, //LPCSTR pFileName,	//	NVPerfHUD bug workaround.
 				defines, &Includer, pFunctionName,
 				pTarget,
 				Flags, 0,

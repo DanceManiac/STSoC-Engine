@@ -140,7 +140,7 @@ void	CBlender_Screen_SET::Compile	(CBlender_Compile& C)
 		}
 		//C.Stage_Texture		(oT_Name);
 		//C.Stage_Matrix		(oT_xform,	0);
-		//C.Stage_Constant	("$null");
+		//C.Stage_Constant	("$nullptr");
 		//C.StageEnd			();
 		VERIFY(C.L_textures.size()>0);
 		C.r_dx10Texture			("s_base",	C.L_textures[0]	);
@@ -241,17 +241,17 @@ void	CBlender_Screen_SET::Compile	(CBlender_Compile& C)
 			C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
 			C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
 			C.Stage_Texture		(oT_Name);
-			C.Stage_Matrix		("$null",0);
-			C.Stage_Constant	("$null");
+			C.Stage_Matrix		("$nullptr",0);
+			C.Stage_Constant	("$nullptr");
 			C.StageEnd			();
 
 			C.StageBegin		();
 			C.StageSET_Address	(oClamp.value?D3DTADDRESS_CLAMP:D3DTADDRESS_WRAP);
 			C.StageSET_Color	(D3DTA_DIFFUSE,	  D3DTOP_BLENDDIFFUSEALPHA,	D3DTA_CURRENT);
 			C.StageSET_Alpha	(D3DTA_DIFFUSE,	  D3DTOP_MODULATE,			D3DTA_CURRENT);
-			C.Stage_Texture		("$null");
-			C.Stage_Matrix		("$null",	0);
-			C.Stage_Constant	("$null");
+			C.Stage_Texture		("$nullptr");
+			C.Stage_Matrix		("$nullptr",	0);
+			C.Stage_Constant	("$nullptr");
 			C.StageEnd			();
 		} else {
 			C.StageBegin		();
@@ -275,7 +275,7 @@ void	CBlender_Screen_SET::Compile	(CBlender_Compile& C)
 			}
 			C.Stage_Texture		(oT_Name);
 			C.Stage_Matrix		(oT_xform,	0);
-			C.Stage_Constant	("$null");
+			C.Stage_Constant	("$nullptr");
 			C.StageEnd			();
 		}
 	}

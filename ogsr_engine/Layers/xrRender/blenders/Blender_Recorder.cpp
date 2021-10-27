@@ -13,7 +13,7 @@
 
 static int ParseName(LPCSTR N)
 {
-	if (0==xr_strcmp(N,"$null"))	return -1;
+	if (0==xr_strcmp(N,"$nullptr"))	return -1;
 	if (0==xr_strcmp(N,"$base0"))	return	0;
 	if (0==xr_strcmp(N,"$base1"))	return	1;
 	if (0==xr_strcmp(N,"$base2"))	return	2;
@@ -45,9 +45,9 @@ void	CBlender_Compile::_cpp_Compile	(ShaderElement* _SH)
 	//	optimization?
 
 	// Analyze possibility to detail this shader
-	detail_texture	= NULL;
-	detail_scaler	= NULL;
-	LPCSTR	base	= NULL;
+	detail_texture	= nullptr;
+	detail_scaler	= nullptr;
+	LPCSTR	base	= nullptr;
 	if (bDetail && BT->canBeDetailed())
 	{
 		// 
@@ -154,8 +154,8 @@ void	CBlender_Compile::PassBegin		()
 	passTextures.clear		();
 	passMatrices.clear		();
 	passConstants.clear		();
-	xr_strcpy					(pass_ps,"null");
-	xr_strcpy					(pass_vs,"null");
+	xr_strcpy					(pass_ps,"nullptr");
+	xr_strcpy					(pass_vs,"nullptr");
 	dwStage					= 0;
 }
 
@@ -304,7 +304,7 @@ void	CBlender_Compile::StageTemplate_LMAP0	()
 	StageSET_Address	(D3DTADDRESS_CLAMP);
 	StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
 	StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-	StageSET_TMC		("$base1","$null","$null",1);
+	StageSET_TMC		("$base1","$nullptr","$nullptr",1);
 }
 
 void	CBlender_Compile::Stage_Texture	(LPCSTR name, u32 ,	u32	 fmin, u32 fmip, u32 fmag)

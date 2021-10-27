@@ -14,7 +14,7 @@ static void *lua_alloc(void *ud, void *ptr, size_t osize, size_t nsize) {
 	(void)osize;
 	if (nsize == 0) {
 		xr_free(ptr);
-		return	NULL;
+		return	nullptr;
 	}
 	else
 #ifdef DEBUG_MEMORY_NAME

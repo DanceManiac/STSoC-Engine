@@ -30,8 +30,8 @@ light::light		(void)	: ISpatial(g_SpatialSpace)
 #if (RENDER==R_R2) || (RENDER==R_R3) || (RENDER==R_R4)
 	virtual_size = .1f; // Ray Twitty (aka Shadows): по умолчанию надо 0.1, чтобы не пришлось вызывать для каждого лайта установку виртуального размера
 	ZeroMemory		(omnipart,sizeof(omnipart));
-	s_spot			= NULL;
-	s_point			= NULL;
+	s_spot			= nullptr;
+	s_point			= nullptr;
 	vis.frame2test	= 0;	// xffffffff;
 	vis.query_id	= 0;
 	vis.query_order	= 0;

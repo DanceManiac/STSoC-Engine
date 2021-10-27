@@ -36,7 +36,7 @@ IBlender::IBlender()
 	oPriority.max	= 3;
 	oPriority.value	= 1;
 	xr_strcpy			(oT_Name,	"$base0");
-	xr_strcpy			(oT_xform,	"$null");
+	xr_strcpy			(oT_xform,	"$nullptr");
 }
 
 IBlender::~IBlender()

@@ -357,7 +357,7 @@ void CBlender_fluid_obstdraw::Compile(CBlender_Compile& C)
 	switch (C.iElement) 
 	{
 	case 0:			// DrawTexture
-		C.r_Pass	("fluid_grid", "null", "fluid_draw_texture", false,FALSE,FALSE,FALSE);
+		C.r_Pass	("fluid_grid", "nullptr", "fluid_draw_texture", false,FALSE,FALSE,FALSE);
 		break;
 //		TechniqueDrawWhiteTriangles = pEffect->GetTechniqueByName( "DrawWhiteTriangles" );
 //		TechniqueDrawWhiteLines = pEffect->GetTechniqueByName( "DrawWhiteLines" );
@@ -381,12 +381,12 @@ void CBlender_fluid_raydata::Compile(CBlender_Compile& C)
 	switch (C.iElement)
 	{
 	case 0:			// CompRayData_Back
-		C.r_Pass	("fluid_raydata_back", "null", "fluid_raydata_back", false,FALSE,FALSE,FALSE);
+		C.r_Pass	("fluid_raydata_back", "nullptr", "fluid_raydata_back", false,FALSE,FALSE,FALSE);
 		C.r_CullMode(D3DCULL_CW);	//	Front
 		//C.r_CullMode(D3DCULL_CCW);	//	Front
 		break;
 	case 1:			// CompRayData_Front
-		C.r_Pass	("fluid_raydata_front", "null", "fluid_raydata_front", false,FALSE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
+		C.r_Pass	("fluid_raydata_front", "nullptr", "fluid_raydata_front", false,FALSE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
 		//RS.SetRS(D3DRS_SRCBLENDALPHA,		bABlend?abSRC:D3DBLEND_ONE	);
 		//	We need different blend arguments for color and alpha
 		//	One Zero for color
@@ -403,7 +403,7 @@ void CBlender_fluid_raydata::Compile(CBlender_Compile& C)
 		//C.r_CullMode(D3DCULL_CW);	//	Back
 		break;
 	case 2:			// QuadDownSampleRayDataTexture
-		C.r_Pass	("fluid_raycast_quad", "null", "fluid_raydatacopy_quad", false,FALSE,FALSE,FALSE);
+		C.r_Pass	("fluid_raycast_quad", "nullptr", "fluid_raydatacopy_quad", false,FALSE,FALSE,FALSE);
 		C.r_CullMode(D3DCULL_CCW);	//	Back
 		break;
 	}
@@ -425,24 +425,24 @@ void CBlender_fluid_raycast::Compile(CBlender_Compile& C)
 	switch (C.iElement)
 	{
 	case 0:			// QuadEdgeDetect
-		C.r_Pass	("fluid_edge_detect", "null", "fluid_edge_detect", false,FALSE,FALSE,FALSE);
+		C.r_Pass	("fluid_edge_detect", "nullptr", "fluid_edge_detect", false,FALSE,FALSE,FALSE);
 		C.r_CullMode(D3DCULL_NONE);	//	Back
 		break;
 	case 1:			// QuadRaycastFog
-		C.r_Pass	("fluid_raycast_quad", "null", "fluid_raycast_quad", false,FALSE,FALSE,FALSE);
+		C.r_Pass	("fluid_raycast_quad", "nullptr", "fluid_raycast_quad", false,FALSE,FALSE,FALSE);
 		C.r_CullMode(D3DCULL_CCW);	//	Back
 		break;
 	case 2:			// QuadRaycastCopyFog
-		C.r_Pass	("fluid_raycast_quad", "null", "fluid_raycastcopy_quad", false,FALSE,FALSE,TRUE, D3DBLEND_SRCALPHA, D3DBLEND_INVSRCALPHA);
+		C.r_Pass	("fluid_raycast_quad", "nullptr", "fluid_raycastcopy_quad", false,FALSE,FALSE,TRUE, D3DBLEND_SRCALPHA, D3DBLEND_INVSRCALPHA);
 		C.r_ColorWriteEnable(true, true, true, false);
 		C.r_CullMode(D3DCULL_CCW);	//	Back
 		break;
 	case 3:			// QuadRaycastFire
-		C.r_Pass	("fluid_raycast_quad", "null", "fluid_raycast_quad_fire", false,FALSE,FALSE,FALSE);
+		C.r_Pass	("fluid_raycast_quad", "nullptr", "fluid_raycast_quad_fire", false,FALSE,FALSE,FALSE);
 		C.r_CullMode(D3DCULL_CCW);	//	Back
 		break;
 	case 4:			// QuadRaycastCopyFire
-		C.r_Pass	("fluid_raycast_quad", "null", "fluid_raycastcopy_quad_fire", false,FALSE,FALSE,TRUE, D3DBLEND_SRCALPHA, D3DBLEND_INVSRCALPHA);
+		C.r_Pass	("fluid_raycast_quad", "nullptr", "fluid_raycastcopy_quad_fire", false,FALSE,FALSE,TRUE, D3DBLEND_SRCALPHA, D3DBLEND_INVSRCALPHA);
 		C.r_ColorWriteEnable(true, true, true, false);
 		C.r_CullMode(D3DCULL_CCW);	//	Back
 		break;

@@ -78,7 +78,7 @@ public:
 		u32		nvstencil			: 1;
 		u32		nvdbt				: 1;
 
-		u32		nullrt				: 1;
+		u32		nullptrrt				: 1;
 
 		u32		distortion			: 1;
 		u32		distortion_enabled	: 1;

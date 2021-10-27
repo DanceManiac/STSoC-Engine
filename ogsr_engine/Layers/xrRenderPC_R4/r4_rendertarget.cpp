@@ -51,9 +51,9 @@ void	CRenderTarget::u_setrt			(const ref_rt& _1, const ref_rt& _2, const ref_rt&
 		_RELEASE( pRes );
 	}
 
-	if (_1) RCache.set_RT(_1->pRT,	0); else RCache.set_RT(NULL,0);
-	if (_2) RCache.set_RT(_2->pRT,	1); else RCache.set_RT(NULL,1);
-	if (_3) RCache.set_RT(_3->pRT,	2); else RCache.set_RT(NULL,2);
+	if (_1) RCache.set_RT(_1->pRT,	0); else RCache.set_RT(nullptr,0);
+	if (_2) RCache.set_RT(_2->pRT,	1); else RCache.set_RT(nullptr,1);
+	if (_3) RCache.set_RT(_3->pRT,	2); else RCache.set_RT(nullptr,2);
 
 	if (ps_r2_ls_flags_ext.test(R2FLAGEXT_SSLR) && HW.DX11Only())
 		RCache.set_RT(nullptr, 3); //rt_Wetness
@@ -91,8 +91,8 @@ void	CRenderTarget::u_setrt			(const ref_rt& _1, const ref_rt& _2, ID3DDepthSten
 		_RELEASE( pRes );
 	}
 
-	if (_1) RCache.set_RT(_1->pRT,	0); else RCache.set_RT(NULL,0);
-	if (_2) RCache.set_RT(_2->pRT,	1); else RCache.set_RT(NULL,1);
+	if (_1) RCache.set_RT(_1->pRT,	0); else RCache.set_RT(nullptr,0);
+	if (_2) RCache.set_RT(_2->pRT,	1); else RCache.set_RT(nullptr,1);
 
 	if (ps_r2_ls_flags_ext.test(R2FLAGEXT_SSLR) && HW.DX11Only())
 		RCache.set_RT(nullptr, 2); //rt_Wetness
@@ -508,8 +508,8 @@ CRenderTarget::CRenderTarget		()
 
 	if (RImplementation.o.HW_smap)
 	{
-		D3DFORMAT	nullrt				= D3DFMT_R5G6B5;
-		if (RImplementation.o.nullrt)	nullrt	= (D3DFORMAT)MAKEFOURCC('N','U','L','L');
+		D3DFORMAT	nullptrrt				= D3DFMT_R5G6B5;
+		if (RImplementation.o.nullptrrt)	nullptrrt	= (D3DFORMAT)MAKEFOURCC('N','U','L','L');
 
 		u32	size					=RImplementation.o.smapsize	;
 		rt_smap_depth.create		(r2_RT_smap_depth,			size,size,depth_format	);
@@ -518,11 +518,11 @@ CRenderTarget::CRenderTarget		()
 		{
 			rt_smap_depth_minmax.create( r2_RT_smap_depth_minmax,	size/4,size/4, D3DFMT_R32F	);
 			CBlender_createminmax TempBlender;
-			s_create_minmax_sm.create( &TempBlender, "null" );
+			s_create_minmax_sm.create( &TempBlender, "nullptr" );
 		}
 
-		//rt_smap_surf.create			(r2_RT_smap_surf,			size,size,nullrt		);
-		//rt_smap_ZB					= NULL;
+		//rt_smap_surf.create			(r2_RT_smap_surf,			size,size,nullptrrt		);
+		//rt_smap_ZB					= nullptr;
 		s_accum_mask.create			(b_accum_mask,				"r3\\accum_mask");
 		s_accum_direct.create		(b_accum_direct,			"r3\\accum_direct");
 
@@ -576,8 +576,8 @@ CRenderTarget::CRenderTarget		()
 		VERIFY(!"Use HW SMAPs only!");
 		//u32	size					=RImplementation.o.smapsize	;
 		//rt_smap_surf.create			(r2_RT_smap_surf,			size,size,D3DFMT_R32F);
-		//rt_smap_depth				= NULL;
-		//R_CHK						(HW.pDevice->CreateDepthStencilSurface	(size,size,D3DFMT_D24X8,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_ZB,NULL));
+		//rt_smap_depth				= nullptr;
+		//R_CHK						(HW.pDevice->CreateDepthStencilSurface	(size,size,D3DFMT_D24X8,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_ZB,nullptr));
 		//s_accum_mask.create			(b_accum_mask,				"r2\\accum_mask");
 		//s_accum_direct.create		(b_accum_direct,			"r2\\accum_direct");
 		//if (RImplementation.o.advancedpp)
@@ -589,7 +589,7 @@ CRenderTarget::CRenderTarget		()
 	//	Or make DX10 rain switch dynamic?
 	{
 		CBlender_rain	TempBlender;
-		s_rain.create( &TempBlender, "null");
+		s_rain.create( &TempBlender, "nullptr");
 
 		if( RImplementation.o.dx10_msaa )
 		{
@@ -604,7 +604,7 @@ CRenderTarget::CRenderTarget		()
 			for( int i = 0; i < bound; ++i )
 			{
 				TempBlender[i].SetDefine( "ISAMPLE", SampleDefs[i] );
-				s_rain_msaa[i].create( &TempBlender[i], "null");
+				s_rain_msaa[i].create( &TempBlender[i], "nullptr");
 				s_accum_spot_msaa[i].create			(b_accum_spot_msaa[i],				"r2\\accum_spot_s",	"lights\\lights_spot01");
 				s_accum_point_msaa[i].create		(b_accum_point_msaa[i],			"r2\\accum_point_s");
 				//s_accum_volume_msaa[i].create(b_accum_direct_volumetric_msaa[i], "lights\\lights_spot01");
@@ -618,7 +618,7 @@ CRenderTarget::CRenderTarget		()
 	{
 		CBlender_msaa TempBlender;
 
-		s_mark_msaa_edges.create( &TempBlender, "null" );
+		s_mark_msaa_edges.create( &TempBlender, "nullptr" );
 	}
 
 	// POINT
@@ -656,7 +656,7 @@ CRenderTarget::CRenderTarget		()
 
 			for( int i = 0; i < bound; ++i )
 			{
-				s_accum_reflected_msaa[i].create( b_accum_reflected_msaa[i], "null");
+				s_accum_reflected_msaa[i].create( b_accum_reflected_msaa[i], "nullptr");
 			}
 		}
 	}	
@@ -698,11 +698,11 @@ CRenderTarget::CRenderTarget		()
 			xr_sprintf						(name,"%s_%d",	r2_RT_luminance_pool,it	);
 			rt_LUM_pool[it].create		(name,	1,	1,	D3DFMT_R32F				);
 			//u_setrt						(rt_LUM_pool[it],	0,	0,	0			);
-			//CHK_DX						(HW.pDevice->Clear( 0L, NULL, D3DCLEAR_TARGET,	0x7f7f7f7f,	1.0f, 0L));
+			//CHK_DX						(HW.pDevice->Clear( 0L, nullptr, D3DCLEAR_TARGET,	0x7f7f7f7f,	1.0f, 0L));
 			FLOAT ColorRGBA[4] = { 127.0f/255.0f, 127.0f/255.0f, 127.0f/255.0f, 127.0f/255.0f};
 			HW.pContext->ClearRenderTargetView(rt_LUM_pool[it]->pRT, ColorRGBA);
 		}
-		u_setrt						( Device.dwWidth,Device.dwHeight,HW.pBaseRT,NULL,NULL,HW.pBaseZB);
+		u_setrt						( Device.dwWidth,Device.dwHeight,HW.pBaseRT,nullptr,nullptr,HW.pBaseZB);
 	}
 
 	// HBAO
@@ -753,7 +753,7 @@ CRenderTarget::CRenderTarget		()
 			{
 				const int bound = RImplementation.o.dx10_msaa_opt ? 1 : RImplementation.o.dx10_msaa_samples;
 				for (int i = 0; i < bound; ++i)
-					s_ssao_msaa[i].create(b_ssao_msaa[i], "null");
+					s_ssao_msaa[i].create(b_ssao_msaa[i], "nullptr");
 			}*/
 		}
 	}
@@ -1104,15 +1104,15 @@ CRenderTarget::~CRenderTarget	()
 	_RELEASE					(t_ss_async);
 
 	// Textures
-	t_material->surface_set		(NULL);
+	t_material->surface_set		(nullptr);
 
 #ifdef DEBUG
 	_SHOW_REF					("t_material_surf",t_material_surf);
 #endif // DEBUG
 	_RELEASE					(t_material_surf);
 
-	t_LUM_src->surface_set		(NULL);
-	t_LUM_dest->surface_set		(NULL);
+	t_LUM_src->surface_set		(nullptr);
+	t_LUM_dest->surface_set		(nullptr);
 
 #ifdef DEBUG
 	ID3DBaseTexture*	pSurf = 0;
@@ -1127,8 +1127,8 @@ CRenderTarget::~CRenderTarget	()
 	//_SHOW_REF("t_envmap_0 - #small",t_envmap_0->pSurface);
 	//_SHOW_REF("t_envmap_1 - #small",t_envmap_1->pSurface);
 #endif // DEBUG
-	t_envmap_0->surface_set		(NULL);
-	t_envmap_1->surface_set		(NULL);
+	t_envmap_0->surface_set		(nullptr);
+	t_envmap_1->surface_set		(nullptr);
 	t_envmap_0.destroy			();
 	t_envmap_1.destroy			();
 
@@ -1137,14 +1137,14 @@ CRenderTarget::~CRenderTarget	()
 
 	// Jitter
 	for (int it=0; it<TEX_jitter_count; it++)	{
-		t_noise	[it]->surface_set	(NULL);
+		t_noise	[it]->surface_set	(nullptr);
 #ifdef DEBUG
 		_SHOW_REF("t_noise_surf[it]",t_noise_surf[it]);
 #endif // DEBUG
 		_RELEASE					(t_noise_surf[it]);
 	}
 
-	t_noise_mipped->surface_set	(NULL);
+	t_noise_mipped->surface_set	(nullptr);
 #ifdef DEBUG
 	_SHOW_REF("t_noise_surf_mipped",t_noise_surf_mipped);
 #endif // DEBUG

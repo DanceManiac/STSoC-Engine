@@ -37,7 +37,7 @@ void dx103DFluidEmitters::InitShaders()
 	{
 		CBlender_fluid_emitter		Blender;
 		ref_shader				shader;
-		shader.create(&Blender, "null");
+		shader.create(&Blender, "nullptr");
 		for (int i=0; i<1; ++i)
 			m_EmitterTechnique[ET_SimpleGausian+i] = shader->E[i];
 	}

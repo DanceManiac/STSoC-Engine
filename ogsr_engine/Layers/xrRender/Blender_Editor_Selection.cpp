@@ -10,7 +10,7 @@
 CBlender_Editor_Selection::CBlender_Editor_Selection()
 {
 	description.CLS		= B_EDITOR_SEL;
-	xr_strcpy				(oT_Factor,"$null");
+	xr_strcpy				(oT_Factor,"$nullptr");
 }
 
 CBlender_Editor_Selection::~CBlender_Editor_Selection()
@@ -48,7 +48,7 @@ void	CBlender_Editor_Selection::Compile	(CBlender_Compile& C)
 			C.StageSET_Alpha	(D3DTA_TFACTOR,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
 			C.Stage_Texture		(oT_Name	);
 			C.Stage_Matrix		(oT_xform,	0);
-			C.Stage_Constant	("$null"	);
+			C.Stage_Constant	("$nullptr"	);
 			C.StageEnd			();
 		}
 		C.PassEnd			();

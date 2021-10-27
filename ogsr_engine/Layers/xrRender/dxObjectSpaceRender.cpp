@@ -6,7 +6,7 @@
 
 dxObjectSpaceRender::dxObjectSpaceRender()
 {
-	m_shDebug.create("debug\\wireframe","$null");
+	m_shDebug.create("debug\\wireframe","$nullptr");
 }
 
 dxObjectSpaceRender::~dxObjectSpaceRender()

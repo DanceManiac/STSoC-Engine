@@ -52,7 +52,7 @@ void	CBlender_Detail_Still::Compile	(CBlender_Compile& C)
 			C.StageBegin		();
 			C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,	D3DTA_DIFFUSE);
 			C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,	D3DTA_DIFFUSE);
-			C.StageSET_TMC		(oT_Name,"$null","$null",0);
+			C.StageSET_TMC		(oT_Name,"$nullptr","$nullptr",0);
 			C.StageEnd			();
 		}
 		C.PassEnd			();

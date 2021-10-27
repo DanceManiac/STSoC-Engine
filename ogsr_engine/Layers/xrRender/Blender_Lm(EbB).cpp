@@ -15,8 +15,8 @@ CBlender_LmEbB::CBlender_LmEbB	()
 {
 	description.CLS		= B_LmEbB;
 	description.version	= 0x1;
-	xr_strcpy				(oT2_Name,	"$null");
-	xr_strcpy				(oT2_xform,	"$null");
+	xr_strcpy				(oT2_Name,	"$nullptr");
+	xr_strcpy				(oT2_xform,	"$nullptr");
 	oBlend.value		= FALSE;
 }
 
@@ -64,23 +64,23 @@ void	CBlender_LmEbB::Compile(CBlender_Compile& C)
 			C.StageSET_Address	(D3DTADDRESS_CLAMP);
 			C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,		D3DTA_DIFFUSE);
 			C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,		D3DTA_DIFFUSE);
-			C.StageSET_TMC		(oT2_Name, oT2_xform, "$null", 0);
+			C.StageSET_TMC		(oT2_Name, oT2_xform, "$nullptr", 0);
 			C.StageEnd			();
 			
 			// Stage2 - Base texture
 			C.StageBegin		();
 			C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_BLENDTEXTUREALPHA,	D3DTA_CURRENT);
 			C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,		D3DTA_CURRENT);
-			C.StageSET_TMC		(oT_Name, oT_xform, "$null", 0);
+			C.StageSET_TMC		(oT_Name, oT_xform, "$nullptr", 0);
 			C.StageEnd			();
 
 			// Stage3 - Lighting - should work on all 2tex hardware
 			C.StageBegin		();
 			C.StageSET_Color	(D3DTA_DIFFUSE,	  D3DTOP_MODULATE,			D3DTA_CURRENT);
 			C.StageSET_Alpha	(D3DTA_DIFFUSE,	  D3DTOP_SELECTARG2,		D3DTA_CURRENT);
-			C.Stage_Texture		("$null"	);
-			C.Stage_Matrix		("$null",	0);
-			C.Stage_Constant	("$null"	);
+			C.Stage_Texture		("$nullptr"	);
+			C.Stage_Matrix		("$nullptr",	0);
+			C.Stage_Constant	("$nullptr"	);
 			C.StageEnd			();
 		}
 		C.PassEnd			();

@@ -559,8 +559,8 @@ CKinematicsAnimated::~CKinematicsAnimated	()
 CKinematicsAnimated::CKinematicsAnimated(): 
 	CKinematics(), 
 	IKinematicsAnimated(),
-	blend_instances	( NULL) ,
-    m_Partition	( NULL ),
+	blend_instances	( nullptr) ,
+    m_Partition	( nullptr ),
 	m_blend_destroy_callback( 0 ),
 	m_update_tracks_callback( 0 ),
 	Update_LastTime ( 0 )
@@ -582,7 +582,7 @@ void	CKinematicsAnimated::IBoneInstances_Destroy()
     inherited::IBoneInstances_Destroy();
 	if (blend_instances) {
 		xr_free(blend_instances);
-		blend_instances = NULL;
+		blend_instances = nullptr;
 	}
 }
 
@@ -660,8 +660,8 @@ void CKinematicsAnimated::Load(const char* N, IReader *data, u32 dwFlags)
 	inherited::Load	(N, data, dwFlags);
 
 	// Globals
-	blend_instances		= NULL;
-    m_Partition			= NULL;
+	blend_instances		= nullptr;
+    m_Partition			= nullptr;
 	Update_LastTime 	= 0;
 
 	// Load animation
@@ -720,7 +720,7 @@ void CKinematicsAnimated::Load(const char* N, IReader *data, u32 dwFlags)
 	      FS.r_close( MS );
 	    }
 	    if ( create_res )
-	      m_Motions.back().motions.create( nm, NULL, bones );
+	      m_Motions.back().motions.create( nm, nullptr, bones );
 	    else {
 	      m_Motions.pop_back();
 	      Msg( "! error in model [%s]. Unable to load motion file '%s'.", N, nm );

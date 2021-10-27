@@ -113,7 +113,7 @@ void	CKinematics::IBoneInstances_Destroy()
 {
 	if (bone_instances) {
 		xr_free(bone_instances);
-		bone_instances = NULL;
+		bone_instances = nullptr;
 	}
 }
 
@@ -129,8 +129,8 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 	//Msg				("skeleton: %s",N);
 	inherited::Load	(N, data, dwFlags);
 
-    pUserData		= NULL;
-    m_lod			= NULL;
+    pUserData		= nullptr;
+    m_lod			= nullptr;
     // loading lods
 
 	IReader* LD 	= data->open_chunk(OGF_S_LODS);
@@ -141,7 +141,7 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 			string_path		lod_name;
 			LD->r_string	(lod_name, sizeof(lod_name));
 //.         strconcat		(sizeof(name_load),name_load, short_name, ":lod:", lod_name.c_str());
-            m_lod 			= (dxRender_Visual*) ::Render->model_CreateChild(lod_name, NULL);
+            m_lod 			= (dxRender_Visual*) ::Render->model_CreateChild(lod_name, nullptr);
 
 			if ( CKinematics* lod_kinematics = dynamic_cast<CKinematics*>(m_lod) )
 			{
@@ -183,7 +183,7 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 
 	// Globals
 	bones			= xr_new<vecBones>	();
-	bone_instances	= NULL;
+	bone_instances	= nullptr;
 
 	// Load bones
 #pragma todo("container is created in stack!")
@@ -299,7 +299,7 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 	}
 
 	// reset update_callback
-	Update_Callback	= NULL;
+	Update_Callback	= nullptr;
 	// reset update frame
 	wm_frame		= u32(-1);
 
@@ -392,7 +392,7 @@ void CKinematics::Spawn			()
 	// bones
 	for (u32 i=0; i<bones->size(); i++)
 		bone_instances[i].construct();
-	Update_Callback				= NULL;
+	Update_Callback				= nullptr;
 	CalculateBones_Invalidate	();
 	// wallmarks
 	ClearWallmarks				();

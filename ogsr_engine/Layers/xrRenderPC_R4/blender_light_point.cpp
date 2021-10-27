@@ -17,7 +17,7 @@ void	CBlender_accum_point::Compile(CBlender_Compile& C)
 	switch (C.iElement)
 	{
 	case SE_L_FILL:			// fill projective
-		//C.r_Pass			("null", 			"copy",						false,	FALSE,	FALSE);
+		//C.r_Pass			("nullptr", 			"copy",						false,	FALSE,	FALSE);
 		C.r_Pass			("stub_notransform","copy_nomsaa",						false,	FALSE,	FALSE);
 		//C.r_Sampler			("s_base",			C.L_textures[0]	);
 		C.r_dx10Texture		("s_base",			C.L_textures[0]);
@@ -147,7 +147,7 @@ void	CBlender_accum_point_msaa::Compile(CBlender_Compile& C)
 	switch (C.iElement)
 		{
 		case SE_L_FILL:			// fill projective
-			//C.r_Pass			("null", 			"copy",						false,	FALSE,	FALSE);
+			//C.r_Pass			("nullptr", 			"copy",						false,	FALSE,	FALSE);
 			C.r_Pass			("stub_notransform","copy_msaa",						false,	FALSE,	FALSE);
 			//C.r_Sampler			("s_base",			C.L_textures[0]	);
 			C.r_dx10Texture		("s_base",			C.L_textures[0]);

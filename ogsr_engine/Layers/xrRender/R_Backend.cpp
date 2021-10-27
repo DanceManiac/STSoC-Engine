@@ -23,7 +23,7 @@ void CBackend::CreateQuadIB		()
 	u16		*Indices		= IndexBuffer;
 	//u32		dwUsage			= D3DUSAGE_WRITEONLY;
 	//if (HW.Caps.geometry.bSoftware)	dwUsage|=D3DUSAGE_SOFTWAREPROCESSING;
-	//R_CHK(HW.pDevice->CreateIndexBuffer(dwIdxCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_MANAGED,&QuadIB,NULL));
+	//R_CHK(HW.pDevice->CreateIndexBuffer(dwIdxCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_MANAGED,&QuadIB,nullptr));
 
 	D3D_BUFFER_DESC desc;
 	desc.ByteWidth = dwIdxCount*2;
@@ -55,7 +55,7 @@ void CBackend::CreateQuadIB		()
 	}
 	//R_CHK(QuadIB->Unlock());
 
-	//R_CHK(HW.pDevice->CreateIndexBuffer(dwIdxCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_MANAGED,&QuadIB,NULL));
+	//R_CHK(HW.pDevice->CreateIndexBuffer(dwIdxCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_MANAGED,&QuadIB,nullptr));
 	R_CHK(HW.pDevice->CreateBuffer		( &desc, &subData, &QuadIB));
 	HW.stats_manager.increment_stats_ib	( QuadIB);
 }
@@ -95,7 +95,7 @@ void CBackend::CreateQuadIB		()
 	u16		*Indices		= 0;
 	u32		dwUsage			= D3DUSAGE_WRITEONLY;
 	if (HW.Caps.geometry.bSoftware)	dwUsage|=D3DUSAGE_SOFTWAREPROCESSING;
-	R_CHK(HW.pDevice->CreateIndexBuffer	(dwIdxCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_DEFAULT,&QuadIB,NULL));
+	R_CHK(HW.pDevice->CreateIndexBuffer	(dwIdxCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_DEFAULT,&QuadIB,nullptr));
 	HW.stats_manager.increment_stats_ib	(QuadIB);
 //	Msg("CBackend::CreateQuadIB(). Created buffer size = %d ", dwIdxCount*2 );
 	R_CHK(QuadIB->Lock(0,0,(void**)&Indices,0));

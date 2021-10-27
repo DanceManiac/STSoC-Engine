@@ -601,14 +601,14 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR d_shader, LPCSTR s_textures)
 	LPCSTR		s_shader = undercorated;
 
 	// Access to template
-	C.BT				= NULL;
+	C.BT				= nullptr;
 	C.bEditor			= FALSE;
 	C.bDetail			= FALSE;
 
 	// Prepare
 	_ParseList			(C.L_textures,	s_textures	);
-	C.detail_texture	= NULL;
-	C.detail_scaler		= NULL;
+	C.detail_texture	= nullptr;
+	C.detail_scaler		= nullptr;
 
 	// Choose workflow here: old (using named stages) or new (explicitly declaring stage number)
 	bool bUseNewWorkflow = false;
@@ -706,9 +706,9 @@ ShaderElement*		CBlender_Compile::_lua_Compile	(LPCSTR namesp, LPCSTR name)
 	RS.Invalidate		();
 
 	// Compile
-	LPCSTR				t_0		= *L_textures[0]			? *L_textures[0] : "null";
-	LPCSTR				t_1		= (L_textures.size() > 1)	? *L_textures[1] : "null";
-	LPCSTR				t_d		= detail_texture			? detail_texture : "null" ;
+	LPCSTR				t_0		= *L_textures[0]			? *L_textures[0] : "nullptr";
+	LPCSTR				t_1		= (L_textures.size() > 1)	? *L_textures[1] : "nullptr";
+	LPCSTR				t_d		= detail_texture			? detail_texture : "nullptr" ;
 
 #ifdef LUABIND_09
 	luabind::object		shader = luabind::globals(LSVM)[namesp];

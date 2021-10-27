@@ -29,10 +29,10 @@ void resptrcode_texture::create(LPCSTR _name)
 //////////////////////////////////////////////////////////////////////
 CTexture::CTexture		()
 {
-	pSurface			= NULL;
-	m_pSRView			= NULL;
-	pAVI				= NULL;
-	pTheora				= NULL;
+	pSurface			= nullptr;
+	m_pSRView			= nullptr;
+	pAVI				= nullptr;
+	pTheora				= nullptr;
 	desc_cache			= 0;
 	seqMSPF				= 0;
 	flags.MemoryUsage	= 0;
@@ -112,7 +112,7 @@ void					CTexture::surface_set	(ID3DBaseTexture* surf )
            m_pSRView = 0;
 		}
 		else
-			CHK_DX(HW.pDevice->CreateShaderResourceView(pSurface, NULL, &m_pSRView));
+			CHK_DX(HW.pDevice->CreateShaderResourceView(pSurface, nullptr, &m_pSRView));
 	}	
 }
 
@@ -163,7 +163,7 @@ void CTexture::ProcessStaging()
 			T = 0;
 
 			CHK_DX(HW.pDevice->CreateTexture2D( &TexDesc,       // Texture desc
-				NULL,                  // Initial data
+				nullptr,                  // Initial data
 				&T )); // [out] Texture
 
 			pTargetSurface = T;
@@ -181,7 +181,7 @@ void CTexture::ProcessStaging()
 			T = 0;
 
 			CHK_DX(HW.pDevice->CreateTexture3D( &TexDesc,       // Texture desc
-				NULL,                  // Initial data
+				nullptr,                  // Initial data
 				&T )); // [out] Texture
 
 			pTargetSurface = T;
@@ -319,7 +319,7 @@ void CTexture::apply_avi	(u32 dwStage)
 		D3D_MAPPED_TEXTURE2D	mapData;
 
 		// AVI
-		//R_CHK	(T2D->LockRect(0,&R,NULL,0));
+		//R_CHK	(T2D->LockRect(0,&R,nullptr,0));
 #ifdef USE_DX11
 		R_CHK(HW.pContext->Map(T2D, 0, D3D_MAP_WRITE_DISCARD, 0, &mapData));
 #else
@@ -384,7 +384,7 @@ void CTexture::Load(const char* Name)
 
 	flags.bUser						= false;
 	flags.MemoryUsage				= 0;
-	if (0==stricmp(Name,"$null"))	return;
+	if (0==stricmp(Name,"$nullptr"))	return;
 	if (0!=strstr(Name,"$user$"))	{
 		flags.bUser	= true;
 		return;
@@ -414,7 +414,7 @@ void CTexture::Load(const char* Name)
 			u32 _h = pTheora->Height(false);
 
 //			HRESULT hrr = HW.pDevice->CreateTexture(
-//				_w, _h, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &pTexture, NULL );
+//				_w, _h, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &pTexture, nullptr );
 			D3D_TEXTURE2D_DESC	desc;
 			desc.Width = _w;
 			desc.Height = _h;
@@ -459,7 +459,7 @@ void CTexture::Load(const char* Name)
 				ID3DTexture2D*	pTexture = 0;
 				//HRESULT hrr = HW.pDevice->CreateTexture(
 				//pAVI->m_dwWidth,pAVI->m_dwHeight,1,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED,
-				//	&pTexture,NULL
+				//	&pTexture,nullptr
 				//	);
 				D3D_TEXTURE2D_DESC	desc;
 				desc.Width = pAVI->m_dwWidth;
@@ -521,7 +521,7 @@ void CTexture::Load(const char* Name)
 							// pSurface->SetPriority	(PRIORITY_LOW);
 							seqDATA.push_back(pSurface);
 							m_seqSRView.push_back(0);
-							HW.pDevice->CreateShaderResourceView(seqDATA.back(), NULL, & m_seqSRView.back());
+							HW.pDevice->CreateShaderResourceView(seqDATA.back(), nullptr, & m_seqSRView.back());
 							flags.MemoryUsage		+= mem;
 						}
 					}
