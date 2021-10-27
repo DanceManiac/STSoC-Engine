@@ -168,7 +168,7 @@ local function gen_header(defs)
     w('{"'); w(name); w('",'); w(m) w('},\n')
     m = m + #defs[name]
   end
-  w("{NULL,"); w(m); w("}\n};\n\n")
+  w("{nullptr,"); w(m); w("}\n};\n\n")
   return table.concat(t)
 end
 

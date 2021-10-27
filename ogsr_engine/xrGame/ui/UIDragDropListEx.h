@@ -24,7 +24,7 @@ struct CUICell {
 	bool is_highlighted{};
 
 		void				SetItem					(CUICellItem* itm, bool bMain)		{m_item = itm; VERIFY(m_item);m_bMainItem = bMain;}
-		bool				Empty					()						{return m_item == NULL;}
+		bool				Empty					()						{return m_item == nullptr;}
 		bool				MainItem				()						{return m_bMainItem;}
 		void				Clear					();
 		bool				operator ==				(const CUICell& C) const{return (m_item == C.m_item);}
@@ -146,7 +146,7 @@ public:
 	virtual		void		Draw				();
 	virtual		void		Update				();
 	virtual		bool		OnMouse				(float x, float y, EUIMessages mouse_action);
-	virtual		void		SendMessage			(CUIWindow* pWnd, s16 msg, void* pData = NULL);
+	virtual		void		SendMessage			(CUIWindow* pWnd, s16 msg, void* pData = nullptr);
 
 	void enable_highlight(const bool);
 };

@@ -168,7 +168,7 @@ public:
 
     Hasher(Allocator* allocator = 0, size_t stackCapacity = kDefaultSize) : stack_(allocator, stackCapacity) {}
 
-    bool Null() { return WriteType(kNullType); }
+    bool nullptr() { return WriteType(knullptrType); }
     bool Bool(bool b) { return WriteType(b ? kTrueType : kFalseType); }
     bool Int(int i) { Number n; n.u.i = i; n.d = static_cast<double>(i); return WriteNumber(n); }
     bool Uint(unsigned u) { Number n; n.u.u = u; n.d = static_cast<double>(u); return WriteNumber(n); }
@@ -689,8 +689,8 @@ public:
         return true;
     }
 
-    bool Null(Context& context) const { 
-        if (!(type_ & (1 << kNullSchemaType)))
+    bool nullptr(Context& context) const { 
+        if (!(type_ & (1 << knullptrSchemaType)))
             RAPIDJSON_INVALID_KEYWORD_RETURN(GetTypeString());
         return CreateParallelValidator(context);
     }
@@ -729,13 +729,13 @@ public:
         if (!(type_ & (1 << kNumberSchemaType)))
             RAPIDJSON_INVALID_KEYWORD_RETURN(GetTypeString());
 
-        if (!minimum_.IsNull() && !CheckDoubleMinimum(context, d))
+        if (!minimum_.Isnullptr() && !CheckDoubleMinimum(context, d))
             return false;
 
-        if (!maximum_.IsNull() && !CheckDoubleMaximum(context, d))
+        if (!maximum_.Isnullptr() && !CheckDoubleMaximum(context, d))
             return false;
 
-        if (!multipleOf_.IsNull() && !CheckDoubleMultipleOf(context, d))
+        if (!multipleOf_.Isnullptr() && !CheckDoubleMultipleOf(context, d))
             return false;
 
         return CreateParallelValidator(context);
@@ -885,7 +885,7 @@ public:
         return v;\
     }
 
-    RAPIDJSON_STRING_(Null, 'n', 'u', 'l', 'l')
+    RAPIDJSON_STRING_(nullptr, 'n', 'u', 'l', 'l')
     RAPIDJSON_STRING_(Boolean, 'b', 'o', 'o', 'l', 'e', 'a', 'n')
     RAPIDJSON_STRING_(Object, 'o', 'b', 'j', 'e', 'c', 't')
     RAPIDJSON_STRING_(Array, 'a', 'r', 'r', 'a', 'y')
@@ -923,7 +923,7 @@ public:
 
 private:
     enum SchemaValueType {
-        kNullSchemaType,
+        knullptrSchemaType,
         kBooleanSchemaType,
         kObjectSchemaType,
         kArraySchemaType,
@@ -1037,7 +1037,7 @@ private:
 #endif // RAPIDJSON_SCHEMA_USE_STDREGEX
 
     void AddType(const ValueType& type) {
-        if      (type == GetNullString()   ) type_ |= 1 << kNullSchemaType;
+        if      (type == GetnullptrString()   ) type_ |= 1 << knullptrSchemaType;
         else if (type == GetBooleanString()) type_ |= 1 << kBooleanSchemaType;
         else if (type == GetObjectString() ) type_ |= 1 << kObjectSchemaType;
         else if (type == GetArrayString()  ) type_ |= 1 << kArraySchemaType;
@@ -1100,7 +1100,7 @@ private:
         if (!(type_ & ((1 << kIntegerSchemaType) | (1 << kNumberSchemaType))))
             RAPIDJSON_INVALID_KEYWORD_RETURN(GetTypeString());
 
-        if (!minimum_.IsNull()) {
+        if (!minimum_.Isnullptr()) {
             if (minimum_.IsInt64()) {
                 if (exclusiveMinimum_ ? i <= minimum_.GetInt64() : i < minimum_.GetInt64())
                     RAPIDJSON_INVALID_KEYWORD_RETURN(GetMinimumString());
@@ -1112,7 +1112,7 @@ private:
                 return false;
         }
 
-        if (!maximum_.IsNull()) {
+        if (!maximum_.Isnullptr()) {
             if (maximum_.IsInt64()) {
                 if (exclusiveMaximum_ ? i >= maximum_.GetInt64() : i > maximum_.GetInt64())
                     RAPIDJSON_INVALID_KEYWORD_RETURN(GetMaximumString());
@@ -1123,7 +1123,7 @@ private:
                 return false;
         }
 
-        if (!multipleOf_.IsNull()) {
+        if (!multipleOf_.Isnullptr()) {
             if (multipleOf_.IsUint64()) {
                 if (static_cast<uint64_t>(i >= 0 ? i : -i) % multipleOf_.GetUint64() != 0)
                     RAPIDJSON_INVALID_KEYWORD_RETURN(GetMultipleOfString());
@@ -1139,7 +1139,7 @@ private:
         if (!(type_ & ((1 << kIntegerSchemaType) | (1 << kNumberSchemaType))))
             RAPIDJSON_INVALID_KEYWORD_RETURN(GetTypeString());
 
-        if (!minimum_.IsNull()) {
+        if (!minimum_.Isnullptr()) {
             if (minimum_.IsUint64()) {
                 if (exclusiveMinimum_ ? i <= minimum_.GetUint64() : i < minimum_.GetUint64())
                     RAPIDJSON_INVALID_KEYWORD_RETURN(GetMinimumString());
@@ -1150,7 +1150,7 @@ private:
                 return false;
         }
 
-        if (!maximum_.IsNull()) {
+        if (!maximum_.Isnullptr()) {
             if (maximum_.IsUint64()) {
                 if (exclusiveMaximum_ ? i >= maximum_.GetUint64() : i > maximum_.GetUint64())
                     RAPIDJSON_INVALID_KEYWORD_RETURN(GetMaximumString());
@@ -1161,7 +1161,7 @@ private:
                 return false;
         }
 
-        if (!multipleOf_.IsNull()) {
+        if (!multipleOf_.Isnullptr()) {
             if (multipleOf_.IsUint64()) {
                 if (i % multipleOf_.GetUint64() != 0)
                     RAPIDJSON_INVALID_KEYWORD_RETURN(GetMultipleOfString());
@@ -1333,8 +1333,8 @@ public:
     /*!
         Compile a JSON document into schema document.
         \param document A JSON document as source.
-        \param remoteProvider An optional remote schema document provider for resolving remote reference. Can be null.
-        \param allocator An optional allocator instance for allocating memory. Can be null.
+        \param remoteProvider An optional remote schema document provider for resolving remote reference. Can be nullptr.
+        \param allocator An optional allocator instance for allocating memory. Can be nullptr.
     */
     explicit GenericSchemaDocument(const ValueType& document, IRemoteSchemaDocumentProviderType* remoteProvider = 0, Allocator* allocator = 0) :
         remoteProvider_(remoteProvider),
@@ -1572,7 +1572,7 @@ public:
         :
         schemaDocument_(&schemaDocument),
         root_(schemaDocument.GetRoot()),
-        outputHandler_(GetNullHandler()),
+        outputHandler_(GetnullptrHandler()),
         stateAllocator_(allocator),
         ownStateAllocator_(0),
         schemaStack_(allocator, schemaStackCapacity),
@@ -1683,7 +1683,7 @@ RAPIDJSON_MULTILINEMACRO_END
     RAPIDJSON_SCHEMA_HANDLE_PARALLEL_(method, arg2);\
     RAPIDJSON_SCHEMA_HANDLE_END_     (method, arg2)
 
-    bool Null()             { RAPIDJSON_SCHEMA_HANDLE_VALUE_(Null,   (CurrentContext()   ), ( )); }
+    bool nullptr()             { RAPIDJSON_SCHEMA_HANDLE_VALUE_(nullptr,   (CurrentContext()   ), ( )); }
     bool Bool(bool b)       { RAPIDJSON_SCHEMA_HANDLE_VALUE_(Bool,   (CurrentContext(), b), (b)); }
     bool Int(int i)         { RAPIDJSON_SCHEMA_HANDLE_VALUE_(Int,    (CurrentContext(), i), (i)); }
     bool Uint(unsigned u)   { RAPIDJSON_SCHEMA_HANDLE_VALUE_(Uint,   (CurrentContext(), u), (u)); }
@@ -1788,7 +1788,7 @@ private:
         :
         schemaDocument_(&schemaDocument),
         root_(root),
-        outputHandler_(GetNullHandler()),
+        outputHandler_(GetnullptrHandler()),
         stateAllocator_(allocator),
         ownStateAllocator_(0),
         schemaStack_(allocator, schemaStackCapacity),
@@ -1906,9 +1906,9 @@ private:
     Context& CurrentContext() { return *schemaStack_.template Top<Context>(); }
     const Context& CurrentContext() const { return *schemaStack_.template Top<Context>(); }
 
-    static OutputHandler& GetNullHandler() {
-        static OutputHandler nullHandler;
-        return nullHandler;
+    static OutputHandler& GetnullptrHandler() {
+        static OutputHandler nullptrHandler;
+        return nullptrHandler;
     }
 
     static const size_t kDefaultSchemaStackCapacity = 1024;

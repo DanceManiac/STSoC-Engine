@@ -15,7 +15,7 @@ void CUISequenceItem::Load(CUIXml* xml, int idx)
 	xml->SetLocalRoot				(xml->NavigateToNode("item",idx));
 	int disabled_cnt				= xml->GetNodesNum	(xml->GetLocalRoot(), "disabled_key");
 	for(int i=0; i<disabled_cnt;++i){
-		LPCSTR str					= xml->Read			("disabled_key", i, NULL);
+		LPCSTR str					= xml->Read			("disabled_key", i, nullptr);
 		m_disabled_actions.push_back( action_name_to_id(str) );
 	};
 
@@ -25,7 +25,7 @@ void CUISequenceItem::Load(CUIXml* xml, int idx)
 	int			f_num				= xml->GetNodesNum(xml->GetLocalRoot(),"function_on_start");
 	m_start_lua_functions.resize	(f_num);
 	for(j=0; j<f_num; ++j){
-		str							= xml->Read(xml->GetLocalRoot(), "function_on_start", j, NULL);
+		str							= xml->Read(xml->GetLocalRoot(), "function_on_start", j, nullptr);
 		functor_exists				= ai().script_engine().functor(str ,m_start_lua_functions[j]);
 		THROW3						(functor_exists, "Cannot find script function described in tutorial item ", str);
 	}
@@ -33,7 +33,7 @@ void CUISequenceItem::Load(CUIXml* xml, int idx)
 	f_num							= xml->GetNodesNum(xml->GetLocalRoot(),"function_on_stop");
 	m_stop_lua_functions.resize	(f_num);
 	for(j=0; j<f_num; ++j){
-		str							= xml->Read(xml->GetLocalRoot(), "function_on_stop", j, NULL);
+		str							= xml->Read(xml->GetLocalRoot(), "function_on_stop", j, nullptr);
 		functor_exists				= ai().script_engine().functor(str ,m_stop_lua_functions[j]);
 		THROW3						(functor_exists, "Cannot find script function described in tutorial item ", str);
 	}
@@ -120,7 +120,7 @@ void CUISequencer::Destroy()
 	delete_data					(m_UIWindow);
 	IR_Release					();
 	m_bActive					= false;
-	m_pStoredInputReceiver		= NULL;
+	m_pStoredInputReceiver		= nullptr;
 }
 
 void CUISequencer::Stop()

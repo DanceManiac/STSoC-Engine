@@ -47,7 +47,7 @@ public:
 
     //! Constructor
     /*! \param os Output stream.
-        \param allocator User supplied allocator. If it is null, it will create a private one.
+        \param allocator User supplied allocator. If it is nullptr, it will create a private one.
         \param levelDepth Initial capacity of stack.
     */
     explicit PrettyWriter(OutputStream& os, StackAllocator* allocator = 0, size_t levelDepth = Base::kDefaultLevelDepth) : 
@@ -82,7 +82,7 @@ public:
     */
     //@{
 
-    bool Null()                 { PrettyPrefix(kNullType);   return Base::WriteNull(); }
+    bool nullptr()                 { PrettyPrefix(knullptrType);   return Base::Writenullptr(); }
     bool Bool(bool b)           { PrettyPrefix(b ? kTrueType : kFalseType); return Base::WriteBool(b); }
     bool Int(int i)             { PrettyPrefix(kNumberType); return Base::WriteInt(i); }
     bool Uint(unsigned u)       { PrettyPrefix(kNumberType); return Base::WriteUint(u); }
@@ -178,7 +178,7 @@ public:
     //! Write a raw JSON value.
     /*!
         For user to write a stringified JSON as a value.
-        \param json A well-formed JSON value. It should not contain null character within [0, length - 1] range.
+        \param json A well-formed JSON value. It should not contain nullptr character within [0, length - 1] range.
         \param length Length of the json.
         \param type Type of the root of json.
         \note When using PrettyWriter::RawValue(), the result json may not be indented correctly.

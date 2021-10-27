@@ -86,7 +86,7 @@ struct GenericMember {
     This class implements a Random Access Iterator for GenericMember elements
     of a GenericValue, see ISO/IEC 14882:2003(E) C++ standard, 24.1 [lib.iterator.requirements].
     \note This iterator implementation is mainly intended to avoid implicit
-        conversions from iterator values to \c NULL,
+        conversions from iterator values to \c nullptr,
         e.g. from GenericValue::FindMember.
     \note Define \c RAPIDJSON_NOMEMBERITERATORCLASS to fall back to a
         pointer-based implementation, if your platform doesn't provide
@@ -244,7 +244,7 @@ struct GenericStringRef {
         This constructor implicitly creates a constant string reference from
         a \c const character array.  It has better performance than
         \ref StringRef(const CharType*) by inferring the string \ref length
-        from the array length, and also supports strings containing null
+        from the array length, and also supports strings containing nullptr
         characters.
         \tparam N length of the string, automatically inferred
         \param str Constant character array, lifetime assumed to be longer
@@ -286,7 +286,7 @@ struct GenericStringRef {
     //! Create constant string reference from pointer and length
 #ifndef __clang__ // -Wdocumentation
     /*! \param str constant string, lifetime assumed to be longer than the use of the string in e.g. a GenericValue
-        \param len length of the string, excluding the trailing NULL terminator
+        \param len length of the string, excluding the trailing nullptr terminator
         \post \ref s == str && \ref length == len
         \note Constant complexity.
      */
@@ -302,7 +302,7 @@ struct GenericStringRef {
     operator const Ch *() const { return s; }
 
     const Ch* const s; //!< plain CharType pointer
-    const SizeType length; //!< length of the string (excluding the trailing NULL terminator)
+    const SizeType length; //!< length of the string (excluding the trailing nullptr terminator)
 
 private:
     //! Disallow construction from non-const array
@@ -332,7 +332,7 @@ inline GenericStringRef<CharType> StringRef(const CharType* str) {
     value in a JSON GenericValue object, if the string's lifetime is known
     to be valid long enough.
     This version has better performance with supplied length, and also
-    supports string containing null characters.
+    supports string containing nullptr characters.
     \tparam CharType character type of the string
     \param str Constant string, lifetime assumed to be longer than the use of the string in e.g. a GenericValue
     \param length The length of source string.
@@ -532,13 +532,13 @@ public:
     //!@name Constructors and destructor.
     //@{
 
-    //! Default constructor creates a null value.
-    GenericValue() RAPIDJSON_NOEXCEPT : data_() { data_.f.flags = kNullFlag; }
+    //! Default constructor creates a nullptr value.
+    GenericValue() RAPIDJSON_NOEXCEPT : data_() { data_.f.flags = knullptrFlag; }
 
 #if RAPIDJSON_HAS_CXX11_RVALUE_REFS
     //! Move constructor in C++11
     GenericValue(GenericValue&& rhs) RAPIDJSON_NOEXCEPT : data_(rhs.data_) {
-        rhs.data_.f.flags = kNullFlag; // give up contents
+        rhs.data_.f.flags = knullptrFlag; // give up contents
     }
 #endif
 
@@ -565,7 +565,7 @@ public:
     */
     explicit GenericValue(Type type) RAPIDJSON_NOEXCEPT : data_() {
         static const uint16_t defaultFlags[7] = {
-            kNullFlag, kFalseFlag, kTrueFlag, kObjectFlag, kArrayFlag, kShortStringFlag,
+            knullptrFlag, kFalseFlag, kTrueFlag, kObjectFlag, kArrayFlag, kShortStringFlag,
             kNumberAnyFlag
         };
         RAPIDJSON_ASSERT(type <= kNumberType);
@@ -724,7 +724,7 @@ public:
     //@{
 
     //! Assignment with move semantics.
-    /*! \param rhs Source of the assignment. It will become a null value after assignment.
+    /*! \param rhs Source of the assignment. It will become a nullptr value after assignment.
     */
     GenericValue& operator=(GenericValue& rhs) RAPIDJSON_NOEXCEPT {
         RAPIDJSON_ASSERT(this != &rhs);
@@ -907,7 +907,7 @@ public:
     //@{
 
     Type GetType()  const { return static_cast<Type>(data_.f.flags & kTypeMask); }
-    bool IsNull()   const { return data_.f.flags == kNullFlag; }
+    bool Isnullptr()   const { return data_.f.flags == knullptrFlag; }
     bool IsFalse()  const { return data_.f.flags == kFalseFlag; }
     bool IsTrue()   const { return data_.f.flags == kTrueFlag; }
     bool IsBool()   const { return (data_.f.flags & kBoolFlag) != 0; }
@@ -961,10 +961,10 @@ public:
 
     //@}
 
-    //!@name Null
+    //!@name nullptr
     //@{
 
-    GenericValue& SetNull() { this->~GenericValue(); new (this) GenericValue(); return *this; }
+    GenericValue& Setnullptr() { this->~GenericValue(); new (this) GenericValue(); return *this; }
 
     //@}
 
@@ -994,7 +994,7 @@ public:
     //! Get a value from an object associated with the name.
     /*! \pre IsObject() == true
         \tparam T Either \c Ch or \c const \c Ch (template used for disambiguation with \ref operator[](SizeType))
-        \note In version 0.1x, if the member is not found, this function returns a null value. This makes issue 7.
+        \note In version 0.1x, if the member is not found, this function returns a nullptr value. This makes issue 7.
         Since 0.2, if the name is not correct, it will assert.
         If user is unsure whether a member exists, user should use HasMember() first.
         A better approach is to use FindMember().
@@ -1012,7 +1012,7 @@ public:
     /*! \pre IsObject() == true
         \tparam SourceAllocator Allocator of the \c name value
         \note Compared to \ref operator[](T*), this version is faster because it does not need a StrLen().
-        And it can also handle strings with embedded null characters.
+        And it can also handle strings with embedded nullptr characters.
         \note Linear time complexity.
     */
     template <typename SourceAllocator>
@@ -1024,8 +1024,8 @@ public:
             RAPIDJSON_ASSERT(false);    // see above note
 
             // This will generate -Wexit-time-destructors in clang
-            // static GenericValue NullValue;
-            // return NullValue;
+            // static GenericValue nullptrValue;
+            // return nullptrValue;
 
             // Use static buffer and placement-new to prevent destruction
             static char buffer[sizeof(GenericValue)];
@@ -1078,7 +1078,7 @@ public:
 
     //! Check whether a member exists in the object with GenericValue name.
     /*!
-        This version is faster because it does not need a StrLen(). It can also handle string with null character.
+        This version is faster because it does not need a StrLen(). It can also handle string with nullptr character.
         \param name Member name to be searched.
         \pre IsObject() == true
         \return Whether a member with that name exists.
@@ -1094,7 +1094,7 @@ public:
         \pre IsObject() == true
         \return Iterator to member, if it exists.
             Otherwise returns \ref MemberEnd().
-        \note Earlier versions of Rapidjson returned a \c NULL pointer, in case
+        \note Earlier versions of Rapidjson returned a \c nullptr pointer, in case
             the requested member doesn't exist. For consistency with e.g.
             \c std::map, this has been changed to MemberEnd() now.
         \note Linear time complexity.
@@ -1108,12 +1108,12 @@ public:
 
     //! Find member by name.
     /*!
-        This version is faster because it does not need a StrLen(). It can also handle string with null character.
+        This version is faster because it does not need a StrLen(). It can also handle string with nullptr character.
         \param name Member name to be searched.
         \pre IsObject() == true
         \return Iterator to member, if it exists.
             Otherwise returns \ref MemberEnd().
-        \note Earlier versions of Rapidjson returned a \c NULL pointer, in case
+        \note Earlier versions of Rapidjson returned a \c nullptr pointer, in case
             the requested member doesn't exist. For consistency with e.g.
             \c std::map, this has been changed to MemberEnd() now.
         \note Linear time complexity.
@@ -1149,7 +1149,7 @@ public:
         \return The value itself for fluent API.
         \note The ownership of \c name and \c value will be transferred to this object on success.
         \pre  IsObject() && name.IsString()
-        \post name.IsNull() && value.IsNull()
+        \post name.Isnullptr() && value.Isnullptr()
         \note Amortized Constant time complexity.
     */
     GenericValue& AddMember(GenericValue& name, GenericValue& value, Allocator& allocator) {
@@ -1252,7 +1252,7 @@ public:
         \return The value itself for fluent API.
         \note The ownership of \c value will be transferred to this object on success.
         \pre  IsObject()
-        \post value.IsNull()
+        \post value.Isnullptr()
         \note Amortized Constant time complexity.
     */
     GenericValue& AddMember(StringRefType name, GenericValue& value, Allocator& allocator) {
@@ -1499,7 +1499,7 @@ public:
     /*! \param value        Value to be appended.
         \param allocator    Allocator for reallocating memory. It must be the same one as used before. Commonly use GenericDocument::GetAllocator().
         \pre IsArray() == true
-        \post value.IsNull() == true
+        \post value.Isnullptr() == true
         \return The value itself for fluent API.
         \note The ownership of \c value will be transferred to this array on success.
         \note If the number of elements to be appended is known, calls Reserve() once first may be more efficient.
@@ -1652,9 +1652,9 @@ public:
     SizeType GetStringLength() const { RAPIDJSON_ASSERT(IsString()); return ((data_.f.flags & kInlineStrFlag) ? (data_.ss.GetLength()) : data_.s.length); }
 
     //! Set this value as a string without copying source string.
-    /*! This version has better performance with supplied length, and also support string containing null character.
+    /*! This version has better performance with supplied length, and also support string containing nullptr character.
         \param s source string pointer. 
-        \param length The length of source string, excluding the trailing null terminator.
+        \param length The length of source string, excluding the trailing nullptr terminator.
         \return The value itself for fluent API.
         \post IsString() == true && GetString() == s && GetStringLength() == length
         \see SetString(StringRefType)
@@ -1669,9 +1669,9 @@ public:
     GenericValue& SetString(StringRefType s) { this->~GenericValue(); SetStringRaw(s); return *this; }
 
     //! Set this value as a string by copying from source string.
-    /*! This version has better performance with supplied length, and also support string containing null character.
+    /*! This version has better performance with supplied length, and also support string containing nullptr character.
         \param s source string. 
-        \param length The length of source string, excluding the trailing null terminator.
+        \param length The length of source string, excluding the trailing nullptr terminator.
         \param allocator Allocator for allocating copied buffer. Commonly use GenericDocument::GetAllocator().
         \return The value itself for fluent API.
         \post IsString() == true && GetString() != s && strcmp(GetString(),s) == 0 && GetStringLength() == length
@@ -1733,7 +1733,7 @@ public:
     template <typename Handler>
     bool Accept(Handler& handler) const {
         switch(GetType()) {
-        case kNullType:     return handler.Null();
+        case knullptrType:     return handler.nullptr();
         case kFalseType:    return handler.Bool(false);
         case kTrueType:     return handler.Bool(true);
 
@@ -1787,7 +1787,7 @@ private:
         kInlineStrFlag  = 0x1000,
 
         // Initial flags of different types.
-        kNullFlag = kNullType,
+        knullptrFlag = knullptrType,
         kTrueFlag = kTrueType | kBoolFlag,
         kFalseFlag = kFalseType | kBoolFlag,
         kNumberIntFlag = kNumberType | kNumberFlag | kIntFlag | kInt64Flag,
@@ -1950,7 +1950,7 @@ private:
     void RawAssign(GenericValue& rhs) RAPIDJSON_NOEXCEPT {
         data_ = rhs.data_;
         // data_.f.flags = rhs.data_.f.flags;
-        rhs.data_.f.flags = kNullFlag;
+        rhs.data_.f.flags = knullptrFlag;
     }
 
     template <typename SourceAllocator>
@@ -2008,7 +2008,7 @@ public:
     }
 
     //! Constructor
-    /*! Creates an empty document which type is Null. 
+    /*! Creates an empty document which type is nullptr. 
         \param allocator        Optional allocator for allocating memory.
         \param stackCapacity    Optional initial capacity of stack in bytes.
         \param stackAllocator   Optional allocator for allocating memory for stack.
@@ -2295,7 +2295,7 @@ private:
 
 public:
     // Implementation of Handler
-    bool Null() { new (stack_.template Push<ValueType>()) ValueType(); return true; }
+    bool nullptr() { new (stack_.template Push<ValueType>()) ValueType(); return true; }
     bool Bool(bool b) { new (stack_.template Push<ValueType>()) ValueType(b); return true; }
     bool Int(int i) { new (stack_.template Push<ValueType>()) ValueType(i); return true; }
     bool Uint(unsigned i) { new (stack_.template Push<ValueType>()) ValueType(i); return true; }

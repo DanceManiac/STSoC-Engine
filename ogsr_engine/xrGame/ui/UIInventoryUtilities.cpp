@@ -27,9 +27,9 @@ std::map<size_t, std::unique_ptr<ui_shader>> g_EquipmentIconsShaders;
 typedef				std::pair<CHARACTER_RANK_VALUE, shared_str>	CharInfoStringID;
 DEF_MAP				(CharInfoStrings, CHARACTER_RANK_VALUE, shared_str);
 
-CharInfoStrings		*charInfoReputationStrings	= NULL;
-CharInfoStrings		*charInfoRankStrings		= NULL;
-CharInfoStrings		*charInfoGoodwillStrings	= NULL;
+CharInfoStrings		*charInfoReputationStrings	= nullptr;
+CharInfoStrings		*charInfoRankStrings		= nullptr;
+CharInfoStrings		*charInfoGoodwillStrings	= nullptr;
 
 void InventoryUtilities::CreateShaders()
 {

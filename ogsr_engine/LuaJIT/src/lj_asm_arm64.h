@@ -121,7 +121,7 @@ static int asm_isk32(ASMState *as, IRRef ref, int32_t *k)
 {
   if (irref_isk(ref)) {
     IRIns *ir = IR(ref);
-    if (ir->o == IR_KNULL || !irt_is64(ir->t)) {
+    if (ir->o == IR_Knullptr || !irt_is64(ir->t)) {
       *k = ir->i;
       return 1;
     } else if (checki32((int64_t)ir_k64(ir)->u64)) {
@@ -801,7 +801,7 @@ static void asm_href(ASMState *as, IRIns *ir, IROp merge)
 
   /* Key not found in chain: jump to exit (if merged) or load niltv. */
   l_end = emit_label(as);
-  as->invmcp = NULL;
+  as->invmcp = nullptr;
   if (merge == IR_NE)
     asm_guardcc(as, CC_AL);
   else if (destused)
@@ -1390,7 +1390,7 @@ static void asm_intop(ASMState *as, IRIns *ir, A64Ins ai)
 static void asm_intop_s(ASMState *as, IRIns *ir, A64Ins ai)
 {
   if (as->flagmcp == as->mcp) {  /* Drop cmp r, #0. */
-    as->flagmcp = NULL;
+    as->flagmcp = nullptr;
     as->mcp++;
     ai |= A64I_S;
   }
@@ -1473,7 +1473,7 @@ static void asm_band(ASMState *as, IRIns *ir)
     return;
   if (as->flagmcp == as->mcp) {
     /* Try to drop cmp r, #0. */
-    as->flagmcp = NULL;
+    as->flagmcp = nullptr;
     as->mcp++;
     ai = A64I_ANDSw;
   }
@@ -1934,7 +1934,7 @@ static void asm_tail_prep(ASMState *as)
     as->invmcp = as->mcp = p;
   } else {
     as->mcp = p-1;  /* Leave room for stack pointer adjustment. */
-    as->invmcp = NULL;
+    as->invmcp = nullptr;
   }
   *p = 0;  /* Prevent load/store merging. */
 }
@@ -1986,7 +1986,7 @@ void lj_asm_patchexit(jit_State *J, GCtrace *T, ExitNo exitno, MCode *target)
 {
   MCode *p = T->mcode;
   MCode *pe = (MCode *)((char *)p + T->szmcode);
-  MCode *cstart = NULL;
+  MCode *cstart = nullptr;
   MCode *mcarea = lj_mcode_patch(J, p, 0);
   MCode *px = exitstub_trace_addr(T, exitno);
   int patchlong = 1;

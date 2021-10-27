@@ -626,7 +626,7 @@ int ogg_sync_check(ogg_sync_state *oy){
 }
 
 char *ogg_sync_buffer(ogg_sync_state *oy, long size){
-  if(ogg_sync_check(oy)) return NULL;
+  if(ogg_sync_check(oy)) return nullptr;
 
   /* first, clear out any space that has been previously returned */
   if(oy->returned){
@@ -647,7 +647,7 @@ char *ogg_sync_buffer(ogg_sync_state *oy, long size){
       ret=_ogg_malloc(newsize);
     if(!ret){
       ogg_sync_clear(oy);
-      return NULL;
+      return nullptr;
     }
     oy->data=ret;
     oy->storage=newsize;
@@ -1541,7 +1541,7 @@ void test_pack(const int *pl, const int **headers, int byteskip,
 
         fprintf(stderr,"%ld, ",pageno);
 
-        if(headers[pageno]==NULL){
+        if(headers[pageno]==nullptr){
           fprintf(stderr,"coded too many pages!\n");
           exit(1);
         }
@@ -1596,7 +1596,7 @@ void test_pack(const int *pl, const int **headers, int byteskip,
 
             /* packets out? */
             while(ogg_stream_packetpeek(&os_de,&op_de2)>0){
-              ogg_stream_packetpeek(&os_de,NULL);
+              ogg_stream_packetpeek(&os_de,nullptr);
               ogg_stream_packetout(&os_de,&op_de); /* just catching them all */
 
               /* verify peek and out match */
@@ -1644,11 +1644,11 @@ void test_pack(const int *pl, const int **headers, int byteskip,
     }
   }
   _ogg_free(data);
-  if(headers[pageno]!=NULL){
+  if(headers[pageno]!=nullptr){
     fprintf(stderr,"did not write last page!\n");
     exit(1);
   }
-  if(headers[pageout]!=NULL){
+  if(headers[pageout]!=nullptr){
     fprintf(stderr,"did not decode last page!\n");
     exit(1);
   }
@@ -1683,7 +1683,7 @@ int main(void){
   {
     /* 17 only */
     const int packets[]={17, -1};
-    const int *headret[]={head1_0,NULL};
+    const int *headret[]={head1_0,nullptr};
 
     fprintf(stderr,"testing single page encoding... ");
     test_pack(packets,headret,0,0,0);
@@ -1692,7 +1692,7 @@ int main(void){
   {
     /* 17, 254, 255, 256, 500, 510, 600 byte, pad */
     const int packets[]={17, 254, 255, 256, 500, 510, 600, -1};
-    const int *headret[]={head1_1,head2_1,NULL};
+    const int *headret[]={head1_1,head2_1,nullptr};
 
     fprintf(stderr,"testing basic page encoding... ");
     test_pack(packets,headret,0,0,0);
@@ -1701,7 +1701,7 @@ int main(void){
   {
     /* nil packets; beginning,middle,end */
     const int packets[]={0,17, 254, 255, 0, 256, 0, 500, 510, 600, 0, -1};
-    const int *headret[]={head1_2,head2_2,NULL};
+    const int *headret[]={head1_2,head2_2,nullptr};
 
     fprintf(stderr,"testing basic nil packets... ");
     test_pack(packets,headret,0,0,0);
@@ -1710,7 +1710,7 @@ int main(void){
   {
     /* large initial packet */
     const int packets[]={4345,259,255,-1};
-    const int *headret[]={head1_3,head2_3,NULL};
+    const int *headret[]={head1_3,head2_3,nullptr};
 
     fprintf(stderr,"testing initial-packet lacing > 4k... ");
     test_pack(packets,headret,0,0,0);
@@ -1720,7 +1720,7 @@ int main(void){
     /* continuing packet test; with page spill expansion, we have to
        overflow the lacing table. */
     const int packets[]={0,65500,259,255,-1};
-    const int *headret[]={head1_4,head2_4,head3_4,NULL};
+    const int *headret[]={head1_4,head2_4,head3_4,nullptr};
 
     fprintf(stderr,"testing single packet page span... ");
     test_pack(packets,headret,0,0,0);
@@ -1729,7 +1729,7 @@ int main(void){
   {
     /* spill expand packet test */
     const int packets[]={0,4345,259,255,0,0,-1};
-    const int *headret[]={head1_4b,head2_4b,head3_4b,NULL};
+    const int *headret[]={head1_4b,head2_4b,head3_4b,nullptr};
 
     fprintf(stderr,"testing page spill expansion... ");
     test_pack(packets,headret,0,0,0);
@@ -1770,7 +1770,7 @@ int main(void){
                    10,10,10,10,10,10,10,10,
                    10,10,10,10,10,10,10,10,
                    10,10,10,10,10,10,10,50,-1};
-    const int *headret[]={head1_5,head2_5,head3_5,NULL};
+    const int *headret[]={head1_5,head2_5,head3_5,nullptr};
 
     fprintf(stderr,"testing max packet segments... ");
     test_pack(packets,headret,0,0,0);
@@ -1779,7 +1779,7 @@ int main(void){
   {
     /* packet that overspans over an entire page */
     const int packets[]={0,100,130049,259,255,-1};
-    const int *headret[]={head1_6,head2_6,head3_6,head4_6,NULL};
+    const int *headret[]={head1_6,head2_6,head3_6,head4_6,nullptr};
 
     fprintf(stderr,"testing very large packets... ");
     test_pack(packets,headret,0,0,0);
@@ -1789,7 +1789,7 @@ int main(void){
     /* test for the libogg 1.1.1 resync in large continuation bug
        found by Josh Coalson)  */
     const int packets[]={0,100,130049,259,255,-1};
-    const int *headret[]={head1_6,head2_6,head3_6,head4_6,NULL};
+    const int *headret[]={head1_6,head2_6,head3_6,head4_6,nullptr};
 
     fprintf(stderr,"testing continuation resync in very large packets... ");
     test_pack(packets,headret,100,2,3);
@@ -1798,7 +1798,7 @@ int main(void){
   {
     /* term only page.  why not? */
     const int packets[]={0,100,64770,-1};
-    const int *headret[]={head1_7,head2_7,head3_7,NULL};
+    const int *headret[]={head1_7,head2_7,head3_7,nullptr};
 
     fprintf(stderr,"testing zero data page (1 nil packet)... ");
     test_pack(packets,headret,0,0,0);

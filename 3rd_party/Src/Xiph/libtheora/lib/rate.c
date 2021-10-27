@@ -319,7 +319,7 @@ void oc_rc_state_init(oc_rc_state *_rc,oc_enc_ctx *_enc){
   _rc->twopass=0;
   _rc->twopass_buffer_bytes=0;
   _rc->twopass_force_kf=0;
-  _rc->frame_metrics=NULL;
+  _rc->frame_metrics=nullptr;
   _rc->rate_bias=0;
   if(_enc->state.info.target_bitrate>0){
     /*The buffer size is set equal to the keyframe interval, clamped to the
@@ -379,26 +379,26 @@ void oc_enc_rc_resize(oc_enc_ctx *_enc){
     int buf_delay;
     int reset_window;
     buf_delay=_enc->rc.buf_delay;
-    reset_window=_enc->rc.frame_metrics==NULL&&(_enc->rc.frames_total[0]==0||
+    reset_window=_enc->rc.frame_metrics==nullptr&&(_enc->rc.frames_total[0]==0||
      buf_delay<_enc->rc.frames_total[0]+_enc->rc.frames_total[1]
      +_enc->rc.frames_total[2]);
     cfm=_enc->rc.cframe_metrics;
     /*Only try to resize the frame metrics buffer if a) it's too small and
        b) we were using a finite buffer, or are about to start.*/
-    if(cfm<buf_delay&&(_enc->rc.frame_metrics!=NULL||reset_window)){
+    if(cfm<buf_delay&&(_enc->rc.frame_metrics!=nullptr||reset_window)){
       oc_frame_metrics *fm;
       int               nfm;
       int               fmh;
       fm=(oc_frame_metrics *)_ogg_realloc(_enc->rc.frame_metrics,
        buf_delay*sizeof(*_enc->rc.frame_metrics));
-      if(fm==NULL){
+      if(fm==nullptr){
         /*We failed to allocate a finite buffer.*/
         /*If we don't have a valid 2-pass header yet, just return; we'll reset
            the buffer size when we read the header.*/
         if(_enc->rc.frames_total[0]==0)return;
         /*Otherwise revert to the largest finite buffer previously set, or to
            whole-file buffering if we were still using that.*/
-        _enc->rc.buf_delay=_enc->rc.frame_metrics!=NULL?
+        _enc->rc.buf_delay=_enc->rc.frame_metrics!=nullptr?
          cfm:_enc->rc.frames_total[0]+_enc->rc.frames_total[1]
          +_enc->rc.frames_total[2];
         oc_enc_rc_resize(_enc);
@@ -533,7 +533,7 @@ int oc_enc_select_qi(oc_enc_ctx *_enc,int _qti,int _clamp){
            save the position of the last keyframe in the summary data and do it
            with a whole-file buffer as well, but it isn't likely to make a
            difference.*/
-        if(_enc->rc.frame_metrics!=NULL){
+        if(_enc->rc.frame_metrics!=nullptr){
           int fmi;
           int fm_tail;
           fm_tail=_enc->rc.frame_metrics_head+_enc->rc.nframe_metrics;
@@ -736,7 +736,7 @@ int oc_enc_update_rc_state(oc_enc_ctx *_enc,
   dropped=0;
   /* Drop frames also disabled for now in the case of infinite-buffer
      two-pass mode */
-  if(!_enc->rc.drop_frames||_enc->rc.twopass&&_enc->rc.frame_metrics==NULL){
+  if(!_enc->rc.drop_frames||_enc->rc.twopass&&_enc->rc.frame_metrics==nullptr){
     _droppable=0;
   }
   buf_delta=_enc->rc.bits_per_frame*(1+_enc->dup_count);
@@ -780,7 +780,7 @@ int oc_enc_update_rc_state(oc_enc_ctx *_enc,
         _enc->rc.scale_sum[qti]-=oc_bexp_q24(_enc->rc.prev_metrics.log_scale);
         _enc->rc.scale_window0=(int)next_frame_num;
         /*Free the corresponding entry in the circular buffer.*/
-        if(_enc->rc.frame_metrics!=NULL){
+        if(_enc->rc.frame_metrics!=nullptr){
           _enc->rc.nframe_metrics--;
           _enc->rc.frame_metrics_head++;
           if(_enc->rc.frame_metrics_head>=_enc->rc.cframe_metrics){
@@ -792,7 +792,7 @@ int oc_enc_update_rc_state(oc_enc_ctx *_enc,
         /*Update state, so the user doesn't have to keep calling 2pass_in after
            they've fed in all the data when we're using a finite buffer.*/
         _enc->prev_dup_count=_enc->dup_count;
-        oc_enc_rc_2pass_in(_enc,NULL,0);
+        oc_enc_rc_2pass_in(_enc,nullptr,0);
       }
     }break;
   }
@@ -917,7 +917,7 @@ int oc_enc_rc_2pass_out(oc_enc_ctx *_enc,unsigned char **_buf){
   }
   else{
     /*The data for this frame has already been retrieved.*/
-    *_buf=NULL;
+    *_buf=nullptr;
     return 0;
   }
   *_buf=_enc->rc.twopass_buffer;
@@ -964,7 +964,7 @@ int oc_enc_rc_2pass_in(oc_enc_ctx *_enc,unsigned char *_buf,size_t _bytes){
       int frames_needed;
       /*If we're using a whole-file buffer, we just need the first frame.
         Otherwise, we may need as many as one per buffer slot.*/
-      frames_needed=_enc->rc.frame_metrics==NULL?1:_enc->rc.buf_delay;
+      frames_needed=_enc->rc.frame_metrics==nullptr?1:_enc->rc.buf_delay;
       return OC_RC_2PASS_HDR_SZ+frames_needed*OC_RC_2PASS_PACKET_SZ
        -_enc->rc.twopass_buffer_fill;
     }
@@ -1005,7 +1005,7 @@ int oc_enc_rc_2pass_in(oc_enc_ctx *_enc,unsigned char *_buf,size_t _bytes){
       _enc->rc.frames_left[1]=_enc->rc.frames_total[1];
       _enc->rc.frames_left[2]=_enc->rc.frames_total[2];
       /*If the user hasn't specified a buffer size, use the whole file.*/
-      if(_enc->rc.frame_metrics==NULL){
+      if(_enc->rc.frame_metrics==nullptr){
         _enc->rc.buf_delay=buf_delay;
         _enc->rc.nframes[0]=_enc->rc.frames_total[0];
         _enc->rc.nframes[1]=_enc->rc.frames_total[1];
@@ -1042,7 +1042,7 @@ int oc_enc_rc_2pass_in(oc_enc_ctx *_enc,unsigned char *_buf,size_t _bytes){
       _enc->rc.twopass_buffer_bytes=0;
     }
     else if(_enc->rc.twopass_buffer_bytes==0){
-      if(_enc->rc.frame_metrics==NULL){
+      if(_enc->rc.frame_metrics==nullptr){
         /*We're using a whole-file buffer:*/
         if(!_buf)return OC_RC_2PASS_PACKET_SZ-_enc->rc.twopass_buffer_fill;
         consumed=oc_rc_buffer_fill(&_enc->rc,

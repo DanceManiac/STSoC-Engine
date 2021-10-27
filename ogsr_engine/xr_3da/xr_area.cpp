@@ -100,15 +100,15 @@ CObjectSpace::CObjectSpace	( )
 #endif // PROFILE_CRITICAL_SECTIONS
 {
 #ifdef DEBUG
-	sh_debug.create				("debug\\wireframe","$null");
+	sh_debug.create				("debug\\wireframe","$nullptr");
 #endif
 	m_BoundingVolume.invalidate	();
 }
 //----------------------------------------------------------------------
 CObjectSpace::~CObjectSpace	( )
 {
-	Sound->set_geometry_occ		(NULL);
-	Sound->set_handler			(NULL);
+	Sound->set_geometry_occ		(nullptr);
+	Sound->set_handler			(nullptr);
 #ifdef DEBUG
 	sh_debug.destroy			();
 #endif

@@ -319,7 +319,7 @@ local function formatk(tr, idx, sn)
   local s
   if tn == "number" then
     if t < 12 then
-      s = k == 0 and "NULL" or format("[0x%08x]", k)
+      s = k == 0 and "nullptr" or format("[0x%08x]", k)
     elseif band(sn or 0, 0x30000) ~= 0 then
       s = band(sn, 0x20000) ~= 0 and "contpc" or "ftsz"
     elseif k == 2^52+2^51 then
@@ -338,7 +338,7 @@ local function formatk(tr, idx, sn)
       s = format("userdata:%p", k)
     else
       s = format("[%p]", k)
-      if s == "[NULL]" then s = "NULL" end
+      if s == "[nullptr]" then s = "nullptr" end
     end
   elseif t == 21 then -- int64_t
     s = sub(tostring(k), 1, -3)

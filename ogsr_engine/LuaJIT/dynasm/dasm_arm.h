@@ -88,18 +88,18 @@ void dasm_init(Dst_DECL, int maxsection)
   dasm_State *D;
   size_t psz = 0;
   int i;
-  Dst_REF = NULL;
+  Dst_REF = nullptr;
   DASM_M_GROW(Dst, struct dasm_State, Dst_REF, psz, DASM_PSZ(maxsection));
   D = Dst_REF;
   D->psize = psz;
-  D->lglabels = NULL;
+  D->lglabels = nullptr;
   D->lgsize = 0;
-  D->pclabels = NULL;
+  D->pclabels = nullptr;
   D->pcsize = 0;
-  D->globals = NULL;
+  D->globals = nullptr;
   D->maxsection = maxsection;
   for (i = 0; i < maxsection; i++) {
-    D->sections[i].buf = NULL;  /* Need this for pass3. */
+    D->sections[i].buf = nullptr;  /* Need this for pass3. */
     D->sections[i].rbuf = D->sections[i].buf - DASM_SEC2POS(i);
     D->sections[i].bsize = 0;
     D->sections[i].epos = 0;  /* Wrong, but is recalculated after resize. */

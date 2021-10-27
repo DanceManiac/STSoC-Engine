@@ -133,7 +133,7 @@ bool CSheduler::internal_Unregister	(ISheduled* O, BOOL RT, bool warn_on_not_fou
 #ifdef DEBUG_SCHEDULER
 				Msg					("SCHEDULER: internal unregister [%s][%x][%s]",*Items[i].scheduled_name,O,"false");
 #endif // DEBUG_SCHEDULER
-				Items[i].Object	= NULL;
+				Items[i].Object	= nullptr;
 				return				(true);
 			}
 		}
@@ -295,7 +295,7 @@ void CSheduler::ProcessStep			()
 #ifndef DEBUG
 		__try {
 #endif // DEBUG
-			condition				= (NULL==T.Object || !T.Object->shedule_Needed());
+			condition				= (nullptr==T.Object || !T.Object->shedule_Needed());
 #ifndef DEBUG
 		}
 		__except(ExceptStackTrace("[CSheduler::ProcessStep] stack trace:\n")) {

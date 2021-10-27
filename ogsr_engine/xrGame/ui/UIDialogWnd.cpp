@@ -13,7 +13,7 @@
 
 CUIDialogWnd:: CUIDialogWnd()
 {
-	m_pHolder		= NULL;
+	m_pHolder		= nullptr;
 	m_bWorkInPause	= false;
 	Hide			();
 }

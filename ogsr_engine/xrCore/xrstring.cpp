@@ -3,7 +3,7 @@
 
 #include "xrstring.h"
 
-XRCORE_API	extern		str_container*	g_pStringContainer	= NULL;
+XRCORE_API	extern		str_container*	g_pStringContainer	= nullptr;
 
 //#define		HEADER		12			// ref + len + crc
 const int HEADER = sizeof(str_value);

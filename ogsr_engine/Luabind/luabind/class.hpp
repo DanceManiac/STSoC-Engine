@@ -120,14 +120,14 @@ namespace luabind
 	struct class_;
 
 /*    template <typename... Ts>
-    detail::null_type* get_const_holder(Ts&&...)
+    detail::nullptr_type* get_const_holder(Ts&&...)
     {
         static_assert(imdexlib::false_v<Ts...>, "this function will only be invoked if the user hasn't defined a correct overload");
         return nullptr;
     }*/
     // TODO: this function will only be invoked if the user hasn't defined a correct overload
     // maybe we should have a static assert in here?
-    inline detail::null_type* get_const_holder(...)
+    inline detail::nullptr_type* get_const_holder(...)
     {
         return nullptr;
     }
@@ -277,7 +277,7 @@ namespace luabind
 		};
 
 		template<>
-		struct internal_holder_extractor<detail::null_type>
+		struct internal_holder_extractor<detail::nullptr_type>
 		{
 			using extractor_fun = void*(*)(void*);
 
@@ -312,7 +312,7 @@ namespace luabind
 		};
 
 		template<>
-		struct const_converter<detail::null_type>
+		struct const_converter<detail::nullptr_type>
 		{
 			using converter_fun = void(*)(void*, void*);
 
@@ -345,7 +345,7 @@ namespace luabind
 		};
 
 		template<>
-		struct internal_const_holder_extractor<detail::null_type>
+		struct internal_const_holder_extractor<detail::nullptr_type>
 		{
 			using extractor_fun = const void*(*)(void*);
 
@@ -371,7 +371,7 @@ namespace luabind
 		};
 
 		template<>
-		struct internal_holder_type<detail::null_type>
+		struct internal_holder_type<detail::nullptr_type>
 		{
 			static LUABIND_TYPE_INFO apply()
 			{
@@ -415,7 +415,7 @@ namespace luabind
 		};
 
 		template<>
-		struct holder_constructor<detail::null_type>
+		struct holder_constructor<detail::nullptr_type>
 		{
 			using constructor = void(*)(void*,void*);
 			template<typename T>
@@ -448,7 +448,7 @@ namespace luabind
 		};
 
 		template<>
-		struct const_holder_constructor<detail::null_type>
+		struct const_holder_constructor<detail::nullptr_type>
 		{
 			using constructor = void(*)(void*,void*);
 			template<typename T>
@@ -474,7 +474,7 @@ namespace luabind
 		};
 
 		template<>
-		struct holder_default_constructor<detail::null_type>
+		struct holder_default_constructor<detail::nullptr_type>
 		{
 			using constructor = void(*)(void*);
 			template<typename T>
@@ -509,7 +509,7 @@ namespace luabind
 		};
 
 		template<>
-		struct const_holder_default_constructor<detail::null_type>
+		struct const_holder_default_constructor<detail::nullptr_type>
 		{
 			using constructor = void(*)(void*);
 			template<typename T>
@@ -537,7 +537,7 @@ namespace luabind
 		};
 
 		template <>
-		struct internal_holder_size<detail::null_type>
+		struct internal_holder_size<detail::nullptr_type>
 		{
 			static int apply() {	return 0; }
 		};
@@ -559,7 +559,7 @@ namespace luabind
 
 		// if we don't have a held type, return the destructor of the raw type
 		template<>
-		struct internal_holder_destructor<detail::null_type>
+		struct internal_holder_destructor<detail::nullptr_type>
 		{
 			using destructor_t = void(*)(void*);
 			template<typename T>
@@ -593,7 +593,7 @@ namespace luabind
 
 		// if we don't have a held type, return the destructor of the raw type
 		template<>
-		struct internal_const_holder_destructor<detail::null_type>
+		struct internal_const_holder_destructor<detail::nullptr_type>
 		{
 			using destructor_t = void(*)(void*);
 			template<typename T>
@@ -624,7 +624,7 @@ namespace luabind
 		};
 
 		template<>
-		struct get_holder_alignment<detail::null_type>
+		struct get_holder_alignment<detail::nullptr_type>
 		{
 			static int apply()
 			{
@@ -829,13 +829,13 @@ namespace luabind
         // WrappedType MUST inherit from T
         using WrappedType = typename detail::extract_parameter<
             WrappedTypePredicate,
-            detail::null_type,
+            detail::nullptr_type,
             Xs...
         >::type;
 
         using HeldType = typename detail::extract_parameter<
             HeldTypePredicate,
-            detail::null_type,
+            detail::nullptr_type,
             Xs...
         >::type;
 
@@ -898,7 +898,7 @@ namespace luabind
 		class_&& def(constructor<Ts...> sig) &&
 		{
             return std::move(*this).def_constructor(
-                std::is_same<WrappedType, detail::null_type>(), sig, detail::policy_cons<>()
+                std::is_same<WrappedType, detail::nullptr_type>(), sig, detail::policy_cons<>()
 			);
 		}
 
@@ -906,7 +906,7 @@ namespace luabind
 		class_&& def(constructor<Ts...> sig, const detail::policy_cons<Policies...> policies) &&
 		{
             return std::move(*this).def_constructor(
-				std::is_same<WrappedType, detail::null_type>(), sig, policies
+				std::is_same<WrappedType, detail::nullptr_type>(), sig, policies
 			);
 		}
 
@@ -1178,7 +1178,7 @@ namespace luabind
 		class_&& virtual_def(char const* name, const F fn, Default const& default_, const detail::policy_cons<Policies...> policies, std::false_type /*is policy_cons*/) &&
 		{
 			// default_ is a default implementation
-			// policies is either null_type or a policy list
+			// policies is either nullptr_type or a policy list
 
 			// normal def() call
 
@@ -1259,7 +1259,7 @@ namespace luabind
 
 		void set_back_reference(detail::default_back_reference*)
 		{
-			back_reference<T>::has_wrapper = !std::is_same_v<WrappedType, detail::null_type>;
+			back_reference<T>::has_wrapper = !std::is_same_v<WrappedType, detail::nullptr_type>;
 		}
 
 		void set_back_reference(void*) const
@@ -1274,7 +1274,7 @@ namespace luabind
             return &detail::adopt_function<T, W>::execute;
 		}
 
-		adopt_fun_t get_adopt_fun(detail::null_type*)
+		adopt_fun_t get_adopt_fun(detail::nullptr_type*)
 		{
 			return nullptr;
 		}

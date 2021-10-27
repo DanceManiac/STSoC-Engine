@@ -27,7 +27,7 @@ extern "C" {
 //  pSrcFile
 //      Source file name.
 //  hSrcModule
-//      Module handle. if NULL, current module will be used.
+//      Module handle. if nullptr, current module will be used.
 //  pSrcResource
 //      Resource name in module.
 //  pSrcData
@@ -35,10 +35,10 @@ extern "C" {
 //  SrcDataLen
 //      Size of source code, in bytes.
 //  pDefines
-//      Optional NULL-terminated array of preprocessor macro definitions.
+//      Optional nullptr-terminated array of preprocessor macro definitions.
 //  pInclude
 //      Optional interface pointer to use for handling #include directives.
-//      If this parameter is NULL, #includes will be honored when compiling
+//      If this parameter is nullptr, #includes will be honored when compiling
 //      from file, and will error when compiling from resource or memory.
 //  pFunctionName
 //      Name of the entrypoint function where execution should begin.
@@ -67,8 +67,8 @@ extern "C" {
 //      these are the same messages you will see in your debug output.
 //  pHResult
 //      Pointer to a memory location to receive the return value upon completion.
-//      Maybe NULL if not needed.
-//      If pPump != NULL, pHResult must be a valid memory location until the
+//      Maybe nullptr if not needed.
+//      If pPump != nullptr, pHResult must be a valid memory location until the
 //      the asynchronous execution completes.
 //----------------------------------------------------------------------------
 

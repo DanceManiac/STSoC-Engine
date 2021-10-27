@@ -3,7 +3,7 @@
 #include "xr_input.h"
 #include "IInputReceiver.h"
 
-CInput *	pInput	= NULL;
+CInput *	pInput	= nullptr;
 IInputReceiver		dummyController;
 
 ENGINE_API float	psMouseSens			= 1.f;
@@ -20,9 +20,9 @@ CInput::CInput(bool bExclusive, int deviceForInit)
 
 	Log("Starting INPUT device...");
 
-	pDI 								=	NULL;
-	pMouse								=	NULL;
-	pKeyboard							=	NULL;
+	pDI 								=	nullptr;
+	pMouse								=	nullptr;
+	pKeyboard							=	nullptr;
 
 	//=====================Mouse
 	mouse_property.mouse_dt				=	25;
@@ -36,7 +36,7 @@ CInput::CInput(bool bExclusive, int deviceForInit)
 	//===================== Dummy pack
 	iCapture	(&dummyController);
 
-	if (!pDI) CHK_DX(DirectInput8Create( GetModuleHandle(NULL), DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&pDI, NULL ));
+	if (!pDI) CHK_DX(DirectInput8Create( GetModuleHandle(nullptr), DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&pDI, nullptr ));
 
 	// KEYBOARD
 	if (deviceForInit & keyboard_device_key)
@@ -85,8 +85,8 @@ CInput::~CInput(void)
 HRESULT CInput::CreateInputDevice( LPDIRECTINPUTDEVICE8* device, GUID guidDevice, const DIDATAFORMAT* pdidDataFormat, u32 dwFlags, u32 buf_size )
 {
 	// Obtain an interface to the input device
-//.	CHK_DX( pDI->CreateDeviceEx( guidDevice, IID_IDirectInputDevice8, (void**)device, NULL ) );
-	CHK_DX( pDI->CreateDevice( guidDevice, /*IID_IDirectInputDevice8,*/ device, NULL ) );
+//.	CHK_DX( pDI->CreateDeviceEx( guidDevice, IID_IDirectInputDevice8, (void**)device, nullptr ) );
+	CHK_DX( pDI->CreateDevice( guidDevice, /*IID_IDirectInputDevice8,*/ device, nullptr ) );
 
 	// Set the device data format. Note: a data format specifies which
 	// controls on a device we are interested in, and how they should be
@@ -433,7 +433,7 @@ IInputReceiver*	 CInput::CurrentIR()
 	if(cbStack.size())
 		return cbStack.back();
 	else
-		return NULL;
+		return nullptr;
 }
 
 char CInput::DikToChar(int dik)

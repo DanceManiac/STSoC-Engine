@@ -107,7 +107,7 @@ void CPolterSpecialAbility::on_hit(SHit* pHDS)
 void CPoltergeist::PhysicalImpulse	(const Fvector &position)
 {
 	m_nearest.clear		();
-	Level().ObjectSpace.GetNearest	(m_nearest,position, IMPULSE_RADIUS, NULL); 
+	Level().ObjectSpace.GetNearest	(m_nearest,position, IMPULSE_RADIUS, nullptr); 
 	if (m_nearest.empty())			return;
 	
 	u32 index = Random.randI		((u32)m_nearest.size());

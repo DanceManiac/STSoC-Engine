@@ -207,7 +207,7 @@ int luabind::detail::class_rep::gettable(lua_State* L)
 	{
 		{
 			string_class msg("luabind does not support "
-				"member names with extra nulls:\n");
+				"member names with extra nullptrs:\n");
 			msg += string_class(lua_tostring(L, 2), lua_strlen(L, 2));
 			lua_pushstring(L, msg.c_str());
 		}
@@ -216,7 +216,7 @@ int luabind::detail::class_rep::gettable(lua_State* L)
 
 #endif
 
-	// special case to see if this is a null-pointer
+	// special case to see if this is a nullptr-pointer
 	if (key && !std::strcmp(key, "__ok"))
 	{
 		class_rep* crep = obj->crep();
@@ -1169,7 +1169,7 @@ int luabind::detail::class_rep::lua_class_settable(lua_State* L)
 
 	// we have to ignore the first argument since this may point to
 	// a method that is not present in this class (but in a subclass)
-	// BUG: This will not work with keys with extra nulls in them
+	// BUG: This will not work with keys with extra nullptrs in them
 	const char* key = lua_tostring(L, 2);
 
 
@@ -1177,7 +1177,7 @@ int luabind::detail::class_rep::lua_class_settable(lua_State* L)
 
 	// if the strlen(key) is not the true length,
 	// it means that the member-name contains
-	// extra nulls. luabind does not support such
+	// extra nullptrs. luabind does not support such
 	// names as member names. So, use the lua
 	// table as fall-back
 	if (j == crep->m_setters.end()

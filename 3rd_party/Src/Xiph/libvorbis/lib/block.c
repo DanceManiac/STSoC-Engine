@@ -90,7 +90,7 @@ int vorbis_block_init(vorbis_dsp_state *v, vorbis_block *vb){
   memset(vb,0,sizeof(*vb));
   vb->vd=v;
   vb->localalloc=0;
-  vb->localstore=NULL;
+  vb->localstore=nullptr;
   if(v->analysisp){
     vorbis_block_internal *vbi=
       vb->internal=_ogg_calloc(1,sizeof(vorbis_block_internal));
@@ -153,7 +153,7 @@ void _vorbis_block_ripcord(vorbis_block *vb){
 
   /* pull the ripcord */
   vb->localtop=0;
-  vb->reap=NULL;
+  vb->reap=nullptr;
 }
 
 int vorbis_block_clear(vorbis_block *vb){
@@ -181,10 +181,10 @@ int vorbis_block_clear(vorbis_block *vb){
 static int _vds_shared_init(vorbis_dsp_state *v,vorbis_info *vi,int encp){
   int i;
   codec_setup_info *ci=vi->codec_setup;
-  private_state *b=NULL;
+  private_state *b=nullptr;
   int hs;
 
-  if(ci==NULL) return 1;
+  if(ci==nullptr) return 1;
   hs=ci->halfrate_flag;
 
   memset(v,0,sizeof(*v));
@@ -235,13 +235,13 @@ static int _vds_shared_init(vorbis_dsp_state *v,vorbis_info *vi,int encp){
     if(!ci->fullbooks){
       ci->fullbooks=_ogg_calloc(ci->books,sizeof(*ci->fullbooks));
       for(i=0;i<ci->books;i++){
-        if(ci->book_param[i]==NULL)
+        if(ci->book_param[i]==nullptr)
           goto abort_books;
         if(vorbis_book_init_decode(ci->fullbooks+i,ci->book_param[i]))
           goto abort_books;
         /* decode codebooks are now standalone after init */
         vorbis_staticbook_destroy(ci->book_param[i]);
-        ci->book_param[i]=NULL;
+        ci->book_param[i]=nullptr;
       }
     }
   }
@@ -282,9 +282,9 @@ static int _vds_shared_init(vorbis_dsp_state *v,vorbis_info *vi,int encp){
   return 0;
  abort_books:
   for(i=0;i<ci->books;i++){
-    if(ci->book_param[i]!=NULL){
+    if(ci->book_param[i]!=nullptr){
       vorbis_staticbook_destroy(ci->book_param[i]);
-      ci->book_param[i]=NULL;
+      ci->book_param[i]=nullptr;
     }
   }
   vorbis_dsp_clear(v);
@@ -293,7 +293,7 @@ static int _vds_shared_init(vorbis_dsp_state *v,vorbis_info *vi,int encp){
 
 /* arbitrary settings and spec-mandated numbers get filled in here */
 int vorbis_analysis_init(vorbis_dsp_state *v,vorbis_info *vi){
-  private_state *b=NULL;
+  private_state *b=nullptr;
 
   if(_vds_shared_init(v,vi,1))return 1;
   b=v->backend_state;
@@ -316,7 +316,7 @@ void vorbis_dsp_clear(vorbis_dsp_state *v){
   int i;
   if(v){
     vorbis_info *vi=v->vi;
-    codec_setup_info *ci=(vi?vi->codec_setup:NULL);
+    codec_setup_info *ci=(vi?vi->codec_setup:nullptr);
     private_state *b=v->backend_state;
 
     if(b){
@@ -392,9 +392,9 @@ float **vorbis_analysis_buffer(vorbis_dsp_state *v, int vals){
   private_state *b=v->backend_state;
 
   /* free header, header1, header2 */
-  if(b->header)_ogg_free(b->header);b->header=NULL;
-  if(b->header1)_ogg_free(b->header1);b->header1=NULL;
-  if(b->header2)_ogg_free(b->header2);b->header2=NULL;
+  if(b->header)_ogg_free(b->header);b->header=nullptr;
+  if(b->header1)_ogg_free(b->header1);b->header1=nullptr;
+  if(b->header2)_ogg_free(b->header2);b->header2=nullptr;
 
   /* Do we have enough storage space for the requested buffer? If not,
      expand the PCM (and envelope) storage */
@@ -933,7 +933,7 @@ int vorbis_synthesis_blockin(vorbis_dsp_state *v,vorbis_block *vb){
 
 }
 
-/* pcm==NULL indicates we just want the pending samples, no more */
+/* pcm==nullptr indicates we just want the pending samples, no more */
 int vorbis_synthesis_pcmout(vorbis_dsp_state *v,float ***pcm){
   vorbis_info *vi=v->vi;
 
@@ -1041,6 +1041,6 @@ const float *vorbis_window(vorbis_dsp_state *v,int W){
   int hs=ci->halfrate_flag;
   private_state *b=v->backend_state;
 
-  if(b->window[W]-1<0)return NULL;
+  if(b->window[W]-1<0)return nullptr;
   return _vorbis_window_get(b->window[W]-hs);
 }

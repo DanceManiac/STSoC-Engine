@@ -38,7 +38,7 @@ public:
 					CUIScrollView		();
 	virtual			~CUIScrollView		();
 			void	Init				();// need parent to be initialized
-	virtual void	SendMessage			(CUIWindow* pWnd, s16 msg, void* pData = NULL);
+	virtual void	SendMessage			(CUIWindow* pWnd, s16 msg, void* pData = nullptr);
 	virtual bool	OnMouse				(float x, float y, EUIMessages mouse_action);
 	virtual void	Draw				();
 	virtual void	Update				();

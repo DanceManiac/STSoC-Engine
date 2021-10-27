@@ -262,11 +262,11 @@ struct dxJointFixed : public dxJoint {
 extern struct dxJoint::Vtable __dfixed_vtable;
 
 
-// null joint, for testing only
+// nullptr joint, for testing only
 
-struct dxJointNull : public dxJoint {
+struct dxJointnullptr : public dxJoint {
 };
-extern struct dxJoint::Vtable __dnull_vtable;
+extern struct dxJoint::Vtable __dnullptr_vtable;
 
 
 

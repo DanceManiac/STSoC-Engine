@@ -83,15 +83,15 @@ typedef struct ASMState {
   int32_t gcsteps;	/* Accumulated number of GC steps (per section). */
 
   GCtrace *T;		/* Trace to assemble. */
-  GCtrace *parent;	/* Parent trace (or NULL). */
+  GCtrace *parent;	/* Parent trace (or nullptr). */
 
   MCode *mcbot;		/* Bottom of reserved MCode. */
   MCode *mctop;		/* Top of generated MCode. */
   MCode *mctoporig;	/* Original top of generated MCode. */
-  MCode *mcloop;	/* Pointer to loop MCode (or NULL). */
-  MCode *invmcp;	/* Points to invertible loop branch (or NULL). */
+  MCode *mcloop;	/* Pointer to loop MCode (or nullptr). */
+  MCode *invmcp;	/* Points to invertible loop branch (or nullptr). */
   MCode *flagmcp;	/* Pending opportunity to merge flag setting ins. */
-  MCode *realign;	/* Realign loop if not NULL. */
+  MCode *realign;	/* Realign loop if not nullptr. */
 
 #ifdef RID_NUM_KREF
   intptr_t krefk[RID_NUM_KREF];
@@ -209,7 +209,7 @@ static const char *const ra_regname[] = {
   GPRDEF(RIDNAME)
   FPRDEF(RIDNAME)
   VRIDDEF(RIDNAME)
-  NULL
+  nullptr
 };
 #undef RIDNAME
 
@@ -221,8 +221,8 @@ static MCode *ra_dbg_mcp;
 static void ra_dstart(void)
 {
   ra_dbg_p = ra_dbg_buf;
-  ra_dbg_merge = NULL;
-  ra_dbg_mcp = NULL;
+  ra_dbg_merge = nullptr;
+  ra_dbg_mcp = nullptr;
 }
 
 static void ra_dflush(void)
@@ -237,11 +237,11 @@ static void ra_dprintf(ASMState *as, const char *fmt, ...)
   va_list argp;
   va_start(argp, fmt);
   p = ra_dbg_mcp == as->mcp ? ra_dbg_merge : ra_dbg_p;
-  ra_dbg_mcp = NULL;
+  ra_dbg_mcp = nullptr;
   p += sprintf(p, "%08x  \e[36m%04d ", (uintptr_t)as->mcp, as->curins-REF_BIAS);
   for (;;) {
     const char *e = strchr(fmt, '$');
-    if (e == NULL) break;
+    if (e == nullptr) break;
     memcpy(p, fmt, (size_t)(e-fmt));
     p += e-fmt;
     if (e[1] == 'r') {
@@ -372,7 +372,7 @@ static Reg ra_rematk(ASMState *as, IRRef ref)
 #endif
   } else {
     lj_assertA(ir->o == IR_KINT || ir->o == IR_KGC ||
-	       ir->o == IR_KPTR || ir->o == IR_KKPTR || ir->o == IR_KNULL,
+	       ir->o == IR_KPTR || ir->o == IR_KKPTR || ir->o == IR_Knullptr,
 	       "rematk of bad IR op %d", ir->o);
     emit_loadi(as, r, ir->i);
   }
@@ -772,7 +772,7 @@ static void ra_left(ASMState *as, Reg dest, IRRef lref)
 #endif
       } else if (ir->o != IR_KPRI) {
 	lj_assertA(ir->o == IR_KINT || ir->o == IR_KGC ||
-		   ir->o == IR_KPTR || ir->o == IR_KKPTR || ir->o == IR_KNULL,
+		   ir->o == IR_KPTR || ir->o == IR_KKPTR || ir->o == IR_Knullptr,
 		   "K%03d has bad IR op %d", REF_BIAS - lref, ir->o);
 	emit_loadi(as, dest, ir->i);
 	return;
@@ -1636,7 +1636,7 @@ static void asm_loop(ASMState *as)
   if (as->gcsteps)
     asm_gc_check(as);
   /* LOOP marks the transition from the variant to the invariant part. */
-  as->flagmcp = as->invmcp = NULL;
+  as->flagmcp = as->invmcp = nullptr;
   as->sectref = 0;
   if (!neverfuse(as)) as->fuseref = 0;
   asm_phi_shuffle(as);
@@ -2121,7 +2121,7 @@ static void asm_tail_link(ASMState *as)
 
   /* Root traces that add frames need to check the stack at the end. */
   if (!as->parent && gotframe)
-    asm_stack_check(as, as->topslot, NULL, as->freeset & RSET_GPR, snapno);
+    asm_stack_check(as, as->topslot, nullptr, as->freeset & RSET_GPR, snapno);
 }
 
 /* -- Trace setup --------------------------------------------------------- */
@@ -2146,7 +2146,7 @@ static void asm_setup_regsp(ASMState *as)
   /* Clear reg/sp for constants. */
   for (ir = IR(T->nk), lastir = IR(REF_BASE); ir < lastir; ir++) {
     ir->prev = REGSP_INIT;
-    if (irt_is64(ir->t) && ir->o != IR_KNULL) {
+    if (irt_is64(ir->t) && ir->o != IR_Knullptr) {
 #if LJ_GC64
       /* The false-positive of irt_is64() for ASMREF_L (REF_NIL) is OK here. */
       ir->i = 0;  /* Will become non-zero only for RIP-relative addresses. */
@@ -2428,9 +2428,9 @@ void lj_asm_trace(jit_State *J, GCtrace *T)
   J->curfinal = lj_trace_alloc(J->L, T);  /* This copies the IR, too. */
   as->flags = J->flags;
   as->loopref = J->loopref;
-  as->realign = NULL;
+  as->realign = nullptr;
   as->loopinv = 0;
-  as->parent = J->parent ? traceref(J, J->parent) : NULL;
+  as->parent = J->parent ? traceref(J, J->parent) : nullptr;
 
   /* Reserve MCode memory. */
   as->mctop = as->mctoporig = lj_mcode_reserve(J, &as->mcbot);
@@ -2478,8 +2478,8 @@ void lj_asm_trace(jit_State *J, GCtrace *T)
 
     /* General trace setup. Emit tail of trace. */
     asm_tail_prep(as);
-    as->mcloop = NULL;
-    as->flagmcp = NULL;
+    as->mcloop = nullptr;
+    as->flagmcp = nullptr;
     as->topslot = 0;
     as->gcsteps = 0;
     as->sectref = as->loopref;
@@ -2537,9 +2537,9 @@ void lj_asm_trace(jit_State *J, GCtrace *T)
 
     /* Otherwise try again with a bigger IR. */
     lj_trace_free(J2G(J), J->curfinal);
-    J->curfinal = NULL;  /* In case lj_trace_alloc() OOMs. */
+    J->curfinal = nullptr;  /* In case lj_trace_alloc() OOMs. */
     J->curfinal = lj_trace_alloc(J->L, T);
-    as->realign = NULL;
+    as->realign = nullptr;
   }
 
   RA_DBGX((as, "===== START ===="));

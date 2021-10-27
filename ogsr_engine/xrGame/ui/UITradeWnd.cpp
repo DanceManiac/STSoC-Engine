@@ -78,14 +78,14 @@ bool others_zero_trade;
 
 CUITradeWnd::CUITradeWnd()
 	:	m_bDealControlsVisible	(false),
-		m_pTrade(NULL),
-		m_pOthersTrade(NULL),
+		m_pTrade(nullptr),
+		m_pOthersTrade(nullptr),
 		bStarted(false)
 {
 	m_uidata = xr_new<CUITradeInternal>();
 	Init();
 	Hide();
-	SetCurrentItem			(NULL);
+	SetCurrentItem			(nullptr);
         others_zero_trade = !!READ_IF_EXISTS( pSettings, r_bool, "trade", "others_zero_trade", false );
 }
 
@@ -181,7 +181,7 @@ void CUITradeWnd::Init()
 	m_pUIPropertiesBox->Init(0, 0, 300, 300);
 	m_pUIPropertiesBox->Hide();
 
-	m_uidata->UIDealMsg					= NULL;
+	m_uidata->UIDealMsg					= nullptr;
 
 	BindDragDropListEvents				(&m_uidata->UIOurBagList);
 	BindDragDropListEvents				(&m_uidata->UIOthersBagList);
@@ -278,7 +278,7 @@ void CUITradeWnd::Update()
 		if( !m_uidata->UIDealMsg->IsActual()){
 			HUD().GetUI()->UIGame()->RemoveCustomStatic("not_enough_money_mine");
 			HUD().GetUI()->UIGame()->RemoveCustomStatic("not_enough_money_other");
-			m_uidata->UIDealMsg			= NULL;
+			m_uidata->UIDealMsg			= nullptr;
 		}
 	}
 }
@@ -290,9 +290,9 @@ void CUITradeWnd::Show()
 	inherited::Show					(true);
 	inherited::Enable				(true);
 
-	SetCurrentItem					(NULL);
+	SetCurrentItem					(nullptr);
 	ResetAll						();
-	m_uidata->UIDealMsg				= NULL;
+	m_uidata->UIDealMsg				= nullptr;
 
 	if (Core.Features.test(xrCore::Feature::engine_ammo_repacker) && !Core.Features.test(xrCore::Feature::hard_ammo_reload))
 		if (auto pActor = Actor())
@@ -307,7 +307,7 @@ void CUITradeWnd::Hide()
 	if(bStarted)
 		StopTrade					();
 	
-	m_uidata->UIDealMsg				= NULL;
+	m_uidata->UIDealMsg				= nullptr;
 
 	if(HUD().GetUI()->UIGame()){
 		HUD().GetUI()->UIGame()->RemoveCustomStatic("not_enough_money_mine");
@@ -475,7 +475,7 @@ void CUITradeWnd::PerformTrade()
 
 		m_uidata->UIDealMsg->m_endTime	= Device.fTimeGlobal+2.0f;// sec
 	}
-	SetCurrentItem			(NULL);
+	SetCurrentItem			(nullptr);
 }
 
 #include "../xr_level_controller.h"
@@ -512,7 +512,7 @@ void CUITradeWnd::ActivatePropertiesBox()
 
 	bool hasMany = CurrentItem()->ChildsCount() > 0;
 
-	m_pUIPropertiesBox->AddItem("st_move", NULL, INVENTORY_MOVE_ACTION);
+	m_pUIPropertiesBox->AddItem("st_move", nullptr, INVENTORY_MOVE_ACTION);
 
 	if (hasMany)
 		m_pUIPropertiesBox->AddItem("st_move_all", (void*)33, INVENTORY_MOVE_ACTION);
@@ -740,7 +740,7 @@ void CUITradeWnd::MoveItems(CUICellItem* itm)
 
 	UpdatePrices();
 
-	SetCurrentItem(NULL);
+	SetCurrentItem(nullptr);
 }
 
 bool CUITradeWnd::MoveItem(CUICellItem* itm) 
@@ -766,7 +766,7 @@ CUICellItem* CUITradeWnd::CurrentItem()
 
 PIItem CUITradeWnd::CurrentIItem()
 {
-	return	(m_pCurrentCellItem)?(PIItem)m_pCurrentCellItem->m_pData : NULL;
+	return	(m_pCurrentCellItem)?(PIItem)m_pCurrentCellItem->m_pData : nullptr;
 }
 
 void CUITradeWnd::SetCurrentItem(CUICellItem* itm)

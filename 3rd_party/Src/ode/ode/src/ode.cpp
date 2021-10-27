@@ -997,10 +997,10 @@ dxJoint * dJointCreateFixed (dWorldID w, dJointGroupID group)
 }
 
 
-dxJoint * dJointCreateNull (dWorldID w, dJointGroupID group)
+dxJoint * dJointCreatenullptr (dWorldID w, dJointGroupID group)
 {
  // dAASSERT (w);
-  return createJoint (w,group,&__dnull_vtable);
+  return createJoint (w,group,&__dnullptr_vtable);
 }
 
 

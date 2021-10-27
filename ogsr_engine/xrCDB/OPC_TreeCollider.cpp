@@ -52,13 +52,13 @@ AABBTreeCollider::AABBTreeCollider() :
 #ifdef OPC_USE_CALLBACKS
 	mUserData0			(0),
 	mUserData1			(0),
-	mObjCallback0		(null),
-	mObjCallback1		(null)
+	mObjCallback0		(nullptr),
+	mObjCallback1		(nullptr)
 #else
-	mFaces0				(null),
-	mFaces1				(null),
-	mVerts0				(null),
-	mVerts1				(null)
+	mFaces0				(nullptr),
+	mFaces1				(nullptr),
+	mVerts0				(nullptr),
+	mVerts1				(nullptr)
 #endif
 {
 }
@@ -75,7 +75,7 @@ AABBTreeCollider::~AABBTreeCollider()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  *	Validates current settings. You should call this method after all the settings and callbacks have been defined.
- *	\return		null if everything is ok, else a string describing the problem
+ *	\return		nullptr if everything is ok, else a string describing the problem
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const char* AABBTreeCollider::ValidateSettings()
@@ -88,7 +88,7 @@ const char* AABBTreeCollider::ValidateSettings()
 	if(!mFaces1 || !mVerts1)									return "Object1 pointers must be defined! Call: SetPointers1().";
 #endif
 	if(TemporalCoherenceEnabled() && !FirstContactEnabled())	return "Temporal coherence only works with ""First contact"" mode!";
-	return null;
+	return nullptr;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

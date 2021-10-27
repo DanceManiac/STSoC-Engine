@@ -124,7 +124,7 @@ do_compress    ( const lzo_bytep in , lzo_uint  in_len,
     {
         const lzo_bytep m_pos;
 #if !defined(NDEBUG)
-        const lzo_bytep m_pos_sav = NULL;
+        const lzo_bytep m_pos_sav = nullptr;
 #endif
         LZO_DEFINE_UNINITIALIZED_VAR(lzo_uint, m_off, 0);
 #if (DD_BITS == 0)
@@ -224,7 +224,7 @@ match:
         for (i = 0; i < D_SIZE; i++)
         {
             p = dict[i];
-            if (BOUNDS_CHECKING_OFF_IN_EXPR(p == NULL || p < in || p > in_end))
+            if (BOUNDS_CHECKING_OFF_IN_EXPR(p == nullptr || p < in || p > in_end))
                 lzo_stats->unused_dict_entries++;
         }
         lzo_stats->unused_dict_entries_percent =

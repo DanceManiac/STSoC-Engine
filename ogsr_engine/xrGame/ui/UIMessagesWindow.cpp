@@ -19,7 +19,7 @@
 #include "../string_table.h"
 
 CUIMessagesWindow::CUIMessagesWindow(){
-	m_pGameLog = NULL;
+	m_pGameLog = nullptr;
 	Init(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 }
 

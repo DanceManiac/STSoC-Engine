@@ -73,7 +73,7 @@ public:
 };
 struct ENGINE_API		resptrcode_light	: public resptr_base<IRender_Light>
 {
-	void				destroy			()				{ _set(NULL);						}
+	void				destroy			()				{ _set(nullptr);						}
 };
 typedef	resptr_core<IRender_Light,resptrcode_light >	ref_light;
 
@@ -93,7 +93,7 @@ public:
 };
 struct ENGINE_API		resptrcode_glow	: public resptr_base<IRender_Glow>
 {
-	void				destroy			()					{ _set(NULL);					}
+	void				destroy			()					{ _set(nullptr);					}
 };
 typedef	resptr_core<IRender_Glow,resptrcode_glow >		ref_glow;
 

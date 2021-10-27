@@ -432,9 +432,9 @@ static int oc_state_frarray_init(oc_theora_state *_state){
   _state->mb_maps=_ogg_calloc(nmbs,sizeof(*_state->mb_maps));
   _state->mb_modes=_ogg_calloc(nmbs,sizeof(*_state->mb_modes));
   _state->coded_fragis=_ogg_malloc(nfrags*sizeof(*_state->coded_fragis));
-  if(_state->frags==NULL||_state->frag_mvs==NULL||_state->sb_maps==NULL||
-   _state->sb_flags==NULL||_state->mb_maps==NULL||_state->mb_modes==NULL||
-   _state->coded_fragis==NULL){
+  if(_state->frags==nullptr||_state->frag_mvs==nullptr||_state->sb_maps==nullptr||
+   _state->sb_flags==nullptr||_state->mb_maps==nullptr||_state->mb_modes==nullptr||
+   _state->coded_fragis==nullptr){
     return TH_EFAULT;
   }
   /*Create the mapping from super blocks to fragments.*/
@@ -513,7 +513,7 @@ static int oc_state_ref_bufs_init(oc_theora_state *_state,int _nrefs){
   ref_frame_data=_ogg_malloc(ref_frame_data_sz);
   frag_buf_offs=_state->frag_buf_offs=
    _ogg_malloc(_state->nfrags*sizeof(*frag_buf_offs));
-  if(ref_frame_data==NULL||frag_buf_offs==NULL){
+  if(ref_frame_data==nullptr||frag_buf_offs==nullptr){
     _ogg_free(frag_buf_offs);
     _ogg_free(ref_frame_data);
     return TH_EFAULT;
@@ -617,7 +617,7 @@ void oc_state_vtable_init(oc_theora_state *_state){
 int oc_state_init(oc_theora_state *_state,const th_info *_info,int _nrefs){
   int ret;
   /*First validate the parameters.*/
-  if(_info==NULL)return TH_EFAULT;
+  if(_info==nullptr)return TH_EFAULT;
   /*The width and height of the encoded frame must be multiples of 16.
     They must also, when divided by 16, fit into a 16-bit unsigned integer.
     The displayable frame offset coordinates must fit into an 8-bit unsigned
@@ -1095,21 +1095,21 @@ int oc_state_dump_frame(const oc_theora_state *_state,int _frame,
   pframe=_state->granpos-(iframe<<_state->info.keyframe_granule_shift);
   sprintf(fname,"%08i%s.png",(int)(iframe+pframe),_suf);
   fp=fopen(fname,"wb");
-  if(fp==NULL)return TH_EFAULT;
+  if(fp==nullptr)return TH_EFAULT;
   image=(png_bytep *)oc_malloc_2d(height,6*width,sizeof(**image));
-  if(image==NULL){
+  if(image==nullptr){
     fclose(fp);
     return TH_EFAULT;
   }
-  png=png_create_write_struct(PNG_LIBPNG_VER_STRING,NULL,NULL,NULL);
-  if(png==NULL){
+  png=png_create_write_struct(PNG_LIBPNG_VER_STRING,nullptr,nullptr,nullptr);
+  if(png==nullptr){
     oc_free_2d(image);
     fclose(fp);
     return TH_EFAULT;
   }
   info=png_create_info_struct(png);
-  if(info==NULL){
-    png_destroy_write_struct(&png,NULL);
+  if(info==nullptr){
+    png_destroy_write_struct(&png,nullptr);
     oc_free_2d(image);
     fclose(fp);
     return TH_EFAULT;
@@ -1188,7 +1188,7 @@ int oc_state_dump_frame(const oc_theora_state *_state,int _frame,
   png_set_pHYs(png,info,_state->info.aspect_numerator,
    _state->info.aspect_denominator,0);
   png_set_rows(png,info,image);
-  png_write_png(png,info,PNG_TRANSFORM_IDENTITY,NULL);
+  png_write_png(png,info,PNG_TRANSFORM_IDENTITY,nullptr);
   png_write_end(png,info);
   png_destroy_write_struct(&png,&info);
   oc_free_2d(image);

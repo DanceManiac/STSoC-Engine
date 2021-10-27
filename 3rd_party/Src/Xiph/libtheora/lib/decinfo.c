@@ -114,7 +114,7 @@ static int oc_comment_unpack(oc_pack_buf *_opb,th_comment *_tc){
   len=oc_unpack_length(_opb);
   if(len<0||len>oc_pack_bytes_left(_opb))return TH_EBADHEADER;
   _tc->vendor=_ogg_malloc((size_t)len+1);
-  if(_tc->vendor==NULL)return TH_EFAULT;
+  if(_tc->vendor==nullptr)return TH_EFAULT;
   oc_unpack_octets(_opb,_tc->vendor,len);
   _tc->vendor[len]='\0';
   /*Read the user comments.*/
@@ -136,7 +136,7 @@ static int oc_comment_unpack(oc_pack_buf *_opb,th_comment *_tc){
     }
     _tc->comment_lengths[i]=len;
     _tc->user_comments[i]=_ogg_malloc((size_t)len+1);
-    if(_tc->user_comments[i]==NULL){
+    if(_tc->user_comments[i]==nullptr){
       _tc->comments=i;
       return TH_EFAULT;
     }
@@ -170,7 +170,7 @@ static int oc_dec_headerin(oc_pack_buf *_opb,th_info *_info,
   packtype=(int)val;
   /*If we're at a data packet and we have received all three headers, we're
      done.*/
-  if(!(packtype&0x80)&&_info->frame_width>0&&_tc->vendor!=NULL&&*_setup!=NULL){
+  if(!(packtype&0x80)&&_info->frame_width>0&&_tc->vendor!=nullptr&&*_setup!=nullptr){
     return 0;
   }
   /*Check the codec string.*/
@@ -188,10 +188,10 @@ static int oc_dec_headerin(oc_pack_buf *_opb,th_info *_info,
     }break;
     /*Comment header.*/
     case 0x81:{
-      if(_tc==NULL)return TH_EFAULT;
+      if(_tc==nullptr)return TH_EFAULT;
       /*We shoud have already decoded the info header, and should not yet have
          decoded the comment header.*/
-      if(_info->frame_width==0||_tc->vendor!=NULL)return TH_EBADHEADER;
+      if(_info->frame_width==0||_tc->vendor!=nullptr)return TH_EBADHEADER;
       ret=oc_comment_unpack(_opb,_tc);
       if(ret<0)th_comment_clear(_tc);
       else ret=2;
@@ -199,14 +199,14 @@ static int oc_dec_headerin(oc_pack_buf *_opb,th_info *_info,
     /*Codec setup header.*/
     case 0x82:{
       oc_setup_info *setup;
-      if(_tc==NULL||_setup==NULL)return TH_EFAULT;
+      if(_tc==nullptr||_setup==nullptr)return TH_EFAULT;
       /*We should have already decoded the info header and the comment header,
          and should not yet have decoded the setup header.*/
-      if(_info->frame_width==0||_tc->vendor==NULL||*_setup!=NULL){
+      if(_info->frame_width==0||_tc->vendor==nullptr||*_setup!=nullptr){
         return TH_EBADHEADER;
       }
       setup=(oc_setup_info *)_ogg_calloc(1,sizeof(*setup));
-      if(setup==NULL)return TH_EFAULT;
+      if(setup==nullptr)return TH_EFAULT;
       ret=oc_setup_unpack(_opb,setup);
       if(ret<0){
         oc_setup_clear(setup);
@@ -232,14 +232,14 @@ static int oc_dec_headerin(oc_pack_buf *_opb,th_info *_info,
 int th_decode_headerin(th_info *_info,th_comment *_tc,
  th_setup_info **_setup,ogg_packet *_op){
   oc_pack_buf opb;
-  if(_op==NULL)return TH_EBADHEADER;
-  if(_info==NULL)return TH_EFAULT;
+  if(_op==nullptr)return TH_EBADHEADER;
+  if(_info==nullptr)return TH_EFAULT;
   oc_pack_readinit(&opb,_op->packet,_op->bytes);
   return oc_dec_headerin(&opb,_info,_tc,_setup,_op);
 }
 
 void th_setup_free(th_setup_info *_setup){
-  if(_setup!=NULL){
+  if(_setup!=nullptr){
     oc_setup_clear(_setup);
     _ogg_free(_setup);
   }

@@ -33,7 +33,7 @@ public:
 	virtual void		Init();
 
 	virtual bool		StopAnyMove					(){return true;}
-	virtual void		SendMessage					(CUIWindow* pWnd, s16 msg, void* pData = NULL);
+	virtual void		SendMessage					(CUIWindow* pWnd, s16 msg, void* pData = nullptr);
 
 	virtual void		Draw();
 	virtual void		Update();
@@ -87,7 +87,7 @@ protected:
 	//вызвал нам SendMessage обращается к удаленному объекту pListItem
 	bool				m_bNeedToUpdateQuestions;
 
-	//текущий диалог, если NULL, то переходим в режим выбора темы
+	//текущий диалог, если nullptr, то переходим в режим выбора темы
 	DIALOG_SHARED_PTR	m_pCurrentDialog;
 	bool				TopicMode				();
 	void				ToTopicMode				();

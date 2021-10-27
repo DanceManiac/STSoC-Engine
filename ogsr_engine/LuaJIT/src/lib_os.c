@@ -42,13 +42,13 @@ LJLIB_CF(os_execute)
 #if LJ_NO_SYSTEM
 #if LJ_52
   errno = ENOSYS;
-  return luaL_fileresult(L, 0, NULL);
+  return luaL_fileresult(L, 0, nullptr);
 #else
   lua_pushinteger(L, -1);
   return 1;
 #endif
 #else
-  const char *cmd = luaL_optstring(L, 1, NULL);
+  const char *cmd = luaL_optstring(L, 1, nullptr);
   int stat = system(cmd);
 #if LJ_52
   if (cmd)
@@ -91,7 +91,7 @@ LJLIB_CF(os_tmpname)
     lj_err_caller(L, LJ_ERR_OSUNIQF);
 #else
   char buf[L_tmpnam];
-  if (tmpnam(buf) == NULL)
+  if (tmpnam(buf) == nullptr)
     lj_err_caller(L, LJ_ERR_OSUNIQF);
 #endif
   lua_pushstring(L, buf);
@@ -104,7 +104,7 @@ LJLIB_CF(os_getenv)
 #if LJ_TARGET_CONSOLE
   lua_pushnil(L);
 #else
-  lua_pushstring(L, getenv(luaL_checkstring(L, 1)));  /* if NULL push nil */
+  lua_pushstring(L, getenv(luaL_checkstring(L, 1)));  /* if nullptr push nil */
 #endif
   return 1;
 }
@@ -171,7 +171,7 @@ static int getfield(lua_State *L, const char *key, int d)
 LJLIB_CF(os_date)
 {
   const char *s = luaL_optstring(L, 1, "%c");
-  time_t t = luaL_opt(L, (time_t)luaL_checknumber, 2, time(NULL));
+  time_t t = luaL_opt(L, (time_t)luaL_checknumber, 2, time(nullptr));
   struct tm *stm;
 #if LJ_TARGET_POSIX
   struct tm rtm;
@@ -190,7 +190,7 @@ LJLIB_CF(os_date)
     stm = localtime(&t);
 #endif
   }
-  if (stm == NULL) {  /* Invalid date? */
+  if (stm == nullptr) {  /* Invalid date? */
     setnilV(L->top++);
   } else if (strcmp(s, "*t") == 0) {
     lua_createtable(L, 0, 9);  /* 9 = number of fields */
@@ -230,7 +230,7 @@ LJLIB_CF(os_time)
 {
   time_t t;
   if (lua_isnoneornil(L, 1)) {  /* called without args? */
-    t = time(NULL);  /* get current time */
+    t = time(nullptr);  /* get current time */
   } else {
     struct tm ts;
     luaL_checktype(L, 1, LUA_TTABLE);
@@ -266,7 +266,7 @@ LJLIB_CF(os_setlocale)
   lua_pushliteral(L, "C");
 #else
   GCstr *s = lj_lib_optstr(L, 1);
-  const char *str = s ? strdata(s) : NULL;
+  const char *str = s ? strdata(s) : nullptr;
   int opt = lj_lib_checkopt(L, 2, 6,
     "\5ctype\7numeric\4time\7collate\10monetary\1\377\3all");
   if (opt == 0) opt = LC_CTYPE;

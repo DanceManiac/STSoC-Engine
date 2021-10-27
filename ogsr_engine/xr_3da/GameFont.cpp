@@ -25,7 +25,7 @@ CGameFont::CGameFont(LPCSTR section, u32 flags)
 	fYStep						= 0.0f;
 	uFlags						= flags;
 	nNumChars					= 0x100;
-	TCMap						= NULL;
+	TCMap						= nullptr;
 	Initialize	(pSettings->r_string(section,"shader"),pSettings->r_string(section,"texture"));
 	if (pSettings->line_exist(section,"size")){
 		float sz = pSettings->r_float(section,"size");
@@ -44,7 +44,7 @@ CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, u32 flags)
 	fYStep						= 0.0f;
 	uFlags						= flags;
 	nNumChars					= 0x100;
-	TCMap						= NULL;
+	TCMap						= nullptr;
 	Initialize					(shader,texture);
 }
 
@@ -185,7 +185,7 @@ void CGameFont::OutSetI			(float x, float y)
 
 u32 CGameFont::smart_strlen( const char* S )
 {
-	return ( IsMultibyte() ? mbhMulti2Wide( NULL , NULL , 0 , S ) : xr_strlen( S ) );
+	return ( IsMultibyte() ? mbhMulti2Wide( nullptr , nullptr , 0 , S ) : xr_strlen( S ) );
 }
 
 void CGameFont::OnRender()
@@ -327,7 +327,7 @@ float CGameFont::SizeOf_( LPCSTR s )
 	if ( IsMultibyte() ) {
 		wide_char wsStr[ MAX_MB_CHARS ];
 
-		mbhMulti2Wide( wsStr , NULL , MAX_MB_CHARS , s );
+		mbhMulti2Wide( wsStr , nullptr , MAX_MB_CHARS , s );
 
 		return SizeOf_( wsStr );
 	}

@@ -664,7 +664,7 @@ static void build_subroutines(BuildCtx *ctx)
   |  mov [DISPATCH+DISPATCH_GL(cur_L)], L:RB
   |
   |  call CARG4			// (lua_State *L, lua_CFunction func, void *ud)
-  |  // TValue * (new base) or NULL returned in eax (RC).
+  |  // TValue * (new base) or nullptr returned in eax (RC).
   |  test RC, RC
   |  jz ->vm_leave_cp			// No base? Just remove C frame.
   |  mov RA, RC
@@ -772,7 +772,7 @@ static void build_subroutines(BuildCtx *ctx)
   |  mov L:RB, L:CARG1
   |  mov SAVE_PC, PC
   |  call extern lj_meta_tget		// (lua_State *L, TValue *o, TValue *k)
-  |  // TValue * (finished) or NULL (metamethod) returned in eax (RC).
+  |  // TValue * (finished) or nullptr (metamethod) returned in eax (RC).
   |  mov BASE, L:RB->base
   |  test RC, RC
   |  jz >3
@@ -798,7 +798,7 @@ static void build_subroutines(BuildCtx *ctx)
   |  mov RB, BASE			// Save BASE.
   |  mov CARG2d, RCd			// Caveat: CARG2 == BASE
   |  call extern lj_tab_getinth		// (GCtab *t, int32_t key)
-  |  // cTValue * or NULL returned in eax (RC).
+  |  // cTValue * or nullptr returned in eax (RC).
   |  movzx RAd, PC_RA
   |  mov BASE, RB			// Restore BASE.
   |  test RC, RC
@@ -845,7 +845,7 @@ static void build_subroutines(BuildCtx *ctx)
   |  mov L:RB, L:CARG1
   |  mov SAVE_PC, PC
   |  call extern lj_meta_tset		// (lua_State *L, TValue *o, TValue *k)
-  |  // TValue * (finished) or NULL (metamethod) returned in eax (RC).
+  |  // TValue * (finished) or nullptr (metamethod) returned in eax (RC).
   |  mov BASE, L:RB->base
   |  test RC, RC
   |  jz >3
@@ -1042,7 +1042,7 @@ static void build_subroutines(BuildCtx *ctx)
   |.endif
   |  mov SAVE_PC, PC
   |  call extern lj_meta_arith	// (lua_State *L, TValue *ra,*rb,*rc, BCReg op)
-  |  // NULL (finished) or TValue * (metamethod) returned in eax (RC).
+  |  // nullptr (finished) or TValue * (metamethod) returned in eax (RC).
   |  mov BASE, L:RB->base
   |  test RC, RC
   |  jz ->cont_nop
@@ -1065,7 +1065,7 @@ static void build_subroutines(BuildCtx *ctx)
   |  mov L:CARG1, L:RB
   |  mov SAVE_PC, PC
   |  call extern lj_meta_len		// (lua_State *L, TValue *o)
-  |  // NULL (retry) or TValue * (metamethod) returned in eax (RC).
+  |  // nullptr (retry) or TValue * (metamethod) returned in eax (RC).
   |  mov BASE, L:RB->base
 #if LJ_52
   |  test RC, RC
@@ -1446,7 +1446,7 @@ static void build_subroutines(BuildCtx *ctx)
   |  mov CARG2d, RAd			// Caveat: CARG2 == BASE
   |.endif
   |  call extern lj_tab_getinth		// (GCtab *t, int32_t key)
-  |  // cTValue * or NULL returned in eax (RD).
+  |  // cTValue * or nullptr returned in eax (RD).
   |  mov BASE, RB
   |  test RD, RD
   |  jnz <1
@@ -3342,7 +3342,7 @@ static void build_ins(BuildCtx *ctx, BCOp op, int defop)
     |  mov L:RB, L:CARG1
     |  mov SAVE_PC, PC
     |  call extern lj_meta_cat		// (lua_State *L, TValue *top, int left)
-    |  // NULL (finished) or TValue * (metamethod) returned in eax (RC).
+    |  // nullptr (finished) or TValue * (metamethod) returned in eax (RC).
     |  mov BASE, L:RB->base
     |  test RC, RC
     |  jnz ->vmeta_binop

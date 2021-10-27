@@ -46,7 +46,7 @@ static void asm_exitstub_setup(ASMState *as, ExitNo nexits)
   if (nexits >= EXITSTUBS_PER_GROUP*LJ_MAX_EXITSTUBGR)
     lj_trace_err(as->J, LJ_TRERR_SNAPOV);
   for (i = 0; i < (nexits+EXITSTUBS_PER_GROUP-1)/EXITSTUBS_PER_GROUP; i++)
-    if (as->J->exitstubgroup[i] == NULL)
+    if (as->J->exitstubgroup[i] == nullptr)
       as->J->exitstubgroup[i] = asm_exitstub_gen(as, i);
 }
 
@@ -86,7 +86,7 @@ static int asm_isk32(ASMState *as, IRRef ref, int32_t *k)
   if (irref_isk(ref)) {
     IRIns *ir = IR(ref);
 #if LJ_GC64
-    if (ir->o == IR_KNULL || !irt_is64(ir->t)) {
+    if (ir->o == IR_Knullptr || !irt_is64(ir->t)) {
       *k = ir->i;
       return 1;
     } else if (checki32((int64_t)ir_k64(ir)->u64)) {
@@ -559,7 +559,7 @@ static void asm_gencall(ASMState *as, const CCallInfo *ci, IRRef *args)
   uint32_t gprs = REGARG_GPRS;
   Reg fpr = REGARG_FIRSTFPR;
 #if !LJ_ABI_WIN
-  MCode *patchnfpr = NULL;
+  MCode *patchnfpr = nullptr;
 #endif
 #else
   uint32_t gprs = 0;
@@ -613,7 +613,7 @@ static void asm_gencall(ASMState *as, const CCallInfo *ci, IRRef *args)
     if (r) {  /* Argument is in a register. */
       if (r < RID_MAX_GPR && ref < ASMREF_TMP1) {
 #if LJ_64
-	if (LJ_GC64 ? !(ir->o == IR_KINT || ir->o == IR_KNULL) : ir->o == IR_KINT64)
+	if (LJ_GC64 ? !(ir->o == IR_KINT || ir->o == IR_Knullptr) : ir->o == IR_KINT64)
 	  emit_loadu64(as, r, ir_k64(ir)->u64);
 	else
 #endif
@@ -714,7 +714,7 @@ static void asm_setupresult(ASMState *as, IRIns *ir, const CCallInfo *ci)
   }
 }
 
-/* Return a constant function pointer or NULL for indirect calls. */
+/* Return a constant function pointer or nullptr for indirect calls. */
 static void *asm_callx_func(ASMState *as, IRIns *irf, IRRef func)
 {
 #if LJ_32
@@ -733,7 +733,7 @@ static void *asm_callx_func(ASMState *as, IRIns *irf, IRRef func)
     /* Avoid the indirect case of emit_call(). Try to hoist func addr. */
   }
 #endif
-  return NULL;
+  return nullptr;
 }
 
 static void asm_callx(ASMState *as, IRIns *ir)
@@ -2090,7 +2090,7 @@ static void asm_intarith(ASMState *as, IRIns *ir, x86Arith xa)
     MCode *q = p[0] == 0x0f ? p+1 : p;
     if ((*q & 15) < 14) {
       if ((*q & 15) >= 12) *q -= 4;  /* L <->S, NL <-> NS */
-      as->flagmcp = NULL;
+      as->flagmcp = nullptr;
       as->mcp = p;
     }  /* else: cannot transform LE/NLE to cc without use of OF. */
   }
@@ -2578,7 +2578,7 @@ static void asm_comp_int64(ASMState *as, IRIns *ir)
 
   /* All register allocations must be performed _before_ this point. */
   l_around = emit_label(as);
-  as->invmcp = as->flagmcp = NULL;  /* Cannot use these optimizations. */
+  as->invmcp = as->flagmcp = nullptr;  /* Cannot use these optimizations. */
 
   /* Loword comparison and branch. */
   asm_guardcc(as, cc >> 4);  /* Always use unsigned compare for loword. */
@@ -2635,13 +2635,13 @@ static void asm_hiop(ASMState *as, IRIns *ir)
   if (!usehi) return;  /* Skip unused hiword op for all remaining ops. */
   switch ((ir-1)->o) {
   case IR_ADD:
-    as->flagmcp = NULL;
+    as->flagmcp = nullptr;
     as->curins--;
     asm_intarith(as, ir, XOg_ADC);
     asm_intarith(as, ir-1, XOg_ADD);
     break;
   case IR_SUB:
-    as->flagmcp = NULL;
+    as->flagmcp = nullptr;
     as->curins--;
     asm_intarith(as, ir, XOg_SBB);
     asm_intarith(as, ir-1, XOg_SUB);
@@ -2824,7 +2824,7 @@ static void asm_loop_fixup(ASMState *as)
   MCode *p = as->mctop;
   MCode *target = as->mcp;
   if (as->realign) {  /* Realigned loops use short jumps. */
-    as->realign = NULL;  /* Stop another retry. */
+    as->realign = nullptr;  /* Stop another retry. */
     lj_assertA(((intptr_t)target & 15) == 0, "loop realign failed");
     if (as->loopinv) {  /* Inverted loop branch? */
       p -= 5;
@@ -2959,7 +2959,7 @@ static void asm_tail_prep(ASMState *as)
   } else {
     /* Leave room for ESP adjustment: add esp, imm or lea esp, [esp+imm] */
     as->mcp = p - (LJ_64 ? 7 : 6);
-    as->invmcp = NULL;
+    as->invmcp = nullptr;
   }
 }
 
@@ -3098,7 +3098,7 @@ void lj_asm_patchexit(jit_State *J, GCtrace *T, ExitNo exitno, MCode *target)
   MSize len = T->szmcode;
   MCode *px = exitstub_addr(J, exitno) - 6;
   MCode *pe = p+len-6;
-  MCode *pgc = NULL;
+  MCode *pgc = nullptr;
 #if LJ_GC64
   uint32_t statei = (uint32_t)(GG_OFS(g.vmstate) - GG_OFS(dispatch));
 #else

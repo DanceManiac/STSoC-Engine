@@ -352,7 +352,7 @@ static LJ_AINLINE uint32_t lj_getu32(const void *v)
 #define lj_assertG_(g, c, ...)	lj_assert_check((g), (c), __VA_ARGS__)
 #define lj_assertG(c, ...)	lj_assert_check(g, (c), __VA_ARGS__)
 #define lj_assertL(c, ...)	lj_assert_check(G(L), (c), __VA_ARGS__)
-#define lj_assertX(c, ...)	lj_assert_check(NULL, (c), __VA_ARGS__)
+#define lj_assertX(c, ...)	lj_assert_check(nullptr, (c), __VA_ARGS__)
 #define check_exp(c, e)		(lj_assertX((c), #c), (e))
 #else
 #define lj_assertG_(g, c, ...)	((void)0)

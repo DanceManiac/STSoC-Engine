@@ -18,7 +18,7 @@
 #include "encint.h"
 
 th_enc_ctx *th_encode_alloc(const th_info *_info){
-  return NULL;
+  return nullptr;
 }
 
 void th_encode_free(th_enc_ctx *_enc){}

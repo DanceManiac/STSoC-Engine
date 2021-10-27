@@ -44,7 +44,7 @@ extern "C" {
  * improvement and computational expense.
  *
  * \param[out] _buf int: The maximum post-processing level.
- * \retval TH_EFAULT  \a _dec_ctx or \a _buf is <tt>NULL</tt>.
+ * \retval TH_EFAULT  \a _dec_ctx or \a _buf is <tt>nullptr</tt>.
  * \retval TH_EINVAL  \a _buf_sz is not <tt>sizeof(int)</tt>.
  * \retval TH_EIMPL   Not supported by this implementation.*/
 #define TH_DECCTL_GET_PPLEVEL_MAX (1)
@@ -57,7 +57,7 @@ extern "C" {
  *
  * \param[in] _buf int: The new post-processing level.
  *                      0 to disable; larger values use more CPU.
- * \retval TH_EFAULT  \a _dec_ctx or \a _buf is <tt>NULL</tt>.
+ * \retval TH_EFAULT  \a _dec_ctx or \a _buf is <tt>nullptr</tt>.
  * \retval TH_EINVAL  \a _buf_sz is not <tt>sizeof(int)</tt>, or the
  *                     post-processing level is out of bounds.
  *                    The maximum post-processing level may be
@@ -73,7 +73,7 @@ extern "C" {
  *
  * \param[in] _buf <tt>ogg_int64_t</tt>: The granule position of the next
  *                  frame.
- * \retval TH_EFAULT  \a _dec_ctx or \a _buf is <tt>NULL</tt>.
+ * \retval TH_EFAULT  \a _dec_ctx or \a _buf is <tt>nullptr</tt>.
  * \retval TH_EINVAL  \a _buf_sz is not <tt>sizeof(ogg_int64_t)</tt>, or the
  *                     granule position is negative.*/
 #define TH_DECCTL_SET_GRANPOS (5)
@@ -81,13 +81,13 @@ extern "C" {
  * If set, this function will be called as each piece of a frame is fully
  *  decoded in th_decode_packetin().
  * You can pass in a #th_stripe_callback with
- *  th_stripe_callback#stripe_decoded set to <tt>NULL</tt> to disable the
+ *  th_stripe_callback#stripe_decoded set to <tt>nullptr</tt> to disable the
  *  callbacks at any point.
  * Enabling striped decode does not prevent you from calling
  *  th_decode_ycbcr_out() after the frame is fully decoded.
  *
  * \param[in]  _buf #th_stripe_callback: The callback parameters.
- * \retval TH_EFAULT  \a _dec_ctx or \a _buf is <tt>NULL</tt>.
+ * \retval TH_EFAULT  \a _dec_ctx or \a _buf is <tt>nullptr</tt>.
  * \retval TH_EINVAL  \a _buf_sz is not
  *                     <tt>sizeof(th_stripe_callback)</tt>.*/
 #define TH_DECCTL_SET_STRIPE_CB (7)
@@ -116,7 +116,7 @@ extern "C" {
  * The number of fragment rows made available in each call depends on the pixel
  *  format and the number of post-processing filters enabled, and may not even
  *  be constant for the entire frame.
- * If a non-<tt>NULL</tt> \a _granpos pointer is passed to
+ * If a non-<tt>nullptr</tt> \a _granpos pointer is passed to
  *  th_decode_packetin(), the granule position for the frame will be stored
  *  in it before the first callback is made.
  * If an entire frame is dropped (a 0-byte packet), then no callbacks will be
@@ -207,7 +207,7 @@ typedef struct th_setup_info th_setup_info;
  * \param _setup Returns a pointer to additional, private setup information
  *                needed by the decoder.
  *               The contents of this pointer must be initialized to
- *                <tt>NULL</tt> on the first call, and the returned value must
+ *                <tt>nullptr</tt> on the first call, and the returned value must
  *                continue to be passed in on all subsequent calls.
  * \param _op    An <tt>ogg_packet</tt> structure which contains one of the
  *                initial packets of an Ogg logical stream.
@@ -219,8 +219,8 @@ typedef struct th_setup_info th_setup_info;
  *                        and fed to th_decode_packetin() to begin decoding
  *                        video data.
  * \retval TH_EFAULT     One of \a _info, \a _tc, or \a _setup was
- *                        <tt>NULL</tt>.
- * \retval TH_EBADHEADER \a _op was <tt>NULL</tt>, the packet was not the next
+ *                        <tt>nullptr</tt>.
+ * \retval TH_EBADHEADER \a _op was <tt>nullptr</tt>, the packet was not the next
  *                        header packet in the expected sequence, or the format
  *                        of the header data was invalid.
  * \retval TH_EVERSION   The packet data was a Theora info header, but for a
@@ -251,14 +251,14 @@ extern int th_decode_headerin(th_info *_info,th_comment *_tc,
  * \param _setup A #th_setup_info handle returned via
  *                th_decode_headerin().
  * \return The initialized #th_dec_ctx handle.
- * \retval NULL If the decoding parameters were invalid.*/
+ * \retval nullptr If the decoding parameters were invalid.*/
 extern th_dec_ctx *th_decode_alloc(const th_info *_info,
  const th_setup_info *_setup);
 /**Releases all storage used for the decoder setup information.
  * This should be called after you no longer want to create any decoders for
  *  a stream whose headers you have parsed with th_decode_headerin().
  * \param _setup The setup information to free.
- *               This can safely be <tt>NULL</tt>.*/
+ *               This can safely be <tt>nullptr</tt>.*/
 extern void th_setup_free(th_setup_info *_setup);
 /**Decoder control function.
  * This is used to provide advanced control of the decoding process.
@@ -274,7 +274,7 @@ extern int th_decode_ctl(th_dec_ctx *_dec,int _req,void *_buf,
  * \param _dec     A #th_dec_ctx handle.
  * \param _op      An <tt>ogg_packet</tt> containing encoded video data.
  * \param _granpos Returns the granule position of the decoded packet.
- *                 If non-<tt>NULL</tt>, the granule position for this specific
+ *                 If non-<tt>nullptr</tt>, the granule position for this specific
  *                  packet is stored in this location.
  *                 This is computed incrementally from previously decoded
  *                  packets.
@@ -287,7 +287,7 @@ extern int th_decode_ctl(th_dec_ctx *_dec,int _req,void *_buf,
  *                       The player can skip the call to th_decode_ycbcr_out(),
  *                        as the contents of the decoded frame buffer have not
  *                        changed.
- * \retval TH_EFAULT     \a _dec or \a _op was <tt>NULL</tt>.
+ * \retval TH_EFAULT     \a _dec or \a _op was <tt>nullptr</tt>.
  * \retval TH_EBADPACKET \a _op does not contain encoded video data.
  * \retval TH_EIMPL      The video data uses bitstream features which this
  *                        library does not support.*/
@@ -306,7 +306,7 @@ extern int th_decode_packetin(th_dec_ctx *_dec,const ogg_packet *_op,
  *               It may be freed or overwritten without notification when
  *                subsequent frames are decoded.
  * \retval 0 Success
- * \retval TH_EFAULT     \a _dec or \a _ycbcr was <tt>NULL</tt>.
+ * \retval TH_EFAULT     \a _dec or \a _ycbcr was <tt>nullptr</tt>.
  */
 extern int th_decode_ycbcr_out(th_dec_ctx *_dec,
  th_ycbcr_buffer _ycbcr);

@@ -23,11 +23,11 @@ int oc_state_flushheader(oc_theora_state *_state,int *_packet_state,
  const char *_vendor,th_comment *_tc,ogg_packet *_op){
   unsigned char *packet;
   int            b_o_s;
-  if(_op==NULL)return TH_EFAULT;
+  if(_op==nullptr)return TH_EFAULT;
   switch(*_packet_state){
     /*Codec info header.*/
     case OC_PACKET_INFO_HDR:{
-      if(_state==NULL)return TH_EFAULT;
+      if(_state==nullptr)return TH_EFAULT;
       oggpackB_reset(_opb);
       /*Mark this packet as the info header.*/
       oggpackB_write(_opb,0x80,8);
@@ -61,7 +61,7 @@ int oc_state_flushheader(oc_theora_state *_state,int *_packet_state,
     case OC_PACKET_COMMENT_HDR:{
       int vendor_len;
       int i;
-      if(_tc==NULL)return TH_EFAULT;
+      if(_tc==nullptr)return TH_EFAULT;
       vendor_len=strlen(_vendor);
       oggpackB_reset(_opb);
       /*Mark this packet as the comment header.*/
@@ -73,7 +73,7 @@ int oc_state_flushheader(oc_theora_state *_state,int *_packet_state,
       oc_pack_octets(_opb,_vendor,vendor_len);
       oggpack_write(_opb,_tc->comments,32);
       for(i=0;i<_tc->comments;i++){
-        if(_tc->user_comments[i]!=NULL){
+        if(_tc->user_comments[i]!=nullptr){
           oggpack_write(_opb,_tc->comment_lengths[i],32);
           oc_pack_octets(_opb,_tc->user_comments[i],_tc->comment_lengths[i]);
         }
@@ -110,7 +110,7 @@ int oc_state_flushheader(oc_theora_state *_state,int *_packet_state,
     Hopefully libogg2 will make this much cleaner.*/
   packet=oggpackB_get_buffer(_opb);
   /*If there's no packet, malloc failed while writing.*/
-  if(packet==NULL)return TH_EFAULT;
+  if(packet==nullptr)return TH_EFAULT;
   _op->packet=packet;
   _op->bytes=oggpackB_bytes(_opb);
   _op->b_o_s=b_o_s;

@@ -609,7 +609,7 @@ static void build_subroutines(BuildCtx *ctx)
   |  mov CARG1, L
   |   str PC, SAVE_PC
   |  bl extern lj_meta_tget		// (lua_State *L, TValue *o, TValue *k)
-  |  // Returns TValue * (finished) or NULL (metamethod).
+  |  // Returns TValue * (finished) or nullptr (metamethod).
   |  .IOS ldr BASE, L->base
   |  cmp CRET1, #0
   |  beq >3
@@ -632,7 +632,7 @@ static void build_subroutines(BuildCtx *ctx)
   |->vmeta_tgetr:
   |  .IOS mov RC, BASE
   |  bl extern lj_tab_getinth		// (GCtab *t, int32_t key)
-  |  // Returns cTValue * or NULL.
+  |  // Returns cTValue * or nullptr.
   |  .IOS mov BASE, RC
   |  cmp CRET1, #0
   |  ldrdne CARG12, [CRET1]
@@ -674,7 +674,7 @@ static void build_subroutines(BuildCtx *ctx)
   |  mov CARG1, L
   |   str PC, SAVE_PC
   |  bl extern lj_meta_tset		// (lua_State *L, TValue *o, TValue *k)
-  |  // Returns TValue * (finished) or NULL (metamethod).
+  |  // Returns TValue * (finished) or nullptr (metamethod).
   |  .IOS ldr BASE, L->base
   |  cmp CRET1, #0
   |   ldrd CARG34, [BASE, RA]
@@ -817,7 +817,7 @@ static void build_subroutines(BuildCtx *ctx)
   |    str PC, SAVE_PC
   |  str OP, ARG5
   |  bl extern lj_meta_arith  // (lua_State *L, TValue *ra,*rb,*rc, BCReg op)
-  |  // Returns NULL (finished) or TValue * (metamethod).
+  |  // Returns nullptr (finished) or TValue * (metamethod).
   |  .IOS ldr BASE, L->base
   |  cmp CRET1, #0
   |  beq ->cont_nop
@@ -838,7 +838,7 @@ static void build_subroutines(BuildCtx *ctx)
   |  mov CARG1, L
   |   str PC, SAVE_PC
   |  bl extern lj_meta_len		// (lua_State *L, TValue *o)
-  |  // Returns NULL (retry) or TValue * (metamethod base).
+  |  // Returns nullptr (retry) or TValue * (metamethod base).
   |  .IOS ldr BASE, L->base
 #if LJ_52
   |  cmp CRET1, #0
@@ -1173,7 +1173,7 @@ static void build_subroutines(BuildCtx *ctx)
   |  beq ->fff_res
   |  .IOS mov RA, BASE
   |  bl extern lj_tab_getinth		// (GCtab *t, int32_t key)
-  |  // Returns cTValue * or NULL.
+  |  // Returns cTValue * or nullptr.
   |  .IOS mov BASE, RA
   |  cmp CRET1, #0
   |  beq ->fff_res
@@ -3167,7 +3167,7 @@ static void build_ins(BuildCtx *ctx, BCOp op, int defop)
     |   str PC, SAVE_PC
     |  lsr CARG3, CARG3, #3
     |  bl extern lj_meta_cat		// (lua_State *L, TValue *top, int left)
-    |  // Returns NULL (finished) or TValue * (metamethod).
+    |  // Returns nullptr (finished) or TValue * (metamethod).
     |  ldr BASE, L->base
     |  cmp CRET1, #0
     |  bne ->vmeta_binop

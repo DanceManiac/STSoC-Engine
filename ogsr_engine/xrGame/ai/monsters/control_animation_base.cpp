@@ -346,7 +346,7 @@ EPState	CControlAnimationBase::GetState (EMotionAnim a)
 	// найти анимацию 
 	ASSERT_FMT( u32(a) < m_anim_storage.size(), "[%s]: %s: a[%u] m_anim_storage.size[%u]", __FUNCTION__, m_object->cName().c_str(), a, m_anim_storage.size() );
  	SAnimItem *item_it = m_anim_storage[a];
-	ASSERT_FMT( item_it, "[%s]: %s: m_anim_storage[%u] is NULL", __FUNCTION__, m_object->cName().c_str(), a ); //VERIFY(item_it);
+	ASSERT_FMT( item_it, "[%s]: %s: m_anim_storage[%u] is nullptr", __FUNCTION__, m_object->cName().c_str(), a ); //VERIFY(item_it);
 
 	return item_it->pos_state;
 }
@@ -669,7 +669,7 @@ void CControlAnimationBase::check_hit(MotionID motion, float time_perc)
 	  collide::rq_results RQR;
 	  collide::ray_defs RD( C, dir, params.dist, CDB::OPT_CULL, collide::rqtBoth );
 	  ray_query_param params( m_object, enemy );
-	  Level().ObjectSpace.RayQuery( RQR, RD, check_hit_trace_callback, &params, NULL, m_object );
+	  Level().ObjectSpace.RayQuery( RQR, RD, check_hit_trace_callback, &params, nullptr, m_object );
           should_hit = params.m_can_hit_enemy;
 	}
 

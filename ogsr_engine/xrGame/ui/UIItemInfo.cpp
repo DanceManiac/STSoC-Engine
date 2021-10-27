@@ -18,16 +18,16 @@
 CUIItemInfo::CUIItemInfo()
 {
 	UIItemImageSize.set			(0.0f,0.0f);
-	UICondProgresBar			= NULL;
-	UICondition					= NULL;
-	UICost						= NULL;
-	UIWeight					= NULL;
-	UIItemImage					= NULL;
-	UIDesc						= NULL;
-	UIWpnParams					= NULL;
-	UIArtefactParams			= NULL;
-	UIName						= NULL;
-	m_pInvItem					= NULL;
+	UICondProgresBar			= nullptr;
+	UICondition					= nullptr;
+	UICost						= nullptr;
+	UIWeight					= nullptr;
+	UIItemImage					= nullptr;
+	UIDesc						= nullptr;
+	UIWpnParams					= nullptr;
+	UIArtefactParams			= nullptr;
+	UIName						= nullptr;
+	m_pInvItem					= nullptr;
 	m_b_force_drawing			= false;
 }
 

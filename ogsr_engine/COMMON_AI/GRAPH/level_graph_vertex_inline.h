@@ -320,7 +320,7 @@ IC void CLevelGraph::intersect(SSegment &tSegment, const SContour &tContour0, co
 
 	if (bFound) {
 		tSegment.v2 = tSegment.v1;
-		Log("! AI_PathNodes: segment has null length");
+		Log("! AI_PathNodes: segment has nullptr length");
 	}
 	else
 		Log("! AI_PathNodes: Can't find intersection segment");

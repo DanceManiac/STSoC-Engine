@@ -84,7 +84,7 @@ DO_OPTIMIZE          (       lzo_bytep in , lzo_uint  in_len,
     lzo_bytep m_pos;
     lzo_bytep const ip_end = in + in_len;
     lzo_bytep const op_end = out + *out_len;
-    lzo_bytep litp = NULL;
+    lzo_bytep litp = nullptr;
     lzo_uint lit = 0;
     lzo_uint next_lit = NO_LIT;
     lzo_uint nl;
@@ -153,7 +153,7 @@ first_literal_run:
                 m_pos -= t >> 2;
                 m_pos -= *ip++ << 2;
 
-                if (litp == NULL)
+                if (litp == nullptr)
                     goto copy_m1;
 
                 /* assert that there was a match just before */
@@ -211,7 +211,7 @@ match:
                     m_pos -= *ip++ << 2;
                     t = (t >> 4) - 3;
 #endif
-                    if (litp == NULL)
+                    if (litp == nullptr)
                         goto copy_m;
 
                     nl = ip[-2] & 3;
@@ -265,7 +265,7 @@ match:
                             goto eof_found;
                         m_pos -= 0x4000;
                     }
-                    if (litp == NULL)
+                    if (litp == nullptr)
                         goto copy_m;
 
                     nl = ip[-2] & 3;

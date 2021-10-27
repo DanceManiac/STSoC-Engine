@@ -33,15 +33,15 @@ struct QueuedMessage {
 };
 
 struct User {
-    // snowflake (64bit int), turned into a ascii decimal string, at most 20 chars +1 null
+    // snowflake (64bit int), turned into a ascii decimal string, at most 20 chars +1 nullptr
     // terminator = 21
     char userId[32];
-    // 32 unicode glyphs is max name size => 4 bytes per glyph in the worst case, +1 for null
+    // 32 unicode glyphs is max name size => 4 bytes per glyph in the worst case, +1 for nullptr
     // terminator = 129
     char username[344];
-    // 4 decimal digits + 1 null terminator = 5
+    // 4 decimal digits + 1 nullptr terminator = 5
     char discriminator[8];
-    // optional 'a_' + md5 hex digest (32 bytes) + null terminator = 35
+    // optional 'a_' + md5 hex digest (32 bytes) + nullptr terminator = 35
     char avatar[128];
     // Rounded way up because I'm paranoid about games breaking from future changes in these sizes
 };

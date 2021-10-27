@@ -43,7 +43,7 @@ extern "C" {
 ************************************************************************/
 
 /* Memory required for the wrkmem parameter.
- * When the required size is 0, you can also pass a NULL pointer.
+ * When the required size is 0, you can also pass a nullptr pointer.
  */
 
 #define LZO1Y_MEM_COMPRESS      ((lzo_uint32_t) (16384L * lzo_sizeof_dict_t))

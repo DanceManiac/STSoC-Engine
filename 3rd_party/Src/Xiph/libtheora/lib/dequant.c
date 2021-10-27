@@ -56,7 +56,7 @@ int oc_quant_params_unpack(oc_pack_buf *_opb,th_quant_info *_qinfo){
   val=oc_pack_read(_opb,9);
   nbase_mats=(int)val+1;
   base_mats=_ogg_malloc(nbase_mats*sizeof(base_mats[0]));
-  if(base_mats==NULL)return TH_EFAULT;
+  if(base_mats==nullptr)return TH_EFAULT;
   for(bmi=0;bmi<nbase_mats;bmi++){
     for(ci=0;ci<64;ci++){
       val=oc_pack_read(_opb,8);
@@ -112,7 +112,7 @@ int oc_quant_params_unpack(oc_pack_buf *_opb,th_quant_info *_qinfo){
     }
     qranges->nranges=qri;
     qranges->sizes=qrsizes=(int *)_ogg_malloc(qri*sizeof(qrsizes[0]));
-    if(qranges->sizes==NULL){
+    if(qranges->sizes==nullptr){
       /*Note: The caller is responsible for cleaning up any partially
          constructed qinfo.*/
       _ogg_free(base_mats);
@@ -120,7 +120,7 @@ int oc_quant_params_unpack(oc_pack_buf *_opb,th_quant_info *_qinfo){
     }
     memcpy(qrsizes,sizes,qri*sizeof(qrsizes[0]));
     qrbms=(th_quant_base *)_ogg_malloc((qri+1)*sizeof(qrbms[0]));
-    if(qrbms==NULL){
+    if(qrbms==nullptr){
       /*Note: The caller is responsible for cleaning up any partially
          constructed qinfo.*/
       _ogg_free(base_mats);
@@ -158,21 +158,21 @@ void oc_quant_params_clear(th_quant_info *_qinfo){
       plj=(i-1)%3;
       if(_qinfo->qi_ranges[qti][pli].sizes==
        _qinfo->qi_ranges[qtj][plj].sizes){
-        _qinfo->qi_ranges[qti][pli].sizes=NULL;
+        _qinfo->qi_ranges[qti][pli].sizes=nullptr;
       }
       if(_qinfo->qi_ranges[qti][pli].base_matrices==
        _qinfo->qi_ranges[qtj][plj].base_matrices){
-        _qinfo->qi_ranges[qti][pli].base_matrices=NULL;
+        _qinfo->qi_ranges[qti][pli].base_matrices=nullptr;
       }
     }
     if(qti>0){
       if(_qinfo->qi_ranges[1][pli].sizes==
        _qinfo->qi_ranges[0][pli].sizes){
-        _qinfo->qi_ranges[1][pli].sizes=NULL;
+        _qinfo->qi_ranges[1][pli].sizes=nullptr;
       }
       if(_qinfo->qi_ranges[1][pli].base_matrices==
        _qinfo->qi_ranges[0][pli].base_matrices){
-        _qinfo->qi_ranges[1][pli].base_matrices=NULL;
+        _qinfo->qi_ranges[1][pli].base_matrices=nullptr;
       }
     }
     /*Now free all the non-duplicate storage.*/

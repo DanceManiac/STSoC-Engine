@@ -283,7 +283,7 @@ arguments to C&nbsp;calls:
 <tr class="even">
 <td class="convin">boolean</td><td class="convop"><tt>false</tt> &rarr; 0, <tt>true</tt> &rarr; 1</td><td class="convout"><tt>bool</tt></td></tr>
 <tr class="odd separate">
-<td class="convin">nil</td><td class="convop"><tt>NULL</tt> &rarr;</td><td class="convout"><tt>(void *)</tt></td></tr>
+<td class="convin">nil</td><td class="convop"><tt>nullptr</tt> &rarr;</td><td class="convout"><tt>(void *)</tt></td></tr>
 <tr class="even">
 <td class="convin">lightuserdata</td><td class="convop">lightuserdata address &rarr;</td><td class="convout"><tt>(void *)</tt></td></tr>
 <tr class="odd">
@@ -403,7 +403,7 @@ to the variable argument part of vararg C&nbsp;functions:
 <tr class="even">
 <td class="convin">boolean</td><td class="convop"><tt>false</tt> &rarr; 0, <tt>true</tt> &rarr; 1</td><td class="convout"><tt>bool</tt></td></tr>
 <tr class="odd separate">
-<td class="convin">nil</td><td class="convop"><tt>NULL</tt> &rarr;</td><td class="convout"><tt>(void *)</tt></td></tr>
+<td class="convin">nil</td><td class="convop"><tt>nullptr</tt> &rarr;</td><td class="convout"><tt>(void *)</tt></td></tr>
 <tr class="even">
 <td class="convin">userdata</td><td class="convop">userdata payload &rarr;</td><td class="convout"><tt>(void *)</tt></td></tr>
 <tr class="odd">
@@ -515,7 +515,7 @@ elements are filled with zero bytes.</li>
 <li>The above logic only applies to arrays with a known fixed size.
 A VLA is only initialized with the element(s) given in the table.
 Depending on the use case, you may need to explicitly add a
-<tt>NULL</tt> or <tt>0</tt> terminator to a VLA.</li>
+<tt>nullptr</tt> or <tt>0</tt> terminator to a VLA.</li>
 
 <li>A <tt>struct</tt>/<tt>union</tt> can be initialized in the
 order of the declaration of its fields. Each field is initialized with
@@ -753,7 +753,7 @@ a cdata number output.
 
 <li><b>Pointer comparison</b>: two compatible cdata pointers/arrays
 can be compared. The result is the same as an unsigned comparison of
-their addresses. <tt>nil</tt> is treated like a <tt>NULL</tt> pointer,
+their addresses. <tt>nil</tt> is treated like a <tt>nullptr</tt> pointer,
 which is compatible with any other pointer type.</li>
 
 <li><b>64&nbsp;bit integer comparison</b>: two cdata numbers, or a
@@ -1145,7 +1145,7 @@ machine code at any memory address and so on.
 </p>
 <p>
 The FFI library provides <b>no memory safety</b>, unlike regular Lua
-code. It will happily allow you to dereference a <tt>NULL</tt>
+code. It will happily allow you to dereference a <tt>nullptr</tt>
 pointer, to access arrays out of bounds or to misdeclare
 C&nbsp;functions. If you make a mistake, your application might crash,
 just like equivalent C&nbsp;code would.

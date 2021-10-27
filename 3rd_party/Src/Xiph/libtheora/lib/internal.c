@@ -181,9 +181,9 @@ void **oc_malloc_2d(size_t _height,size_t _width,size_t _sz){
   datsz=rowsz*_height;
   /*Alloc array and row pointers.*/
   ret=(char *)_ogg_malloc(datsz+colsz);
-  if(ret==NULL)return NULL;
+  if(ret==nullptr)return nullptr;
   /*Initialize the array.*/
-  if(ret!=NULL){
+  if(ret!=nullptr){
     size_t   i;
     void   **p;
     char    *datptr;
@@ -204,9 +204,9 @@ void **oc_calloc_2d(size_t _height,size_t _width,size_t _sz){
   datsz=rowsz*_height;
   /*Alloc array and row pointers.*/
   ret=(char *)_ogg_calloc(datsz+colsz,1);
-  if(ret==NULL)return NULL;
+  if(ret==nullptr)return nullptr;
   /*Initialize the array.*/
-  if(ret!=NULL){
+  if(ret!=nullptr){
     size_t   i;
     void   **p;
     char    *datptr;

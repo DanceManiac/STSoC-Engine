@@ -6,8 +6,8 @@ ENGINE_API DiscordRPC Discord;
 
 void DiscordRPC::Init()
 {
-	DiscordEventHandlers nullHandlers{};
-	Discord_Initialize("862971629810221086", &nullHandlers, TRUE, nullptr, 0);
+	DiscordEventHandlers nullptrHandlers{};
+	Discord_Initialize("862971629810221086", &nullptrHandlers, TRUE, nullptr, 0);
 
 	start_time = time(nullptr);
 }

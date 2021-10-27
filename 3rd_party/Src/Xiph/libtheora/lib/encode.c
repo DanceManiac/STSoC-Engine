@@ -992,9 +992,9 @@ static void oc_enc_mb_info_init(oc_enc_ctx *_enc){
 static int oc_enc_set_huffman_codes(oc_enc_ctx *_enc,
  const th_huff_code _codes[TH_NHUFFMAN_TABLES][TH_NDCT_TOKENS]){
   int ret;
-  if(_enc==NULL)return TH_EFAULT;
+  if(_enc==nullptr)return TH_EFAULT;
   if(_enc->packet_state>OC_PACKET_SETUP_HDR)return TH_EINVAL;
-  if(_codes==NULL)_codes=TH_VP31_HUFF_CODES;
+  if(_codes==nullptr)_codes=TH_VP31_HUFF_CODES;
   /*Validate the codes.*/
   oggpackB_reset(&_enc->opb);
   ret=oc_huff_codes_pack(&_enc->opb,_codes);
@@ -1008,16 +1008,16 @@ static int oc_enc_set_huffman_codes(oc_enc_ctx *_enc,
   If it is called multiple times, only the last call has any effect.
   _qinfo: The quantization parameters.
           These are described in more detail in theoraenc.h.
-          This can be NULL, in which case the default quantization parameters
+          This can be nullptr, in which case the default quantization parameters
            will be used.*/
 static int oc_enc_set_quant_params(oc_enc_ctx *_enc,
  const th_quant_info *_qinfo){
   int qi;
   int pli;
   int qti;
-  if(_enc==NULL)return TH_EFAULT;
+  if(_enc==nullptr)return TH_EFAULT;
   if(_enc->packet_state>OC_PACKET_SETUP_HDR)return TH_EINVAL;
-  if(_qinfo==NULL)_qinfo=&TH_DEF_QUANT_INFO;
+  if(_qinfo==nullptr)_qinfo=&TH_DEF_QUANT_INFO;
   /*TODO: Analyze for packing purposes instead of just doing a shallow copy.*/
   memcpy(&_enc->qinfo,_qinfo,sizeof(_enc->qinfo));
   for(qi=0;qi<64;qi++)for(pli=0;pli<3;pli++)for(qti=0;qti<2;qti++){
@@ -1088,13 +1088,13 @@ static int oc_enc_init(oc_enc_ctx *_enc,const th_info *_info){
   _enc->state.nqis=1;
   oc_rc_state_init(&_enc->rc,_enc);
   oggpackB_writeinit(&_enc->opb);
-  if(_enc->mb_info==NULL||_enc->frag_dc==NULL||_enc->coded_mbis==NULL||
-   _enc->mcu_skip_ssd==NULL||_enc->dct_tokens[0]==NULL||
-   _enc->dct_tokens[1]==NULL||_enc->dct_tokens[2]==NULL||
-   _enc->extra_bits[0]==NULL||_enc->extra_bits[1]==NULL||
-   _enc->extra_bits[2]==NULL
+  if(_enc->mb_info==nullptr||_enc->frag_dc==nullptr||_enc->coded_mbis==nullptr||
+   _enc->mcu_skip_ssd==nullptr||_enc->dct_tokens[0]==nullptr||
+   _enc->dct_tokens[1]==nullptr||_enc->dct_tokens[2]==nullptr||
+   _enc->extra_bits[0]==nullptr||_enc->extra_bits[1]==nullptr||
+   _enc->extra_bits[2]==nullptr
 #if defined(OC_COLLECT_METRICS)
-   ||_enc->frag_satd==NULL||_enc->frag_ssd==NULL
+   ||_enc->frag_satd==nullptr||_enc->frag_ssd==nullptr
 #endif
    ){
     oc_enc_clear(_enc);
@@ -1115,7 +1115,7 @@ static int oc_enc_init(oc_enc_ctx *_enc,const th_info *_info){
   /*No INTER frames coded yet.*/
   _enc->coded_inter_frame=0;
   memcpy(_enc->huff_codes,TH_VP31_HUFF_CODES,sizeof(_enc->huff_codes));
-  oc_enc_set_quant_params(_enc,NULL);
+  oc_enc_set_quant_params(_enc,nullptr);
   return 0;
 }
 
@@ -1221,17 +1221,17 @@ static void oc_enc_set_granpos(oc_enc_ctx *_enc){
 
 th_enc_ctx *th_encode_alloc(const th_info *_info){
   oc_enc_ctx *enc;
-  if(_info==NULL)return NULL;
+  if(_info==nullptr)return nullptr;
   enc=_ogg_malloc(sizeof(*enc));
-  if(enc==NULL||oc_enc_init(enc,_info)<0){
+  if(enc==nullptr||oc_enc_init(enc,_info)<0){
     _ogg_free(enc);
-    return NULL;
+    return nullptr;
   }
   return enc;
 }
 
 void th_encode_free(th_enc_ctx *_enc){
-  if(_enc!=NULL){
+  if(_enc!=nullptr){
     oc_enc_clear(_enc);
     _ogg_free(_enc);
   }
@@ -1240,22 +1240,22 @@ void th_encode_free(th_enc_ctx *_enc){
 int th_encode_ctl(th_enc_ctx *_enc,int _req,void *_buf,size_t _buf_sz){
   switch(_req){
     case TH_ENCCTL_SET_HUFFMAN_CODES:{
-      if(_buf==NULL&&_buf_sz!=0||
-       _buf!=NULL&&_buf_sz!=sizeof(th_huff_table)*TH_NHUFFMAN_TABLES){
+      if(_buf==nullptr&&_buf_sz!=0||
+       _buf!=nullptr&&_buf_sz!=sizeof(th_huff_table)*TH_NHUFFMAN_TABLES){
         return TH_EINVAL;
       }
       return oc_enc_set_huffman_codes(_enc,(const th_huff_table *)_buf);
     }break;
     case TH_ENCCTL_SET_QUANT_PARAMS:{
-      if(_buf==NULL&&_buf_sz!=0||
-       _buf!=NULL&&_buf_sz!=sizeof(th_quant_info)){
+      if(_buf==nullptr&&_buf_sz!=0||
+       _buf!=nullptr&&_buf_sz!=sizeof(th_quant_info)){
         return TH_EINVAL;
       }
       return oc_enc_set_quant_params(_enc,(th_quant_info *)_buf);
     }break;
     case TH_ENCCTL_SET_KEYFRAME_FREQUENCY_FORCE:{
       ogg_uint32_t keyframe_frequency_force;
-      if(_enc==NULL||_buf==NULL)return TH_EFAULT;
+      if(_enc==nullptr||_buf==nullptr)return TH_EFAULT;
       if(_buf_sz!=sizeof(keyframe_frequency_force))return TH_EINVAL;
       keyframe_frequency_force=*(ogg_uint32_t *)_buf;
       if(keyframe_frequency_force<=0)keyframe_frequency_force=1;
@@ -1272,7 +1272,7 @@ int th_encode_ctl(th_enc_ctx *_enc,int _req,void *_buf,size_t _buf_sz){
     }break;
     case TH_ENCCTL_SET_VP3_COMPATIBLE:{
       int vp3_compatible;
-      if(_enc==NULL||_buf==NULL)return TH_EFAULT;
+      if(_enc==nullptr||_buf==nullptr)return TH_EFAULT;
       if(_buf_sz!=sizeof(vp3_compatible))return TH_EINVAL;
       vp3_compatible=*(int *)_buf;
       _enc->vp3_compatible=vp3_compatible;
@@ -1295,14 +1295,14 @@ int th_encode_ctl(th_enc_ctx *_enc,int _req,void *_buf,size_t _buf_sz){
       return 0;
     }break;
     case TH_ENCCTL_GET_SPLEVEL_MAX:{
-      if(_enc==NULL||_buf==NULL)return TH_EFAULT;
+      if(_enc==nullptr||_buf==nullptr)return TH_EFAULT;
       if(_buf_sz!=sizeof(int))return TH_EINVAL;
       *(int *)_buf=OC_SP_LEVEL_MAX;
       return 0;
     }break;
     case TH_ENCCTL_SET_SPLEVEL:{
       int speed;
-      if(_enc==NULL||_buf==NULL)return TH_EFAULT;
+      if(_enc==nullptr||_buf==nullptr)return TH_EFAULT;
       if(_buf_sz!=sizeof(speed))return TH_EINVAL;
       speed=*(int *)_buf;
       if(speed<0||speed>OC_SP_LEVEL_MAX)return TH_EINVAL;
@@ -1310,14 +1310,14 @@ int th_encode_ctl(th_enc_ctx *_enc,int _req,void *_buf,size_t _buf_sz){
       return 0;
     }break;
     case TH_ENCCTL_GET_SPLEVEL:{
-      if(_enc==NULL||_buf==NULL)return TH_EFAULT;
+      if(_enc==nullptr||_buf==nullptr)return TH_EFAULT;
       if(_buf_sz!=sizeof(int))return TH_EINVAL;
       *(int *)_buf=_enc->sp_level;
       return 0;
     }
     case TH_ENCCTL_SET_DUP_COUNT:{
       int dup_count;
-      if(_enc==NULL||_buf==NULL)return TH_EFAULT;
+      if(_enc==nullptr||_buf==nullptr)return TH_EFAULT;
       if(_buf_sz!=sizeof(dup_count))return TH_EINVAL;
       dup_count=*(int *)_buf;
       if(dup_count>=_enc->keyframe_frequency_force)return TH_EINVAL;
@@ -1326,7 +1326,7 @@ int th_encode_ctl(th_enc_ctx *_enc,int _req,void *_buf,size_t _buf_sz){
     }break;
     case TH_ENCCTL_SET_QUALITY:{
       int qi;
-      if(_enc==NULL||_buf==NULL)return TH_EFAULT;
+      if(_enc==nullptr||_buf==nullptr)return TH_EFAULT;
       if(_enc->state.info.target_bitrate>0)return TH_EINVAL;
       qi=*(int *)_buf;
       if(qi<0||qi>63)return TH_EINVAL;
@@ -1338,7 +1338,7 @@ int th_encode_ctl(th_enc_ctx *_enc,int _req,void *_buf,size_t _buf_sz){
     case TH_ENCCTL_SET_BITRATE:{
       long bitrate;
       int  reset;
-      if(_enc==NULL||_buf==NULL)return TH_EFAULT;
+      if(_enc==nullptr||_buf==nullptr)return TH_EFAULT;
       bitrate=*(long *)_buf;
       if(bitrate<=0)return TH_EINVAL;
       reset=_enc->state.info.target_bitrate<=0;
@@ -1349,7 +1349,7 @@ int th_encode_ctl(th_enc_ctx *_enc,int _req,void *_buf,size_t _buf_sz){
     }break;
     case TH_ENCCTL_SET_RATE_FLAGS:{
       int set;
-      if(_enc==NULL||_buf==NULL)return TH_EFAULT;
+      if(_enc==nullptr||_buf==nullptr)return TH_EFAULT;
       if(_buf_sz!=sizeof(set))return TH_EINVAL;
       if(_enc->state.info.target_bitrate<=0)return TH_EINVAL;
       set=*(int *)_buf;
@@ -1360,7 +1360,7 @@ int th_encode_ctl(th_enc_ctx *_enc,int _req,void *_buf,size_t _buf_sz){
     }break;
     case TH_ENCCTL_SET_RATE_BUFFER:{
       int set;
-      if(_enc==NULL||_buf==NULL)return TH_EFAULT;
+      if(_enc==nullptr||_buf==nullptr)return TH_EFAULT;
       if(_buf_sz!=sizeof(set))return TH_EINVAL;
       if(_enc->state.info.target_bitrate<=0)return TH_EINVAL;
       set=*(int *)_buf;
@@ -1370,7 +1370,7 @@ int th_encode_ctl(th_enc_ctx *_enc,int _req,void *_buf,size_t _buf_sz){
       return 0;
     }break;
     case TH_ENCCTL_2PASS_OUT:{
-      if(_enc==NULL||_buf==NULL)return TH_EFAULT;
+      if(_enc==nullptr||_buf==nullptr)return TH_EFAULT;
       if(_enc->state.info.target_bitrate<=0||
        _enc->state.curframe_num>=0&&_enc->rc.twopass!=1||
        _buf_sz!=sizeof(unsigned char *)){
@@ -1379,7 +1379,7 @@ int th_encode_ctl(th_enc_ctx *_enc,int _req,void *_buf,size_t _buf_sz){
       return oc_enc_rc_2pass_out(_enc,(unsigned char **)_buf);
     }break;
     case TH_ENCCTL_2PASS_IN:{
-      if(_enc==NULL)return TH_EFAULT;
+      if(_enc==nullptr)return TH_EFAULT;
       if(_enc->state.info.target_bitrate<=0||
        _enc->state.curframe_num>=0&&_enc->rc.twopass!=2){
         return TH_EINVAL;
@@ -1391,7 +1391,7 @@ int th_encode_ctl(th_enc_ctx *_enc,int _req,void *_buf,size_t _buf_sz){
 }
 
 int th_encode_flushheader(th_enc_ctx *_enc,th_comment *_tc,ogg_packet *_op){
-  if(_enc==NULL)return TH_EFAULT;
+  if(_enc==nullptr)return TH_EFAULT;
   return oc_state_flushheader(&_enc->state,&_enc->packet_state,&_enc->opb,
    &_enc->qinfo,(const th_huff_table *)_enc->huff_codes,th_version_string(),
    _tc,_op);
@@ -1489,7 +1489,7 @@ int th_encode_ycbcr_in(th_enc_ctx *_enc,th_ycbcr_buffer _img){
   int             refi;
   int             drop;
   /*Step 1: validate parameters.*/
-  if(_enc==NULL||_img==NULL)return TH_EFAULT;
+  if(_enc==nullptr||_img==nullptr)return TH_EFAULT;
   if(_enc->packet_state==OC_PACKET_DONE)return TH_EINVAL;
   if(_enc->rc.twopass&&_enc->rc.twopass_buffer_bytes==0)return TH_EINVAL;
   if((ogg_uint32_t)_img[0].width!=_enc->state.info.frame_width||
@@ -1575,27 +1575,27 @@ int th_encode_ycbcr_in(th_enc_ctx *_enc,th_ycbcr_buffer _img){
 }
 
 int th_encode_packetout(th_enc_ctx *_enc,int _last_p,ogg_packet *_op){
-  if(_enc==NULL||_op==NULL)return TH_EFAULT;
+  if(_enc==nullptr||_op==nullptr)return TH_EFAULT;
   if(_enc->packet_state==OC_PACKET_READY){
     _enc->packet_state=OC_PACKET_EMPTY;
     if(_enc->rc.twopass!=1){
       unsigned char *packet;
       packet=oggpackB_get_buffer(&_enc->opb);
       /*If there's no packet, malloc failed while writing; it's lost forever.*/
-      if(packet==NULL)return TH_EFAULT;
+      if(packet==nullptr)return TH_EFAULT;
       _op->packet=packet;
       _op->bytes=oggpackB_bytes(&_enc->opb);
     }
     /*For the first pass in 2-pass mode, don't emit any packet data.*/
     else{
-      _op->packet=NULL;
+      _op->packet=nullptr;
       _op->bytes=0;
     }
   }
   else if(_enc->packet_state==OC_PACKET_EMPTY){
     if(_enc->nqueued_dups>0){
       _enc->nqueued_dups--;
-      _op->packet=NULL;
+      _op->packet=nullptr;
       _op->bytes=0;
     }
     else{

@@ -2094,9 +2094,9 @@ extern "C" void dJointSetUniversalAxis1 (dxJointUniversal *joint,
   dUASSERT(joint,"bad joint argument");
   dUASSERT(joint->vtable == &__duniversal_vtable,"joint is not a universal");
   if (joint->flags & dJOINT_REVERSE)
-    setAxes (joint,x,y,z,NULL,joint->axis2);
+    setAxes (joint,x,y,z,nullptr,joint->axis2);
   else
-    setAxes (joint,x,y,z,joint->axis1,NULL);
+    setAxes (joint,x,y,z,joint->axis1,nullptr);
   universalComputeInitialRelativeRotations(joint);
 }
 
@@ -2107,9 +2107,9 @@ extern "C" void dJointSetUniversalAxis2 (dxJointUniversal *joint,
   dUASSERT(joint,"bad joint argument");
   dUASSERT(joint->vtable == &__duniversal_vtable,"joint is not a universal");
   if (joint->flags & dJOINT_REVERSE)
-    setAxes (joint,x,y,z,joint->axis1,NULL);
+    setAxes (joint,x,y,z,joint->axis1,nullptr);
   else
-    setAxes (joint,x,y,z,NULL,joint->axis2);
+    setAxes (joint,x,y,z,nullptr,joint->axis2);
   universalComputeInitialRelativeRotations(joint);
 }
 
@@ -2816,27 +2816,27 @@ dxJoint::Vtable __dfixed_vtable = {
 };
 
 //****************************************************************************
-// null joint
+// nullptr joint
 
-static void nullGetInfo1 (dxJointNull *j, dxJoint::Info1 *info)
+static void nullptrGetInfo1 (dxJointnullptr *j, dxJoint::Info1 *info)
 {
   info->m = 0;
   info->nub = 0;
 }
 
 
-static void nullGetInfo2 (dxJointNull *joint, dxJoint::Info2 *info)
+static void nullptrGetInfo2 (dxJointnullptr *joint, dxJoint::Info2 *info)
 {
   dDebug (0,"this should never get called");
 }
 
 
-dxJoint::Vtable __dnull_vtable = {
-  sizeof(dxJointNull),
+dxJoint::Vtable __dnullptr_vtable = {
+  sizeof(dxJointnullptr),
   (dxJoint::init_fn*) 0,
-  (dxJoint::getInfo1_fn*) nullGetInfo1,
-  (dxJoint::getInfo2_fn*) nullGetInfo2,
-  dJointTypeNull
+  (dxJoint::getInfo1_fn*) nullptrGetInfo1,
+  (dxJoint::getInfo2_fn*) nullptrGetInfo2,
+  dJointTypenullptr
 #ifdef DE_PADF_INTEGRATION
   ,(dxJoint::addBodiesForces_fn*) emptyAddForces
 #endif

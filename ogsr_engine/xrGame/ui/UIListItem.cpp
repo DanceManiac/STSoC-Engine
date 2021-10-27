@@ -13,7 +13,7 @@ CUIListItem::CUIListItem(void)
 
 	m_bButtonClicked = false;
 
-	m_pData = NULL;
+	m_pData = nullptr;
 
 	m_iIndex = -1;
 	m_iValue = 0;

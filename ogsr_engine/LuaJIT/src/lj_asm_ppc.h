@@ -711,7 +711,7 @@ static void asm_href(ASMState *as, IRIns *ir, IROp merge)
 
   /* Key not found in chain: jump to exit (if merged) or load niltv. */
   l_end = emit_label(as);
-  as->invmcp = NULL;
+  as->invmcp = nullptr;
   if (merge == IR_NE)
     asm_guardcc(as, CC_EQ);
   else if (destused)
@@ -1329,7 +1329,7 @@ static void asm_add(ASMState *as, IRIns *ir)
 	pi = PPCI_ADDI;
 	/* May fail due to spills/restores above, but simplifies the logic. */
 	if (as->flagmcp == as->mcp) {
-	  as->flagmcp = NULL;
+	  as->flagmcp = nullptr;
 	  as->mcp++;
 	  pi = PPCI_ADDICDOT;
 	}
@@ -1347,7 +1347,7 @@ static void asm_add(ASMState *as, IRIns *ir)
     pi = PPCI_ADD;
     /* May fail due to spills/restores above, but simplifies the logic. */
     if (as->flagmcp == as->mcp) {
-      as->flagmcp = NULL;
+      as->flagmcp = nullptr;
       as->mcp++;
       pi |= PPCF_DOT;
     }
@@ -1378,7 +1378,7 @@ static void asm_sub(ASMState *as, IRIns *ir)
     }
     /* May fail due to spills/restores above, but simplifies the logic. */
     if (as->flagmcp == as->mcp) {
-      as->flagmcp = NULL;
+      as->flagmcp = nullptr;
       as->mcp++;
       pi |= PPCF_DOT;
     }
@@ -1408,7 +1408,7 @@ static void asm_mul(ASMState *as, IRIns *ir)
     }
     /* May fail due to spills/restores above, but simplifies the logic. */
     if (as->flagmcp == as->mcp) {
-      as->flagmcp = NULL;
+      as->flagmcp = nullptr;
       as->mcp++;
       pi |= PPCF_DOT;
     }
@@ -1430,7 +1430,7 @@ static void asm_neg(ASMState *as, IRIns *ir)
     Reg dest, left;
     PPCIns pi = PPCI_NEG;
     if (as->flagmcp == as->mcp) {
-      as->flagmcp = NULL;
+      as->flagmcp = nullptr;
       as->mcp++;
       pi |= PPCF_DOT;
     }
@@ -1446,7 +1446,7 @@ static void asm_arithov(ASMState *as, IRIns *ir, PPCIns pi)
 {
   Reg dest, left, right;
   if (as->flagmcp == as->mcp) {
-    as->flagmcp = NULL;
+    as->flagmcp = nullptr;
     as->mcp++;
   }
   asm_guardcc(as, CC_SO);
@@ -1545,7 +1545,7 @@ static void asm_bnot(ASMState *as, IRIns *ir)
   Reg dest, left, right;
   PPCIns pi = PPCI_NOR;
   if (as->flagmcp == as->mcp) {
-    as->flagmcp = NULL;
+    as->flagmcp = nullptr;
     as->mcp++;
     pi |= PPCF_DOT;
   }
@@ -1625,7 +1625,7 @@ static void asm_band(ASMState *as, IRIns *ir)
   PPCIns dot = 0;
   IRRef op2;
   if (as->flagmcp == as->mcp) {
-    as->flagmcp = NULL;
+    as->flagmcp = nullptr;
     as->mcp++;
     dot = PPCF_DOT;
   }
@@ -1691,7 +1691,7 @@ static void asm_bitop(ASMState *as, IRIns *ir, PPCIns pi, PPCIns pik)
   }
   /* May fail due to spills/restores above, but simplifies the logic. */
   if (as->flagmcp == as->mcp) {
-    as->flagmcp = NULL;
+    as->flagmcp = nullptr;
     as->mcp++;
     pi |= PPCF_DOT;
   }
@@ -1707,7 +1707,7 @@ static void asm_bitshift(ASMState *as, IRIns *ir, PPCIns pi, PPCIns pik)
   Reg dest, left;
   Reg dot = 0;
   if (as->flagmcp == as->mcp) {
-    as->flagmcp = NULL;
+    as->flagmcp = nullptr;
     as->mcp++;
     dot = PPCF_DOT;
   }
@@ -1934,7 +1934,7 @@ static void asm_comp64(ASMState *as, IRIns *ir)
 	       cc | ((cc&3) == (CC_EQ&3) ? 0 : CC_UNSIGNED));
   /* Hiword comparison sets cr0. */
   asm_intcomp_(as, ir->op1, ir->op2, 0, cc);
-  as->flagmcp = NULL;  /* Doesn't work here. */
+  as->flagmcp = nullptr;  /* Doesn't work here. */
 }
 #endif
 
@@ -2225,7 +2225,7 @@ static void asm_tail_prep(ASMState *as)
     as->invmcp = as->mcp = p;
   } else {
     as->mcp = p-2;  /* Leave room for stack pointer adjustment. */
-    as->invmcp = NULL;
+    as->invmcp = nullptr;
   }
 }
 
@@ -2263,7 +2263,7 @@ void lj_asm_patchexit(jit_State *J, GCtrace *T, ExitNo exitno, MCode *target)
   MCode *p = T->mcode;
   MCode *pe = (MCode *)((char *)p + T->szmcode);
   MCode *px = exitstub_trace_addr(T, exitno);
-  MCode *cstart = NULL;
+  MCode *cstart = nullptr;
   MCode *mcarea = lj_mcode_patch(J, p, 0);
   int clearso = 0, patchlong = 1;
   for (; p < pe; p++) {

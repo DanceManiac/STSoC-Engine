@@ -191,7 +191,7 @@ static void libdef_lua(BuildCtx *ctx, char *p, int arg)
   UNUSED(arg);
   if (ctx->mode == BUILD_libdef) {
     int i;
-    for (i = 0; libbc_map[i].name != NULL; i++) {
+    for (i = 0; libbc_map[i].name != nullptr; i++) {
       if (!strcmp(libbc_map[i].name, p)) {
 	int ofs = libbc_map[i].ofs;
 	int len = libbc_map[i+1].ofs - ofs;
@@ -339,9 +339,9 @@ static const LibDefHandler libdef_handlers[] = {
   { "REC(",	")",		libdef_rec,		0 },
   { "PUSH(",	")",		libdef_push,		0 },
   { "SET(",	")",		libdef_set,		0 },
-  { "NOREGUV",	NULL,		libdef_regfunc,		REGFUNC_NOREGUV },
-  { "NOREG",	NULL,		libdef_regfunc,		REGFUNC_NOREG },
-  { NULL,	NULL,		(LibDefFunc)0,		0 }
+  { "NOREGUV",	nullptr,		libdef_regfunc,		REGFUNC_NOREGUV },
+  { "NOREG",	nullptr,		libdef_regfunc,		REGFUNC_NOREG },
+  { nullptr,	nullptr,		(LibDefFunc)0,		0 }
 };
 
 /* Emit C source code for library function definitions. */
@@ -374,7 +374,7 @@ void emit_lib(BuildCtx *ctx)
     }
     modstate = 0;
     regfunc = REGFUNC_OK;
-    while (fgets(buf, sizeof(buf), fp) != NULL) {
+    while (fgets(buf, sizeof(buf), fp) != nullptr) {
       char *p;
       /* Simplistic pre-processor. Only handles top-level #if/#endif. */
       if (buf[0] == '#' && buf[1] == 'i' && buf[2] == 'f') {
@@ -389,7 +389,7 @@ void emit_lib(BuildCtx *ctx)
 	  ok = LJ_HASBUFFER;
 	if (!ok) {
 	  int lvl = 1;
-	  while (fgets(buf, sizeof(buf), fp) != NULL) {
+	  while (fgets(buf, sizeof(buf), fp) != nullptr) {
 	    if (buf[0] == '#' && buf[1] == 'e' && buf[2] == 'n') {
 	      if (--lvl == 0) break;
 	    } else if (buf[0] == '#' && buf[1] == 'i' && buf[2] == 'f') {
@@ -399,10 +399,10 @@ void emit_lib(BuildCtx *ctx)
 	  continue;
 	}
       }
-      for (p = buf; (p = strstr(p, LIBDEF_PREFIX)) != NULL; ) {
+      for (p = buf; (p = strstr(p, LIBDEF_PREFIX)) != nullptr; ) {
 	const LibDefHandler *ldh;
 	p += sizeof(LIBDEF_PREFIX)-1;
-	for (ldh = libdef_handlers; ldh->suffix != NULL; ldh++) {
+	for (ldh = libdef_handlers; ldh->suffix != nullptr; ldh++) {
 	  size_t n, len = strlen(ldh->suffix);
 	  if (!strncmp(p, ldh->suffix, len)) {
 	    p += len;
@@ -414,7 +414,7 @@ void emit_lib(BuildCtx *ctx)
 	    break;
 	  }
 	}
-	if (ldh->suffix == NULL) {
+	if (ldh->suffix == nullptr) {
 	  buf[strlen(buf)-1] = '\0';
 	  fprintf(stderr, "Error: unknown library definition tag %s%s\n",
 		  LIBDEF_PREFIX, p);

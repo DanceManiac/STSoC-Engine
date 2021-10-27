@@ -75,14 +75,14 @@
             m_len = 0;
             do {
 #if !defined(NDEBUG)
-                const lzo_bytep z_pos = NULL;
+                const lzo_bytep z_pos = nullptr;
 #endif
 #if (LZO_DICT_USE_PTR)
                 m_pos = *d;
                 assert((z_pos = m_pos) == *d);
 #if (LZO_DETERMINISTIC)
-                assert(m_pos == NULL || m_pos >= in);
-                assert(m_pos == NULL || m_pos < ip);
+                assert(m_pos == nullptr || m_pos >= in);
+                assert(m_pos == nullptr || m_pos < ip);
 #endif
 #else
                 x_off = *d;
@@ -110,14 +110,14 @@
                         {
                             m_len = x_len;
                             m_off = x_off;
-                            assert((m_pos_sav = z_pos) != NULL);
+                            assert((m_pos_sav = z_pos) != nullptr);
                         }
 #if (CLEVEL == 9)
                         /* try to find a closer match */
                         else if (x_len == m_len && x_off < m_off)
                         {
                             m_off = x_off;
-                            assert((m_pos_sav = z_pos) != NULL);
+                            assert((m_pos_sav = z_pos) != nullptr);
                         }
 #endif
                     }
@@ -138,7 +138,7 @@
                         {
                             m_len = x_len;
                             m_off = x_off;
-                            assert((m_pos_sav = z_pos) != NULL);
+                            assert((m_pos_sav = z_pos) != nullptr);
                             if (ip >= MATCH_IP_END)
                             {
                                 ip = ip_sav;
@@ -154,7 +154,7 @@
                         else if (x_len == m_len && x_off < m_off)
                         {
                             m_off = x_off;
-                            assert((m_pos_sav = z_pos) != NULL);
+                            assert((m_pos_sav = z_pos) != nullptr);
                         }
 #else
                         /* try to find a closer match */
@@ -162,14 +162,14 @@
                         {
                             m_len = M2_MAX_LEN + 1;
                             m_off = x_off;
-                            assert((m_pos_sav = z_pos) != NULL);
+                            assert((m_pos_sav = z_pos) != nullptr);
                         }
 #endif
 #else
                         /* don't search for a longer/closer match */
                         m_len = M2_MAX_LEN + 1;
                         m_off = x_off;
-                        assert((m_pos_sav = z_pos) != NULL);
+                        assert((m_pos_sav = z_pos) != nullptr);
                         ip = ip_sav;
                         d -= DD_SIZE - j;
                         assert(d == &dict [ DINDEX(dv,ip) ]);

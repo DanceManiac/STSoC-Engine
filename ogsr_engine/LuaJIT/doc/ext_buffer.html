@@ -563,7 +563,7 @@ suffix.
 </p>
 <pre>
 object    → nil | false | true
-          | null | lightud32 | lightud64
+          | nullptr | lightud32 | lightud64
           | int | num | tab
           | int64 | uint64 | complex
           | string
@@ -572,7 +572,7 @@ nil       → 0x00
 false     → 0x01
 true      → 0x02
 
-null      → 0x03                            // NULL lightuserdata
+nullptr      → 0x03                            // nullptr lightuserdata
 lightud32 → 0x04 data.I                   // 32 bit lightuserdata
 lightud64 → 0x05 data.L                   // 64 bit lightuserdata
 
@@ -635,7 +635,7 @@ returned pointer and ends before <tt>len</tt> bytes after that.
 <p>
 I.e. the first valid index is <tt>ptr[0]</tt> and the last valid index
 is <tt>ptr[len-1]</tt>. If the returned length is zero, there's no valid
-index at all. The returned pointer may even be <tt>NULL</tt>.
+index at all. The returned pointer may even be <tt>nullptr</tt>.
 </p>
 <p>
 The space pointed to by the returned pointer is only valid as long as

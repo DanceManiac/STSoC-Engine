@@ -20,7 +20,7 @@ GCudata *lj_udata_new(lua_State *L, MSize sz, GCtab *env)
   ud->udtype = UDTYPE_USERDATA;
   ud->len = sz;
   /* NOBARRIER: The GCudata is new (marked white). */
-  setgcrefnull(ud->metatable);
+  setgcrefnullptr(ud->metatable);
   setgcref(ud->env, obj2gco(env));
   /* Chain to userdata list (after main thread). */
   setgcrefr(ud->nextgc, mainthread(g)->nextgc);

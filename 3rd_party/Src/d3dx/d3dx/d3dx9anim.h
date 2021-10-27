@@ -928,7 +928,7 @@ D3DXFrameAppendChild
 //----------------------------------------------------------------------------
 // D3DXFrameFind:
 // --------------
-// Finds a frame with the given name.  Returns NULL if no frame found.
+// Finds a frame with the given name.  Returns nullptr if no frame found.
 //
 // Parameters:
 //	pFrameRoot
@@ -947,7 +947,7 @@ D3DXFrameFind
 //----------------------------------------------------------------------------
 // D3DXFrameRegisterNamedMatrices:
 // -------------------------------
-// Finds all frames that have non-null names and registers each of those frame
+// Finds all frames that have non-nullptr names and registers each of those frame
 // matrices to the given animation controller
 //
 // Parameters:
@@ -967,7 +967,7 @@ D3DXFrameRegisterNamedMatrices
 //----------------------------------------------------------------------------
 // D3DXFrameNumNamedMatrices:
 // --------------------------
-// Counts number of frames in a subtree that have non-null names 
+// Counts number of frames in a subtree that have non-nullptr names 
 //
 // Parameters:
 //	pFrameRoot

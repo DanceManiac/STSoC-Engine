@@ -13,7 +13,7 @@ static void th_enc_api_clear(th_api_wrapper *_api){
 }
 
 static void theora_encode_clear(theora_state *_te){
-  if(_te->i!=NULL)theora_info_clear(_te->i);
+  if(_te->i!=nullptr)theora_info_clear(_te->i);
   memset(_te,0,sizeof(*_te));
 }
 
@@ -49,20 +49,20 @@ int theora_encode_init(theora_state *_te,theora_info *_ci){
     This avoids having to figure out whether or not we need to free the info
      struct in either theora_info_clear() or theora_clear().*/
   apiinfo=(th_api_info *)_ogg_malloc(sizeof(*apiinfo));
-  if(apiinfo==NULL)return TH_EFAULT;
+  if(apiinfo==nullptr)return TH_EFAULT;
   /*Make our own copy of the info struct, since its lifetime should be
      independent of the one we were passed in.*/
   *&apiinfo->info=*_ci;
   oc_theora_info2th_info(&info,_ci);
   apiinfo->api.encode=th_encode_alloc(&info);
-  if(apiinfo->api.encode==NULL){
+  if(apiinfo->api.encode==nullptr){
     _ogg_free(apiinfo);
     return OC_EINVAL;
   }
   apiinfo->api.clear=(oc_setup_clear_func)th_enc_api_clear;
   /*Provide entry points for ABI compatibility with old decoder shared libs.*/
   _te->internal_encode=(void *)&OC_ENC_DISPATCH_VTBL;
-  _te->internal_decode=NULL;
+  _te->internal_decode=nullptr;
   _te->granulepos=0;
   _te->i=&apiinfo->info;
   _te->i->codec_setup=&apiinfo->api;
@@ -117,7 +117,7 @@ int theora_encode_header(theora_state *_te,ogg_packet *_op){
   }
   /*Reset the state to make sure we output an info packet.*/
   enc->packet_state=OC_PACKET_INFO_HDR;
-  ret=th_encode_flushheader(api->encode,NULL,_op);
+  ret=th_encode_flushheader(api->encode,nullptr,_op);
   return ret>=0?0:ret;
 }
 
@@ -128,7 +128,7 @@ int theora_encode_comment(theora_comment *_tc,ogg_packet *_op){
   int             ret;
   packet_state=OC_PACKET_COMMENT_HDR;
   oggpackB_writeinit(&opb);
-  ret=oc_state_flushheader(NULL,&packet_state,&opb,NULL,NULL,
+  ret=oc_state_flushheader(nullptr,&packet_state,&opb,nullptr,nullptr,
    th_version_string(),(th_comment *)_tc,_op);
   if(ret>=0){
     /*The oggpack_buffer's lifetime ends with this function, so we have to
@@ -137,8 +137,8 @@ int theora_encode_comment(theora_comment *_tc,ogg_packet *_op){
       This part works nothing like the Vorbis API, and the documentation on it
        has been wrong for some time, claiming libtheora owned the memory.*/
     buf=_ogg_malloc(_op->bytes);
-    if(buf==NULL){
-      _op->packet=NULL;
+    if(buf==nullptr){
+      _op->packet=nullptr;
       ret=TH_EFAULT;
     }
     else{
@@ -163,6 +163,6 @@ int theora_encode_tables(theora_state *_te,ogg_packet *_op){
   }
   /*Reset the state to make sure we output a setup packet.*/
   enc->packet_state=OC_PACKET_SETUP_HDR;
-  ret=th_encode_flushheader(api->encode,NULL,_op);
+  ret=th_encode_flushheader(api->encode,nullptr,_op);
   return ret>=0?0:ret;
 }

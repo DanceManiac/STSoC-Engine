@@ -165,11 +165,11 @@ static GCproto *check_Lproto(lua_State *L, int nolua)
       if (isluafunc(funcV(o)))
 	return funcproto(funcV(o));
       else if (nolua)
-	return NULL;
+	return nullptr;
     }
   }
   lj_err_argt(L, 1, LUA_TFUNCTION);
-  return NULL;  /* unreachable */
+  return nullptr;  /* unreachable */
 }
 
 static void setintfield(lua_State *L, GCtab *t, const char *name, int32_t val)
@@ -279,7 +279,7 @@ static GCtrace *jit_checktrace(lua_State *L)
   jit_State *J = L2J(L);
   if (tr > 0 && tr < J->sizetrace)
     return traceref(J, tr);
-  return NULL;
+  return nullptr;
 }
 
 /* Names of link types. ORDER LJ_TRLINK */
@@ -377,7 +377,7 @@ LJLIB_CF(jit_util_tracesnap)
 LJLIB_CF(jit_util_tracemc)
 {
   GCtrace *T = jit_checktrace(L);
-  if (T && T->mcode != NULL) {
+  if (T && T->mcode != nullptr) {
     setstrV(L, L->top-1, lj_str_new(L, (const char *)T->mcode, T->szmcode));
     setintptrV(L->top++, (intptr_t)(void *)T->mcode);
     setintV(L->top++, T->mcloop);
@@ -401,7 +401,7 @@ LJLIB_CF(jit_util_traceexitstub)
     GCtrace *T = jit_checktrace(L);
     ExitNo exitno = (ExitNo)lj_lib_checkint(L, 2);
     ExitNo maxexit = T->root ? T->nsnap+1 : T->nsnap;
-    if (T && T->mcode != NULL && exitno < maxexit) {
+    if (T && T->mcode != nullptr && exitno < maxexit) {
       setintptrV(L->top-1, (intptr_t)(void *)exitstub_trace_addr(T, exitno));
       return 1;
     }
@@ -427,7 +427,7 @@ LJLIB_CF(jit_util_ircalladdr)
 
 static int luaopen_jit_util(lua_State *L)
 {
-  LJ_LIB_REG(L, NULL, jit_util);
+  LJ_LIB_REG(L, nullptr, jit_util);
   return 1;
 }
 
@@ -620,7 +620,7 @@ LJLIB_CF(jit_profile_dumpstack)
 
 static int luaopen_jit_profile(lua_State *L)
 {
-  LJ_LIB_REG(L, NULL, jit_profile);
+  LJ_LIB_REG(L, nullptr, jit_profile);
   return 1;
 }
 

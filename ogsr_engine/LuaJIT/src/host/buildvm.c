@@ -247,48 +247,48 @@ const char *const bc_names[] = {
 #define BCNAME(name, ma, mb, mc, mt)       #name,
 BCDEF(BCNAME)
 #undef BCNAME
-  NULL
+  nullptr
 };
 
 const char *const ir_names[] = {
 #define IRNAME(name, m, m1, m2)	#name,
 IRDEF(IRNAME)
 #undef IRNAME
-  NULL
+  nullptr
 };
 
 const char *const irt_names[] = {
 #define IRTNAME(name, size)	#name,
 IRTDEF(IRTNAME)
 #undef IRTNAME
-  NULL
+  nullptr
 };
 
 const char *const irfpm_names[] = {
 #define FPMNAME(name)		#name,
 IRFPMDEF(FPMNAME)
 #undef FPMNAME
-  NULL
+  nullptr
 };
 
 const char *const irfield_names[] = {
 #define FLNAME(name, ofs)	#name,
 IRFLDEF(FLNAME)
 #undef FLNAME
-  NULL
+  nullptr
 };
 
 const char *const ircall_names[] = {
 #define IRCALLNAME(cond, name, nargs, kind, type, flags)	#name,
 IRCALLDEF(IRCALLNAME)
 #undef IRCALLNAME
-  NULL
+  nullptr
 };
 
 static const char *const trace_errors[] = {
 #define TREDEF(name, msg)	msg,
 #include "lj_traceerr.h"
-  NULL
+  nullptr
 };
 
 static const char *lower(char *buf, const char *s)
@@ -364,7 +364,7 @@ static const char *const modenames[] = {
 #define BUILDNAME(name)		#name,
 BUILDDEF(BUILDNAME)
 #undef BUILDNAME
-  NULL
+  nullptr
 };
 
 /* Print usage information and exit. */
@@ -399,7 +399,7 @@ static void parseargs(BuildCtx *ctx, char **argv)
   int i;
   ctx->mode = (BuildMode)-1;
   ctx->outname = "-";
-  for (i = 1; (a = argv[i]) != NULL; i++) {
+  for (i = 1; (a = argv[i]) != nullptr; i++) {
     if (a[0] != '-')
       break;
     switch (a[1]) {
@@ -411,12 +411,12 @@ static void parseargs(BuildCtx *ctx, char **argv)
       goto ok;
     case 'm':
       i++;
-      if (a[2] || argv[i] == NULL) goto err;
+      if (a[2] || argv[i] == nullptr) goto err;
       ctx->mode = parsemode(argv[i]);
       break;
     case 'o':
       i++;
-      if (a[2] || argv[i] == NULL) goto err;
+      if (a[2] || argv[i] == nullptr) goto err;
       ctx->outname = argv[i];
       break;
     default: err:

@@ -59,8 +59,8 @@
 #include <stdlib.h>
 #endif
 
-#ifndef	NULL
-#define NULL 0
+#ifndef	nullptr
+#define nullptr 0
 #endif
 
 int

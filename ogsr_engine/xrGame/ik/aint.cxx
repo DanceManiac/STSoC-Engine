@@ -424,7 +424,7 @@ AngleIntIterator::AngleIntIterator(const AngleInt& a, int num, float eps, int re
 {
     count = 0;
 
-    // Handle null cases first
+    // Handle nullptr cases first
 
     if ((a.IsEmpty() && !reverse) || (a.IsFullRange() && reverse))
         n = 0;
@@ -476,7 +476,7 @@ int AngleIntIterator::Next(float& a)
 static void aint_intersect_aux(const AngleInt& a, const AngleInt& b, AngleIntList& c)
 {
 #if 0
-    // Degenerate cases of null intersection at 0/2pi boundary
+    // Degenerate cases of nullptr intersection at 0/2pi boundary
     if (iszero(a.Low()) && istwopi(b.High()) && a.High() < b.Low())
 	return;
     if (iszero(b.Low()) && istwopi(a.High()) && b.High() < a.Low())

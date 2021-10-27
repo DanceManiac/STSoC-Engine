@@ -176,7 +176,7 @@ const char *lj_strfmt_wstrnum(lua_State *L, cTValue *o, MSize *lenp)
   } else if (tvisnum(o)) {
     sb = lj_strfmt_putfnum(lj_buf_tmp_(L), STRFMT_G14, o->n);
   } else {
-    return NULL;
+    return nullptr;
   }
   *lenp = sbuflen(sb);
   return sb->b;
@@ -570,7 +570,7 @@ const char *lj_strfmt_pushvf(lua_State *L, const char *fmt, va_list argp)
       break;
     case STRFMT_STR: {
       const char *s = va_arg(argp, char *);
-      if (s == NULL) s = "(null)";
+      if (s == nullptr) s = "(nullptr)";
       lj_buf_putmem(sb, s, (MSize)strlen(s));
       break;
       }

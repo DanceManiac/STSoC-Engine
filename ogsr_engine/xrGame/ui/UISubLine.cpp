@@ -33,7 +33,7 @@ CUISubLine::CUISubLine(const CUISubLine& other){
 	m_color = other.m_color;
 	m_last_in_line = other.m_last_in_line;
 	m_text = other.m_text;
-	m_pTempLine = NULL;
+	m_pTempLine = nullptr;
 #ifdef LOG_ALL_LINES
 	ListSubLinesCount++;
 	dbg_list_sublines.push_back(DBGList());
@@ -52,7 +52,7 @@ CUISubLine& CUISubLine::operator=(const CUISubLine& other){
 
 CUISubLine::CUISubLine(){
 	m_color = 0;
-	m_pTempLine = NULL;
+	m_pTempLine = nullptr;
 	m_last_in_line = false;
 #ifdef LOG_ALL_LINES
 	ListSubLinesCount++;
@@ -65,7 +65,7 @@ CUISubLine::CUISubLine(){
 
 CUISubLine::~CUISubLine(){
 	xr_delete(m_pTempLine);
-	m_pTempLine = NULL;
+	m_pTempLine = nullptr;
 #ifdef LOG_ALL_LINES
 	xr_vector<DBGList>::iterator _it = dbg_list_sublines.begin();
 	bool bOK = false;

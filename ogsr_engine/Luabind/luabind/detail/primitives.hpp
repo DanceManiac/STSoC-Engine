@@ -35,7 +35,7 @@ namespace luabind { namespace detail
 	template<class T>
 	struct type {};
 
-	struct null_type {};
+	struct nullptr_type {};
 
     enum class Direction : unsigned
     {

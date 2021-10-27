@@ -12,7 +12,7 @@
 #include "../HUDManager.h"
 
 CUITabButton::CUITabButton(){
-//.	this->m_pAssociatedWindow = NULL;
+//.	this->m_pAssociatedWindow = nullptr;
 }
 
 CUITabButton::~CUITabButton(){

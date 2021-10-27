@@ -152,7 +152,7 @@ extern "C" {
 #define AL_EFFECT_TYPE                           0x8001
 
 /* Effect types, used with the AL_EFFECT_TYPE property */
-#define AL_EFFECT_NULL                           0x0000
+#define AL_EFFECT_nullptr                           0x0000
 #define AL_EFFECT_REVERB                         0x0001
 #define AL_EFFECT_CHORUS                         0x0002
 #define AL_EFFECT_DISTORTION                     0x0003
@@ -172,8 +172,8 @@ extern "C" {
 #define AL_EFFECTSLOT_GAIN                       0x0002
 #define AL_EFFECTSLOT_AUXILIARY_SEND_AUTO        0x0003
 
-/* NULL Auxiliary Slot ID to disable a source send. */
-#define AL_EFFECTSLOT_NULL                       0x0000
+/* nullptr Auxiliary Slot ID to disable a source send. */
+#define AL_EFFECTSLOT_nullptr                       0x0000
 
 
 /* Filter properties. */
@@ -197,7 +197,7 @@ extern "C" {
 #define AL_FILTER_TYPE                           0x8001
 
 /* Filter types, used with the AL_FILTER_TYPE property */
-#define AL_FILTER_NULL                           0x0000
+#define AL_FILTER_nullptr                           0x0000
 #define AL_FILTER_LOWPASS                        0x0001
 #define AL_FILTER_HIGHPASS                       0x0002
 #define AL_FILTER_BANDPASS                       0x0003

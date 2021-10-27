@@ -73,7 +73,7 @@ LUALIB_API int luaL_execresult(lua_State *L, int stat)
     setintV(L->top++, stat);
     return 3;
   }
-  return luaL_fileresult(L, 0, NULL);
+  return luaL_fileresult(L, 0, nullptr);
 }
 
 /* -- Module registration ------------------------------------------------- */
@@ -85,7 +85,7 @@ LUALIB_API const char *luaL_findtable(lua_State *L, int idx,
   lua_pushvalue(L, idx);
   do {
     e = strchr(fname, '.');
-    if (e == NULL) e = fname + strlen(fname);
+    if (e == nullptr) e = fname + strlen(fname);
     lua_pushlstring(L, fname, (size_t)(e - fname));
     lua_rawget(L, -2);
     if (lua_isnil(L, -1)) {  /* no such field? */
@@ -101,7 +101,7 @@ LUALIB_API const char *luaL_findtable(lua_State *L, int idx,
     lua_remove(L, -2);  /* remove previous table */
     fname = e + 1;
   } while (*e == '.');
-  return NULL;
+  return nullptr;
 }
 
 static int libsize(const luaL_Reg *l)
@@ -117,7 +117,7 @@ LUALIB_API void luaL_pushmodule(lua_State *L, const char *modname, int sizehint)
   lua_getfield(L, -1, modname);
   if (!lua_istable(L, -1)) {
     lua_pop(L, 1);
-    if (luaL_findtable(L, LUA_GLOBALSINDEX, modname, sizehint) != NULL)
+    if (luaL_findtable(L, LUA_GLOBALSINDEX, modname, sizehint) != nullptr)
       lj_err_callerv(L, LJ_ERR_BADMODN, modname);
     lua_pushvalue(L, -1);
     lua_setfield(L, -3, modname);  /* _LOADED[modname] = new table. */
@@ -165,7 +165,7 @@ LUALIB_API const char *luaL_gsub(lua_State *L, const char *s,
   size_t l = strlen(p);
   luaL_Buffer b;
   luaL_buffinit(L, &b);
-  while ((wild = strstr(s, p)) != NULL) {
+  while ((wild = strstr(s, p)) != nullptr) {
     luaL_addlstring(&b, s, (size_t)(wild - s));  /* push prefix */
     luaL_addstring(&b, r);  /* push replacement in place of pattern */
     s = wild + l;  /* continue after `p' */
@@ -330,7 +330,7 @@ static void *mem_alloc(void *ud, void *ptr, size_t osize, size_t nsize)
   (void)osize;
   if (nsize == 0) {
     free(ptr);
-    return NULL;
+    return nullptr;
   } else {
     return realloc(ptr, nsize);
   }
@@ -338,7 +338,7 @@ static void *mem_alloc(void *ud, void *ptr, size_t osize, size_t nsize)
 
 LUALIB_API lua_State *luaL_newstate(void)
 {
-  lua_State *L = lua_newstate(mem_alloc, NULL);
+  lua_State *L = lua_newstate(mem_alloc, nullptr);
   if (L) G(L)->panic = panic;
   return L;
 }
@@ -349,9 +349,9 @@ LUALIB_API lua_State *luaL_newstate(void)
 {
   lua_State *L;
 #if LJ_64 && !LJ_GC64
-  L = lj_state_newstate(LJ_ALLOCF_INTERNAL, NULL);
+  L = lj_state_newstate(LJ_ALLOCF_INTERNAL, nullptr);
 #else
-  L = lua_newstate(LJ_ALLOCF_INTERNAL, NULL);
+  L = lua_newstate(LJ_ALLOCF_INTERNAL, nullptr);
 #endif
   if (L) G(L)->panic = panic;
   return L;
@@ -362,7 +362,7 @@ LUA_API lua_State *lua_newstate(lua_Alloc f, void *ud)
 {
   UNUSED(f); UNUSED(ud);
   fputs("Must use luaL_newstate() for 64 bit target\n", stderr);
-  return NULL;
+  return nullptr;
 }
 #endif
 

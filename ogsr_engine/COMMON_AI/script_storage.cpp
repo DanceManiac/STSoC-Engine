@@ -71,7 +71,7 @@ void CScriptStorage::dump_state()
 		Msg("\tLocals: ");
 		const char *name = nullptr;
 		int VarID = 1;
-		while ((name = lua_getlocal(L, &l_tDebugInfo, VarID++)) != NULL)
+		while ((name = lua_getlocal(L, &l_tDebugInfo, VarID++)) != nullptr)
 		{
 			LogVariable(L, name, 1);
 

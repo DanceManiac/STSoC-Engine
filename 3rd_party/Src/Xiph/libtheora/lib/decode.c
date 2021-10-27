@@ -382,7 +382,7 @@ static int oc_dec_init(oc_dec_ctx *_dec,const th_info *_info,
      one.*/
   _dec->dct_tokens=(unsigned char *)_ogg_malloc((64+64+1)*
    _dec->state.nfrags*sizeof(_dec->dct_tokens[0]));
-  if(_dec->dct_tokens==NULL){
+  if(_dec->dct_tokens==nullptr){
     oc_huff_trees_clear(_dec->huff_tables);
     oc_state_clear(&_dec->state);
     return TH_EFAULT;
@@ -407,18 +407,18 @@ static int oc_dec_init(oc_dec_ctx *_dec,const th_info *_info,
   memcpy(_dec->state.loop_filter_limits,_setup->qinfo.loop_filter_limits,
    sizeof(_dec->state.loop_filter_limits));
   _dec->pp_level=OC_PP_LEVEL_DISABLED;
-  _dec->dc_qis=NULL;
-  _dec->variances=NULL;
-  _dec->pp_frame_data=NULL;
-  _dec->stripe_cb.ctx=NULL;
-  _dec->stripe_cb.stripe_decoded=NULL;
+  _dec->dc_qis=nullptr;
+  _dec->variances=nullptr;
+  _dec->pp_frame_data=nullptr;
+  _dec->stripe_cb.ctx=nullptr;
+  _dec->stripe_cb.stripe_decoded=nullptr;
 #if defined(HAVE_CAIRO)
   _dec->telemetry=0;
   _dec->telemetry_bits=0;
   _dec->telemetry_qi=0;
   _dec->telemetry_mbmode=0;
   _dec->telemetry_mv=0;
-  _dec->telemetry_frame_data=NULL;
+  _dec->telemetry_frame_data=nullptr;
 #endif
   return 0;
 }
@@ -1183,23 +1183,23 @@ static void oc_dec_residual_tokens_unpack(oc_dec_ctx *_dec){
 static int oc_dec_postprocess_init(oc_dec_ctx *_dec){
   /*pp_level 0: disabled; free any memory used and return*/
   if(_dec->pp_level<=OC_PP_LEVEL_DISABLED){
-    if(_dec->dc_qis!=NULL){
+    if(_dec->dc_qis!=nullptr){
       _ogg_free(_dec->dc_qis);
-      _dec->dc_qis=NULL;
+      _dec->dc_qis=nullptr;
       _ogg_free(_dec->variances);
-      _dec->variances=NULL;
+      _dec->variances=nullptr;
       _ogg_free(_dec->pp_frame_data);
-      _dec->pp_frame_data=NULL;
+      _dec->pp_frame_data=nullptr;
     }
     return 1;
   }
-  if(_dec->dc_qis==NULL){
+  if(_dec->dc_qis==nullptr){
     /*If we haven't been tracking DC quantization indices, there's no point in
        starting now.*/
     if(_dec->state.frame_type!=OC_INTRA_FRAME)return 1;
     _dec->dc_qis=(unsigned char *)_ogg_malloc(
      _dec->state.nfrags*sizeof(_dec->dc_qis[0]));
-    if(_dec->dc_qis==NULL)return 1;
+    if(_dec->dc_qis==nullptr)return 1;
     memset(_dec->dc_qis,_dec->state.qis[0],_dec->state.nfrags);
   }
   else{
@@ -1220,15 +1220,15 @@ static int oc_dec_postprocess_init(oc_dec_ctx *_dec){
   }
   /*pp_level 1: Stop after updating DC quantization indices.*/
   if(_dec->pp_level<=OC_PP_LEVEL_TRACKDCQI){
-    if(_dec->variances!=NULL){
+    if(_dec->variances!=nullptr){
       _ogg_free(_dec->variances);
-      _dec->variances=NULL;
+      _dec->variances=nullptr;
       _ogg_free(_dec->pp_frame_data);
-      _dec->pp_frame_data=NULL;
+      _dec->pp_frame_data=nullptr;
     }
     return 1;
   }
-  if(_dec->variances==NULL){
+  if(_dec->variances==nullptr){
     size_t frame_sz;
     size_t c_sz;
     int    c_w;
@@ -1245,11 +1245,11 @@ static int oc_dec_postprocess_init(oc_dec_ctx *_dec){
      frame_sz*sizeof(_dec->pp_frame_data[0]));
     _dec->variances=(int *)_ogg_malloc(
      _dec->state.nfrags*sizeof(_dec->variances[0]));
-    if(_dec->variances==NULL||_dec->pp_frame_data==NULL){
+    if(_dec->variances==nullptr||_dec->pp_frame_data==nullptr){
       _ogg_free(_dec->pp_frame_data);
-      _dec->pp_frame_data=NULL;
+      _dec->pp_frame_data=nullptr;
       _ogg_free(_dec->variances);
-      _dec->variances=NULL;
+      _dec->variances=nullptr;
       return 1;
     }
     /*Force an update of the PP buffer pointers.*/
@@ -1952,18 +1952,18 @@ static void oc_dec_dering_frag_rows(oc_dec_ctx *_dec,th_img_plane *_img,
 
 th_dec_ctx *th_decode_alloc(const th_info *_info,const th_setup_info *_setup){
   oc_dec_ctx *dec;
-  if(_info==NULL||_setup==NULL)return NULL;
+  if(_info==nullptr||_setup==nullptr)return nullptr;
   dec=_ogg_malloc(sizeof(*dec));
-  if(dec==NULL||oc_dec_init(dec,_info,_setup)<0){
+  if(dec==nullptr||oc_dec_init(dec,_info,_setup)<0){
     _ogg_free(dec);
-    return NULL;
+    return nullptr;
   }
   dec->state.curframe_num=0;
   return dec;
 }
 
 void th_decode_free(th_dec_ctx *_dec){
-  if(_dec!=NULL){
+  if(_dec!=nullptr){
     oc_dec_clear(_dec);
     _ogg_free(_dec);
   }
@@ -1973,14 +1973,14 @@ int th_decode_ctl(th_dec_ctx *_dec,int _req,void *_buf,
  size_t _buf_sz){
   switch(_req){
   case TH_DECCTL_GET_PPLEVEL_MAX:{
-    if(_dec==NULL||_buf==NULL)return TH_EFAULT;
+    if(_dec==nullptr||_buf==nullptr)return TH_EFAULT;
     if(_buf_sz!=sizeof(int))return TH_EINVAL;
     (*(int *)_buf)=OC_PP_LEVEL_MAX;
     return 0;
   }break;
   case TH_DECCTL_SET_PPLEVEL:{
     int pp_level;
-    if(_dec==NULL||_buf==NULL)return TH_EFAULT;
+    if(_dec==nullptr||_buf==nullptr)return TH_EFAULT;
     if(_buf_sz!=sizeof(int))return TH_EINVAL;
     pp_level=*(int *)_buf;
     if(pp_level<0||pp_level>OC_PP_LEVEL_MAX)return TH_EINVAL;
@@ -1989,7 +1989,7 @@ int th_decode_ctl(th_dec_ctx *_dec,int _req,void *_buf,
   }break;
   case TH_DECCTL_SET_GRANPOS:{
     ogg_int64_t granpos;
-    if(_dec==NULL||_buf==NULL)return TH_EFAULT;
+    if(_dec==nullptr||_buf==nullptr)return TH_EFAULT;
     if(_buf_sz!=sizeof(ogg_int64_t))return TH_EINVAL;
     granpos=*(ogg_int64_t *)_buf;
     if(granpos<0)return TH_EINVAL;
@@ -2002,7 +2002,7 @@ int th_decode_ctl(th_dec_ctx *_dec,int _req,void *_buf,
   }break;
   case TH_DECCTL_SET_STRIPE_CB:{
     th_stripe_callback *cb;
-    if(_dec==NULL||_buf==NULL)return TH_EFAULT;
+    if(_dec==nullptr||_buf==nullptr)return TH_EFAULT;
     if(_buf_sz!=sizeof(th_stripe_callback))return TH_EINVAL;
     cb=(th_stripe_callback *)_buf;
     _dec->stripe_cb.ctx=cb->ctx;
@@ -2011,28 +2011,28 @@ int th_decode_ctl(th_dec_ctx *_dec,int _req,void *_buf,
   }break;
 #ifdef HAVE_CAIRO
   case TH_DECCTL_SET_TELEMETRY_MBMODE:{
-    if(_dec==NULL||_buf==NULL)return TH_EFAULT;
+    if(_dec==nullptr||_buf==nullptr)return TH_EFAULT;
     if(_buf_sz!=sizeof(int))return TH_EINVAL;
     _dec->telemetry=1;
     _dec->telemetry_mbmode=*(int *)_buf;
     return 0;
   }break;
   case TH_DECCTL_SET_TELEMETRY_MV:{
-    if(_dec==NULL||_buf==NULL)return TH_EFAULT;
+    if(_dec==nullptr||_buf==nullptr)return TH_EFAULT;
     if(_buf_sz!=sizeof(int))return TH_EINVAL;
     _dec->telemetry=1;
     _dec->telemetry_mv=*(int *)_buf;
     return 0;
   }break;
   case TH_DECCTL_SET_TELEMETRY_QI:{
-    if(_dec==NULL||_buf==NULL)return TH_EFAULT;
+    if(_dec==nullptr||_buf==nullptr)return TH_EFAULT;
     if(_buf_sz!=sizeof(int))return TH_EINVAL;
     _dec->telemetry=1;
     _dec->telemetry_qi=*(int *)_buf;
     return 0;
   }break;
   case TH_DECCTL_SET_TELEMETRY_BITS:{
-    if(_dec==NULL||_buf==NULL)return TH_EFAULT;
+    if(_dec==nullptr||_buf==nullptr)return TH_EFAULT;
     if(_buf_sz!=sizeof(int))return TH_EINVAL;
     _dec->telemetry=1;
     _dec->telemetry_bits=*(int *)_buf;
@@ -2070,7 +2070,7 @@ static void oc_dec_init_dummy_frame(th_dec_ctx *_dec){
 int th_decode_packetin(th_dec_ctx *_dec,const ogg_packet *_op,
  ogg_int64_t *_granpos){
   int ret;
-  if(_dec==NULL||_op==NULL)return TH_EFAULT;
+  if(_dec==nullptr||_op==nullptr)return TH_EFAULT;
   /*A completely empty packet indicates a dropped frame and is treated exactly
      like an inter frame with no coded blocks.
     Only proceed if we have a non-empty packet.*/
@@ -2137,7 +2137,7 @@ int th_decode_packetin(th_dec_ctx *_dec,const ogg_packet *_op,
      _dec->state.info.keyframe_granule_shift)
      +(_dec->state.curframe_num-_dec->state.keyframe_num);
     _dec->state.curframe_num++;
-    if(_granpos!=NULL)*_granpos=_dec->state.granpos;
+    if(_granpos!=nullptr)*_granpos=_dec->state.granpos;
     /*All of the rest of the operations -- DC prediction reversal,
        reconstructing coded fragments, copying uncoded fragments, loop
        filtering, extending borders, and out-of-loop post-processing -- should
@@ -2230,7 +2230,7 @@ int th_decode_packetin(th_dec_ctx *_dec,const ogg_packet *_op,
         avail_fragy_end=OC_MINI(avail_fragy_end,
          pipe.fragy_end[pli]-edelay<<frag_shift);
       }
-      if(_dec->stripe_cb.stripe_decoded!=NULL){
+      if(_dec->stripe_cb.stripe_decoded!=nullptr){
         /*The callback might want to use the FPU, so let's make sure they can.
           We violate all kinds of ABI restrictions by not doing this until
            now, but none of them actually matter since we don't use floating
@@ -2283,13 +2283,13 @@ int th_decode_packetin(th_dec_ctx *_dec,const ogg_packet *_op,
      _dec->state.info.keyframe_granule_shift)
      +(_dec->state.curframe_num-_dec->state.keyframe_num);
     _dec->state.curframe_num++;
-    if(_granpos!=NULL)*_granpos=_dec->state.granpos;
+    if(_granpos!=nullptr)*_granpos=_dec->state.granpos;
     return TH_DUPFRAME;
   }
 }
 
 int th_decode_ycbcr_out(th_dec_ctx *_dec,th_ycbcr_buffer _ycbcr){
-  if(_dec==NULL||_ycbcr==NULL)return TH_EFAULT;
+  if(_dec==nullptr||_ycbcr==nullptr)return TH_EFAULT;
   oc_ycbcr_buffer_flip(_ycbcr,_dec->pp_frame_buf);
 #if defined(HAVE_CAIRO)
   /*If telemetry ioctls are active, we need to draw to the output buffer.
@@ -2317,15 +2317,15 @@ int th_decode_ycbcr_out(th_dec_ctx *_dec,th_ycbcr_buffer _ycbcr){
        memory, but complicate the allocation logic there.
       I don't think anyone cares about memory usage when using telemetry; it is
        not meant for embedded devices.*/
-    if(_dec->telemetry_frame_data==NULL){
+    if(_dec->telemetry_frame_data==nullptr){
       _dec->telemetry_frame_data=_ogg_malloc(
        (w*h+2*(w>>hdec)*(h>>vdec))*sizeof(*_dec->telemetry_frame_data));
-      if(_dec->telemetry_frame_data==NULL)return 0;
+      if(_dec->telemetry_frame_data==nullptr)return 0;
     }
     cs=cairo_image_surface_create(CAIRO_FORMAT_RGB24,w,h);
     /*Sadly, no YUV support in Cairo (yet); convert into the RGB buffer.*/
     data=cairo_image_surface_get_data(cs);
-    if(data==NULL){
+    if(data==nullptr){
       cairo_surface_destroy(cs);
       return 0;
     }

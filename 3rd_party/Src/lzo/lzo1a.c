@@ -305,7 +305,7 @@ literal:
 match:
         UPDATE_I(dict,0,dindex,ip,in);
 #if !defined(NDEBUG) && (LZO_DICT_USE_PTR)
-        assert(m_pos == NULL || m_pos >= in);
+        assert(m_pos == nullptr || m_pos >= in);
         m_pos_sav = m_pos;
 #endif
         m_pos += 3;

@@ -34,7 +34,7 @@ public:
 	virtual void	OptimalFit						(const Frect& r);
 
 	shared_str		MapName							() {return m_name;}
-	virtual CUIGlobalMapSpot*	GlobalMapSpot		() {return NULL;}
+	virtual CUIGlobalMapSpot*	GlobalMapSpot		() {return nullptr;}
 
 	virtual void	Update							();
 	virtual void	SendMessage						(CUIWindow* pWnd, s16 msg, void* pData);

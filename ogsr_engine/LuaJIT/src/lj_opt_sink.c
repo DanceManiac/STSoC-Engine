@@ -23,15 +23,15 @@ static IRIns *sink_checkalloc(jit_State *J, IRIns *irs)
 {
   IRIns *ir = IR(irs->op1);
   if (!irref_isk(ir->op2))
-    return NULL;  /* Non-constant key. */
+    return nullptr;  /* Non-constant key. */
   if (ir->o == IR_HREFK || ir->o == IR_AREF)
     ir = IR(ir->op1);
   else if (!(ir->o == IR_HREF || ir->o == IR_NEWREF ||
 	     ir->o == IR_FREF || ir->o == IR_ADD))
-    return NULL;  /* Unhandled reference type (for XSTORE). */
+    return nullptr;  /* Unhandled reference type (for XSTORE). */
   ir = IR(ir->op1);
   if (!(ir->o == IR_TNEW || ir->o == IR_TDUP || ir->o == IR_CNEW))
-    return NULL;  /* Not an allocation. */
+    return nullptr;  /* Not an allocation. */
   return ir;  /* Return allocation. */
 }
 
@@ -219,7 +219,7 @@ static void sink_sweep_ins(jit_State *J)
     irt_clearmark(ir->t);
     ir->prev = REGSP_INIT;
     /* The false-positive of irt_is64() for ASMREF_L (REF_NIL) is OK here. */
-    if (irt_is64(ir->t) && ir->o != IR_KNULL)
+    if (irt_is64(ir->t) && ir->o != IR_Knullptr)
       ir++;
   }
 }

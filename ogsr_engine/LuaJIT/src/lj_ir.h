@@ -48,7 +48,7 @@
   _(KGC,	N , cst, ___) \
   _(KPTR,	N , cst, ___) \
   _(KKPTR,	N , cst, ___) \
-  _(KNULL,	N , cst, ___) \
+  _(Knullptr,	N , cst, ___) \
   _(KNUM,	N , cst, ___) \
   _(KINT64,	N , cst, ___) \
   _(KSLOT,	N , ref, lit) \

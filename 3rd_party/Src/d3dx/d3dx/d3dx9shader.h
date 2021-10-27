@@ -126,7 +126,7 @@ typedef D3DXHANDLE *LPD3DXHANDLE;
 //----------------------------------------------------------------------------
 // D3DXMACRO:
 // ----------
-// Preprocessor macro definition.  The application pass in a NULL-terminated
+// Preprocessor macro definition.  The application pass in a nullptr-terminated
 // array of this structure to various D3DX APIs.  This enables the application
 // to #define tokens at runtime, before the file is parsed.
 //----------------------------------------------------------------------------
@@ -433,7 +433,7 @@ extern "C" {
 //  pSrcFile
 //      Source file name
 //  hSrcModule
-//      Module handle. if NULL, current module will be used
+//      Module handle. if nullptr, current module will be used
 //  pSrcResource
 //      Resource name in module
 //  pSrcData
@@ -441,10 +441,10 @@ extern "C" {
 //  SrcDataLen
 //      Size of source code, in bytes
 //  pDefines
-//      Optional NULL-terminated array of preprocessor macro definitions.
+//      Optional nullptr-terminated array of preprocessor macro definitions.
 //  pInclude
 //      Optional interface pointer to use for handling #include directives.
-//      If this parameter is NULL, #includes will be honored when assembling
+//      If this parameter is nullptr, #includes will be honored when assembling
 //      from file, and will error when assembling from resource or memory.
 //  Flags
 //      See D3DXSHADER_xxx flags
@@ -531,7 +531,7 @@ HRESULT WINAPI
 //  pSrcFile
 //      Source file name.
 //  hSrcModule
-//      Module handle. if NULL, current module will be used.
+//      Module handle. if nullptr, current module will be used.
 //  pSrcResource
 //      Resource name in module.
 //  pSrcData
@@ -539,10 +539,10 @@ HRESULT WINAPI
 //  SrcDataLen
 //      Size of source code, in bytes.
 //  pDefines
-//      Optional NULL-terminated array of preprocessor macro definitions.
+//      Optional nullptr-terminated array of preprocessor macro definitions.
 //  pInclude
 //      Optional interface pointer to use for handling #include directives.
-//      If this parameter is NULL, #includes will be honored when compiling
+//      If this parameter is nullptr, #includes will be honored when compiling
 //      from file, and will error when compiling from resource or memory.
 //  pFunctionName
 //      Name of the entrypoint function where execution should begin.
@@ -704,9 +704,9 @@ LPCSTR WINAPI
 //      FourCC used to identify the desired comment block.
 //  ppData
 //      Returns a pointer to the comment data (not including comment token
-//      and FourCC).  Can be NULL.
+//      and FourCC).  Can be nullptr.
 //  pSizeInBytes
-//      Returns the size of the comment data in bytes.  Can be NULL.
+//      Returns the size of the comment data in bytes.  Can be nullptr.
 //----------------------------------------------------------------------------
 
 HRESULT WINAPI
@@ -736,7 +736,7 @@ UINT WINAPI
 // D3DXGetShaderVersion:
 // -----------------------
 // Returns the shader version of a given shader.  Returns zero if the shader 
-// function is NULL.
+// function is nullptr.
 //
 // Parameters:
 //  pFunction
@@ -863,7 +863,7 @@ HRESULT WINAPI
 //  pSrcFile
 //      Source file name
 //  hSrcModule
-//      Module handle. if NULL, current module will be used
+//      Module handle. if nullptr, current module will be used
 //  pSrcResource
 //      Resource name in module
 //  pSrcData
@@ -871,10 +871,10 @@ HRESULT WINAPI
 //  SrcDataLen
 //      Size of source code, in bytes
 //  pDefines
-//      Optional NULL-terminated array of preprocessor macro definitions.
+//      Optional nullptr-terminated array of preprocessor macro definitions.
 //  pInclude
 //      Optional interface pointer to use for handling #include directives.
-//      If this parameter is NULL, #includes will be honored when assembling
+//      If this parameter is nullptr, #includes will be honored when assembling
 //      from file, and will error when assembling from resource or memory.
 //  ppShaderText
 //      Returns a buffer containing a single large string that represents

@@ -578,7 +578,7 @@ RAPIDJSON_NAMESPACE_BEGIN
 
 //! Type of JSON value
 enum Type {
-    kNullType = 0,      //!< null
+    knullptrType = 0,      //!< nullptr
     kFalseType = 1,     //!< false
     kTrueType = 2,      //!< true
     kObjectType = 3,    //!< object

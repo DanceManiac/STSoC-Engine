@@ -28,7 +28,7 @@ enum {
   SER_TAG_NIL,		/* 0x00 */
   SER_TAG_FALSE,
   SER_TAG_TRUE,
-  SER_TAG_NULL,
+  SER_TAG_nullptr,
   SER_TAG_LIGHTUD32,
   SER_TAG_LIGHTUD64,
   SER_TAG_INT,
@@ -97,10 +97,10 @@ static LJ_NOINLINE char *serialize_ru124_(char *r, char *w, uint32_t *pv)
 {
   uint32_t v = *pv;
   if (v != 0xff) {
-    if (r >= w) return NULL;
+    if (r >= w) return nullptr;
     v = ((v & 0x1f) << 8) + *(uint8_t *)r + 0xe0; r++;
   } else {
-    if (r + 4 > w) return NULL;
+    if (r + 4 > w) return nullptr;
     v = lj_getu32(r); r += 4;
 #if LJ_BE
     v = lj_bswap(v);
@@ -120,7 +120,7 @@ static LJ_AINLINE char *serialize_ru124(char *r, char *w, uint32_t *pv)
     }
     return r;
   }
-  return NULL;
+  return nullptr;
 }
 
 /* Prepare string dictionary for use (once). */
@@ -272,7 +272,7 @@ static char *serialize_put(char *w, SBufExt *sbx, cTValue *o)
     uintptr_t ud = (uintptr_t)lightudV(G(sbufL(sbx)), o);
     w = serialize_more(w, sbx, 1+sizeof(ud));
     if (ud == 0) {
-      *w++ = SER_TAG_NULL;
+      *w++ = SER_TAG_nullptr;
     } else if (LJ_32 || checku32(ud)) {
 #if LJ_BE && LJ_64
       ud = lj_bswap64(ud);
@@ -400,7 +400,7 @@ static char *serialize_get(char *r, SBufExt *sbx, TValue *o)
   return r;
 eob:
   lj_err_caller(sbufL(sbx), LJ_ERR_BUFFER_EOB);
-  return NULL;
+  return nullptr;
 }
 
 /* -- External serialization API ------------------------------------------ */
@@ -454,7 +454,7 @@ LJ_FUNC MSize LJ_FASTCALL lj_serialize_peektype(SBufExt *sbx)
     case SER_TAG_NIL: return IRT_NIL;
     case SER_TAG_FALSE: return IRT_FALSE;
     case SER_TAG_TRUE: return IRT_TRUE;
-    case SER_TAG_NULL: case SER_TAG_LIGHTUD32: case SER_TAG_LIGHTUD64:
+    case SER_TAG_nullptr: case SER_TAG_LIGHTUD32: case SER_TAG_LIGHTUD64:
       return IRT_LIGHTUD;
     case SER_TAG_INT: return LJ_DUALNUM ? IRT_INT : IRT_NUM;
     case SER_TAG_NUM: return IRT_NUM;

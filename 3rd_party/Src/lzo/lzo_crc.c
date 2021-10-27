@@ -122,7 +122,7 @@ lzo_crc32(lzo_uint32_t c, const lzo_bytep buf, lzo_uint len)
    const lzo_uint32_t * table = lzo_crc32_table;
 #endif
 
-    if (buf == NULL)
+    if (buf == nullptr)
         return 0;
 
     crc = (c & LZO_UINT32_C(0xffffffff)) ^ LZO_UINT32_C(0xffffffff);

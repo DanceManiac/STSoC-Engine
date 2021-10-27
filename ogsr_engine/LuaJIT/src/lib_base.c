@@ -146,7 +146,7 @@ LJLIB_CF(getfenv)		LJLIB_REC(.)
   if (!(o < L->top && tvisfunc(o))) {
     int level = lj_lib_optint(L, 1, 1);
     o = lj_debug_frame(L, level, &level);
-    if (o == NULL)
+    if (o == nullptr)
       lj_err_arg(L, 1, LJ_ERR_INVLVL);
     if (LJ_FR2) o--;
   }
@@ -168,7 +168,7 @@ LJLIB_CF(setfenv)
       return 0;
     }
     o = lj_debug_frame(L, level, &level);
-    if (o == NULL)
+    if (o == nullptr)
       lj_err_arg(L, 1, LJ_ERR_INVLVL);
     if (LJ_FR2) o--;
   }
@@ -378,8 +378,8 @@ LJLIB_CF(loadfile)
   GCstr *mode = lj_lib_optstr(L, 2);
   int status;
   lua_settop(L, 3);  /* Ensure env arg exists. */
-  status = luaL_loadfilex(L, fname ? strdata(fname) : NULL,
-			  mode ? strdata(mode) : NULL);
+  status = luaL_loadfilex(L, fname ? strdata(fname) : nullptr,
+			  mode ? strdata(mode) : nullptr);
   return load_aux(L, status, 3);
 }
 
@@ -392,13 +392,13 @@ static const char *reader_func(lua_State *L, void *ud, size_t *size)
   L->top--;
   if (tvisnil(L->top)) {
     *size = 0;
-    return NULL;
+    return nullptr;
   } else if (tvisstr(L->top) || tvisnumber(L->top)) {
     copyTV(L, L->base+4, L->top);  /* Anchor string in reserved stack slot. */
     return lua_tolstring(L, 5, size);
   } else {
     lj_err_caller(L, LJ_ERR_RDRSTR);
-    return NULL;
+    return nullptr;
   }
 }
 
@@ -423,12 +423,12 @@ LJLIB_CF(load)
     }
     lua_settop(L, 4);  /* Ensure env arg exists. */
     status = luaL_loadbufferx(L, s, len, name ? strdata(name) : s,
-			      mode ? strdata(mode) : NULL);
+			      mode ? strdata(mode) : nullptr);
   } else {
     lj_lib_checkfunc(L, 1);
     lua_settop(L, 5);  /* Reserve a slot for the string from the reader. */
-    status = lua_loadx(L, reader_func, NULL, name ? strdata(name) : "=(load)",
-		       mode ? strdata(mode) : NULL);
+    status = lua_loadx(L, reader_func, nullptr, name ? strdata(name) : "=(load)",
+		       mode ? strdata(mode) : nullptr);
   }
   return load_aux(L, status, 4);
 }
@@ -443,7 +443,7 @@ LJLIB_CF(dofile)
   GCstr *fname = lj_lib_optstr(L, 1);
   setnilV(L->top);
   L->top = L->base+1;
-  if (luaL_loadfile(L, fname ? strdata(fname) : NULL) != LUA_OK)
+  if (luaL_loadfile(L, fname ? strdata(fname) : nullptr) != LUA_OK)
     lua_error(L);
   lua_call(L, 0, LUA_MULTRET);
   return (int)(L->top - L->base) - 1;
@@ -524,7 +524,7 @@ LJLIB_CF(print)
     const char *str;
     size_t size;
     MSize len;
-    if (shortcut && (str = lj_strfmt_wstrnum(L, o, &len)) != NULL) {
+    if (shortcut && (str = lj_strfmt_wstrnum(L, o, &len)) != nullptr) {
       size = len;
     } else {
       copyTV(L, L->top+1, o);
@@ -607,7 +607,7 @@ LJLIB_ASM(coroutine_yield)
 
 static int ffh_resume(lua_State *L, lua_State *co, int wrap)
 {
-  if (co->cframe != NULL || co->status > LUA_YIELD ||
+  if (co->cframe != nullptr || co->status > LUA_YIELD ||
       (co->status == LUA_OK && co->top == co->base)) {
     ErrMsg em = co->cframe ? LJ_ERR_CORUN : LJ_ERR_CODEAD;
     if (wrap) lj_err_caller(L, em);

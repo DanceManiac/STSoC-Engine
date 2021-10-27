@@ -317,7 +317,7 @@ typedef void ALvoid;
  * A Source is Streaming if one or more Buffers have been attached using
  * alSourceQueueBuffers.
  *
- * A Source is Undetermined when it has the NULL buffer attached using
+ * A Source is Undetermined when it has the nullptr buffer attached using
  * AL_BUFFER.
  */
 #define AL_SOURCE_TYPE                           0x1027

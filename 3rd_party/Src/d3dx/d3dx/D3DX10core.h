@@ -257,7 +257,7 @@ HRESULT WINAPI D3DX10CreateThreadPump(UINT cIoThreads, UINT cProcThreads, ID3DX1
 //    Draws formatted text on a D3D device.  Some parameters are 
 //    surprisingly similar to those of GDI's DrawText function.  See GDI 
 //    documentation for a detailed description of these parameters.
-//    If pSprite is NULL, an internal sprite object will be used.
+//    If pSprite is nullptr, an internal sprite object will be used.
 //
 //////////////////////////////////////////////////////////////////////////////
 

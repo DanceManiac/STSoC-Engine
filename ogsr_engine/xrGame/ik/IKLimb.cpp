@@ -41,7 +41,7 @@ constexpr IVektor gpos_vector = {1, 0, 0};
 
 // const float		ik_timedelta_eps = EPS;
 
-IC bool null_frame() { return !!Device.Paused(); }
+IC bool nullptr_frame() { return !!Device.Paused(); }
 IC const Fmatrix& cvm(const Matrix& IM) { return *((Fmatrix*)(&IM)); }
 constexpr string256 ik_bones[4] = {"bip01_l_thigh,bip01_l_calf,bip01_l_foot,bip01_l_toe0",
     "bip01_r_thigh,bip01_r_calf,bip01_r_foot,bip01_r_toe0",
@@ -457,7 +457,7 @@ float det_tolerance = 0.2f;
 
 IC void reset_blend_speed(SCalculateData& cd)
 {
-    if (null_frame())
+    if (nullptr_frame())
     {
         cd.state.speed_blend_l = 0.f;
         cd.state.speed_blend_a = 0.f;
@@ -823,7 +823,7 @@ void CIKLimb::DBGDrawSetNewGoal(SCalculateData& cd, const SIKCollideData& cld)
 
 void CIKLimb::ToeTimeDiff(Fvector& v, const SCalculateData& cd) const
 {
-    if (null_frame())
+    if (nullptr_frame())
     {
         v.set(0, 0, 0);
         return;

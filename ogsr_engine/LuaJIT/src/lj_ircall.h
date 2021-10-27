@@ -64,7 +64,7 @@ typedef struct CCallInfo {
 #define IRCALLCOND_ANY(x)		x
 
 #if LJ_TARGET_X86ORX64
-#define IRCALLCOND_FPMATH(x)		NULL
+#define IRCALLCOND_FPMATH(x)		nullptr
 #else
 #define IRCALLCOND_FPMATH(x)		x
 #endif
@@ -74,23 +74,23 @@ typedef struct CCallInfo {
 #if LJ_HASFFI
 #define IRCALLCOND_SOFTFP_FFI(x)	x
 #else
-#define IRCALLCOND_SOFTFP_FFI(x)	NULL
+#define IRCALLCOND_SOFTFP_FFI(x)	nullptr
 #endif
 #else
-#define IRCALLCOND_SOFTFP(x)		NULL
-#define IRCALLCOND_SOFTFP_FFI(x)	NULL
+#define IRCALLCOND_SOFTFP(x)		nullptr
+#define IRCALLCOND_SOFTFP_FFI(x)	nullptr
 #endif
 
 #if LJ_SOFTFP && LJ_TARGET_MIPS
 #define IRCALLCOND_SOFTFP_MIPS(x)	x
 #else
-#define IRCALLCOND_SOFTFP_MIPS(x)	NULL
+#define IRCALLCOND_SOFTFP_MIPS(x)	nullptr
 #endif
 
 #if LJ_SOFTFP && LJ_TARGET_MIPS64
 #define IRCALLCOND_SOFTFP_MIPS64(x)	x
 #else
-#define IRCALLCOND_SOFTFP_MIPS64(x)	NULL
+#define IRCALLCOND_SOFTFP_MIPS64(x)	nullptr
 #endif
 
 #define LJ_NEED_FP64	(LJ_TARGET_ARM || LJ_TARGET_PPC || LJ_TARGET_MIPS)
@@ -98,7 +98,7 @@ typedef struct CCallInfo {
 #if LJ_HASFFI && (LJ_SOFTFP || LJ_NEED_FP64)
 #define IRCALLCOND_FP64_FFI(x)		x
 #else
-#define IRCALLCOND_FP64_FFI(x)		NULL
+#define IRCALLCOND_FP64_FFI(x)		nullptr
 #endif
 
 #if LJ_HASFFI
@@ -106,23 +106,23 @@ typedef struct CCallInfo {
 #if LJ_32
 #define IRCALLCOND_FFI32(x)		x
 #else
-#define IRCALLCOND_FFI32(x)		NULL
+#define IRCALLCOND_FFI32(x)		nullptr
 #endif
 #else
-#define IRCALLCOND_FFI(x)		NULL
-#define IRCALLCOND_FFI32(x)		NULL
+#define IRCALLCOND_FFI(x)		nullptr
+#define IRCALLCOND_FFI32(x)		nullptr
 #endif
 
 #if LJ_HASBUFFER
 #define IRCALLCOND_BUFFER(x)		x
 #else
-#define IRCALLCOND_BUFFER(x)		NULL
+#define IRCALLCOND_BUFFER(x)		nullptr
 #endif
 
 #if LJ_HASBUFFER && LJ_HASFFI
 #define IRCALLCOND_BUFFFI(x)		x
 #else
-#define IRCALLCOND_BUFFFI(x)		NULL
+#define IRCALLCOND_BUFFFI(x)		nullptr
 #endif
 
 #if LJ_SOFTFP

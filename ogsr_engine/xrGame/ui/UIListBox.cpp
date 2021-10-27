@@ -44,7 +44,7 @@ bool CUIListBox::OnMouse(float x, float y, EUIMessages mouse_action)
 CUIListBoxItem* CUIListBox::AddItem(LPCSTR text)
 {
 	if (!text)			
-		return					NULL;
+		return					nullptr;
 
 	CUIListBoxItem* pItem		= xr_new<CUIListBoxItem>();
 	pItem->Init					(0,0,this->GetDesiredChildWidth() - 5, m_def_item_height);
@@ -89,7 +89,7 @@ CUIListBoxItem* CUIListBox::GetSelectedItem()
 	if(w)
 		return smart_cast<CUIListBoxItem*>(w);
 	else
-		return NULL;
+		return nullptr;
 
 }
 
@@ -100,7 +100,7 @@ LPCSTR CUIListBox::GetSelectedText()
 	if(w)
 		return smart_cast<IUITextControl*>(w)->GetText();
 	else
-		return NULL;
+		return nullptr;
 }
 
 u32 CUIListBox::GetSelectedIDX()
@@ -204,7 +204,7 @@ CUIListBoxItem* CUIListBox::GetItemByTAG(u32 tag_val)
 		}
 		
 	}
-	return NULL;
+	return nullptr;
 }
 
 CUIListBoxItem* CUIListBox::GetItemByIDX(u32 idx)
@@ -220,7 +220,7 @@ CUIListBoxItem* CUIListBox::GetItemByIDX(u32 idx)
 			++_idx;
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 CUIListBoxItem* CUIListBox::GetItemByText(LPCSTR txt)
@@ -235,7 +235,7 @@ CUIListBoxItem* CUIListBox::GetItemByText(LPCSTR txt)
 		}
 		
 	}
-	return NULL;
+	return nullptr;
 }
 
 

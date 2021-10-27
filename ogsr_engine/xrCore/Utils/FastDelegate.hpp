@@ -463,7 +463,7 @@ struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE + 3*sizeof(int) >
 // It knows nothing about the calling convention or number of arguments used by
 // the function pointed to.
 // It supplies comparison operators so that it can be stored in STL collections.
-// It cannot be set to anything other than null, nor invoked directly:
+// It cannot be set to anything other than nullptr, nor invoked directly:
 //   it must be converted to a specific delegate.
 
 // Implementation:

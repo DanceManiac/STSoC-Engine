@@ -20,8 +20,8 @@ ISpatial::ISpatial			(ISpatial_DB* space)
 	spatial.sphere.R		= 0;
 	spatial.node_center.set	(0,0,0);
 	spatial.node_radius		= 0;
-	spatial.node_ptr		= NULL;
-	spatial.sector			= NULL;
+	spatial.node_ptr		= nullptr;
+	spatial.sector			= nullptr;
 	spatial.space			= space;
 }
 ISpatial::~ISpatial()
@@ -72,8 +72,8 @@ void	ISpatial::spatial_unregister()
 	{
 		// remove
 		spatial.space->remove	(this);
-		spatial.node_ptr		= NULL;
-		spatial.sector			= NULL;
+		spatial.node_ptr		= nullptr;
+		spatial.sector			= nullptr;
 	} else {
 		// already unregistered
 	}
@@ -120,7 +120,7 @@ void			ISpatial_NODE::_insert			(ISpatial* S)
 
 void			ISpatial_NODE::_remove			(ISpatial* S)			
 {	
-	S->spatial.node_ptr			=	NULL;
+	S->spatial.node_ptr			=	nullptr;
 	xr_vector<ISpatial*>::iterator	it = std::find(items.begin(),items.end(),S);
 	VERIFY				(it!=items.end());
 	items.erase			(it);
@@ -184,7 +184,7 @@ void			ISpatial_DB::_node_destroy(ISpatial_NODE* &P)
 	VERIFY						(P->_empty());
 	stat_nodes					--;
 	allocator_pool.push_back	(P);
-	P							= NULL;
+	P							= nullptr;
 }
 
 void			ISpatial_DB::_insert	(ISpatial_NODE* N, Fvector& n_C, float n_R)
@@ -268,7 +268,7 @@ void			ISpatial_DB::insert		(ISpatial* S)
 		if (0 == m_root)	// KD: временная затычка - непонятно, почему может не быть кости
 		{
 			m_root = _node_create();		
-			m_root->_init(NULL);
+			m_root->_init(nullptr);
 		}
 		*/
 

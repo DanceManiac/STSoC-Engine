@@ -16,7 +16,7 @@ static intptr_t get_k64val(ASMState *as, IRRef ref)
   } else if (LJ_SOFTFP && ir->o == IR_KNUM) {
     return (intptr_t)ir_knum(ir)->u64;
   } else {
-    lj_assertA(ir->o == IR_KINT || ir->o == IR_KNULL,
+    lj_assertA(ir->o == IR_KINT || ir->o == IR_Knullptr,
 	       "bad 64 bit const IR op %d", ir->o);
     return ir->i;  /* Sign-extended. */
   }

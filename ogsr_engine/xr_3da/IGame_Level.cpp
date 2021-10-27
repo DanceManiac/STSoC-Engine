@@ -10,17 +10,17 @@
 #include "xrLevel.h"
 #include "CameraManager.h"
 
-ENGINE_API	IGame_Level*	g_pGameLevel	= NULL;
+ENGINE_API	IGame_Level*	g_pGameLevel	= nullptr;
 
 IGame_Level::IGame_Level	()
 {
 	m_pCameras					= xr_new<CCameraManager>(true);
 	g_pGameLevel				= this;
-	pLevel						= NULL;
+	pLevel						= nullptr;
 	bReady						= false;
-	pCurrentEntity				= NULL;
-	pCurrentViewEntity			= NULL;
-	pHUD						= NULL;
+	pCurrentEntity				= nullptr;
+	pCurrentViewEntity			= nullptr;
+	pHUD						= nullptr;
 }
 
 //#include "resourcemanager.h"

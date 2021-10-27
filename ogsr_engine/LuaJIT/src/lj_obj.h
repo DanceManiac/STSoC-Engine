@@ -73,7 +73,7 @@ typedef struct GCRef {
 #define setgcreft(r, gc, it) \
   (r).gcptr64 = (uint64_t)&(gc)->gch | (((uint64_t)(it)) << 47)
 #define setgcrefp(r, p)	((r).gcptr64 = (uint64_t)(p))
-#define setgcrefnull(r)	((r).gcptr64 = 0)
+#define setgcrefnullptr(r)	((r).gcptr64 = 0)
 #define setgcrefr(r, v)	((r).gcptr64 = (v).gcptr64)
 #else
 #define gcref(r)	((GCobj *)(uintptr_t)(r).gcptr32)
@@ -83,7 +83,7 @@ typedef struct GCRef {
 
 #define setgcref(r, gc)	((r).gcptr32 = (uint32_t)(uintptr_t)&(gc)->gch)
 #define setgcrefp(r, p)	((r).gcptr32 = (uint32_t)(uintptr_t)(p))
-#define setgcrefnull(r)	((r).gcptr32 = 0)
+#define setgcrefnullptr(r)	((r).gcptr32 = 0)
 #define setgcrefr(r, v)	((r).gcptr32 = (v).gcptr32)
 #endif
 
@@ -98,7 +98,7 @@ typedef struct GCRef {
 ** I.e. never store a white object into a field of a black object.
 **
 ** It's ok to LEAVE OUT the write barrier ONLY in the following cases:
-** - The source is not a GC object (NULL).
+** - The source is not a GC object (nullptr).
 ** - The target is a GC root. I.e. everything in global_State.
 ** - The target is a lua_State field (threads are never black).
 ** - The target is a stack slot, see setgcV et al.
@@ -635,7 +635,7 @@ typedef struct global_State {
   BCIns bc_cfunc_int;	/* Bytecode for internal C function calls. */
   BCIns bc_cfunc_ext;	/* Bytecode for external C function calls. */
   GCRef cur_L;		/* Currently executing lua_State. */
-  MRef jit_base;	/* Current JIT code L->base or NULL. */
+  MRef jit_base;	/* Current JIT code L->base or nullptr. */
   MRef ctype_state;	/* Pointer to C type state. */
   PRNGState prng;	/* Global PRNG state. */
   GCRef gcroot[GCROOT_MAX];  /* GC roots. */

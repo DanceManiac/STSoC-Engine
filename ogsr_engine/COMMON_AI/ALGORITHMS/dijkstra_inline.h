@@ -117,7 +117,7 @@ IC	void CSDijkstra::initialize		(_PathManager &path_manager)
 	// assign correspoding values to the created node
 	start.f()			= _dist_type(0);
 	
-	// assign null parent to the start node
+	// assign nullptr parent to the start node
 	data_storage().assign_parent(start,0);
 
 	// add start node to the opened list

@@ -4,7 +4,7 @@
 #include "UIStatic.h"
 
 CUIProgressShape::CUIProgressShape(){
-	m_pBackground	= NULL;
+	m_pBackground	= nullptr;
 	m_bText			= false;
 	m_pTexture		= xr_new<CUIStatic>();
 	AttachChild		(m_pTexture);	

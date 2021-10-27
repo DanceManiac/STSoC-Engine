@@ -135,7 +135,7 @@ int vorbis_synthesis_trackonly(vorbis_block *vb,ogg_packet *op){
 
   /* no pcm */
   vb->pcmend=0;
-  vb->pcm=NULL;
+  vb->pcm=nullptr;
 
   return(0);
 }

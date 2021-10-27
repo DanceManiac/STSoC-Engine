@@ -347,11 +347,11 @@ private:
         return reinterpret_cast<T*>(std::addressof(storage));
     }
 
-    const T* pointer_or_null() const noexcept {
+    const T* pointer_or_nullptr() const noexcept {
         return empty() ? nullptr : pointer();
     }
 
-    T* pointer_or_null() noexcept {
+    T* pointer_or_nullptr() noexcept {
         return empty() ? nullptr : pointer();
     }
 

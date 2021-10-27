@@ -348,7 +348,7 @@ BOOL CInifile::section_exist ( const shared_str& S ) {
 
 
 CInifile::Sect& CInifile::r_section( LPCSTR S ) {
-  R_ASSERT( S && strlen( S ), "Empty section (null\\'') passed into CInifile::r_section(). See info above ^, check your configs and 'call stack'." ); //--#SM+#--
+  R_ASSERT( S && strlen( S ), "Empty section (nullptr\\'') passed into CInifile::r_section(). See info above ^, check your configs and 'call stack'." ); //--#SM+#--
 
   char section[ 256 ];
   strcpy_s( section, S );

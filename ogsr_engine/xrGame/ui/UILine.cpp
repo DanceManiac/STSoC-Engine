@@ -33,7 +33,7 @@ CUIColorAnimatorWrapper CUILine::m_animation;
 #endif
 
 CUILine::CUILine(){
-	m_tmpLine = NULL;
+	m_tmpLine = nullptr;
 	m_animation.SetColorAnimation("ui_map_area_anim");
 	m_animation.Cyclic(true);
 
@@ -65,7 +65,7 @@ CUILine::~CUILine(){
 
 CUILine::CUILine(const CUILine& other){
 	m_subLines = other.m_subLines;
-	m_tmpLine = NULL;
+	m_tmpLine = nullptr;
 #ifdef LOG_ALL_LINES
 	ListLinesCount++;
 	dbg_list_lines.push_back(DBGList());

@@ -259,16 +259,16 @@ void CCC_LoadCFG::Execute(LPCSTR args)
 
 		FS.update_path					(cfg_full_name, "$app_data_root$", cfg_name);
 		
-		//if( NULL == FS.exist(cfg_full_name) )
+		//if( nullptr == FS.exist(cfg_full_name) )
 		//	FS.update_path					(cfg_full_name, "$fs_root$", cfg_name);
 			
-		if( NULL == FS.exist(cfg_full_name) )
+		if( nullptr == FS.exist(cfg_full_name) )
 			xr_strcpy						(cfg_full_name, cfg_name);
 		
 		IReader* F						= FS.r_open(cfg_full_name);
 		
 		string1024						str;
-		if (F!=NULL) {
+		if (F!=nullptr) {
 			while (!F->eof()) {
 				F->r_string				(str,sizeof(str));
 				if(allow(str))
@@ -333,7 +333,7 @@ class CCC_VidMode : public CCC_Token
 {
 	u32		_dummy{};
 public :
-					CCC_VidMode(LPCSTR N) : CCC_Token(N, &_dummy, NULL) { bEmptyArgsHandled = FALSE; };
+					CCC_VidMode(LPCSTR N) : CCC_Token(N, &_dummy, nullptr) { bEmptyArgsHandled = FALSE; };
 	virtual void	Execute(LPCSTR args){
 		u32 _w, _h;
 		int cnt = sscanf		(args,"%dx%d",&_w,&_h);
@@ -522,7 +522,7 @@ class CCC_soundDevice : public CCC_Token
 {
 	typedef CCC_Token inherited;
 public:
-	CCC_soundDevice(LPCSTR N) :inherited(N, &snd_device_id, NULL){};
+	CCC_soundDevice(LPCSTR N) :inherited(N, &snd_device_id, nullptr){};
 	virtual			~CCC_soundDevice	()
 	{}
 

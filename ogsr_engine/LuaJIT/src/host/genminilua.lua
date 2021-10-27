@@ -113,7 +113,7 @@ static const struct luaL_Reg bitlib[] = {
 {"ror",ror},
 {"bswap",bswap},
 {"tohex",tohex},
-{NULL,NULL}
+{nullptr,nullptr}
 };
 int main(int argc, char **argv){
   lua_State *L = luaL_newstate();
@@ -293,8 +293,8 @@ local function strip_unused3(src)
   src = gsub(src, "int c=luaZ_lookahead%b();", "")
   src = gsub(src, "luaL_register%(L,[^,]*,co_funcs%);\nreturn 2;",
 		  "return 1;")
-  src = gsub(src, "getfuncname%b():", "NULL:")
-  src = gsub(src, "getobjname%b():", "NULL:")
+  src = gsub(src, "getfuncname%b():", "nullptr:")
+  src = gsub(src, "getobjname%b():", "nullptr:")
   src = gsub(src, "if%([^\n]*hookmask[^\n]*%)\n[^\n]*\n", "")
   src = gsub(src, "if%([^\n]*hookmask[^\n]*%)%b{}\n", "")
   src = gsub(src, "if%([^\n]*hookmask[^\n]*&&\n[^\n]*%b{}\n", "")

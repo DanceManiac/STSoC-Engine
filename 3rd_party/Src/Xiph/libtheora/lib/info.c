@@ -60,19 +60,19 @@ void th_comment_add(th_comment *_tc,char *_comment){
   int    comment_len;
   user_comments=_ogg_realloc(_tc->user_comments,
    (_tc->comments+2)*sizeof(*_tc->user_comments));
-  if(user_comments==NULL)return;
+  if(user_comments==nullptr)return;
   _tc->user_comments=user_comments;
   comment_lengths=_ogg_realloc(_tc->comment_lengths,
    (_tc->comments+2)*sizeof(*_tc->comment_lengths));
-  if(comment_lengths==NULL)return;
+  if(comment_lengths==nullptr)return;
   _tc->comment_lengths=comment_lengths;
   comment_len=strlen(_comment);
   comment_lengths[_tc->comments]=comment_len;
   user_comments[_tc->comments]=_ogg_malloc(comment_len+1);
-  if(user_comments[_tc->comments]==NULL)return;
+  if(user_comments[_tc->comments]==nullptr)return;
   memcpy(_tc->user_comments[_tc->comments],_comment,comment_len+1);
   _tc->comments++;
-  _tc->user_comments[_tc->comments]=NULL;
+  _tc->user_comments[_tc->comments]=nullptr;
 }
 
 void th_comment_add_tag(th_comment *_tc,char *_tag,char *_val){
@@ -83,7 +83,7 @@ void th_comment_add_tag(th_comment *_tc,char *_tag,char *_val){
   val_len=strlen(_val);
   /*+2 for '=' and '\0'.*/
   comment=_ogg_malloc(tag_len+val_len+2);
-  if(comment==NULL)return;
+  if(comment==nullptr)return;
   memcpy(comment,_tag,tag_len);
   comment[tag_len]='=';
   memcpy(comment+tag_len+1,_val,val_len+1);
@@ -104,7 +104,7 @@ char *th_comment_query(th_comment *_tc,char *_tag,int _count){
     }
   }
   /*Didn't find anything.*/
-  return NULL;
+  return nullptr;
 }
 
 int th_comment_query_count(th_comment *_tc,char *_tag){
@@ -120,7 +120,7 @@ int th_comment_query_count(th_comment *_tc,char *_tag){
 }
 
 void th_comment_clear(th_comment *_tc){
-  if(_tc!=NULL){
+  if(_tc!=nullptr){
     long i;
     for(i=0;i<_tc->comments;i++)_ogg_free(_tc->user_comments[i]);
     _ogg_free(_tc->user_comments);

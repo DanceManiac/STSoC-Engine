@@ -18,7 +18,7 @@ const char * const	clDefault	= "default";
 //(1<<4) registered !!!
 void lanim_cont::set_defaults()
 {
-	m_lanim					= NULL;	
+	m_lanim					= nullptr;	
 	m_lanim_start_time		= -1.0f;
 	m_lanim_delay_time		= 0.0f;
 	m_lanimFlags.zero		();
@@ -34,7 +34,7 @@ CUIStatic:: CUIStatic()
 	m_TextureOffset.set		(0.0f,0.0f);
 	m_TextOffset.set		(0.0f,0.0f);
 
-	m_pMask					= NULL;
+	m_pMask					= nullptr;
 	m_ElipsisPos			= eepNone;
 	m_iElipsisIndent		= 0;
 
@@ -46,11 +46,11 @@ CUIStatic:: CUIStatic()
 	m_lanim_clr.set_defaults	();
 	m_lanim_xform.set_defaults	();
 
-	m_pLines				= NULL;
+	m_pLines				= nullptr;
 	m_bEnableTextHighlighting = false;
 
-	m_texture = NULL;
-	m_shader = NULL;
+	m_texture = nullptr;
+	m_shader = nullptr;
 }
 
 CUIStatic::~ CUIStatic()
@@ -63,7 +63,7 @@ void CUIStatic::SetXformLightAnim(LPCSTR lanim, bool bCyclic)
 	if(lanim && lanim[0]!=0)
 		m_lanim_xform.m_lanim	= LALib.FindItem(lanim);
 	else
-		m_lanim_xform.m_lanim	= NULL;
+		m_lanim_xform.m_lanim	= nullptr;
 	
 	m_lanim_xform.m_lanimFlags.zero		();
 
@@ -75,7 +75,7 @@ void CUIStatic::SetClrLightAnim(LPCSTR lanim, bool bCyclic, bool bOnlyAlpha, boo
 	if(lanim && lanim[0]!=0)
 		m_lanim_clr.m_lanim	= LALib.FindItem(lanim);
 	else
-		m_lanim_clr.m_lanim	= NULL;
+		m_lanim_clr.m_lanim	= nullptr;
 	
 	m_lanim_clr.m_lanimFlags.zero		();
 
@@ -372,7 +372,7 @@ void CUIStatic::TextureClipper(float offset_x, float offset_y, Frect* pClipRect,
 {
 	Frect parent_rect;
 	
-	if(pClipRect == NULL)
+	if(pClipRect == nullptr)
 		if(GetParent())
 			GetParent()->GetAbsoluteRect(parent_rect);
 		else
@@ -600,14 +600,14 @@ void CUIStatic::OnFocusReceive()
 {
 	inherited::OnFocusReceive();
 	if (GetMessageTarget())
-        GetMessageTarget()->SendMessage(this, STATIC_FOCUS_RECEIVED, NULL);
+        GetMessageTarget()->SendMessage(this, STATIC_FOCUS_RECEIVED, nullptr);
 }
 
 void CUIStatic::OnFocusLost(){
 
 	inherited::OnFocusLost();
 	if (GetMessageTarget())
-		GetMessageTarget()->SendMessage(this, STATIC_FOCUS_LOST, NULL);
+		GetMessageTarget()->SendMessage(this, STATIC_FOCUS_LOST, nullptr);
 }
 
 void CUIStatic::AdjustHeightToText(){

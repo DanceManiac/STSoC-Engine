@@ -87,8 +87,8 @@ void CUIFrameWindow::FrameClip(const Frect parentAbsR)
 	int			tile_x, tile_y;
 	float		rem_x, rem_y;
 	float			size_x, size_y;
-	Frect		r, null;
-	null.set(0.0f, 0.0f, 0.0f, 0.0f);
+	Frect		r, nullptr;
+	nullptr.set(0.0f, 0.0f, 0.0f, 0.0f);
 
 	m_UIWndFrame.UpdateSize();
 
@@ -262,7 +262,7 @@ void CUIFrameWindow::FrameClip(const Frect parentAbsR)
 
 	if (tile_y < 0 || tile_x < 0)
 	{
-		m_UIWndFrame.frame[CUIFrameRect::fmBK].SetRect(null);
+		m_UIWndFrame.frame[CUIFrameRect::fmBK].SetRect(nullptr);
 		m_UIWndFrame.frame[CUIFrameRect::fmBK].SetTile(0, 0, 0, 0);
 		m_UIWndFrame.frame[CUIFrameRect::fmBK].SetPos(0, 0);
 	}
