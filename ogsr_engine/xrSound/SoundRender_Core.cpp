@@ -255,8 +255,10 @@ void CSoundRender_Core::set_geometry_env(IReader* I)
 		CDB::TRI* T = tris + it;
 		u16 id_front = (u16)((T->dummy & 0x0000ffff) >> 0); //	front face
 		u16 id_back = (u16)((T->dummy & 0xffff0000) >> 16); //	back face
-		//R_ASSERT(id_front<(u16)ids.size());
-		//R_ASSERT(id_back<(u16)ids.size());
+		if(id_back<(u16)ids.size() && id_front<(u16)ids.size())
+		{
+		}
+		else return;
 		T->dummy = u32(ids[id_back] << 16) | u32(ids[id_front]);
 	}
 #ifdef _EDITOR
