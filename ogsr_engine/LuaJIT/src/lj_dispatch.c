@@ -324,7 +324,7 @@ LUA_API int lua_sethook(lua_State *L, lua_Hook func, int mask, int count)
 {
   global_State *g = G(L);
   mask &= HOOK_EVENTMASK;
-  if (func == nullptr || mask == 0) { mask = 0; func = nullptr; }  /* Consistency. */
+  if (func == NULL || mask == 0) { mask = 0; func = NULL; }  /* Consistency. */
   g->hookf = func;
   g->hookcount = g->hookcstart = (int32_t)count;
   g->hookmask = (uint8_t)((g->hookmask & ~HOOK_EVENTMASK) | mask);
@@ -358,7 +358,7 @@ static void callhook(lua_State *L, int event, BCLine line)
     lj_trace_abort(g);  /* Abort recording on any hook call. */
     ar.event = event;
     ar.currentline = line;
-    /* Top frame, nextframe = nullptr. */
+    /* Top frame, nextframe = NULL. */
     ar.i_ci = (int)((L->base-1) - tvref(L->stack));
     lj_state_checkstack(L, 1+LUA_MINSTACK);
 #if LJ_HASPROFILE && !LJ_PROFILE_SIGPROF

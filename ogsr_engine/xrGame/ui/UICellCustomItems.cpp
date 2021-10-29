@@ -59,7 +59,7 @@ bool CUIInventoryCellItem::EqualTo(CUICellItem* itm)
 CUIInventoryCellItem::~CUIInventoryCellItem()
 {
 	if (auto item = object() )
-		item->m_cell_item = nullptr;
+		item->m_cell_item = NULL;
 }
 
 void CUIInventoryCellItem::OnFocusReceive()
@@ -113,7 +113,7 @@ bool CUIInventoryCellItem::OnMouse(float x, float y, EUIMessages action)
 CUIDragItem* CUIInventoryCellItem::CreateDragItem()
 {
 	CUIDragItem* i = inherited::CreateDragItem();
-	CUIStatic* s = nullptr;
+	CUIStatic* s = NULL;
 	if (!b_auto_drag_childs) return i;   
 
 	for (auto it = this->m_ChildWndList.begin(); it != this->m_ChildWndList.end(); ++it)
@@ -176,7 +176,7 @@ void CUIAmmoCellItem::Update()
 
 void CUIAmmoCellItem::UpdateItemText()
 {
-	if(nullptr==m_custom_draw)
+	if(NULL==m_custom_draw)
 	{
 		xr_vector<CUICellItem*>::iterator it = m_childs.begin();
 		xr_vector<CUICellItem*>::iterator it_e = m_childs.end();
@@ -208,9 +208,9 @@ CUIWeaponCellItem::CUIWeaponCellItem(CWeapon* itm)
 :inherited(itm)
 {
 	b_auto_drag_childs = false;
-	m_addons[eSilencer]		= nullptr;
-	m_addons[eScope]		= nullptr;
-	m_addons[eLauncher]		= nullptr;
+	m_addons[eSilencer]		= NULL;
+	m_addons[eScope]		= NULL;
+	m_addons[eLauncher]		= NULL;
 
 	m_cell_size.set(INV_GRID_WIDTHF, INV_GRID_HEIGHTF);
 
@@ -256,7 +256,7 @@ void CUIWeaponCellItem::CreateIcon(eAddonType t, CIconParams &params)
 void CUIWeaponCellItem::DestroyIcon(eAddonType t)
 {
 	DetachChild		(m_addons[t]);
-	m_addons[t]		= nullptr;
+	m_addons[t]		= NULL;
 }
 
 CUIStatic* CUIWeaponCellItem::GetIcon(eAddonType t)
@@ -326,9 +326,9 @@ void CUIWeaponCellItem::OnAfterChild(CUIDragDropListEx* parent_list)
 {
 	const Ivector2 &cs = parent_list->CellSize();
 	m_cell_size.set((float)cs.x, (float)cs.y);
-	CUIStatic* s_silencer = is_silencer() ? GetIcon(eSilencer) : nullptr;
-	CUIStatic* s_scope = is_scope() ? GetIcon(eScope) : nullptr;
-	CUIStatic* s_launcher = is_launcher() ? GetIcon(eLauncher) : nullptr;
+	CUIStatic* s_silencer = is_silencer() ? GetIcon(eSilencer) : NULL;
+	CUIStatic* s_scope = is_scope() ? GetIcon(eScope) : NULL;
+	CUIStatic* s_launcher = is_launcher() ? GetIcon(eLauncher) : NULL;
 	
 	InitAllAddons(s_silencer, s_scope, s_launcher, parent_list->GetVerticalPlacement());
 }
@@ -475,9 +475,9 @@ CUIDragItem* CUIWeaponCellItem::CreateDragItem()
     }
 
     /*
-    CUIStatic* s_silencer = GetIcon(eSilencer) ? MakeAddonStatic(i, params) : nullptr;
-    CUIStatic* s_scope = GetIcon(eScope) ? MakeAddonStatic(i, params) : nullptr;
-    CUIStatic* s_launcher = GetIcon(eLauncher) ? MakeAddonStatic(i, params) : nullptr;
+    CUIStatic* s_silencer = GetIcon(eSilencer) ? MakeAddonStatic(i, params) : NULL;
+    CUIStatic* s_scope = GetIcon(eScope) ? MakeAddonStatic(i, params) : NULL;
+    CUIStatic* s_launcher = GetIcon(eLauncher) ? MakeAddonStatic(i, params) : NULL;
     */
 
 	if (Heading()) m_cell_size.set(m_cell_size.y, m_cell_size.x);   // swap before	

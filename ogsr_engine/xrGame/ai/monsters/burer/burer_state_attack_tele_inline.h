@@ -111,7 +111,7 @@ void CStateBurerAttackTele<Object>::deactivate()
 			}
 			if ( CGrenade* grenade = smart_cast<CGrenade*>(cur_object) )
 			{
-				grenade->set_destroy_callback		(nullptr);
+				grenade->set_destroy_callback		(NULL);
 			}
 		}
 	}
@@ -190,7 +190,7 @@ bool CStateBurerAttackTele<Object>::check_completion()
 template <typename Object>
 void CStateBurerAttackTele<Object>::FindFreeObjects(xr_vector<CObject*> &tpObjects, const Fvector &pos)
 {
-	Level().ObjectSpace.GetNearest	(tpObjects, pos, object->m_tele_find_radius, nullptr);
+	Level().ObjectSpace.GetNearest	(tpObjects, pos, object->m_tele_find_radius, NULL);
 
 	for (u32 i=0;i<tpObjects.size();i++) {
 		CPhysicsShellHolder *obj			=	smart_cast<CPhysicsShellHolder *>(tpObjects[i]);
@@ -452,7 +452,7 @@ void CStateBurerAttackTele<Object>::HandleGrenades ()
 	}
 
 	m_nearest.clear();
-	Level().ObjectSpace.GetNearest		(m_nearest, object->Position(), object->m_tele_find_radius, nullptr);
+	Level().ObjectSpace.GetNearest		(m_nearest, object->Position(), object->m_tele_find_radius, NULL);
 
 	for ( u32 i=0; i<m_nearest.size(); ++i )
 	{

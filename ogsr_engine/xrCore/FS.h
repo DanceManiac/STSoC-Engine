@@ -288,5 +288,5 @@ public:
 	IReader*		open_chunk	(u32 ID);
 
 	// iterators
-	IReader*		open_chunk_iterator		(u32& ID, IReader* previous=nullptr);	// nullptr=first
+	IReader*		open_chunk_iterator		(u32& ID, IReader* previous=NULL);	// NULL=first
 };

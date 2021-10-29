@@ -41,8 +41,8 @@ template<typename T>
 IC T*	CUIDialogWndEx::GetControl(LPCSTR name){
 	shared_str n = name;
 	CUIWindow* pWnd = FindChild(n);
-	if(pWnd == nullptr)
-		return nullptr;
+	if(pWnd == NULL)
+		return NULL;
 
 	return smart_cast<T*>(pWnd);
 }

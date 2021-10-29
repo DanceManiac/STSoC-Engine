@@ -30,7 +30,7 @@
 #elif LJ_TARGET_OSX || LJ_TARGET_BSD
 #define CLIB_DEFHANDLE	((void *)(intptr_t)-2)
 #else
-#define CLIB_DEFHANDLE	nullptr
+#define CLIB_DEFHANDLE	NULL
 #endif
 
 LJ_NORET LJ_NOINLINE static void clib_error_(lua_State *L)
@@ -88,14 +88,14 @@ static const char *clib_check_lds(lua_State *L, const char *buf)
     for (e = p; *e && *e != ' ' && *e != ')'; e++) ;
     return strdata(lj_str_new(L, p, e-p));
   }
-  return nullptr;
+  return NULL;
 }
 
 /* Quick and dirty solution to resolve shared library name from ld script. */
 static const char *clib_resolve_lds(lua_State *L, const char *name)
 {
   FILE *fp = fopen(name, "r");
-  const char *p = nullptr;
+  const char *p = NULL;
   if (fp) {
     char buf[256];
     if (fgets(buf, sizeof(buf), fp)) {
@@ -179,12 +179,12 @@ LJ_NORET LJ_NOINLINE static void clib_error(lua_State *L, const char *fmt,
   wchar_t wbuf[128];
   char buf[128*2];
   if (!FormatMessageW(FORMAT_MESSAGE_IGNORE_INSERTS|FORMAT_MESSAGE_FROM_SYSTEM,
-		      nullptr, err, 0, wbuf, sizeof(wbuf)/sizeof(wchar_t), nullptr) ||
-      !WideCharToMultiByte(CP_ACP, 0, wbuf, 128, buf, 128*2, nullptr, nullptr))
+		      NULL, err, 0, wbuf, sizeof(wbuf)/sizeof(wchar_t), NULL) ||
+      !WideCharToMultiByte(CP_ACP, 0, wbuf, 128, buf, 128*2, NULL, NULL))
 #else
   char buf[128];
   if (!FormatMessageA(FORMAT_MESSAGE_IGNORE_INSERTS|FORMAT_MESSAGE_FROM_SYSTEM,
-		      nullptr, err, 0, buf, sizeof(buf), nullptr))
+		      NULL, err, 0, buf, sizeof(buf), NULL))
 #endif
     buf[0] = '\0';
   lj_err_callermsg(L, lj_strfmt_pushf(L, fmt, name, buf));
@@ -226,7 +226,7 @@ static void clib_unloadlib(CLibrary *cl)
     for (i = CLIB_HANDLE_KERNEL32; i < CLIB_HANDLE_MAX; i++) {
       void *h = clib_def_handle[i];
       if (h) {
-	clib_def_handle[i] = nullptr;
+	clib_def_handle[i] = NULL;
 	FreeLibrary((HINSTANCE)h);
       }
     }
@@ -242,7 +242,7 @@ EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 
 static void *clib_getsym(CLibrary *cl, const char *name)
 {
-  void *p = nullptr;
+  void *p = NULL;
   if (cl->handle == CLIB_DEFHANDLE) {  /* Search default libraries. */
     MSize i;
     for (i = 0; i < CLIB_HANDLE_MAX; i++) {
@@ -252,7 +252,7 @@ static void *clib_getsym(CLibrary *cl, const char *name)
 	h = (HINSTANCE)&__ImageBase;
 #else
 	switch (i) {
-	case CLIB_HANDLE_EXE: GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, nullptr, &h); break;
+	case CLIB_HANDLE_EXE: GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, NULL, &h); break;
 	case CLIB_HANDLE_DLL:
 	  GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
 			     (const char *)clib_def_handle, &h);
@@ -280,7 +280,7 @@ static void *clib_getsym(CLibrary *cl, const char *name)
 
 #else
 
-#define CLIB_DEFHANDLE	nullptr
+#define CLIB_DEFHANDLE	NULL
 
 LJ_NORET LJ_NOINLINE static void clib_error(lua_State *L, const char *fmt,
 					    const char *name)
@@ -292,7 +292,7 @@ static void *clib_loadlib(lua_State *L, const char *name, int global)
 {
   lj_err_callermsg(L, "no support for loading dynamic libraries for this OS");
   UNUSED(name); UNUSED(global);
-  return nullptr;
+  return NULL;
 }
 
 static void clib_unloadlib(CLibrary *cl)
@@ -303,7 +303,7 @@ static void clib_unloadlib(CLibrary *cl)
 static void *clib_getsym(CLibrary *cl, const char *name)
 {
   UNUSED(cl); UNUSED(name);
-  return nullptr;
+  return NULL;
 }
 
 #endif
@@ -421,7 +421,7 @@ void lj_clib_load(lua_State *L, GCtab *mt, GCstr *name, int global)
 void lj_clib_unload(CLibrary *cl)
 {
   clib_unloadlib(cl);
-  cl->handle = nullptr;
+  cl->handle = NULL;
 }
 
 /* Create the default C library object. */

@@ -27,7 +27,7 @@ extern "C" {
 //  pSrcFile
 //      Source file name.
 //  hSrcModule
-//      Module handle. if nullptr, current module will be used.
+//      Module handle. if NULL, current module will be used.
 //  pSrcResource
 //      Resource name in module.
 //  pSrcData
@@ -35,10 +35,10 @@ extern "C" {
 //  SrcDataLen
 //      Size of source code, in bytes.
 //  pDefines
-//      Optional nullptr-terminated array of preprocessor macro definitions.
+//      Optional NULL-terminated array of preprocessor macro definitions.
 //  pInclude
 //      Optional interface pointer to use for handling #include directives.
-//      If this parameter is nullptr, #includes will be honored when compiling
+//      If this parameter is NULL, #includes will be honored when compiling
 //      from file, and will error when compiling from resource or memory.
 //  pFunctionName
 //      Name of the entrypoint function where execution should begin.
@@ -67,8 +67,8 @@ extern "C" {
 //      these are the same messages you will see in your debug output.
 //  pHResult
 //      Pointer to a memory location to receive the return value upon completion.
-//      Maybe nullptr if not needed.
-//      If pPump != nullptr, pHResult must be a valid memory location until the
+//      Maybe NULL if not needed.
+//      If pPump != NULL, pHResult must be a valid memory location until the
 //      the asynchronous execution completes.
 //----------------------------------------------------------------------------
 
@@ -123,10 +123,10 @@ HRESULT WINAPI D3DX10CompileFromMemory(LPCSTR pSrcData, SIZE_T SrcDataLen, LPCST
 //      Length of the data blob
 //
 //  pDefines
-//      Optional nullptr-terminated array of preprocessor macro definitions.
+//      Optional NULL-terminated array of preprocessor macro definitions.
 //  pInclude
 //      Optional interface pointer to use for handling #include directives.
-//      If this parameter is nullptr, #includes will be honored when compiling
+//      If this parameter is NULL, #includes will be honored when compiling
 //      from file, and will error when compiling from resource or memory.
 //  pProfile
 //      Profile to use when compiling the effect.
@@ -139,7 +139,7 @@ HRESULT WINAPI D3DX10CompileFromMemory(LPCSTR pSrcData, SIZE_T SrcDataLen, LPCST
 //  pDevice
 //      Pointer to the D3D10 device on which to create Effect resources
 //  pEffectPool
-//      Pointer to an Effect pool to share variables with or nullptr
+//      Pointer to an Effect pool to share variables with or NULL
 //
 // [out]
 //
@@ -148,12 +148,12 @@ HRESULT WINAPI D3DX10CompileFromMemory(LPCSTR pSrcData, SIZE_T SrcDataLen, LPCST
 //  ppEffectPool
 //      Address of the newly created Effect pool interface
 //  ppErrors
-//      If non-nullptr, address of a buffer with error messages that occurred 
+//      If non-NULL, address of a buffer with error messages that occurred 
 //      during parsing or compilation
 //  pHResult
 //      Pointer to a memory location to receive the return value upon completion.
-//      Maybe nullptr if not needed.
-//      If pPump != nullptr, pHResult must be a valid memory location until the
+//      Maybe NULL if not needed.
+//      If pPump != NULL, pHResult must be a valid memory location until the
 //      the asynchronous execution completes.
 //----------------------------------------------------------------------------
 

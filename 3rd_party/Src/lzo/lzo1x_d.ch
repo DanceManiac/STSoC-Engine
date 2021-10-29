@@ -73,7 +73,7 @@ DO_DECOMPRESS  ( const lzo_bytep in , lzo_uint  in_len,
     else
     {
         dict_len = 0;
-        dict_end = nullptr;
+        dict_end = NULL;
     }
 #endif /* COPY_DICT */
 

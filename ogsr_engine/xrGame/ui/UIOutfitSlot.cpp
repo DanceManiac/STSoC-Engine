@@ -91,7 +91,7 @@ CUICellItem* CUIOutfitDragDropList::RemoveItem(CUICellItem* itm, bool force_root
 {
 	VERIFY								(!force_root);
 	CUICellItem* ci						= inherited::RemoveItem(itm, force_root);
-	SetOutfit							(nullptr);
+	SetOutfit							(NULL);
 	return								ci;
 }
 

@@ -81,7 +81,7 @@
 #	define LUABIND_TYPE_INFO const type_info*
 #	define LUABIND_TYPEID(t) &typeid(t)
 #	define LUABIND_TYPE_INFO_EQUAL(i1, i2) *i1 == *i2
-#	define LUABIND_INVALID_TYPE_INFO &typeid(detail::nullptr_type)
+#	define LUABIND_INVALID_TYPE_INFO &typeid(detail::null_type)
 #	include <typeinfo>
 #endif
 

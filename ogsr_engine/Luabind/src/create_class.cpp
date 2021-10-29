@@ -120,7 +120,7 @@ namespace luabind { namespace detail
 
 		if (std::strlen(lua_tostring(L, 1)) != lua_strlen(L, 1))
 		{
-			lua_pushstring(L, "luabind does not support class names with extra nullptrs");
+			lua_pushstring(L, "luabind does not support class names with extra nulls");
 			lua_error(L);
 		}
 
@@ -139,7 +139,7 @@ namespace luabind { namespace detail
 		{
 			int i = 1;
 			const char *name;
-			while ((name = lua_getlocal(L, &ar, i++)) != nullptr) {
+			while ((name = lua_getlocal(L, &ar, i++)) != NULL) {
 				if (!strcmp("this",name)) {
 					if (lua_istable(L,-1))
 						index = lua_gettop(L);

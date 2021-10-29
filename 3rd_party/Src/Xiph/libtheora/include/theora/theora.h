@@ -267,7 +267,7 @@ typedef struct{
  * to case-insensitive ASCII. See the spec for details.
  *
  * In filling in this structure, theora_decode_header() will
- * nullptr-terminate the user_comment strings for safety. However,
+ * null-terminate the user_comment strings for safety. However,
  * the bitstream format itself treats them as 8-bit clean,
  * and so the length array should be treated as authoritative
  * for their length.
@@ -276,7 +276,7 @@ typedef struct theora_comment{
   char **user_comments;         /**< An array of comment string vectors */
   int   *comment_lengths;       /**< An array of corresponding string vector lengths in bytes */
   int    comments;              /**< The total number of comment string vectors */
-  char  *vendor;                /**< The vendor string identifying the encoder, nullptr terminated */
+  char  *vendor;                /**< The vendor string identifying the encoder, null terminated */
 
 } theora_comment;
 
@@ -321,7 +321,7 @@ typedef struct theora_comment{
  * \param[in]  buf <tt>ogg_uint32_t</tt>: The maximum distance between key
  *                   frames.
  * \param[out] buf <tt>ogg_uint32_t</tt>: The actual maximum distance set.
- * \retval OC_FAULT  \a theora_state or \a buf is <tt>nullptr</tt>.
+ * \retval OC_FAULT  \a theora_state or \a buf is <tt>NULL</tt>.
  * \retval OC_EINVAL \a buf_sz is not <tt>sizeof(ogg_uint32_t)</tt>.
  * \retval OC_IMPL   Not supported by this implementation.*/
 #define TH_ENCCTL_SET_KEYFRAME_FREQUENCY_FORCE (4)
@@ -340,14 +340,14 @@ typedef struct theora_comment{
 /**Sets the quantization parameters to use.
  * The parameters are copied, not stored by reference, so they can be freed
  *  after this call.
- * <tt>nullptr</tt> may be specified to revert to the default parameters.
+ * <tt>NULL</tt> may be specified to revert to the default parameters.
  *
  * \param[in] buf #th_quant_info
- * \retval OC_FAULT  \a theora_state is <tt>nullptr</tt>.
+ * \retval OC_FAULT  \a theora_state is <tt>NULL</tt>.
  * \retval OC_EINVAL Encoding has already begun, the quantization parameters
  *                    are not acceptable to this version of the encoder, 
- *                    \a buf is <tt>nullptr</tt> and \a buf_sz is not zero, 
- *                    or \a buf is non-<tt>nullptr</tt> and \a buf_sz is 
+ *                    \a buf is <tt>NULL</tt> and \a buf_sz is not zero, 
+ *                    or \a buf is non-<tt>NULL</tt> and \a buf_sz is 
  *                    not <tt>sizeof(#th_quant_info)</tt>.
  * \retval OC_IMPL   Not supported by this implementation.*/
 #define TH_ENCCTL_SET_QUANT_PARAMS (2)
@@ -376,7 +376,7 @@ typedef struct theora_comment{
  *                   4:2:0, the picture region is smaller than the full frame,
  *                   or if encoding has begun, preventing the quantization
  *                   tables and codebooks from being set.
- * \retval OC_FAULT  \a theora_state or \a buf is <tt>nullptr</tt>.
+ * \retval OC_FAULT  \a theora_state or \a buf is <tt>NULL</tt>.
  * \retval OC_EINVAL \a buf_sz is not <tt>sizeof(int)</tt>.
  * \retval OC_IMPL   Not supported by this implementation.*/
 #define TH_ENCCTL_SET_VP3_COMPATIBLE (10)
@@ -390,7 +390,7 @@ typedef struct theora_comment{
  *  the current encoding mode (VBR vs. CQI, etc.).
  *
  * \param[out] buf int: The maximum encoding speed level.
- * \retval OC_FAULT  \a theora_state or \a buf is <tt>nullptr</tt>.
+ * \retval OC_FAULT  \a theora_state or \a buf is <tt>NULL</tt>.
  * \retval OC_EINVAL \a buf_sz is not <tt>sizeof(int)</tt>.
  * \retval OC_IMPL   Not supported by this implementation in the current
  *                    encoding mode.*/
@@ -401,7 +401,7 @@ typedef struct theora_comment{
  *
  * \param[in] buf int: The new encoding speed level.
  *                      0 is slowest, larger values use less CPU.
- * \retval OC_FAULT  \a theora_state or \a buf is <tt>nullptr</tt>.
+ * \retval OC_FAULT  \a theora_state or \a buf is <tt>NULL</tt>.
  * \retval OC_EINVAL \a buf_sz is not <tt>sizeof(int)</tt>, or the
  *                    encoding speed level is out of bounds.
  *                   The maximum encoding speed level may be
@@ -529,7 +529,7 @@ extern int theora_encode_tables(theora_state *t, ogg_packet *op);
  * \param op An ogg_packet structure which you expect contains an initial
  *           header, comment data or codebook tables.
  *
- * \retval OC_BADHEADER \a op is nullptr; OR the first byte of \a op->packet
+ * \retval OC_BADHEADER \a op is NULL; OR the first byte of \a op->packet
  *                      has the signature of an initial packet, but op is
  *                      not a b_o_s packet; OR this packet has the signature
  *                      of an initial header packet, but an initial header
@@ -706,11 +706,11 @@ extern void theora_comment_init(theora_comment *tc);
 /**
  * Add a comment to an initialized theora_comment structure
  * \param tc A previously initialized theora comment structure
- * \param comment A nullptr-terminated string encoding the comment in the form
+ * \param comment A null-terminated string encoding the comment in the form
  *                "TAG=the value"
  *
  * Neither theora_comment_add() nor theora_comment_add_tag() support
- * comments containing nullptr values, although the bitstream format
+ * comments containing null values, although the bitstream format
  * supports this. To add such comments you will need to manipulate
  * the theora_comment structure directly.
  **/
@@ -720,12 +720,12 @@ extern void theora_comment_add(theora_comment *tc, char *comment);
 /**
  * Add a comment to an initialized theora_comment structure.
  * \param tc A previously initialized theora comment structure
- * \param tag A nullptr-terminated string containing the tag 
+ * \param tag A null-terminated string containing the tag 
  *            associated with the comment.
- * \param value The corresponding value as a nullptr-terminated string
+ * \param value The corresponding value as a null-terminated string
  *
  * Neither theora_comment_add() nor theora_comment_add_tag() support
- * comments containing nullptr values, although the bitstream format
+ * comments containing null values, although the bitstream format
  * supports this. To add such comments you will need to manipulate
  * the theora_comment structure directly.
  **/
@@ -740,7 +740,7 @@ extern void theora_comment_add_tag(theora_comment *tc,
  *              times, each with a distinct and ordered value, so an index
  *              is required to retrieve them all.
  * \returns A pointer to the queried tag's value
- * \retval nullptr No matching tag is found
+ * \retval NULL No matching tag is found
  *
  * \note Use theora_comment_query_count() to get the legal range for the
  * count parameter.

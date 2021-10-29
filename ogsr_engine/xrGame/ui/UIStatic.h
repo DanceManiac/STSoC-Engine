@@ -124,7 +124,7 @@ public:
 	virtual void ClipperOff					();
 	virtual void ClipperOff					(CUIStaticItem& UIStaticItem);
 	virtual bool GetClipperState			()								{return m_bClipper;}
-	void TextureClipper						(float offset_x = 0, float offset_y = 0,Frect* pClipRect = nullptr);
+	void TextureClipper						(float offset_x = 0, float offset_y = 0,Frect* pClipRect = NULL);
 	void TextureClipper						(float offset_x, float offset_y, Frect* pClipRect, CUIStaticItem& UIStaticItem);
 
 	

@@ -136,7 +136,7 @@ int __getopt_initialized;
    in which the last option character we returned was found.
    This allows us to pick up the scan where we left off.
 
-   If this is zero, or a nullptr string, it means resume the scan
+   If this is zero, or a null string, it means resume the scan
    by advancing to the next ARGV-element.  */
 
 static char *nextchar;
@@ -320,7 +320,7 @@ exchange (argv)
       /* We must extend the array.  The user plays games with us and
 	 presents new arguments.  */
       char *new_str = malloc (top + 1);
-      if (new_str == nullptr)
+      if (new_str == NULL)
 	nonoption_flags_len = nonoption_flags_max_len = 0;
       else
 	{
@@ -394,7 +394,7 @@ _getopt_initialize (argc, argv, optstring)
 
   first_nonopt = last_nonopt = optind;
 
-  nextchar = nullptr;
+  nextchar = NULL;
 
   posixly_correct = getenv ("POSIXLY_CORRECT");
 
@@ -410,18 +410,18 @@ _getopt_initialize (argc, argv, optstring)
       ordering = REQUIRE_ORDER;
       ++optstring;
     }
-  else if (posixly_correct != nullptr)
+  else if (posixly_correct != NULL)
     ordering = REQUIRE_ORDER;
   else
     ordering = PERMUTE;
 
 #ifdef _LIBC
-  if (posixly_correct == nullptr
+  if (posixly_correct == NULL
       && argc == original_argc && argv == original_argv)
     {
       if (nonoption_flags_max_len == 0)
 	{
-	  if (__getopt_nonoption_flags == nullptr
+	  if (__getopt_nonoption_flags == NULL
 	      || __getopt_nonoption_flags[0] == '\0')
 	    nonoption_flags_max_len = -1;
 	  else
@@ -432,7 +432,7 @@ _getopt_initialize (argc, argv, optstring)
 		nonoption_flags_max_len = argc;
 	      __getopt_nonoption_flags =
 		(char *) malloc (nonoption_flags_max_len);
-	      if (__getopt_nonoption_flags == nullptr)
+	      if (__getopt_nonoption_flags == NULL)
 		nonoption_flags_max_len = -1;
 	      else
 		memset (__mempcpy (__getopt_nonoption_flags, orig_str, len),
@@ -513,7 +513,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
      int *longind;
      int long_only;
 {
-  optarg = nullptr;
+  optarg = NULL;
 
   if (optind == 0 || !__getopt_initialized)
     {
@@ -535,7 +535,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 # define NONOPTION_P (argv[optind][0] != '-' || argv[optind][1] == '\0')
 #endif
 
-  if (nextchar == nullptr || *nextchar == '\0')
+  if (nextchar == NULL || *nextchar == '\0')
     {
       /* Advance to the next ARGV-element.  */
 
@@ -565,7 +565,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 	}
 
       /* The special ARGV-element `--' means premature end of options.
-	 Skip it like a nullptr option,
+	 Skip it like a null option,
 	 then exchange with previous non-options as if it were an option,
 	 then skip everything else like a non-option.  */
 
@@ -609,7 +609,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 	 Skip the initial punctuation.  */
 
       nextchar = (argv[optind] + 1
-		  + (longopts != nullptr && argv[optind][1] == '-'));
+		  + (longopts != NULL && argv[optind][1] == '-'));
     }
 
   /* Decode the current option-ARGV-element.  */
@@ -627,13 +627,13 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 
      This distinction seems to be the most useful approach.  */
 
-  if (longopts != nullptr
+  if (longopts != NULL
       && (argv[optind][1] == '-'
 	  || (long_only && (argv[optind][2] || !my_index (optstring, argv[optind][1])))))
     {
       char *nameend;
       const struct option *p;
-      const struct option *pfound = nullptr;
+      const struct option *pfound = NULL;
       int exact = 0;
       int ambig = 0;
       int indfound = -1;
@@ -656,7 +656,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 		exact = 1;
 		break;
 	      }
-	    else if (pfound == nullptr)
+	    else if (pfound == NULL)
 	      {
 		/* First nonexact match found.  */
 		pfound = p;
@@ -678,7 +678,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 	  return '?';
 	}
 
-      if (pfound != nullptr)
+      if (pfound != NULL)
 	{
 	  option_index = indfound;
 	  optind++;
@@ -726,7 +726,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 		}
 	    }
 	  nextchar += strlen (nextchar);
-	  if (longind != nullptr)
+	  if (longind != NULL)
 	    *longind = option_index;
 	  if (pfound->flag)
 	    {
@@ -741,7 +741,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 	 option, then it's an error.
 	 Otherwise interpret it as a short option.  */
       if (!long_only || argv[optind][1] == '-'
-	  || my_index (optstring, *nextchar) == nullptr)
+	  || my_index (optstring, *nextchar) == NULL)
 	{
 	  if (opterr)
 	    {
@@ -771,7 +771,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
     if (*nextchar == '\0')
       ++optind;
 
-    if (temp == nullptr || c == ':')
+    if (temp == NULL || c == ':')
       {
 	if (opterr)
 	  {
@@ -791,7 +791,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
       {
 	char *nameend;
 	const struct option *p;
-	const struct option *pfound = nullptr;
+	const struct option *pfound = NULL;
 	int exact = 0;
 	int ambig = 0;
 	int indfound = 0;
@@ -844,7 +844,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 		  exact = 1;
 		  break;
 		}
-	      else if (pfound == nullptr)
+	      else if (pfound == NULL)
 		{
 		  /* First nonexact match found.  */
 		  pfound = p;
@@ -863,7 +863,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 	    optind++;
 	    return '?';
 	  }
-	if (pfound != nullptr)
+	if (pfound != NULL)
 	  {
 	    option_index = indfound;
 	    if (*nameend)
@@ -898,7 +898,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 		  }
 	      }
 	    nextchar += strlen (nextchar);
-	    if (longind != nullptr)
+	    if (longind != NULL)
 	      *longind = option_index;
 	    if (pfound->flag)
 	      {
@@ -907,7 +907,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 	      }
 	    return pfound->val;
 	  }
-	  nextchar = nullptr;
+	  nextchar = NULL;
 	  return 'W';	/* Let the application handle it.   */
       }
     if (temp[1] == ':')
@@ -921,8 +921,8 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 		optind++;
 	      }
 	    else
-	      optarg = nullptr;
-	    nextchar = nullptr;
+	      optarg = NULL;
+	    nextchar = NULL;
 	  }
 	else
 	  {
@@ -953,7 +953,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 	      /* We already incremented `optind' once;
 		 increment it again when taking next ARGV-elt as argument.  */
 	      optarg = argv[optind++];
-	    nextchar = nullptr;
+	    nextchar = NULL;
 	  }
       }
     return c;

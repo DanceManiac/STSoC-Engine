@@ -20,7 +20,7 @@ namespace detail
 } // namespace detail
 
 monster_aura::monster_aura (CBaseMonster* const object, pcstr const name) 
-						: m_object(object), m_pp_effector_name(nullptr), m_pp_index(0)
+						: m_object(object), m_pp_effector_name(NULL), m_pp_index(0)
 {
 	xr_strcpy							(m_name, sizeof(m_name), name); 
 	m_detect_snd_time	=	0.0f;
@@ -67,7 +67,7 @@ void   monster_aura::load_from_ini (CInifile* ini, pcstr const section, bool ena
 	using namespace						detail;
 	string512			tempBuffer;
 	xr_strconcat		(tempBuffer, m_name, s_pp_effector_name_string);
-	m_pp_effector_name = READ_IF_EXISTS(ini, r_string, section, tempBuffer, nullptr);
+	m_pp_effector_name = READ_IF_EXISTS(ini, r_string, section, tempBuffer, NULL);
 	
 	xr_strconcat		(tempBuffer, m_name, s_pp_highest_at_string);
 	m_pp_highest_at = READ_IF_EXISTS(ini, r_float, section, tempBuffer, 1.f);
@@ -85,10 +85,10 @@ void   monster_aura::load_from_ini (CInifile* ini, pcstr const section, bool ena
 	m_max_distance = READ_IF_EXISTS(ini, r_float, section, tempBuffer, 0.f);
 
 	xr_strconcat		(tempBuffer, m_name, s_sound_string);
-	LPCSTR sound_name = READ_IF_EXISTS(ini, r_string, section, tempBuffer, nullptr);
+	LPCSTR sound_name = READ_IF_EXISTS(ini, r_string, section, tempBuffer, NULL);
 	
 	xr_strconcat		(tempBuffer, m_name, s_detect_sound_string);
-	LPCSTR detect_sound_name = READ_IF_EXISTS(ini, r_string, section, tempBuffer, nullptr);
+	LPCSTR detect_sound_name = READ_IF_EXISTS(ini, r_string, section, tempBuffer, NULL);
 
 	xr_strconcat		(tempBuffer, m_name, s_enable_for_dead_string);
 

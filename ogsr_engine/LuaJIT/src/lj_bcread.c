@@ -68,7 +68,7 @@ static LJ_NOINLINE void bcread_fill(LexState *ls, MSize len, int need)
     }
     ls->sb.w = p + n;
     buf = ls->rfunc(ls->L, ls->rdata, &sz);  /* Get more data from reader. */
-    if (buf == nullptr || sz == 0) {  /* EOF? */
+    if (buf == NULL || sz == 0) {  /* EOF? */
       if (need) bcread_error(ls, LJ_ERR_BCBAD);
       ls->c = -1;  /* Only bad if we get called again. */
       break;
@@ -378,9 +378,9 @@ GCproto *lj_bcread_proto(LexState *ls)
     bcread_dbg(ls, pt, sizedbg);
     setmref(pt->varinfo, bcread_varinfo(pt));
   } else {
-    setmref(pt->lineinfo, nullptr);
-    setmref(pt->uvinfo, nullptr);
-    setmref(pt->varinfo, nullptr);
+    setmref(pt->lineinfo, NULL);
+    setmref(pt->uvinfo, NULL);
+    setmref(pt->varinfo, NULL);
   }
   return pt;
 }

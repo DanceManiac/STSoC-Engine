@@ -46,7 +46,7 @@ LJ_FUNC TRef lj_ir_knumint(jit_State *J, lua_Number n);
 LJ_FUNC TRef lj_ir_kint64(jit_State *J, uint64_t u64);
 LJ_FUNC TRef lj_ir_kgc(jit_State *J, GCobj *o, IRType t);
 LJ_FUNC TRef lj_ir_kptr_(jit_State *J, IROp op, void *ptr);
-LJ_FUNC TRef lj_ir_knullptr(jit_State *J, IRType t);
+LJ_FUNC TRef lj_ir_knull(jit_State *J, IRType t);
 LJ_FUNC TRef lj_ir_kslot(jit_State *J, TRef key, IRRef slot);
 LJ_FUNC TRef lj_ir_ktrace(jit_State *J);
 

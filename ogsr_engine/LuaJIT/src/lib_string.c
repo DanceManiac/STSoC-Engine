@@ -253,7 +253,7 @@ static const char *matchbalance(MatchState *ms, const char *s, const char *p)
   if (*p == 0 || *(p+1) == 0)
     lj_err_caller(ms->L, LJ_ERR_STRPATU);
   if (*s != *p) {
-    return nullptr;
+    return NULL;
   } else {
     int b = *p;
     int e = *(p+1);
@@ -266,7 +266,7 @@ static const char *matchbalance(MatchState *ms, const char *s, const char *p)
       }
     }
   }
-  return nullptr;  /* string ends out of balance */
+  return NULL;  /* string ends out of balance */
 }
 
 static const char *max_expand(MatchState *ms, const char *s,
@@ -281,7 +281,7 @@ static const char *max_expand(MatchState *ms, const char *s,
     if (res) return res;
     i--;  /* else didn't match; reduce 1 repetition to try again */
   }
-  return nullptr;
+  return NULL;
 }
 
 static const char *min_expand(MatchState *ms, const char *s,
@@ -289,12 +289,12 @@ static const char *min_expand(MatchState *ms, const char *s,
 {
   for (;;) {
     const char *res = match(ms, s, ep+1);
-    if (res != nullptr)
+    if (res != NULL)
       return res;
     else if (s<ms->src_end && singlematch(uchar(*s), p, ep))
       s++;  /* try with one more repetition */
     else
-      return nullptr;
+      return NULL;
   }
 }
 
@@ -307,7 +307,7 @@ static const char *start_capture(MatchState *ms, const char *s,
   ms->capture[level].init = s;
   ms->capture[level].len = what;
   ms->level = level+1;
-  if ((res=match(ms, s, p)) == nullptr)  /* match failed? */
+  if ((res=match(ms, s, p)) == NULL)  /* match failed? */
     ms->level--;  /* undo capture */
   return res;
 }
@@ -318,7 +318,7 @@ static const char *end_capture(MatchState *ms, const char *s,
   int l = capture_to_close(ms);
   const char *res;
   ms->capture[l].len = s - ms->capture[l].init;  /* close capture */
-  if ((res = match(ms, s, p)) == nullptr)  /* match failed? */
+  if ((res = match(ms, s, p)) == NULL)  /* match failed? */
     ms->capture[l].len = CAP_UNFINISHED;  /* undo capture */
   return res;
 }
@@ -332,7 +332,7 @@ static const char *match_capture(MatchState *ms, const char *s, int l)
       memcmp(ms->capture[l].init, s, len) == 0)
     return s+len;
   else
-    return nullptr;
+    return NULL;
 }
 
 static const char *match(MatchState *ms, const char *s, const char *p)
@@ -354,7 +354,7 @@ static const char *match(MatchState *ms, const char *s, const char *p)
     switch (*(p+1)) {
     case 'b':  /* balanced string? */
       s = matchbalance(ms, s, p+2);
-      if (s == nullptr) break;
+      if (s == NULL) break;
       p+=4;
       goto init;  /* else s = match(ms, s, p+4); */
     case 'f': {  /* frontier? */
@@ -365,14 +365,14 @@ static const char *match(MatchState *ms, const char *s, const char *p)
       ep = classend(ms, p);  /* points to what is next */
       previous = (s == ms->src_init) ? '\0' : *(s-1);
       if (matchbracketclass(uchar(previous), p, ep-1) ||
-	 !matchbracketclass(uchar(*s), p, ep-1)) { s = nullptr; break; }
+	 !matchbracketclass(uchar(*s), p, ep-1)) { s = NULL; break; }
       p=ep;
       goto init;  /* else s = match(ms, s, ep); */
       }
     default:
       if (lj_char_isdigit(uchar(*(p+1)))) {  /* capture results (%0-%9)? */
 	s = match_capture(ms, s, uchar(*(p+1)));
-	if (s == nullptr) break;
+	if (s == NULL) break;
 	p+=2;
 	goto init;  /* else s = match(ms, s, p+2) */
       }
@@ -384,7 +384,7 @@ static const char *match(MatchState *ms, const char *s, const char *p)
   case '$':
     /* is the `$' the last char in pattern? */
     if (*(p+1) != '\0') goto dflt;
-    if (s != ms->src_end) s = nullptr;  /* check end of string */
+    if (s != ms->src_end) s = NULL;  /* check end of string */
     break;
   default: dflt: {  /* it is a pattern item */
     const char *ep = classend(ms, p);  /* points to what is next */
@@ -392,7 +392,7 @@ static const char *match(MatchState *ms, const char *s, const char *p)
     switch (*ep) {
     case '?': {  /* optional */
       const char *res;
-      if (m && ((res=match(ms, s+1, ep+1)) != nullptr)) {
+      if (m && ((res=match(ms, s+1, ep+1)) != NULL)) {
 	s = res;
 	break;
       }
@@ -403,14 +403,14 @@ static const char *match(MatchState *ms, const char *s, const char *p)
       s = max_expand(ms, s, p, ep);
       break;
     case '+':  /* 1 or more repetitions */
-      s = (m ? max_expand(ms, s+1, p, ep) : nullptr);
+      s = (m ? max_expand(ms, s+1, p, ep) : NULL);
       break;
     case '-':  /* 0 or more repetitions (minimum) */
       s = min_expand(ms, s, p, ep);
       break;
     default:
       if (m) { s++; p=ep; goto init; }  /* else s = match(ms, s+1, ep); */
-      s = nullptr;
+      s = NULL;
       break;
     }
     break;
@@ -489,7 +489,7 @@ static int str_find_aux(lua_State *L, int find)
 	if (find) {
 	  setintV(L->top++, (int32_t)(sstr-(strdata(s)-1)));
 	  setintV(L->top++, (int32_t)(q-strdata(s)));
-	  return push_captures(&ms, nullptr, nullptr) + 2;
+	  return push_captures(&ms, NULL, NULL) + 2;
 	} else {
 	  return push_captures(&ms, sstr, q);
 	}
@@ -524,7 +524,7 @@ LJLIB_NOREG LJLIB_CF(string_gmatch_aux)
   for (; src <= ms.src_end; src++) {
     const char *e;
     ms.level = ms.depth = 0;
-    if ((e = match(&ms, src, p)) != nullptr) {
+    if ((e = match(&ms, src, p)) != NULL) {
       int32_t pos = (int32_t)(e - s);
       if (e == src) pos++;  /* Ensure progress for empty match. */
       tvpos->u32.lo = (uint32_t)pos;

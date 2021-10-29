@@ -43,8 +43,8 @@ extern void _VDBG_free(void *ptr,char *file,long line);
 #undef _ogg_realloc
 #undef _ogg_free
 
-#define _ogg_malloc(x) _VDBG_malloc(nullptr,(x),__FILE__,__LINE__)
-#define _ogg_calloc(x,y) _VDBG_malloc(nullptr,(x)*(y),__FILE__,__LINE__)
+#define _ogg_malloc(x) _VDBG_malloc(NULL,(x),__FILE__,__LINE__)
+#define _ogg_calloc(x,y) _VDBG_malloc(NULL,(x)*(y),__FILE__,__LINE__)
 #define _ogg_realloc(x,y) _VDBG_malloc((x),(y),__FILE__,__LINE__)
 #define _ogg_free(x) _VDBG_free((x),__FILE__,__LINE__)
 #endif

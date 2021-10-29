@@ -1003,7 +1003,7 @@ D3DX10INLINE void*
 _D3DXMATRIXA16::operator new( size_t s )
 {
     if (s > (SIZE_MAX-16))
-	return nullptr;
+	return NULL;
     LPBYTE p = ::new BYTE[s + 16];
     if (p)
     {
@@ -1018,7 +1018,7 @@ D3DX10INLINE void*
 _D3DXMATRIXA16::operator new[]( size_t s )
 {
     if (s > (SIZE_MAX-16))
-	return nullptr;
+	return NULL;
     LPBYTE p = ::new BYTE[s + 16];
     if (p)
     {
@@ -1603,7 +1603,7 @@ D3DX10INLINE D3DXVECTOR2* D3DXVec2Add
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pV1 || !pV2)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->x = pV1->x + pV2->x;
@@ -1616,7 +1616,7 @@ D3DX10INLINE D3DXVECTOR2* D3DXVec2Subtract
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pV1 || !pV2)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->x = pV1->x - pV2->x;
@@ -1629,7 +1629,7 @@ D3DX10INLINE D3DXVECTOR2* D3DXVec2Minimize
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pV1 || !pV2)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->x = pV1->x < pV2->x ? pV1->x : pV2->x;
@@ -1642,7 +1642,7 @@ D3DX10INLINE D3DXVECTOR2* D3DXVec2Maximize
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pV1 || !pV2)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->x = pV1->x > pV2->x ? pV1->x : pV2->x;
@@ -1655,7 +1655,7 @@ D3DX10INLINE D3DXVECTOR2* D3DXVec2Scale
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pV)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->x = pV->x * s;
@@ -1669,7 +1669,7 @@ D3DX10INLINE D3DXVECTOR2* D3DXVec2Lerp
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pV1 || !pV2)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->x = pV1->x + s * (pV2->x - pV1->x);
@@ -1726,7 +1726,7 @@ D3DX10INLINE D3DXVECTOR3* D3DXVec3Cross
 
 #ifdef D3DX10_DEBUG
     if(!pOut || !pV1 || !pV2)
-        return nullptr;
+        return NULL;
 #endif
 
     v.x = pV1->y * pV2->z - pV1->z * pV2->y;
@@ -1742,7 +1742,7 @@ D3DX10INLINE D3DXVECTOR3* D3DXVec3Add
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pV1 || !pV2)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->x = pV1->x + pV2->x;
@@ -1756,7 +1756,7 @@ D3DX10INLINE D3DXVECTOR3* D3DXVec3Subtract
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pV1 || !pV2)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->x = pV1->x - pV2->x;
@@ -1770,7 +1770,7 @@ D3DX10INLINE D3DXVECTOR3* D3DXVec3Minimize
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pV1 || !pV2)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->x = pV1->x < pV2->x ? pV1->x : pV2->x;
@@ -1784,7 +1784,7 @@ D3DX10INLINE D3DXVECTOR3* D3DXVec3Maximize
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pV1 || !pV2)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->x = pV1->x > pV2->x ? pV1->x : pV2->x;
@@ -1798,7 +1798,7 @@ D3DX10INLINE D3DXVECTOR3* D3DXVec3Scale
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pV)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->x = pV->x * s;
@@ -1813,7 +1813,7 @@ D3DX10INLINE D3DXVECTOR3* D3DXVec3Lerp
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pV1 || !pV2)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->x = pV1->x + s * (pV2->x - pV1->x);
@@ -1869,7 +1869,7 @@ D3DX10INLINE D3DXVECTOR4* D3DXVec4Add
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pV1 || !pV2)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->x = pV1->x + pV2->x;
@@ -1884,7 +1884,7 @@ D3DX10INLINE D3DXVECTOR4* D3DXVec4Subtract
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pV1 || !pV2)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->x = pV1->x - pV2->x;
@@ -1899,7 +1899,7 @@ D3DX10INLINE D3DXVECTOR4* D3DXVec4Minimize
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pV1 || !pV2)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->x = pV1->x < pV2->x ? pV1->x : pV2->x;
@@ -1914,7 +1914,7 @@ D3DX10INLINE D3DXVECTOR4* D3DXVec4Maximize
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pV1 || !pV2)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->x = pV1->x > pV2->x ? pV1->x : pV2->x;
@@ -1929,7 +1929,7 @@ D3DX10INLINE D3DXVECTOR4* D3DXVec4Scale
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pV)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->x = pV->x * s;
@@ -1945,7 +1945,7 @@ D3DX10INLINE D3DXVECTOR4* D3DXVec4Lerp
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pV1 || !pV2)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->x = pV1->x + s * (pV2->x - pV1->x);
@@ -1965,7 +1965,7 @@ D3DX10INLINE D3DXMATRIX* D3DXMatrixIdentity
 {
 #ifdef D3DX10_DEBUG
     if(!pOut)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->m[0][1] = pOut->m[0][2] = pOut->m[0][3] =
@@ -2040,7 +2040,7 @@ D3DX10INLINE D3DXQUATERNION* D3DXQuaternionIdentity
 {
 #ifdef D3DX10_DEBUG
     if(!pOut)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->x = pOut->y = pOut->z = 0.0f;
@@ -2065,7 +2065,7 @@ D3DX10INLINE D3DXQUATERNION* D3DXQuaternionConjugate
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pQ)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->x = -pQ->x;
@@ -2118,7 +2118,7 @@ D3DX10INLINE D3DXPLANE* D3DXPlaneScale
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pP)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->a = pP->a * s;
@@ -2138,7 +2138,7 @@ D3DX10INLINE D3DXCOLOR* D3DXColorNegative
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pC)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->r = 1.0f - pC->r;
@@ -2153,7 +2153,7 @@ D3DX10INLINE D3DXCOLOR* D3DXColorAdd
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pC1 || !pC2)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->r = pC1->r + pC2->r;
@@ -2168,7 +2168,7 @@ D3DX10INLINE D3DXCOLOR* D3DXColorSubtract
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pC1 || !pC2)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->r = pC1->r - pC2->r;
@@ -2183,7 +2183,7 @@ D3DX10INLINE D3DXCOLOR* D3DXColorScale
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pC)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->r = pC->r * s;
@@ -2198,7 +2198,7 @@ D3DX10INLINE D3DXCOLOR* D3DXColorModulate
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pC1 || !pC2)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->r = pC1->r * pC2->r;
@@ -2213,7 +2213,7 @@ D3DX10INLINE D3DXCOLOR* D3DXColorLerp
 {
 #ifdef D3DX10_DEBUG
     if(!pOut || !pC1 || !pC2)
-        return nullptr;
+        return NULL;
 #endif
 
     pOut->r = pC1->r + s * (pC2->r - pC1->r);

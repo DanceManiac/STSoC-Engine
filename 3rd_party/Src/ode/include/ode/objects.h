@@ -176,7 +176,7 @@ dJointID dJointCreateContactSpecial (dWorldID, dJointGroupID, const dContact *);
 dJointID dJointCreateHinge2 (dWorldID, dJointGroupID);
 dJointID dJointCreateUniversal (dWorldID, dJointGroupID);
 dJointID dJointCreateFixed (dWorldID, dJointGroupID);
-dJointID dJointCreatenullptr (dWorldID, dJointGroupID);
+dJointID dJointCreateNull (dWorldID, dJointGroupID);
 dJointID dJointCreateAMotor (dWorldID, dJointGroupID);
 
 void dJointDestroy (dJointID);

@@ -142,7 +142,7 @@ static void *err_unwind(lua_State *L, void *stopcf, int errcode)
 	frame = frame_prevd(frame);
 	break;
       }
-      return nullptr;  /* Continue unwinding. */
+      return NULL;  /* Continue unwinding. */
 #else
       UNUSED(stopcf);
       cf = cframe_prev(cf);
@@ -153,7 +153,7 @@ static void *err_unwind(lua_State *L, void *stopcf, int errcode)
       if (cframe_canyield(cf)) {  /* Resume? */
 	if (errcode) {
 	  hook_leave(G(L));  /* Assumes nobody uses coroutines inside hooks. */
-	  L->cframe = nullptr;
+	  L->cframe = NULL;
 	  L->status = (uint8_t)errcode;
 	}
 	return cf;
@@ -190,13 +190,13 @@ static void *err_unwind(lua_State *L, void *stopcf, int errcode)
   /* No C frame. */
   if (errcode) {
     L->base = tvref(L->stack)+1+LJ_FR2;
-    L->cframe = nullptr;
+    L->cframe = NULL;
     unwindstack(L, L->base);
     if (G(L)->panic)
       G(L)->panic(L);
     exit(EXIT_FAILURE);
   }
-  return L;  /* Anything non-nullptr will do. */
+  return L;  /* Anything non-NULL will do. */
 }
 
 /* -- External frame unwinding -------------------------------------------- */
@@ -338,12 +338,12 @@ static void err_unwind_win_jit(global_State *g, int errcode)
       if (stub) {  /* Jump to side exit to unwind the trace. */
 	ctx.CONTEXT_REG_PC = stub;
 	G2J(g)->exitcode = errcode;
-	RtlRestoreContext(&ctx, nullptr);  /* Does not return. */
+	RtlRestoreContext(&ctx, NULL);  /* Does not return. */
       }
       break;
     }
     RtlVirtualUnwind(UNW_FLAG_NHANDLER, base, addr, func,
-		     &ctx, &hdata, &frame, nullptr);
+		     &ctx, &hdata, &frame, NULL);
     if (!addr) break;
   }
   /* Unwinding failed, if we end up here. */
@@ -360,10 +360,10 @@ static void err_raise_ext(global_State *g, int errcode)
   }
 #elif LJ_HASJIT
   /* Cannot catch on-trace errors for Windows/x86 SEH. Unwind to interpreter. */
-  setmref(g->jit_base, nullptr);
+  setmref(g->jit_base, NULL);
 #endif
   UNUSED(g);
-  RaiseException(LJ_EXCODE_MAKE(errcode), 1 /* EH_NONCONTINUABLE */, 0, nullptr);
+  RaiseException(LJ_EXCODE_MAKE(errcode), 1 /* EH_NONCONTINUABLE */, 0, NULL);
 }
 
 #elif !LJ_NO_UNWIND && (defined(__GNUC__) || defined(__clang__))
@@ -422,7 +422,7 @@ LJ_FUNCA int lj_err_unwind_dwarf(int version, int actions,
   L = cframe_L(cf);
   if ((actions & _UA_SEARCH_PHASE)) {
 #if LJ_UNWIND_EXT
-    if (err_unwind(L, cf, 0) == nullptr)
+    if (err_unwind(L, cf, 0) == NULL)
       return _URC_CONTINUE_UNWIND;
 #endif
     if (!LJ_UEXCLASS_CHECK(uexclass)) {
@@ -655,7 +655,7 @@ LJ_FUNCA int lj_err_unwind_arm(int state, _Unwind_Control_Block *ucb,
       setstrV(L, L->top++, lj_err_str(L, LJ_ERR_ERRCPP));
     }
     cf = err_unwind(L, cf, errcode);
-    if ((state & _US_FORCE_UNWIND) || cf == nullptr) break;
+    if ((state & _US_FORCE_UNWIND) || cf == NULL) break;
     _Unwind_SetGR(ctx, 15, (uint32_t)lj_vm_unwind_ext);
     _Unwind_SetGR(ctx, 0, (uint32_t)ucb);
     _Unwind_SetGR(ctx, 1, (uint32_t)errcode);
@@ -750,10 +750,10 @@ LJ_NOINLINE void LJ_FASTCALL lj_err_throw(lua_State *L, int errcode)
     G(L)->panic(L);
 #else
 #if LJ_HASJIT
-  setmref(g->jit_base, nullptr);
+  setmref(g->jit_base, NULL);
 #endif
   {
-    void *cf = err_unwind(L, nullptr, errcode);
+    void *cf = err_unwind(L, NULL, errcode);
     if (cframe_unwind_ff(cf))
       lj_vm_unwind_ff(cframe_raw(cf));
     else
@@ -790,7 +790,7 @@ static ptrdiff_t finderrfunc(lua_State *L)
       if (cframe_errfunc(cf) >= 0)  /* Error handler not inherited (-1)? */
 	return cframe_errfunc(cf);
       cf = cframe_prev(cf);  /* Else unwind cframe and continue searching. */
-      if (cf == nullptr)
+      if (cf == NULL)
 	return 0;
     }
     switch (frame_typep(frame)) {
@@ -870,7 +870,7 @@ LJ_NORET LJ_NOINLINE static void err_msgv(lua_State *L, ErrMsg em, ...)
   if (curr_funcisL(L)) L->top = curr_topL(L);
   msg = lj_strfmt_pushvf(L, err2msg(em), argp);
   va_end(argp);
-  lj_debug_addloc(L, msg, L->base-1, nullptr);
+  lj_debug_addloc(L, msg, L->base-1, NULL);
   lj_err_run(L);
 }
 
@@ -902,7 +902,7 @@ LJ_NOINLINE void lj_err_optype(lua_State *L, cTValue *o, ErrMsg opm)
   if (curr_funcisL(L)) {
     GCproto *pt = curr_proto(L);
     const BCIns *pc = cframe_Lpc(L) - 1;
-    const char *oname = nullptr;
+    const char *oname = NULL;
     const char *kind = lj_debug_slotname(pt, pc, (BCReg)(o-L->base), &oname);
     if (kind)
       err_msgv(L, LJ_ERR_BADOPRT, opname, kind, oname, tname);
@@ -941,7 +941,7 @@ LJ_NOINLINE void lj_err_optype_call(lua_State *L, TValue *o)
 /* Error in context of caller. */
 LJ_NOINLINE void lj_err_callermsg(lua_State *L, const char *msg)
 {
-  TValue *frame = nullptr, *pframe = nullptr;
+  TValue *frame = NULL, *pframe = NULL;
   if (!(LJ_HASJIT && tvref(G(L)->jit_base))) {
     frame = L->base-1;
     if (frame_islua(frame)) {
@@ -949,7 +949,7 @@ LJ_NOINLINE void lj_err_callermsg(lua_State *L, const char *msg)
     } else if (frame_iscont(frame)) {
       if (frame_iscont_fficb(frame)) {
 	pframe = frame;
-	frame = nullptr;
+	frame = NULL;
       } else {
 	pframe = frame_prevd(frame);
 #if LJ_HASFFI
@@ -1078,7 +1078,7 @@ LUALIB_API void luaL_where(lua_State *L, int level)
 {
   int size;
   cTValue *frame = lj_debug_frame(L, level, &size);
-  lj_debug_addloc(L, "", frame, size ? frame+size : nullptr);
+  lj_debug_addloc(L, "", frame, size ? frame+size : NULL);
 }
 
 LUALIB_API int luaL_error(lua_State *L, const char *fmt, ...)

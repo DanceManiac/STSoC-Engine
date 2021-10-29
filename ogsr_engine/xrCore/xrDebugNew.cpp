@@ -312,7 +312,7 @@ static void save_mini_dump(_EXCEPTION_POINTERS *pExceptionInfo)
 
 		ExInfo.ThreadId = ::GetCurrentThreadId();
 		ExInfo.ExceptionPointers = pExceptionInfo;
-		ExInfo.ClientPointers = nullptr;
+		ExInfo.ClientPointers = NULL;
 
 		// write the dump
 		auto dump_flags = MINIDUMP_TYPE(MiniDumpNormal | MiniDumpFilterMemory | MiniDumpScanMemory);

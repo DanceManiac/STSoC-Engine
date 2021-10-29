@@ -581,7 +581,7 @@ void CAI_Stalker::can_kill_entity		(const Fvector &position, const Fvector &dire
 	
 	ray_query_param					params(this,memory().visual().transparency_threshold(),distance);
 
-	Level().ObjectSpace.RayQuery	(rq_storage,ray_defs,ray_query_callback,&params,nullptr,this);
+	Level().ObjectSpace.RayQuery	(rq_storage,ray_defs,ray_query_callback,&params,NULL,this);
 	m_can_kill_enemy				= m_can_kill_enemy  || params.m_can_kill_enemy;
 	m_can_kill_member				= m_can_kill_member || params.m_can_kill_member;
 	m_pick_distance					= _max(m_pick_distance,params.m_pick_distance);
@@ -1011,7 +1011,7 @@ bool CAI_Stalker::throw_check_error			(
 		m_throw_ignore_object->setEnabled	(FALSE);
 	}
 
-	Level().ObjectSpace.RayQuery	(rq_storage,ray_defs,throw_query_callback,&range,nullptr,this);
+	Level().ObjectSpace.RayQuery	(rq_storage,ray_defs,throw_query_callback,&range,NULL,this);
 
 	if (m_throw_ignore_object)
 		m_throw_ignore_object->setEnabled	(throw_ignore_object_enabled);

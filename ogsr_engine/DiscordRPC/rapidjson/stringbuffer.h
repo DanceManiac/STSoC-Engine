@@ -59,7 +59,7 @@ public:
 
     void Clear() { stack_.Clear(); }
     void ShrinkToFit() {
-        // Push and pop a nullptr terminator. This is safe.
+        // Push and pop a null terminator. This is safe.
         *stack_.template Push<Ch>() = '\0';
         stack_.ShrinkToFit();
         stack_.template Pop<Ch>(1);
@@ -71,7 +71,7 @@ public:
     void Pop(size_t count) { stack_.template Pop<Ch>(count); }
 
     const Ch* GetString() const {
-        // Push and pop a nullptr terminator. This is safe.
+        // Push and pop a null terminator. This is safe.
         *stack_.template Push<Ch>() = '\0';
         stack_.template Pop<Ch>(1);
 

@@ -303,7 +303,7 @@ typedef struct D3DX11_IMAGE_LOAD_INFO
         Format = DXGI_FORMAT_FROM_FILE;
         Filter = D3DX11_DEFAULT;
         MipFilter = D3DX11_DEFAULT;
-        pSrcInfo = nullptr;
+        pSrcInfo = NULL;
     }  
 #endif
 
@@ -318,7 +318,7 @@ typedef struct D3DX11_IMAGE_LOAD_INFO
 //  pSrcFile
 //      File name of the source image.
 //  pSrcModule
-//      Module where resource is located, or nullptr for module associated
+//      Module where resource is located, or NULL for module associated
 //      with image the os used to create the current process.
 //  pSrcResource
 //      Resource name.
@@ -333,8 +333,8 @@ typedef struct D3DX11_IMAGE_LOAD_INFO
 //      description of the data in the source image file.
 //  pHResult
 //      Pointer to a memory location to receive the return value upon completion.
-//      Maybe nullptr if not needed.
-//      If pPump != nullptr, pHResult must be a valid memory location until the
+//      Maybe NULL if not needed.
+//      If pPump != NULL, pHResult must be a valid memory location until the
 //      the asynchronous execution completes.
 //-------------------------------------------------------------------------------
 
@@ -408,7 +408,7 @@ HRESULT WINAPI
 //  pSrcFile
 //      File name.
 //  hSrcModule
-//      Module handle. if nullptr, current module will be used.
+//      Module handle. if NULL, current module will be used.
 //  pSrcResource
 //      Resource name in module
 //  pvSrcData
@@ -426,8 +426,8 @@ HRESULT WINAPI
 //      [out] Shader resource view object created.
 //  pHResult
 //      Pointer to a memory location to receive the return value upon completion.
-//      Maybe nullptr if not needed.
-//      If pPump != nullptr, pHResult must be a valid memory location until the
+//      Maybe NULL if not needed.
+//      If pPump != NULL, pHResult must be a valid memory location until the
 //      the asynchronous execution completes.
 //
 //----------------------------------------------------------------------------
@@ -588,8 +588,8 @@ typedef struct _D3DX11_TEXTURE_LOAD_INFO
 #ifdef __cplusplus
     _D3DX11_TEXTURE_LOAD_INFO()
     {
-        pSrcBox = nullptr;
-        pDstBox = nullptr;
+        pSrcBox = NULL;
+        pDstBox = NULL;
         SrcFirstMip = 0;
         DstFirstMip = 0;
         NumMips = D3DX11_DEFAULT;

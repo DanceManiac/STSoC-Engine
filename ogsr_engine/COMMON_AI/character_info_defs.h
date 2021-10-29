@@ -10,7 +10,7 @@ typedef int						CHARACTER_GOODWILL;
 #define NEUTRAL_GOODWILL		CHARACTER_GOODWILL(0)
 
 typedef shared_str				CHARACTER_CLASS;
-#define NO_CHARACTER_CLASS		nullptr
+#define NO_CHARACTER_CLASS		NULL
 
 //репутация персонажа - величина от -100 (очень плохой, беспредельщик) 
 //до 100 (очень хороший, благородный)
@@ -25,7 +25,7 @@ typedef int						CHARACTER_RANK_VALUE;
 
 
 typedef shared_str				CHARACTER_COMMUNITY_ID;
-#define NO_COMMUNITY_ID			CHARACTER_COMMUNITY_ID(nullptr)
+#define NO_COMMUNITY_ID			CHARACTER_COMMUNITY_ID(NULL)
 
 typedef int						CHARACTER_COMMUNITY_INDEX;
 #define NO_COMMUNITY_INDEX		CHARACTER_COMMUNITY_INDEX(-1)

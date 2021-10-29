@@ -13,7 +13,7 @@ struct Triangle
 	CDB::TRI* T ;
 	Triangle()
 	{
-		T		=nullptr;
+		T		=NULL;
 #ifdef DEBUG
 		depth	=-dInfinity;
 		dist	=-dInfinity;

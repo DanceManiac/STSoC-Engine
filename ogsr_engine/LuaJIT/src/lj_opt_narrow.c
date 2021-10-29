@@ -221,7 +221,7 @@ static BPropEntry *narrow_bpc_get(jit_State *J, IRRef1 key, IRRef mode)
 	((bp->mode ^ mode) & IRCONV_MODEMASK) == 0)
       return bp;
   }
-  return nullptr;
+  return NULL;
 }
 
 /* Add an entry to the backpropagation cache. */

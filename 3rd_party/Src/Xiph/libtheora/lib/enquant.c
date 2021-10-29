@@ -137,7 +137,7 @@ void oc_enquant_tables_init(ogg_uint16_t *_dequant[64][3][2],
   int pli;
   int qti;
   /*Initialize the dequantization tables first.*/
-  oc_dequant_tables_init(_dequant,nullptr,_qinfo);
+  oc_dequant_tables_init(_dequant,NULL,_qinfo);
   /*Derive the quantization tables directly from the dequantization tables.*/
   for(qi=0;qi<64;qi++)for(qti=0;qti<2;qti++)for(pli=0;pli<3;pli++){
     int zzi;

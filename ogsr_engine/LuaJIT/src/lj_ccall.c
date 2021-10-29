@@ -989,7 +989,7 @@ static int ccall_set_args(lua_State *L, CTState *cts, CType *ct,
     CType *d;
     CTSize sz;
     MSize n, isfp = 0, isva = 0;
-    void *dp, *rp = nullptr;
+    void *dp, *rp = NULL;
 
     if (fid) {  /* Get argument type from field. */
       CType *ctf = ctype_get(cts, fid);

@@ -31,7 +31,7 @@ RAPIDJSON_NAMESPACE_BEGIN
     It is similar to FileReadBuffer but the source is an in-memory buffer instead of a file.
     Differences between MemoryStream and StringStream:
     1. StringStream has encoding but MemoryStream is a byte stream.
-    2. MemoryStream needs size of the source buffer and the buffer don't need to be nullptr terminated. StringStream assume nullptr-terminated string as source.
+    2. MemoryStream needs size of the source buffer and the buffer don't need to be null terminated. StringStream assume null-terminated string as source.
     3. MemoryStream supports Peek4() for encoding detection. StringStream is specified with an encoding so it should not have Peek4().
     \note implements Stream concept
 */

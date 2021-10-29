@@ -126,7 +126,7 @@ LPCSTR CUIListBoxItem::GetField(LPCSTR key)
 		if (0 == xr_strcmp(fields[i]->WindowName(),key))
 			return fields[i]->GetText();
 	}
-	return nullptr;
+	return NULL;
 }
 
 void CUIListBoxItem::SetData(void* data)

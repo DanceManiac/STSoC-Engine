@@ -33,7 +33,7 @@ extern "C" {
 //  Length      Length of each side.
 //  Sides       Number of sides the polygon has.  (Must be >= 3)
 //  ppMesh      The mesh object which will be created
-//  ppAdjacency Returns a buffer containing adjacency info.  Can be nullptr.
+//  ppAdjacency Returns a buffer containing adjacency info.  Can be NULL.
 //-------------------------------------------------------------------------
 HRESULT WINAPI 
     D3DXCreatePolygon(
@@ -57,7 +57,7 @@ HRESULT WINAPI
 //  Height      Height of box (along Y-axis)
 //  Depth       Depth of box (along Z-axis)
 //  ppMesh      The mesh object which will be created
-//  ppAdjacency Returns a buffer containing adjacency info.  Can be nullptr.
+//  ppAdjacency Returns a buffer containing adjacency info.  Can be NULL.
 //-------------------------------------------------------------------------
 HRESULT WINAPI 
     D3DXCreateBox(
@@ -84,7 +84,7 @@ HRESULT WINAPI
 //  Slices      Number of slices about the main axis
 //  Stacks      Number of stacks along the main axis
 //  ppMesh      The mesh object which will be created
-//  ppAdjacency Returns a buffer containing adjacency info.  Can be nullptr.
+//  ppAdjacency Returns a buffer containing adjacency info.  Can be NULL.
 //-------------------------------------------------------------------------
 HRESULT WINAPI 
     D3DXCreateCylinder(
@@ -111,7 +111,7 @@ HRESULT WINAPI
 //  Slices      Number of slices about the main axis
 //  Stacks      Number of stacks along the main axis
 //  ppMesh      The mesh object which will be created
-//  ppAdjacency Returns a buffer containing adjacency info.  Can be nullptr.
+//  ppAdjacency Returns a buffer containing adjacency info.  Can be NULL.
 //-------------------------------------------------------------------------
 HRESULT WINAPI
     D3DXCreateSphere(
@@ -137,7 +137,7 @@ HRESULT WINAPI
 //  Sides       Number of sides in a cross-section (must be >= 3)
 //  Rings       Number of rings making up the torus (must be >= 3)
 //  ppMesh      The mesh object which will be created
-//  ppAdjacency Returns a buffer containing adjacency info.  Can be nullptr.
+//  ppAdjacency Returns a buffer containing adjacency info.  Can be NULL.
 //-------------------------------------------------------------------------
 HRESULT WINAPI
     D3DXCreateTorus(
@@ -159,7 +159,7 @@ HRESULT WINAPI
 //
 //  pDevice     The D3D device with which the mesh is going to be used.
 //  ppMesh      The mesh object which will be created
-//  ppAdjacency Returns a buffer containing adjacency info.  Can be nullptr.
+//  ppAdjacency Returns a buffer containing adjacency info.  Can be NULL.
 //-------------------------------------------------------------------------
 HRESULT WINAPI
     D3DXCreateTeapot(
@@ -182,7 +182,7 @@ HRESULT WINAPI
 //  Deviation     Maximum chordal deviation from true font outlines
 //  Extrusion     Amount to extrude text in -Z direction
 //  ppMesh        The mesh object which will be created
-//  pGlyphMetrics Address of buffer to receive glyph metric data (or nullptr)
+//  pGlyphMetrics Address of buffer to receive glyph metric data (or NULL)
 //-------------------------------------------------------------------------
 HRESULT WINAPI
     D3DXCreateTextA(

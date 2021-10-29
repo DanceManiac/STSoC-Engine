@@ -6,7 +6,7 @@
 #include "../string_table.h"
 
 CUIEncyclopediaArticleWnd::CUIEncyclopediaArticleWnd	()
-:m_Article(nullptr)
+:m_Article(NULL)
 {
 }
 

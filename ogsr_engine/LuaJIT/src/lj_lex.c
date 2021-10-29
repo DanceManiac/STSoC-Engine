@@ -34,7 +34,7 @@ static const char *const tokennames[] = {
 TKDEF(TKSTR1, TKSTR2)
 #undef TKSTR1
 #undef TKSTR2
-  nullptr
+  NULL
 };
 
 /* -- Buffer handling ----------------------------------------------------- */
@@ -47,7 +47,7 @@ static LJ_NOINLINE LexChar lex_more(LexState *ls)
 {
   size_t sz;
   const char *p = ls->rfunc(ls->L, ls->rdata, &sz);
-  if (p == nullptr || sz == 0) return LEX_EOF;
+  if (p == NULL || sz == 0) return LEX_EOF;
   if (sz >= LJ_MAX_BUF) {
     if (sz != ~(size_t)0) lj_err_mem(ls->L);
     sz = ~(uintptr_t)0 - (uintptr_t)p;
@@ -147,7 +147,7 @@ static int lex_skipeq(LexState *ls)
   return (ls->c == s) ? count : (-count) - 1;
 }
 
-/* Parse a long string or long comment (tv set to nullptr). */
+/* Parse a long string or long comment (tv set to NULL). */
 static void lex_longstring(LexState *ls, TValue *tv, int sep)
 {
   lex_savenext(ls);  /* Skip second '['. */
@@ -327,7 +327,7 @@ static LexToken lex_scan(LexState *ls, TValue *tv)
 	int sep = lex_skipeq(ls);
 	lj_buf_reset(&ls->sb);  /* `lex_skipeq' may dirty the buffer */
 	if (sep >= 0) {
-	  lex_longstring(ls, nullptr, sep);
+	  lex_longstring(ls, NULL, sep);
 	  lj_buf_reset(&ls->sb);
 	  continue;
 	}
@@ -424,12 +424,12 @@ int lj_lex_setup(lua_State *L, LexState *ls)
 {
   int header = 0;
   ls->L = L;
-  ls->fs = nullptr;
-  ls->pe = ls->p = nullptr;
-  ls->vstack = nullptr;
+  ls->fs = NULL;
+  ls->pe = ls->p = NULL;
+  ls->vstack = NULL;
   ls->sizevstack = 0;
   ls->vtop = 0;
-  ls->bcstack = nullptr;
+  ls->bcstack = NULL;
   ls->sizebcstack = 0;
   ls->tok = 0;
   ls->lookahead = TK_eof;  /* No look-ahead token. */
@@ -514,7 +514,7 @@ void lj_lex_error(LexState *ls, LexToken tok, ErrMsg em, ...)
   const char *tokstr;
   va_list argp;
   if (tok == 0) {
-    tokstr = nullptr;
+    tokstr = NULL;
   } else if (tok == TK_name || tok == TK_string || tok == TK_number) {
     lex_save(ls, '\0');
     tokstr = ls->sb.b;

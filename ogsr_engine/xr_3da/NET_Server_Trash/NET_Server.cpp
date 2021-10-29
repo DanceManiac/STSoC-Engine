@@ -24,7 +24,7 @@ void ip_address::set(LPCSTR src_string) //Это нужно
 
 
 IClient::IClient( CTimer* timer )
-  : server(nullptr)
+  : server(NULL)
 {
 	dwTime_LastUpdate	= 0;
 	flags.bLocal = FALSE;
@@ -39,7 +39,7 @@ IClient::~IClient()
 
 IClient*	IPureServer::ID_to_client		(ClientID ID, bool ScanAll) //пока не резать. net_Players - не пустой вектор
 {
-	if ( 0 == ID.value() )			return nullptr;
+	if ( 0 == ID.value() )			return NULL;
 	csPlayers.Enter	();
 
 	for ( u32 client = 0; client < net_Players.size(); ++client )
@@ -62,7 +62,7 @@ IClient*	IPureServer::ID_to_client		(ClientID ID, bool ScanAll) //пока не 
 		}
 	};
 	csPlayers.Leave();
-	return nullptr;
+	return NULL;
 }
 
 
@@ -72,12 +72,12 @@ IPureServer::IPureServer	(CTimer* timer)
 #endif // PROFILE_CRITICAL_SECTIONS
 {
 	device_timer			= timer;
-	SV_Client				= nullptr;
+	SV_Client				= NULL;
 }
 
 IPureServer::~IPureServer	()
 {
-	SV_Client					= nullptr;
+	SV_Client					= NULL;
 }
 
 IPureServer::EConnect IPureServer::Connect(LPCSTR options) // опции вида [имя_сейва/single/alife]

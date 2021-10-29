@@ -74,7 +74,7 @@ void oc_dequant_tables_init(ogg_uint16_t *_dequant[64][3][2],
            with exact precision.*/
         qfac=(ogg_uint32_t)_qinfo->dc_scale[qi]*base[0];
         /*For postprocessing, not dequantization.*/
-        if(_pp_dc_scale!=nullptr)_pp_dc_scale[qi]=(int)(qfac/160);
+        if(_pp_dc_scale!=NULL)_pp_dc_scale[qi]=(int)(qfac/160);
         /*Scale DC the coefficient from the proper table.*/
         q=(qfac/100)<<2;
         q=OC_CLAMPI(OC_DC_QUANT_MIN[qti],q,OC_QUANT_MAX);

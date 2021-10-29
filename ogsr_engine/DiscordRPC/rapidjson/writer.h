@@ -87,7 +87,7 @@ public:
 
     //! Constructor
     /*! \param os Output stream.
-        \param stackAllocator User supplied allocator. If it is nullptr, it will create a private one.
+        \param stackAllocator User supplied allocator. If it is null, it will create a private one.
         \param levelDepth Initial capacity of stack.
     */
     explicit
@@ -159,7 +159,7 @@ public:
     */
     //@{
 
-    bool nullptr()                 { Prefix(knullptrType);   return EndValue(Writenullptr()); }
+    bool Null()                 { Prefix(kNullType);   return EndValue(WriteNull()); }
     bool Bool(bool b)           { Prefix(b ? kTrueType : kFalseType); return EndValue(WriteBool(b)); }
     bool Int(int i)             { Prefix(kNumberType); return EndValue(WriteInt(i)); }
     bool Uint(unsigned u)       { Prefix(kNumberType); return EndValue(WriteUint(u)); }
@@ -234,7 +234,7 @@ public:
     //! Write a raw JSON value.
     /*!
         For user to write a stringified JSON as a value.
-        \param json A well-formed JSON value. It should not contain nullptr character within [0, length - 1] range.
+        \param json A well-formed JSON value. It should not contain null character within [0, length - 1] range.
         \param length Length of the json.
         \param type Type of the root of json.
     */
@@ -250,7 +250,7 @@ protected:
 
     static const size_t kDefaultLevelDepth = 32;
 
-    bool Writenullptr()  {
+    bool WriteNull()  {
         PutReserve(*os_, 4);
         PutUnsafe(*os_, 'n'); PutUnsafe(*os_, 'u'); PutUnsafe(*os_, 'l'); PutUnsafe(*os_, 'l'); return true;
     }

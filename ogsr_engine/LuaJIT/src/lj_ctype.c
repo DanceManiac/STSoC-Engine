@@ -173,7 +173,7 @@ CTypeID lj_ctype_new(CTState *cts, CType **ctp)
   ct->size = 0;
   ct->sib = 0;
   ct->next = 0;
-  setgcrefnullptr(ct->name);
+  setgcrefnull(ct->name);
   return id;
 }
 
@@ -199,7 +199,7 @@ CTypeID lj_ctype_intern(CTState *cts, CTInfo info, CTSize size)
   cts->tab[id].size = size;
   cts->tab[id].sib = 0;
   cts->tab[id].next = cts->hash[h];
-  setgcrefnullptr(cts->tab[id].name);
+  setgcrefnull(cts->tab[id].name);
   cts->hash[h] = (CTypeID1)id;
   return id;
 }
@@ -262,7 +262,7 @@ CType *lj_ctype_getfieldq(CTState *cts, CType *ct, GCstr *name, CTSize *ofs,
       }
     }
   }
-  return nullptr;  /* Not found. */
+  return NULL;  /* Not found. */
 }
 
 /* -- C type information -------------------------------------------------- */
@@ -350,7 +350,7 @@ cTValue *lj_ctype_meta(CTState *cts, CTypeID id, MMS mm)
   if (tv && tvistab(tv) &&
       (tv = lj_tab_getstr(tabV(tv), mmname_str(cts->g, mm))) && !tvisnil(tv))
     return tv;
-  return nullptr;
+  return NULL;
 }
 
 /* -- C type representation ----------------------------------------------- */
@@ -600,7 +600,7 @@ CTState *lj_ctype_init(lua_State *L)
   cts->tab = ct;
   cts->sizetab = CTTYPETAB_MIN;
   cts->top = CTTYPEINFO_NUM;
-  cts->L = nullptr;
+  cts->L = NULL;
   cts->g = G(L);
   for (id = 0; id < CTTYPEINFO_NUM; id++, ct++) {
     CTInfo info = lj_ctype_typeinfo[id];
@@ -614,7 +614,7 @@ CTState *lj_ctype_init(lua_State *L)
       name += len+1;
       lj_ctype_addname(cts, ct, id);
     } else {
-      setgcrefnullptr(ct->name);
+      setgcrefnull(ct->name);
       ct->next = 0;
       if (!ctype_isenum(info)) ctype_addtype(cts, ct, id);
     }

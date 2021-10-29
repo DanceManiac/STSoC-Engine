@@ -8,7 +8,7 @@
 CUITextBanner::CUITextBanner()
 	:	m_bAnimate			(true),
 		m_Cl				(0xffffffff),
-		m_pFont				(nullptr),
+		m_pFont				(NULL),
 		fontSize			(-1.0f),
 		aligment			(CGameFont::alLeft)
 {
@@ -28,7 +28,7 @@ EffectParams * CUITextBanner::SetStyleParams(const TextBannerStyles styleName)
 	{
 		if (!m_StyleParams.empty())
 			m_StyleParams.clear();
-		return nullptr;
+		return NULL;
 	}
 
 	return &m_StyleParams[styleName];

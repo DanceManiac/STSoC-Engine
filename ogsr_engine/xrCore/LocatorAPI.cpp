@@ -56,14 +56,14 @@ struct eq_fname_free{
 	shared_str _val;
 	eq_fname_free(shared_str s){_val = s;}
 	bool operator () (_open_file& itm){
-		return ( _val==itm._fn && itm._reader==nullptr);
+		return ( _val==itm._fn && itm._reader==NULL);
 	}
 };
 struct eq_fname_check{
 	shared_str _val;
 	eq_fname_check(shared_str s){_val = s;}
 	bool operator () (_open_file& itm){
-		return ( _val==itm._fn && itm._reader!=nullptr);
+		return ( _val==itm._fn && itm._reader!=NULL);
 	}
 };
 
@@ -125,7 +125,7 @@ void _unregister_open_file(T* _r)
 	xr_vector<_open_file>::iterator it	= std::find_if(g_open_files.begin(), g_open_files.end(), eq_pointer<T>(_r) );
 	VERIFY								(it!=g_open_files.end());
 	_open_file&	_of						= *it;
-	_of._reader							= nullptr;
+	_of._reader							= NULL;
 	_lock.Leave				();
 }
 
@@ -140,7 +140,7 @@ XRCORE_API void _dump_open_files(int mode)
 		for(; it!=it_e; ++it)
 		{
 			_open_file& _of = *it;
-			if(_of._reader!=nullptr)
+			if(_of._reader!=NULL)
 			{
 				if(!bShow)
 					Log("----opened files");
@@ -155,7 +155,7 @@ XRCORE_API void _dump_open_files(int mode)
 		for(it = g_open_files.begin(); it!=it_e; ++it)
 		{
 			_open_file& _of = *it;
-			if(_of._reader==nullptr)
+			if(_of._reader==NULL)
 				Msg("[%d] fname:%s", _of._used ,_of._fn.c_str());
 		}
 	}
@@ -322,11 +322,11 @@ void CLocatorAPI::ProcessArchive(LPCSTR _path, LPCSTR base_path)
 		if (it->path == path)
 			return;
 
-	DUMMY_STUFF* g_temporary_stuff_subst = nullptr;
+	DUMMY_STUFF* g_temporary_stuff_subst = NULL;
 	if (strstr(_path, ".xdb"))
 	{
 		g_temporary_stuff_subst = g_temporary_stuff;
-		g_temporary_stuff = nullptr;
+		g_temporary_stuff = NULL;
 	}
 	// open archive
 	archives.push_back(archive());
@@ -467,8 +467,8 @@ void CLocatorAPI::ProcessOne(const char* path, const _finddata_t& F)
 // be interpolated by FindNextFile()
 
 bool ignore_path(const char* _path){
-	HANDLE h = CreateFile( _path, 0, 0, nullptr, OPEN_EXISTING,
-		FILE_ATTRIBUTE_READONLY | FILE_FLAG_NO_BUFFERING, nullptr);
+	HANDLE h = CreateFile( _path, 0, 0, NULL, OPEN_EXISTING,
+		FILE_ATTRIBUTE_READONLY | FILE_FLAG_NO_BUFFERING, NULL);
 
 	if (h!=INVALID_HANDLE_VALUE)
 	{
@@ -572,7 +572,7 @@ void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder, LPCSTR fs_name)
 	string4096		buf;
 	IReader* pFSltx		= 0;
 	// append working folder
-	LPCSTR fs_ltx	= nullptr;
+	LPCSTR fs_ltx	= NULL;
 
 	// append application path
 	if (m_Flags.is(flScanAppRoot))

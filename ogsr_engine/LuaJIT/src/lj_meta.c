@@ -50,7 +50,7 @@ cTValue *lj_meta_cache(GCtab *mt, MMS mm, GCstr *name)
   lj_assertX(mm <= MM_FAST, "bad metamethod %d", mm);
   if (!mo || tvisnil(mo)) {  /* No metamethod? */
     mt->nomm |= (uint8_t)(1u<<mm);  /* Set negative cache flag. */
-    return nullptr;
+    return NULL;
   }
   return mo;
 }
@@ -93,7 +93,7 @@ int lj_meta_tailcall(lua_State *L, cTValue *tv)
   /*
   ** before:   [old_mo|PC]    [... ...]
   **                         ^base     ^top
-  ** after:    [new_mo|itype] [... ...] [nullptr|PC] [dummy|delta]
+  ** after:    [new_mo|itype] [... ...] [NULL|PC] [dummy|delta]
   **                                                           ^base/top
   ** tailcall: [new_mo|PC]    [... ...]
   **                         ^base     ^top
@@ -145,16 +145,16 @@ cTValue *lj_meta_tget(lua_State *L, cTValue *o, cTValue *k)
 	return tv;
     } else if (tvisnil(mo = lj_meta_lookup(L, o, MM_index))) {
       lj_err_optype(L, o, LJ_ERR_OPINDEX);
-      return nullptr;  /* unreachable */
+      return NULL;  /* unreachable */
     }
     if (tvisfunc(mo)) {
       L->top = mmcall(L, lj_cont_ra, mo, o, k);
-      return nullptr;  /* Trigger metamethod call. */
+      return NULL;  /* Trigger metamethod call. */
     }
     o = mo;
   }
   lj_err_msg(L, LJ_ERR_GETLOOP);
-  return nullptr;  /* unreachable */
+  return NULL;  /* unreachable */
 }
 
 /* Helper for TSET*. __newindex chain and metamethod. */
@@ -183,18 +183,18 @@ TValue *lj_meta_tset(lua_State *L, cTValue *o, cTValue *k)
       }
     } else if (tvisnil(mo = lj_meta_lookup(L, o, MM_newindex))) {
       lj_err_optype(L, o, LJ_ERR_OPINDEX);
-      return nullptr;  /* unreachable */
+      return NULL;  /* unreachable */
     }
     if (tvisfunc(mo)) {
       L->top = mmcall(L, lj_cont_nop, mo, o, k);
       /* L->top+2 = v filled in by caller. */
-      return nullptr;  /* Trigger metamethod call. */
+      return NULL;  /* Trigger metamethod call. */
     }
     copyTV(L, &tmp, mo);
     o = &tmp;
   }
   lj_err_msg(L, LJ_ERR_SETLOOP);
-  return nullptr;  /* unreachable */
+  return NULL;  /* unreachable */
 }
 
 static cTValue *str2num(cTValue *o, TValue *n)
@@ -206,7 +206,7 @@ static cTValue *str2num(cTValue *o, TValue *n)
   else if (tvisstr(o) && lj_strscan_num(strV(o), n))
     return n;
   else
-    return nullptr;
+    return NULL;
 }
 
 /* Helper for arithmetic instructions. Coercion, metamethod. */
@@ -216,18 +216,18 @@ TValue *lj_meta_arith(lua_State *L, TValue *ra, cTValue *rb, cTValue *rc,
   MMS mm = bcmode_mm(op);
   TValue tempb, tempc;
   cTValue *b, *c;
-  if ((b = str2num(rb, &tempb)) != nullptr &&
-      (c = str2num(rc, &tempc)) != nullptr) {  /* Try coercion first. */
+  if ((b = str2num(rb, &tempb)) != NULL &&
+      (c = str2num(rc, &tempc)) != NULL) {  /* Try coercion first. */
     setnumV(ra, lj_vm_foldarith(numV(b), numV(c), (int)mm-MM_add));
-    return nullptr;
+    return NULL;
   } else {
     cTValue *mo = lj_meta_lookup(L, rb, mm);
     if (tvisnil(mo)) {
       mo = lj_meta_lookup(L, rc, mm);
       if (tvisnil(mo)) {
-	if (str2num(rb, &tempb) == nullptr) rc = rb;
+	if (str2num(rb, &tempb) == NULL) rc = rb;
 	lj_err_optype(L, rc, LJ_ERR_OPARITH);
-	return nullptr;  /* unreachable */
+	return NULL;  /* unreachable */
       }
     }
     return mmcall(L, lj_cont_ra, mo, rb, rc);
@@ -248,7 +248,7 @@ TValue *lj_meta_cat(lua_State *L, TValue *top, int left)
 	if (tvisnil(mo)) {
 	  if (tvisstr(top-1) || tvisnumber(top-1)) top++;
 	  lj_err_optype(L, top-1, LJ_ERR_OPCAT);
-	  return nullptr;  /* unreachable */
+	  return NULL;  /* unreachable */
 	}
       }
       /* One of the top two elements is not a string, call __cat metamethod:
@@ -308,7 +308,7 @@ TValue *lj_meta_cat(lua_State *L, TValue *top, int left)
     if (!fromc) L->top = curr_topL(L);
     lj_gc_step(L);
   }
-  return nullptr;
+  return NULL;
 }
 
 /* Helper for LEN. __len metamethod. */
@@ -320,7 +320,7 @@ TValue * LJ_FASTCALL lj_meta_len(lua_State *L, cTValue *o)
       tabref(tabV(o)->metatable)->nomm |= (uint8_t)(1u<<MM_len);
     else
       lj_err_optype(L, o, LJ_ERR_OPLEN);
-    return nullptr;
+    return NULL;
   }
   return mmcall(L, lj_cont_ra, mo, o, LJ_52 ? o : niltv(L));
 }
@@ -335,7 +335,7 @@ TValue *lj_meta_equal(lua_State *L, GCobj *o1, GCobj *o2, int ne)
     uint32_t it;
     if (tabref(o1->gch.metatable) != tabref(o2->gch.metatable)) {
       cTValue *mo2 = lj_meta_fast(L, tabref(o2->gch.metatable), MM_eq);
-      if (mo2 == nullptr || !lj_obj_equal(mo, mo2))
+      if (mo2 == NULL || !lj_obj_equal(mo, mo2))
 	return (TValue *)(intptr_t)ne;
     }
     top = curr_top(L);
@@ -422,7 +422,7 @@ TValue *lj_meta_comp(lua_State *L, cTValue *o1, cTValue *o2, int op)
   } else {
   err:
     lj_err_comp(L, o1, o2);
-    return nullptr;
+    return NULL;
   }
 }
 

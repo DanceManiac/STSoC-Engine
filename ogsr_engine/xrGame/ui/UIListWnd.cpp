@@ -12,7 +12,7 @@ static const char	cSeparatorChar				= '%';
 
 CUIListWnd::CUIListWnd()
 {
-	m_ActiveBackgroundFrame		= nullptr;
+	m_ActiveBackgroundFrame		= NULL;
 	m_bListActivity				= true;
 	m_iFocusedItem				= -1;
 	m_iSelectedItem             = -1;
@@ -161,7 +161,7 @@ void CUIListWnd::RemoveItem(int index)
 
 CUIListItem* CUIListWnd::GetItem(int index)
 {
-	if(index<0 || index>=(int)m_ItemList.size()) return nullptr;
+	if(index<0 || index>=(int)m_ItemList.size()) return NULL;
 
 	LIST_ITEM_LIST_it it;
 
@@ -263,7 +263,7 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		{
 			m_iFirstShownIndex = m_ScrollBar->GetScrollPos();
 			UpdateList();
-			GetMessageTarget()->SendMessage(this, SCROLLBAR_VSCROLL, nullptr);
+			GetMessageTarget()->SendMessage(this, SCROLLBAR_VSCROLL, NULL);
 		}
 	}
 	else 

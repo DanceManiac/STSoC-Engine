@@ -37,8 +37,8 @@
 
 						void ResetCache()
 						{
-							Model0			= nullptr;
-							Model1			= nullptr;
+							Model0			= null;
+							Model1			= null;
 							id0				= 0;
 							id1				= 1;
 #ifdef __MESHMERIZER_H__	// Collision hulls only supported within ICE !

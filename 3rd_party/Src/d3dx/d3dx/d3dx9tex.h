@@ -265,7 +265,7 @@ extern "C" {
 //  pSrcFile
 //      File name of the source image.
 //  pSrcModule
-//      Module where resource is located, or nullptr for module associated
+//      Module where resource is located, or NULL for module associated
 //      with image the os used to create the current process.
 //  pSrcResource
 //      Resource name
@@ -337,13 +337,13 @@ HRESULT WINAPI
 //  pDestSurface
 //      Destination surface, which will receive the image.
 //  pDestPalette
-//      Destination palette of 256 colors, or nullptr
+//      Destination palette of 256 colors, or NULL
 //  pDestRect
-//      Destination rectangle, or nullptr for entire surface
+//      Destination rectangle, or NULL for entire surface
 //  pSrcFile
 //      File name of the source image.
 //  pSrcModule
-//      Module where resource is located, or nullptr for module associated
+//      Module where resource is located, or NULL for module associated
 //      with image the os used to create the current process.
 //  pSrcResource
 //      Resource name
@@ -352,7 +352,7 @@ HRESULT WINAPI
 //  SrcDataSize
 //      Size in bytes of file in memory.
 //  pSrcRect
-//      Source rectangle, or nullptr for entire image
+//      Source rectangle, or NULL for entire image
 //  Filter
 //      D3DX_FILTER flags controlling how the image is filtered.
 //      Or D3DX_DEFAULT for D3DX_FILTER_TRIANGLE.
@@ -363,7 +363,7 @@ HRESULT WINAPI
 //      opaque colorkeys.  (ex. Opaque black == 0xff000000)
 //  pSrcInfo
 //      Pointer to a D3DXIMAGE_INFO structure to be filled in with the 
-//      description of the data in the source image file, or nullptr.
+//      description of the data in the source image file, or NULL.
 //
 //----------------------------------------------------------------------------
 
@@ -453,15 +453,15 @@ HRESULT WINAPI
 //  pDestSurface
 //      Destination surface, which will receive the image.
 //  pDestPalette
-//      Destination palette of 256 colors, or nullptr
+//      Destination palette of 256 colors, or NULL
 //  pDestRect
-//      Destination rectangle, or nullptr for entire surface
+//      Destination rectangle, or NULL for entire surface
 //  pSrcSurface
 //      Source surface
 //  pSrcPalette
-//      Source palette of 256 colors, or nullptr
+//      Source palette of 256 colors, or NULL
 //  pSrcRect
-//      Source rectangle, or nullptr for entire surface
+//      Source rectangle, or NULL for entire surface
 //  Filter
 //      D3DX_FILTER flags controlling how the image is filtered.
 //      Or D3DX_DEFAULT for D3DX_FILTER_TRIANGLE.
@@ -494,9 +494,9 @@ HRESULT WINAPI
 //  pDestSurface
 //      Destination surface, which will receive the image.
 //  pDestPalette
-//      Destination palette of 256 colors, or nullptr
+//      Destination palette of 256 colors, or NULL
 //  pDestRect
-//      Destination rectangle, or nullptr for entire surface
+//      Destination rectangle, or NULL for entire surface
 //  pSrcMemory
 //      Pointer to the top-left corner of the source image in memory
 //  SrcFormat
@@ -505,7 +505,7 @@ HRESULT WINAPI
 //      Pitch of source image, in bytes.  For DXT formats, this number
 //      should represent the width of one row of cells, in bytes.
 //  pSrcPalette
-//      Source palette of 256 colors, or nullptr
+//      Source palette of 256 colors, or NULL
 //  pSrcRect
 //      Source rectangle.
 //  Filter
@@ -546,9 +546,9 @@ HRESULT WINAPI
 //  pSrcSurface
 //      Source surface, containing the image to be saved
 //  pSrcPalette
-//      Source palette of 256 colors, or nullptr
+//      Source palette of 256 colors, or NULL
 //  pSrcRect
-//      Source rectangle, or nullptr for the entire image
+//      Source rectangle, or NULL for the entire image
 //
 //----------------------------------------------------------------------------
 
@@ -587,9 +587,9 @@ HRESULT WINAPI
 //  pSrcSurface
 //      Source surface, containing the image to be saved
 //  pSrcPalette
-//      Source palette of 256 colors, or nullptr
+//      Source palette of 256 colors, or NULL
 //  pSrcRect
-//      Source rectangle, or nullptr for the entire image
+//      Source rectangle, or NULL for the entire image
 //
 //----------------------------------------------------------------------------
 
@@ -615,13 +615,13 @@ HRESULT WINAPI
 //  pDestVolume
 //      Destination volume, which will receive the image.
 //  pDestPalette
-//      Destination palette of 256 colors, or nullptr
+//      Destination palette of 256 colors, or NULL
 //  pDestBox
-//      Destination box, or nullptr for entire volume
+//      Destination box, or NULL for entire volume
 //  pSrcFile
 //      File name of the source image.
 //  pSrcModule
-//      Module where resource is located, or nullptr for module associated
+//      Module where resource is located, or NULL for module associated
 //      with image the os used to create the current process.
 //  pSrcResource
 //      Resource name
@@ -630,7 +630,7 @@ HRESULT WINAPI
 //  SrcDataSize
 //      Size in bytes of file in memory.
 //  pSrcBox
-//      Source box, or nullptr for entire image
+//      Source box, or NULL for entire image
 //  Filter
 //      D3DX_FILTER flags controlling how the image is filtered.
 //      Or D3DX_DEFAULT for D3DX_FILTER_TRIANGLE.
@@ -641,7 +641,7 @@ HRESULT WINAPI
 //      opaque colorkeys.  (ex. Opaque black == 0xff000000)
 //  pSrcInfo
 //      Pointer to a D3DXIMAGE_INFO structure to be filled in with the 
-//      description of the data in the source image file, or nullptr.
+//      description of the data in the source image file, or NULL.
 //
 //----------------------------------------------------------------------------
 
@@ -729,15 +729,15 @@ HRESULT WINAPI
 //  pDestVolume
 //      Destination volume, which will receive the image.
 //  pDestPalette
-//      Destination palette of 256 colors, or nullptr
+//      Destination palette of 256 colors, or NULL
 //  pDestBox
-//      Destination box, or nullptr for entire volume
+//      Destination box, or NULL for entire volume
 //  pSrcVolume
 //      Source volume
 //  pSrcPalette
-//      Source palette of 256 colors, or nullptr
+//      Source palette of 256 colors, or NULL
 //  pSrcBox
-//      Source box, or nullptr for entire volume
+//      Source box, or NULL for entire volume
 //  Filter
 //      D3DX_FILTER flags controlling how the image is filtered.
 //      Or D3DX_DEFAULT for D3DX_FILTER_TRIANGLE.
@@ -771,9 +771,9 @@ HRESULT WINAPI
 //  pDestVolume
 //      Destination volume, which will receive the image.
 //  pDestPalette
-//      Destination palette of 256 colors, or nullptr
+//      Destination palette of 256 colors, or NULL
 //  pDestBox
-//      Destination box, or nullptr for entire volume
+//      Destination box, or NULL for entire volume
 //  pSrcMemory
 //      Pointer to the top-left corner of the source volume in memory
 //  SrcFormat
@@ -785,7 +785,7 @@ HRESULT WINAPI
 //      Pitch of source image, in bytes.  For DXT formats, this number
 //      should represent the size of one slice of cells, in bytes.
 //  pSrcPalette
-//      Source palette of 256 colors, or nullptr
+//      Source palette of 256 colors, or NULL
 //  pSrcBox
 //      Source box.
 //  Filter
@@ -828,9 +828,9 @@ HRESULT WINAPI
 //  pSrcVolume
 //      Source volume, containing the image to be saved
 //  pSrcPalette
-//      Source palette of 256 colors, or nullptr
+//      Source palette of 256 colors, or NULL
 //  pSrcBox
-//      Source box, or nullptr for the entire volume
+//      Source box, or NULL for the entire volume
 //
 //----------------------------------------------------------------------------
 
@@ -870,9 +870,9 @@ HRESULT WINAPI
 //  pSrcVolume
 //      Source volume, containing the image to be saved
 //  pSrcPalette
-//      Source palette of 256 colors, or nullptr
+//      Source palette of 256 colors, or NULL
 //  pSrcBox
-//      Source box, or nullptr for the entire volume
+//      Source box, or NULL for the entire volume
 //
 //----------------------------------------------------------------------------
 
@@ -899,13 +899,13 @@ HRESULT WINAPI
 //  pDevice
 //      The D3D device to be used
 //  pWidth, pHeight, pDepth, pSize
-//      Desired size in pixels, or nullptr.  Returns corrected size.
+//      Desired size in pixels, or NULL.  Returns corrected size.
 //  pNumMipLevels
-//      Number of desired mipmap levels, or nullptr.  Returns corrected number.
+//      Number of desired mipmap levels, or NULL.  Returns corrected number.
 //  Usage
 //      Texture usage flags
 //  pFormat
-//      Desired pixel format, or nullptr.  Returns corrected format.
+//      Desired pixel format, or NULL.  Returns corrected format.
 //  Pool
 //      Memory pool to be used to create texture
 //
@@ -1014,7 +1014,7 @@ HRESULT WINAPI
 //  pSrcFile
 //      File name.
 //  hSrcModule
-//      Module handle. if nullptr, current module will be used.
+//      Module handle. if NULL, current module will be used.
 //  pSrcResource
 //      Resource name in module
 //  pvSrcData
@@ -1056,9 +1056,9 @@ HRESULT WINAPI
 //      opaque colorkeys.  (ex. Opaque black == 0xff000000)
 //  pSrcInfo
 //      Pointer to a D3DXIMAGE_INFO structure to be filled in with the 
-//      description of the data in the source image file, or nullptr.
+//      description of the data in the source image file, or NULL.
 //  pPalette
-//      256 color palette to be filled in, or nullptr
+//      256 color palette to be filled in, or NULL
 //  ppTexture, ppCubeTexture, ppVolumeTexture
 //      The texture object that will be created
 //
@@ -1539,7 +1539,7 @@ HRESULT WINAPI
 //  pSrcTexture
 //      Source texture, containing the image to be saved
 //  pSrcPalette
-//      Source palette of 256 colors, or nullptr
+//      Source palette of 256 colors, or NULL
 //
 //----------------------------------------------------------------------------
 
@@ -1578,7 +1578,7 @@ HRESULT WINAPI
 //  pSrcTexture
 //      Source texture, containing the image to be saved
 //  pSrcPalette
-//      Source palette of 256 colors, or nullptr
+//      Source palette of 256 colors, or NULL
 //
 //----------------------------------------------------------------------------
 
@@ -1605,7 +1605,7 @@ HRESULT WINAPI
 //  pBaseTexture
 //      The texture object to be filtered
 //  pPalette
-//      256 color palette to be used, or nullptr for non-palettized formats
+//      256 color palette to be used, or NULL for non-palettized formats
 //  SrcLevel
 //      The level whose image is used to generate the subsequent levels. 
 //  Filter
@@ -1706,7 +1706,7 @@ HRESULT WINAPI
 //  pSrcTexture
 //      Pointer to the source heightmap texture 
 //  pSrcPalette
-//      Source palette of 256 colors, or nullptr
+//      Source palette of 256 colors, or NULL
 //  Flags
 //      D3DX_NORMALMAP flags
 //  Channel

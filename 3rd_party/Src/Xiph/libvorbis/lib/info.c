@@ -71,7 +71,7 @@ void vorbis_comment_add(vorbis_comment *vc,const char *comment){
   vc->user_comments[vc->comments]=_ogg_malloc(vc->comment_lengths[vc->comments]+1);
   strcpy(vc->user_comments[vc->comments], comment);
   vc->comments++;
-  vc->user_comments[vc->comments]=nullptr;
+  vc->user_comments[vc->comments]=NULL;
 }
 
 void vorbis_comment_add_tag(vorbis_comment *vc, const char *tag, const char *contents){
@@ -112,7 +112,7 @@ char *vorbis_comment_query(vorbis_comment *vc, const char *tag, int count){
         found++;
     }
   }
-  return nullptr; /* didn't find anything */
+  return NULL; /* didn't find anything */
 }
 
 int vorbis_comment_query_count(vorbis_comment *vc, const char *tag){
@@ -415,7 +415,7 @@ int vorbis_synthesis_headerin(vorbis_info *vi,vorbis_comment *vc,ogg_packet *op)
         return(_vorbis_unpack_comment(vc,&opb));
 
       case 0x05: /* least significant *bit* is read first */
-        if(vi->rate==0 || vc->vendor==nullptr){
+        if(vi->rate==0 || vc->vendor==NULL){
           /* um... we didn;t get the initial header or comments yet */
           return(OV_EBADHEADER);
         }
@@ -641,9 +641,9 @@ int vorbis_analysis_headerout(vorbis_dsp_state *v,
     if(b->header)_ogg_free(b->header);
     if(b->header1)_ogg_free(b->header1);
     if(b->header2)_ogg_free(b->header2);
-    b->header=nullptr;
-    b->header1=nullptr;
-    b->header2=nullptr;
+    b->header=NULL;
+    b->header1=NULL;
+    b->header2=NULL;
   }
   return(ret);
 }

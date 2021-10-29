@@ -105,7 +105,7 @@ static void asm_exitstub_setup(ASMState *as, ExitNo nexits)
   if (nexits >= EXITSTUBS_PER_GROUP*LJ_MAX_EXITSTUBGR)
     lj_trace_err(as->J, LJ_TRERR_SNAPOV);
   for (i = 0; i < (nexits+EXITSTUBS_PER_GROUP-1)/EXITSTUBS_PER_GROUP; i++)
-    if (as->J->exitstubgroup[i] == nullptr)
+    if (as->J->exitstubgroup[i] == NULL)
       as->J->exitstubgroup[i] = asm_exitstub_gen(as, i);
 }
 
@@ -839,7 +839,7 @@ static void asm_href(ASMState *as, IRIns *ir, IROp merge)
 
   /* Key not found in chain: jump to exit (if merged) or load niltv. */
   l_end = emit_label(as);
-  as->invmcp = nullptr;
+  as->invmcp = NULL;
   if (merge == IR_NE)
     asm_guardcc(as, CC_AL);
   else if (destused)
@@ -1478,7 +1478,7 @@ static ARMIns asm_drop_cmp0(ASMState *as, ARMIns ai)
 {
   if (as->flagmcp == as->mcp) {
     uint32_t cc = (as->mcp[1] >> 28);
-    as->flagmcp = nullptr;
+    as->flagmcp = NULL;
     if (cc <= CC_NE) {
       as->mcp++;
       ai |= ARMI_S;
@@ -2203,7 +2203,7 @@ static void asm_tail_prep(ASMState *as)
     as->invmcp = as->mcp = p;
   } else {
     as->mcp = p-1;  /* Leave room for stack pointer adjustment. */
-    as->invmcp = nullptr;
+    as->invmcp = NULL;
   }
   *p = 0;  /* Prevent load/store merging. */
 }
@@ -2256,7 +2256,7 @@ void lj_asm_patchexit(jit_State *J, GCtrace *T, ExitNo exitno, MCode *target)
 {
   MCode *p = T->mcode;
   MCode *pe = (MCode *)((char *)p + T->szmcode);
-  MCode *cstart = nullptr, *cend = p;
+  MCode *cstart = NULL, *cend = p;
   MCode *mcarea = lj_mcode_patch(J, p, 0);
   MCode *px = exitstub_addr(J, exitno) - 2;
   for (; p < pe; p++) {
@@ -2270,7 +2270,7 @@ void lj_asm_patchexit(jit_State *J, GCtrace *T, ExitNo exitno, MCode *target)
       if (!cstart) cstart = p;
     }
   }
-  lj_assertJ(cstart != nullptr, "exit stub %d not found", exitno);
+  lj_assertJ(cstart != NULL, "exit stub %d not found", exitno);
   lj_mcode_sync(cstart, cend);
   lj_mcode_patch(J, mcarea, 1);
 }

@@ -38,7 +38,7 @@ public:
 
 	// Добавление элементов в листбокс
 	template <class Element>
-	bool			 AddItem				(const char*  str, const float shift = 0.0f, void* pData = nullptr,
+	bool			 AddItem				(const char*  str, const float shift = 0.0f, void* pData = NULL,
 											int value = 0, int insertBeforeIdx = -1);
 
 	virtual bool	AddItem_script			(CUIListItem* item);

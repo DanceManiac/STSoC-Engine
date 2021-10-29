@@ -247,7 +247,7 @@ CEnvDescriptor::CEnvDescriptor	(shared_str const& identifier) :
 	m_identifier		(identifier)
 #else
 CEnvDescriptor::CEnvDescriptor() :
-	m_identifier(nullptr)
+	m_identifier(NULL)
 #endif
 {
 	exec_time			= 0.0f;
@@ -288,7 +288,7 @@ CEnvDescriptor::CEnvDescriptor() :
     lens_flare_id		= "";
 	tb_id				= "";
     
-	env_ambient			= nullptr;
+	env_ambient			= NULL;
 }
 
 #define	C_CHECK(C)	if (C.x<0 || C.x>2 || C.y<0 || C.y>2 || C.z<0 || C.z>2)	{ Msg("! Invalid '%s' in env-section '%s'",#C,m_identifier.c_str());}

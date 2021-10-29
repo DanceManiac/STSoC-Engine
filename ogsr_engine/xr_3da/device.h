@@ -218,7 +218,7 @@ public:
 		m_engine(0)
 #endif // #ifdef INGAME_EDITOR
 	{
-	    m_hWnd              = nullptr;
+	    m_hWnd              = NULL;
 		b_is_Active			= FALSE;
 		b_is_Ready			= FALSE;
 		Timer.Start			();

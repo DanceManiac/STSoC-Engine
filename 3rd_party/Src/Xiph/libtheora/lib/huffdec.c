@@ -440,7 +440,7 @@ int oc_huff_trees_unpack(oc_pack_buf *_opb,
     /*Figure out how big the collapsed tree will be.*/
     size=oc_huff_tree_collapse_size(nodes,0);
     storage=(char *)_ogg_calloc(1,size);
-    if(storage==nullptr)return TH_EFAULT;
+    if(storage==NULL)return TH_EFAULT;
     /*And collapse it.*/
     _nodes[i]=oc_huff_tree_collapse(nodes,&storage);
   }
@@ -458,7 +458,7 @@ int oc_huff_trees_copy(oc_huff_node *_dst[TH_NHUFFMAN_TABLES],
     char   *storage;
     size=oc_huff_tree_size(_src[i]);
     storage=(char *)_ogg_calloc(1,size);
-    if(storage==nullptr){
+    if(storage==NULL){
       while(i-->0)_ogg_free(_dst[i]);
       return TH_EFAULT;
     }

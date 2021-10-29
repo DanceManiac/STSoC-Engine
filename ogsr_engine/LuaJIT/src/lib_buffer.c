@@ -116,7 +116,7 @@ LJLIB_CF(buffer_method_put)		LJLIB_REC(.)
   SBufExt *sbx = buffer_tobufw(L);
   ptrdiff_t arg, narg = L->top - L->base;
   for (arg = 1; arg < narg; arg++) {
-    cTValue *o = &L->base[arg], *mo = nullptr;
+    cTValue *o = &L->base[arg], *mo = NULL;
   retry:
     if (tvisstr(o)) {
       lj_buf_putstr((SBuf *)sbx, strV(o));
@@ -288,7 +288,7 @@ LJLIB_CF(buffer_new)
 {
   MSize sz = 0;
   int targ = 1;
-  GCtab *env, *dict = nullptr;
+  GCtab *env, *dict = NULL;
   GCudata *ud;
   SBufExt *sbx;
   if (L->base < L->top && !tvistab(L->base)) {
@@ -339,10 +339,10 @@ LJLIB_CF(buffer_decode)			LJLIB_REC(.)
 
 int luaopen_string_buffer(lua_State *L)
 {
-  LJ_LIB_REG(L, nullptr, buffer_method);
+  LJ_LIB_REG(L, NULL, buffer_method);
   lua_getfield(L, -1, "__tostring");
   lua_setfield(L, -2, "tostring");
-  LJ_LIB_REG(L, nullptr, buffer);
+  LJ_LIB_REG(L, NULL, buffer);
   return 1;
 }
 

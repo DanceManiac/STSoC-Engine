@@ -121,7 +121,7 @@ static const ve_setup_data_template ve_setup_32_uncoupled={
 
   _psy_global_44,
   _global_mapping_44,
-  nullptr,
+  NULL,
 
   _floor_books,
   _floor,

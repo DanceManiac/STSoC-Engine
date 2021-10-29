@@ -144,7 +144,7 @@ lzo1c_999_compress_callback ( const lzo_bytep in , lzo_uint  in_len,
     c->r1_m_len = 0;
     c->m3 = out + 1;        /* pointer after last m3/m4 match */
 
-    r = init_match(c,swd,nullptr,0,0);
+    r = init_match(c,swd,NULL,0,0);
     if (r != 0)
         return r;
     if (max_chain > 0)

@@ -59,7 +59,7 @@ struct dObStack : public dBase {
 
   void *next (int num_bytes);
   // return the address of the next allocated block. 'num_bytes' is the size
-  // of the previous block. this returns nullptr if there are no more arenas.
+  // of the previous block. this returns null if there are no more arenas.
   // the sequence of 'num_bytes' parameters passed to next() during a
   // traversal of the list must exactly match the parameters passed to alloc().
 };

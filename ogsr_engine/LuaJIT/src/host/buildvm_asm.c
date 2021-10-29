@@ -55,7 +55,7 @@ static const char *const jccnames[] = {
 static void emit_asm_reloc_text(BuildCtx *ctx, uint8_t *cp, int n,
 				const char *sym)
 {
-  const char *opname = nullptr;
+  const char *opname = NULL;
   if (--n < 0) goto err;
   if (cp[n] == 0xe8) {
     opname = "call";

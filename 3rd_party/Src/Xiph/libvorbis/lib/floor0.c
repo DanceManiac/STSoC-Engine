@@ -98,7 +98,7 @@ static vorbis_info_floor *floor0_unpack (vorbis_info *vi,oggpack_buffer *opb){
 
  err_out:
   floor0_free_info(info);
-  return(nullptr);
+  return(NULL);
 }
 
 /* initialize Bark scale and normalization lookups.  We could do this
@@ -191,7 +191,7 @@ static void *floor0_inverse1(vorbis_block *vb,vorbis_look_floor *i){
     }
   }
  eop:
-  return(nullptr);
+  return(NULL);
 }
 
 static int floor0_inverse2(vorbis_block *vb,vorbis_look_floor *i,
@@ -219,6 +219,6 @@ static int floor0_inverse2(vorbis_block *vb,vorbis_look_floor *i,
 
 /* export hooks */
 const vorbis_func_floor floor0_exportbundle={
-  nullptr,&floor0_unpack,&floor0_look,&floor0_free_info,
+  NULL,&floor0_unpack,&floor0_look,&floor0_free_info,
   &floor0_free_look,&floor0_inverse1,&floor0_inverse2
 };

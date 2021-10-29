@@ -30,7 +30,7 @@ SLuaWpnParams::~SLuaWpnParams()
 {
 }
 
-SLuaWpnParams* g_lua_wpn_params = nullptr;
+SLuaWpnParams* g_lua_wpn_params = NULL;
 
 void destroy_lua_wpn_params()
 {

@@ -86,7 +86,7 @@ static MCode *asm_sparejump_use(MCode *mcarea, MCode tjump)
       return mxp;
     }
   }
-  return nullptr;
+  return NULL;
 }
 
 /* Setup exit stub after the end of each trace. */
@@ -111,7 +111,7 @@ static void asm_guard(ASMState *as, MIPSIns mi, Reg rs, Reg rt)
   MCode *target = asm_exitstub_addr(as);
   MCode *p = as->mcp;
   if (LJ_UNLIKELY(p == as->invmcp)) {
-    as->invmcp = nullptr;
+    as->invmcp = NULL;
     as->loopinv = 1;
     as->mcp = p+1;
 #if !LJ_TARGET_MIPSR6
@@ -1031,7 +1031,7 @@ static void asm_href(ASMState *as, IRIns *ir, IROp merge)
 
   /* Key not found in chain: jump to exit (if merged) or load niltv. */
   l_end = emit_label(as);
-  as->invmcp = nullptr;
+  as->invmcp = NULL;
   if (merge == IR_NE)
     asm_guard(as, MIPSI_B, RID_ZERO, RID_ZERO);
   else if (destused)
@@ -2159,7 +2159,7 @@ static void asm_sfpmin_max(ASMState *as, IRIns *ir)
 #endif
   asm_setupresult(as, ir, &ci);
   emit_call(as, (void *)ci.func, 0);
-  ci.func = nullptr;
+  ci.func = NULL;
   asm_gencall(as, &ci, args);
 }
 #endif
@@ -2695,7 +2695,7 @@ static void asm_tail_fixup(ASMState *as, TraceNo lnk)
 static void asm_tail_prep(ASMState *as)
 {
   as->mcp = as->mctop-2;  /* Leave room for branch plus nop or stack adj. */
-  as->invmcp = as->loopref ? as->mcp : nullptr;
+  as->invmcp = as->loopref ? as->mcp : NULL;
 }
 
 /* -- Trace setup --------------------------------------------------------- */
@@ -2748,7 +2748,7 @@ void lj_asm_patchexit(jit_State *J, GCtrace *T, ExitNo exitno, MCode *target)
   MCode *p = T->mcode;
   MCode *pe = (MCode *)((char *)p + T->szmcode);
   MCode *px = exitstub_trace_addr(T, exitno);
-  MCode *cstart = nullptr, *cstop = nullptr;
+  MCode *cstart = NULL, *cstop = NULL;
   MCode *mcarea = lj_mcode_patch(J, p, 0);
   MCode exitload = MIPSI_LI | MIPSF_T(RID_TMP) | exitno;
   MCode tjump = MIPSI_J|(((uintptr_t)target>>2)&0x03ffffffu);

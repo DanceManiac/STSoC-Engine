@@ -77,7 +77,7 @@ static bool SetupGameIcon(CUIMainIngameWnd::EWarningIcons icon, u32 cl, float wi
 	auto window = GetMainIngameWindow();
 	if (!window)
 	{
-		Msg("!![SetupGameIcon] failed due GetMainIngameWindow() returned nullptr");
+		Msg("!![SetupGameIcon] failed due GetMainIngameWindow() returned NULL");
 		return false;
 	}
 
@@ -100,12 +100,12 @@ static bool SetupGameIcon(CUIMainIngameWnd::EWarningIcons icon, u32 cl, float wi
 
 CUIMainIngameWnd::CUIMainIngameWnd()
 {
-	m_pActor					= nullptr;
-	m_pWeapon					= nullptr;
-	m_pGrenade					= nullptr;
-	m_pItem						= nullptr;
+	m_pActor					= NULL;
+	m_pWeapon					= NULL;
+	m_pGrenade					= NULL;
+	m_pItem						= NULL;
 	UIZoneMap					= xr_new<CUIZoneMap>();
-	m_pPickUpItem				= nullptr;
+	m_pPickUpItem				= NULL;
 	m_artefactPanel				= xr_new<CUIArtefactPanel>();
 
 	warn_icon_list[ewiWeaponJammed]	= &UIWeaponJammedIcon;	
@@ -358,9 +358,9 @@ void CUIMainIngameWnd::Update()
 	m_pActor = smart_cast<CActor*>(Level().CurrentViewEntity());
 	if (!m_pActor) 
 	{
-		m_pItem					= nullptr;
-		m_pWeapon				= nullptr;
-		m_pGrenade				= nullptr;
+		m_pItem					= NULL;
+		m_pWeapon				= NULL;
+		m_pGrenade				= NULL;
 		CUIWindow::Update		();
 		return;
 	}
@@ -588,11 +588,11 @@ void CUIMainIngameWnd::RenderQuickInfos()
 	if (!m_pActor)
 		return;
 
-	static CGameObject *pObject			= nullptr;
+	static CGameObject *pObject			= NULL;
 	LPCSTR actor_action					= m_pActor->GetDefaultActionForObject();
-	UIStaticQuickHelp.Show				(nullptr!=actor_action);
+	UIStaticQuickHelp.Show				(NULL!=actor_action);
 
-	if(nullptr!=actor_action){
+	if(NULL!=actor_action){
 		if(stricmp(actor_action,UIStaticQuickHelp.GetText()))
 			UIStaticQuickHelp.SetTextST				(actor_action);
 	}
@@ -688,7 +688,7 @@ void CUIMainIngameWnd::InitFlashingIcons(CUIXml* node)
 	int staticsCount = node->GetNodesNum("", 0, flashingIconNodeName);
 
 	CUIXmlInit xml_init;
-	CUIStatic *pIcon = nullptr;
+	CUIStatic *pIcon = NULL;
 	// Пробегаемся по всем нодам и инициализируем из них статики
 	for (int i = 0; i < staticsCount; ++i)
 	{
@@ -885,11 +885,11 @@ void CUIMainIngameWnd::OnConnected()
 
 void CUIMainIngameWnd::reset_ui()
 {
-	m_pActor						= nullptr;
-	m_pWeapon						= nullptr;
-	m_pGrenade						= nullptr;
-	m_pItem							= nullptr;
-	m_pPickUpItem					= nullptr;
+	m_pActor						= NULL;
+	m_pWeapon						= NULL;
+	m_pGrenade						= NULL;
+	m_pItem							= NULL;
+	m_pPickUpItem					= NULL;
 	UIMotionIcon.ResetVisibility	();
 }
 

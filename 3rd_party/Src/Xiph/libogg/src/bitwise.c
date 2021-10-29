@@ -346,7 +346,7 @@ void oggpack_adv(oggpack_buffer *b,int bits){
   return;
 
  overflow:
-  b->ptr=nullptr;
+  b->ptr=NULL;
   b->endbyte=b->storage;
   b->endbit=1;
 }
@@ -405,7 +405,7 @@ long oggpack_read(oggpack_buffer *b,int bits){
 
  overflow:
  err:
-  b->ptr=nullptr;
+  b->ptr=NULL;
   b->endbyte=b->storage;
   b->endbit=1;
   return -1L;
@@ -448,7 +448,7 @@ long oggpackB_read(oggpack_buffer *b,int bits){
 
  overflow:
  err:
-  b->ptr=nullptr;
+  b->ptr=NULL;
   b->endbyte=b->storage;
   b->endbit=1;
   return -1L;
@@ -469,7 +469,7 @@ long oggpack_read1(oggpack_buffer *b){
   return ret;
 
  overflow:
-  b->ptr=nullptr;
+  b->ptr=NULL;
   b->endbyte=b->storage;
   b->endbit=1;
   return -1L;
@@ -490,7 +490,7 @@ long oggpackB_read1(oggpack_buffer *b){
   return ret;
 
  overflow:
-  b->ptr=nullptr;
+  b->ptr=NULL;
   b->endbyte=b->storage;
   b->endbit=1;
   return -1L;
@@ -687,7 +687,7 @@ int main(void){
   cliptest(testbuffer1,test1size,0,one,onesize);
   fprintf(stderr,"ok.");
 
-  fprintf(stderr,"\nnullptr bit call (LSb): ");
+  fprintf(stderr,"\nNull bit call (LSb): ");
   cliptest(testbuffer3,test3size,0,two,twosize);
   fprintf(stderr,"ok.");
 
@@ -773,7 +773,7 @@ int main(void){
   cliptestB(testbuffer1,test1size,0,oneB,onesize);
   fprintf(stderr,"ok.");
 
-  fprintf(stderr,"\nnullptr bit call (MSb): ");
+  fprintf(stderr,"\nNull bit call (MSb): ");
   cliptestB(testbuffer3,test3size,0,twoB,twosize);
   fprintf(stderr,"ok.");
 

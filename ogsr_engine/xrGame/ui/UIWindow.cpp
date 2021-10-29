@@ -97,11 +97,11 @@ void CUIWindow::ResetPPMode()
 CUIWindow::CUIWindow()
 {
 //.	m_dbg_flag.zero			();
-	m_pFont					= nullptr;
-	m_pParentWnd			= nullptr;
+	m_pFont					= NULL;
+	m_pParentWnd			= NULL;
 	Reset();
-	m_pMessageTarget		= nullptr;
-	m_pKeyboardCapturer		=  nullptr;
+	m_pMessageTarget		= NULL;
+	m_pKeyboardCapturer		=  NULL;
 	SetWndRect				(0,0,0,0);
 	m_bAutoDelete			= false;
     Show					(true);
@@ -259,7 +259,7 @@ void CUIWindow::DoDetachChild(CUIWindow* pChild, bool from_destructor)
 	if( GetMouseCapturer() == pChild )
 		SetMouseCapture(pChild, false);
 
-	pChild->SetParent(nullptr);
+	pChild->SetParent(NULL);
 
 	if (from_destructor && pChild->IsAutoDelete()) {
 		Msg("!![" __FUNCTION__ "] detaching autodelete window from destructor : [%s]", pChild->WindowName_script());
@@ -297,7 +297,7 @@ void CUIWindow::GetAbsoluteRect(Frect& r)
 {
 //.	Frect rect;
 
-	if(GetParent() == nullptr){
+	if(GetParent() == NULL){
 		GetWndRect		(r);
 		return;
 	}
@@ -324,7 +324,7 @@ bool CUIWindow::OnMouse(float x, float y, EUIMessages mouse_action)
 	cursor_pos.x = x;
 	cursor_pos.y = y;
 
-	if(GetParent()== nullptr)
+	if(GetParent()== NULL)
 	{
 		if(!wndRect.in(cursor_pos))
             return false;
@@ -552,19 +552,19 @@ bool CUIWindow::OnKeyboardHold(int dik)
 
 void CUIWindow::SetKeyboardCapture(CUIWindow* pChildWindow, bool capture_status)
 {
-	if(nullptr != GetParent())
+	if(NULL != GetParent())
 		GetParent()->SetKeyboardCapture(this, capture_status);
 
 	if(capture_status)
 	{
 		//оповестить дочернее окно о потере фокуса клавиатуры
-		if(nullptr!=m_pKeyboardCapturer)
+		if(NULL!=m_pKeyboardCapturer)
 			m_pKeyboardCapturer->SendMessage(this, WINDOW_KEYBOARD_CAPTURE_LOST);
 			
 		m_pKeyboardCapturer = pChildWindow;
 	}
 	else
-		m_pKeyboardCapturer = nullptr;
+		m_pKeyboardCapturer = NULL;
 }
 
 
@@ -634,7 +634,7 @@ bool CUIWindow::BringToBottom( CUIWindow* pChild ) {
 //поднять на вершину списка всех родителей окна и его самого
 void CUIWindow::BringAllToTop()
 {
-	if(GetParent() == nullptr)
+	if(GetParent() == NULL)
 			return;
 	else
 	{
@@ -678,19 +678,19 @@ CUIWindow*	CUIWindow::FindChild(const shared_str name, u32 max_nested)
 		return this;
 
 	if (0 == max_nested)
-		return nullptr;
+		return NULL;
 
 //.	m_dbg_flag.set(256,TRUE);
 	WINDOW_LIST::const_iterator it = m_ChildWndList.begin();
 	WINDOW_LIST::const_iterator it_e = m_ChildWndList.end();
 	for(;it!=it_e;++it){
 		CUIWindow* pRes = (*it)->FindChild(name, max_nested - 1);
-		if(pRes != nullptr)
+		if(pRes != NULL)
 			return pRes;
 	}
 
 //.	m_dbg_flag.set(256,FALSE);
-	return nullptr;
+	return NULL;
 }
 
 const shared_str CUIWindow::WindowName() const
@@ -698,7 +698,7 @@ const shared_str CUIWindow::WindowName() const
 	if (0 != m_windowName.size())
 		return m_windowName; 
 
-	if (nullptr == GetParent())
+	if (NULL == GetParent())
 		return m_windowName;  
 
 	WINDOW_LIST &pcl = GetParent()->GetChildWndList();

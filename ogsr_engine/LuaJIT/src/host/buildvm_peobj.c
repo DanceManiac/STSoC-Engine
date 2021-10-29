@@ -111,7 +111,7 @@ enum {
 };
 
 /* Symbol types. */
-#define PEOBJ_TYPE_nullptr		0
+#define PEOBJ_TYPE_NULL		0
 #define PEOBJ_TYPE_FUNC		0x20
 
 /* Symbol storage class. */
@@ -157,7 +157,7 @@ static void emit_peobj_sym_sect(BuildCtx *ctx, PEsection *pesect, int sect)
   memcpy(sym.n.name, pesect[sect].name, 8);
   sym.value = 0;
   sym.sect = (int16_t)(sect+1);  /* 1-based section number. */
-  sym.type = PEOBJ_TYPE_nullptr;
+  sym.type = PEOBJ_TYPE_NULL;
   sym.scl = PEOBJ_SCL_STATIC;
   sym.naux = 1;
   owrite(ctx, &sym, PEOBJ_SYM_SIZE);
@@ -327,12 +327,12 @@ void emit_peobj(BuildCtx *ctx)
   owrite(ctx, ctx->dasm_ident, strlen(ctx->dasm_ident)+1);
 
   /* Write symbol table. */
-  strtab = nullptr;  /* 1st pass: collect string sizes. */
+  strtab = NULL;  /* 1st pass: collect string sizes. */
   for (;;) {
     strtabofs = 4;
     /* Mark as SafeSEH compliant. */
     emit_peobj_sym(ctx, "@feat.00", 1,
-		   PEOBJ_SECT_ABS, PEOBJ_TYPE_nullptr, PEOBJ_SCL_STATIC);
+		   PEOBJ_SECT_ABS, PEOBJ_TYPE_NULL, PEOBJ_SCL_STATIC);
 
     emit_peobj_sym_sect(ctx, pesect, PEOBJ_SECT_TEXT);
     for (i = 0; i < nrsym; i++)
@@ -349,7 +349,7 @@ void emit_peobj(BuildCtx *ctx)
 #endif
 
     emit_peobj_sym(ctx, ctx->beginsym, 0,
-		   PEOBJ_SECT_TEXT, PEOBJ_TYPE_nullptr, PEOBJ_SCL_EXTERN);
+		   PEOBJ_SECT_TEXT, PEOBJ_TYPE_NULL, PEOBJ_SCL_EXTERN);
     for (i = 0; i < ctx->nsym; i++)
       emit_peobj_sym(ctx, ctx->sym[i].name, (uint32_t)ctx->sym[i].ofs,
 		     PEOBJ_SECT_TEXT, PEOBJ_TYPE_FUNC, PEOBJ_SCL_EXTERN);

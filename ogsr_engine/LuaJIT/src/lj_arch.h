@@ -135,8 +135,8 @@
 #ifdef __ORBIS__
 #define LJ_TARGET_PS4		1
 #define LJ_TARGET_CONSOLE	1
-#undef nullptr
-#define nullptr ((void*)0)
+#undef NULL
+#define NULL ((void*)0)
 #endif
 
 #ifdef __psp2__
@@ -630,7 +630,7 @@ extern void *LJ_WIN_LOADLIBA(const char *path);
 #else
 #define LJ_WIN_VALLOC	VirtualAlloc
 #define LJ_WIN_VPROTECT	VirtualProtect
-#define LJ_WIN_LOADLIBA(path)	LoadLibraryExA((path), nullptr, 0)
+#define LJ_WIN_LOADLIBA(path)	LoadLibraryExA((path), NULL, 0)
 #endif
 #endif
 

@@ -112,7 +112,7 @@ static const ve_setup_data_template ve_setup_X_uncoupled={
 
   _psy_global_44,
   _global_mapping_44,
-  nullptr,
+  NULL,
 
   _floor_books,
   _floor,
@@ -138,19 +138,19 @@ static const ve_setup_data_template ve_setup_XX_stereo={
   _psy_tone_suppress,
 
   _vp_tonemask_adj_8,
-  nullptr,
+  NULL,
   _vp_tonemask_adj_8,
 
   _psy_noiseguards_8,
   _psy_noisebias_8,
   _psy_noisebias_8,
-  nullptr,
-  nullptr,
+  NULL,
+  NULL,
   _psy_noise_suppress,
 
   _psy_compand_8,
   _psy_compand_8_mapping,
-  nullptr,
+  NULL,
 
   {_noise_start_8,_noise_start_8},
   {_noise_part_8,_noise_part_8},
@@ -189,19 +189,19 @@ static const ve_setup_data_template ve_setup_XX_uncoupled={
   _psy_tone_suppress,
 
   _vp_tonemask_adj_8,
-  nullptr,
+  NULL,
   _vp_tonemask_adj_8,
 
   _psy_noiseguards_8,
   _psy_noisebias_8,
   _psy_noisebias_8,
-  nullptr,
-  nullptr,
+  NULL,
+  NULL,
   _psy_noise_suppress,
 
   _psy_compand_8,
   _psy_compand_8_mapping,
-  nullptr,
+  NULL,
 
   {_noise_start_8,_noise_start_8},
   {_noise_part_8,_noise_part_8},

@@ -25,8 +25,8 @@ SERVER_ENTITY_DECLARE_BEGIN0(CSE_ALifeInventoryItem)
 public:
 	enum {
 		inventory_item_state_enabled	= u8(1) << 0,
-		inventory_item_angular_nullptr		= u8(1) << 1,
-		inventory_item_linear_nullptr		= u8(1) << 2,
+		inventory_item_angular_null		= u8(1) << 1,
+		inventory_item_linear_null		= u8(1) << 2,
 	};
 
 	union mask_num_items {

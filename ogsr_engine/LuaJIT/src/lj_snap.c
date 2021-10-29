@@ -649,7 +649,7 @@ static void snap_restoreval(jit_State *J, GCtrace *T, ExitState *ex,
     if (ir->o == IR_KPTR) {
       o->u64 = (uint64_t)(uintptr_t)ir_kptr(ir);
     } else {
-      lj_assertJ(!(ir->o == IR_KKPTR || ir->o == IR_Knullptr),
+      lj_assertJ(!(ir->o == IR_KKPTR || ir->o == IR_KNULL),
 		 "restore of const from IR %04d with bad op %d",
 		 ref - REF_BIAS, ir->o);
       lj_ir_kvalue(J->L, o, ir);

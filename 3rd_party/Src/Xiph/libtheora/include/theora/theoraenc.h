@@ -40,27 +40,27 @@ extern "C" {
 /**Sets the Huffman tables to use.
  * The tables are copied, not stored by reference, so they can be freed after
  *  this call.
- * <tt>nullptr</tt> may be specified to revert to the default tables.
+ * <tt>NULL</tt> may be specified to revert to the default tables.
  *
  * \param[in] _buf <tt>#th_huff_code[#TH_NHUFFMAN_TABLES][#TH_NDCT_TOKENS]</tt>
- * \retval TH_EFAULT \a _enc_ctx is <tt>nullptr</tt>.
+ * \retval TH_EFAULT \a _enc_ctx is <tt>NULL</tt>.
  * \retval TH_EINVAL Encoding has already begun or one or more of the given
  *                     tables is not full or prefix-free, \a _buf is
- *                     <tt>nullptr</tt> and \a _buf_sz is not zero, or \a _buf is
- *                     non-<tt>nullptr</tt> and \a _buf_sz is not
+ *                     <tt>NULL</tt> and \a _buf_sz is not zero, or \a _buf is
+ *                     non-<tt>NULL</tt> and \a _buf_sz is not
  *                     <tt>sizeof(#th_huff_code)*#TH_NHUFFMAN_TABLES*#TH_NDCT_TOKENS</tt>.
  * \retval TH_EIMPL   Not supported by this implementation.*/
 #define TH_ENCCTL_SET_HUFFMAN_CODES (0)
 /**Sets the quantization parameters to use.
  * The parameters are copied, not stored by reference, so they can be freed
  *  after this call.
- * <tt>nullptr</tt> may be specified to revert to the default parameters.
+ * <tt>NULL</tt> may be specified to revert to the default parameters.
  *
  * \param[in] _buf #th_quant_info
- * \retval TH_EFAULT \a _enc_ctx is <tt>nullptr</tt>.
+ * \retval TH_EFAULT \a _enc_ctx is <tt>NULL</tt>.
  * \retval TH_EINVAL Encoding has already begun, \a _buf is 
- *                    <tt>nullptr</tt> and \a _buf_sz is not zero,
- *                    or \a _buf is non-<tt>nullptr</tt> and
+ *                    <tt>NULL</tt> and \a _buf_sz is not zero,
+ *                    or \a _buf is non-<tt>NULL</tt> and
  *                    \a _buf_sz is not <tt>sizeof(#th_quant_info)</tt>.
  * \retval TH_EIMPL   Not supported by this implementation.*/
 #define TH_ENCCTL_SET_QUANT_PARAMS (2)
@@ -73,7 +73,7 @@ extern "C" {
  * \param[in]  _buf <tt>ogg_uint32_t</tt>: The maximum distance between key
  *                   frames.
  * \param[out] _buf <tt>ogg_uint32_t</tt>: The actual maximum distance set.
- * \retval TH_EFAULT \a _enc_ctx or \a _buf is <tt>nullptr</tt>.
+ * \retval TH_EFAULT \a _enc_ctx or \a _buf is <tt>NULL</tt>.
  * \retval TH_EINVAL \a _buf_sz is not <tt>sizeof(ogg_uint32_t)</tt>.
  * \retval TH_EIMPL   Not supported by this implementation.*/
 #define TH_ENCCTL_SET_KEYFRAME_FREQUENCY_FORCE (4)
@@ -101,7 +101,7 @@ extern "C" {
  *                   4:2:0, the picture region is smaller than the full frame,
  *                   or if encoding has begun, preventing the quantization
  *                   tables and codebooks from being set.
- * \retval TH_EFAULT \a _enc_ctx or \a _buf is <tt>nullptr</tt>.
+ * \retval TH_EFAULT \a _enc_ctx or \a _buf is <tt>NULL</tt>.
  * \retval TH_EINVAL \a _buf_sz is not <tt>sizeof(int)</tt>.
  * \retval TH_EIMPL   Not supported by this implementation.*/
 #define TH_ENCCTL_SET_VP3_COMPATIBLE (10)
@@ -114,7 +114,7 @@ extern "C" {
  *  the current encoding mode (VBR vs. constant quality, etc.).
  *
  * \param[out] _buf <tt>int</tt>: The maximum encoding speed level.
- * \retval TH_EFAULT \a _enc_ctx or \a _buf is <tt>nullptr</tt>.
+ * \retval TH_EFAULT \a _enc_ctx or \a _buf is <tt>NULL</tt>.
  * \retval TH_EINVAL \a _buf_sz is not <tt>sizeof(int)</tt>.
  * \retval TH_EIMPL   Not supported by this implementation in the current
  *                    encoding mode.*/
@@ -124,7 +124,7 @@ extern "C" {
  *
  * \param[in] _buf <tt>int</tt>: The new encoding speed level.
  *                 0 is slowest, larger values use less CPU.
- * \retval TH_EFAULT \a _enc_ctx or \a _buf is <tt>nullptr</tt>.
+ * \retval TH_EFAULT \a _enc_ctx or \a _buf is <tt>NULL</tt>.
  * \retval TH_EINVAL \a _buf_sz is not <tt>sizeof(int)</tt>, or the
  *                    encoding speed level is out of bounds.
  *                   The maximum encoding speed level may be
@@ -142,7 +142,7 @@ extern "C" {
  *
  * \param[out] _buf <tt>int</tt>: The current encoding speed level.
  *                  0 is slowest, larger values use less CPU.
- * \retval TH_EFAULT \a _enc_ctx or \a _buf is <tt>nullptr</tt>.
+ * \retval TH_EFAULT \a _enc_ctx or \a _buf is <tt>NULL</tt>.
  * \retval TH_EINVAL \a _buf_sz is not <tt>sizeof(int)</tt>.
  * \retval TH_EIMPL   Not supported by this implementation in the current
  *                    encoding mode.*/
@@ -162,7 +162,7 @@ extern "C" {
  *
  * \param[in] _buf <tt>int</tt>: The number of duplicates to produce.
  *                 If this is negative or zero, no duplicates will be produced.
- * \retval TH_EFAULT \a _enc_ctx or \a _buf is <tt>nullptr</tt>.
+ * \retval TH_EFAULT \a _enc_ctx or \a _buf is <tt>NULL</tt>.
  * \retval TH_EINVAL \a _buf_sz is not <tt>sizeof(int)</tt>, or the
  *                    number of duplicates is greater than or equal to the
  *                    maximum keyframe interval.
@@ -187,7 +187,7 @@ extern "C" {
  *                    use.
  *                 - #TH_RATECTL_CAP_UNDERFLOW: Don't try to make up shortfalls
  *                    later.
- * \retval TH_EFAULT \a _enc_ctx or \a _buf is <tt>nullptr</tt>.
+ * \retval TH_EFAULT \a _enc_ctx or \a _buf is <tt>NULL</tt>.
  * \retval TH_EINVAL \a _buf_sz is not <tt>sizeof(int)</tt> or rate control
  *                    is not enabled.
  * \retval TH_EIMPL   Not supported by this implementation in the current
@@ -211,7 +211,7 @@ extern "C" {
  * \param[in]  _buf <tt>int</tt>: Requested size of the reservoir measured in
  *                   frames.
  * \param[out] _buf <tt>int</tt>: The actual size of the reservoir set.
- * \retval TH_EFAULT \a _enc_ctx or \a _buf is <tt>nullptr</tt>.
+ * \retval TH_EFAULT \a _enc_ctx or \a _buf is <tt>NULL</tt>.
  * \retval TH_EINVAL \a _buf_sz is not <tt>sizeof(int)</tt>, or rate control
  *                    is not enabled.  The buffer has an implementation
  *                    defined minimum and maximum size and the value in _buf
@@ -243,7 +243,7 @@ extern "C" {
  *              application.
  * \retval >=0       The number of bytes of metric data available in the
  *                    returned buffer.
- * \retval TH_EFAULT \a _enc_ctx or \a _buf is <tt>nullptr</tt>.
+ * \retval TH_EFAULT \a _enc_ctx or \a _buf is <tt>NULL</tt>.
  * \retval TH_EINVAL \a _buf_sz is not <tt>sizeof(char *)</tt>, no target
  *                    bitrate has been set, or the first call was made after
  *                    the first frame was submitted for encoding.
@@ -261,7 +261,7 @@ extern "C" {
  *  the pass 1 data has been consumed.
  * In the first case, you must save the remaining data to be presented after
  *  the next frame.
- * You can call this function with a nullptr argument to get an upper bound on
+ * You can call this function with a NULL argument to get an upper bound on
  *  the number of bytes that will be required before the next frame.
  *
  * When pass 2 is first enabled, the default bit reservoir is set to the entire
@@ -272,18 +272,18 @@ extern "C" {
  *
  * \param[in] _buf <tt>char[]</tt>: A buffer containing the data returned by
  *                  #TH_ENCCTL_2PASS_OUT in pass 1.
- *                 You may pass <tt>nullptr</tt> for \a _buf to return an upper
+ *                 You may pass <tt>NULL</tt> for \a _buf to return an upper
  *                  bound on the number of additional bytes needed before the
  *                  next frame.
  *                 The summary data returned at the end of pass 1 must be at
  *                  the head of the buffer on the first call with a
- *                  non-<tt>nullptr</tt> \a _buf, and the placeholder data
+ *                  non-<tt>NULL</tt> \a _buf, and the placeholder data
  *                  returned at the start of pass 1 should be omitted.
  *                 After each call you should advance this buffer by the number
  *                  of bytes consumed.
  * \retval >0            The number of bytes of metric data required/consumed.
  * \retval 0             No more data is required before the next frame.
- * \retval TH_EFAULT     \a _enc_ctx is <tt>nullptr</tt>.
+ * \retval TH_EFAULT     \a _enc_ctx is <tt>NULL</tt>.
  * \retval TH_EINVAL     No target bitrate has been set, or the first call was
  *                        made after the first frame was submitted for
  *                        encoding.
@@ -306,7 +306,7 @@ extern "C" {
  * \param[in] _buf <tt>int</tt>: The new target quality, in the range 0...63,
  *                  inclusive.
  * \retval 0             Success.
- * \retval TH_EFAULT     \a _enc_ctx or \a _buf is <tt>nullptr</tt>.
+ * \retval TH_EFAULT     \a _enc_ctx or \a _buf is <tt>NULL</tt>.
  * \retval TH_EINVAL     A target bitrate has already been specified, or the
  *                        quality index was not in the range 0...63.
  * \retval TH_EIMPL       Not supported by this implementation.*/
@@ -328,7 +328,7 @@ extern "C" {
  *
  * \param[in] _buf <tt>long</tt>: The new target bitrate, in bits per second.
  * \retval 0             Success.
- * \retval TH_EFAULT     \a _enc_ctx or \a _buf is <tt>nullptr</tt>.
+ * \retval TH_EFAULT     \a _enc_ctx or \a _buf is <tt>NULL</tt>.
  * \retval TH_EINVAL     The target bitrate was not positive.
  * \retval TH_EIMPL       Not supported by this implementation.*/
 #define TH_ENCCTL_SET_BITRATE (30)
@@ -408,7 +408,7 @@ typedef struct th_enc_ctx    th_enc_ctx;
 /**Allocates an encoder instance.
  * \param _info A #th_info struct filled with the desired encoding parameters.
  * \return The initialized #th_enc_ctx handle.
- * \retval nullptr If the encoding parameters were invalid.*/
+ * \retval NULL If the encoding parameters were invalid.*/
 extern th_enc_ctx *th_encode_alloc(const th_info *_info);
 /**Encoder control function.
  * This is used to provide advanced control the encoding process.
@@ -435,14 +435,14 @@ extern int th_encode_ctl(th_enc_ctx *_enc,int _req,void *_buf,size_t _buf_sz);
  * \return A positive value indicates that a header packet was successfully
  *          produced.
  * \retval 0         No packet was produced, and no more header packets remain.
- * \retval TH_EFAULT \a _enc, \a _comments, or \a _op was <tt>nullptr</tt>.*/
+ * \retval TH_EFAULT \a _enc, \a _comments, or \a _op was <tt>NULL</tt>.*/
 extern int th_encode_flushheader(th_enc_ctx *_enc,
  th_comment *_comments,ogg_packet *_op);
 /**Submits an uncompressed frame to the encoder.
  * \param _enc   A #th_enc_ctx handle.
  * \param _ycbcr A buffer of Y'CbCr data to encode.
  * \retval 0         Success.
- * \retval TH_EFAULT \a _enc or \a _ycbcr is <tt>nullptr</tt>.
+ * \retval TH_EFAULT \a _enc or \a _ycbcr is <tt>NULL</tt>.
  * \retval TH_EINVAL The buffer size does not match the frame size the encoder
  *                    was initialized with, or encoding has already
  *                    completed.*/
@@ -469,7 +469,7 @@ extern int th_encode_ycbcr_in(th_enc_ctx *_enc,th_ycbcr_buffer _ycbcr);
  *          produced.
  * \retval 0         No packet was produced, and no more encoded video data
  *                    remains.
- * \retval TH_EFAULT \a _enc or \a _op was <tt>nullptr</tt>.*/
+ * \retval TH_EFAULT \a _enc or \a _op was <tt>NULL</tt>.*/
 extern int th_encode_packetout(th_enc_ctx *_enc,int _last,ogg_packet *_op);
 /**Frees an allocated encoder instance.
  * \param _enc A #th_enc_ctx handle.*/

@@ -206,12 +206,12 @@ RayCollider::RayCollider()
 	mCulling			(true),
 #ifdef OPC_USE_CALLBACKS
 	mUserData			(0),
-	mObjCallback		(nullptr),
+	mObjCallback		(null),
 #else
-	mFaces				(nullptr),
-	mVerts				(nullptr),
+	mFaces				(null),
+	mVerts				(null),
 #endif
-	mStabbedFaces		(nullptr),
+	mStabbedFaces		(null),
 	mMaxDist			(flt_max)
 {
 }
@@ -228,7 +228,7 @@ RayCollider::~RayCollider()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  *	Validates current settings. You should call this method after all the settings and callbacks have been defined.
- *	\return		nullptr if everything is ok, else a string describing the problem
+ *	\return		null if everything is ok, else a string describing the problem
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const char* RayCollider::ValidateSettings()
@@ -241,7 +241,7 @@ const char* RayCollider::ValidateSettings()
 	if(mMaxDist<0.0f)											return "Higher distance bound must be positive!";
 	if(TemporalCoherenceEnabled() && !FirstContactEnabled())	return "Temporal coherence only works with ""First contact"" mode!";
 	if(mClosestHit && FirstContactEnabled())					return "Closest hit doesn't work with ""First contact"" mode!";
-	return nullptr;
+	return null;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -252,8 +252,8 @@ const char* RayCollider::ValidateSettings()
  *
  *	\param		world_ray		[in] stabbing ray in world space
  *	\param		model			[in] Opcode model to collide with
- *	\param		world			[in] model's world matrix, or nullptr
- *	\param		cache			[in] a possibly cached face index, or nullptr
+ *	\param		world			[in] model's world matrix, or null
+ *	\param		cache			[in] a possibly cached face index, or null
  *	\return		true if success
  *	\warning	SCALE NOT SUPPORTED. The matrices must contain rotation & translation parts only.
  */
@@ -284,7 +284,7 @@ bool RayCollider::Collide(const Ray& world_ray, OPCODE_Model* model, const Matri
  *	- check temporal coherence
  *
  *	\param		world_ray		[in] stabbing ray in world space
- *	\param		world			[in] object's world matrix, or nullptr
+ *	\param		world			[in] object's world matrix, or null
  *	\param		faceid		[in] index of previously stabbed triangle
  *	\return		contact status
  *	\warning	SCALE NOT SUPPORTED. The matrix must contain rotation & translation parts only.
@@ -394,8 +394,8 @@ BOOL RayCollider::InitQuery(const Ray& world_ray, const Matrix4x4* world, udword
  *	Stabbing query for normal trees.
  *	\param		world_ray		[in] stabbing ray in world space
  *	\param		tree			[in] object's AABB tree
- *	\param		world			[in] object's world matrix, or nullptr
- *	\param		cache			[in] a possibly cached face index, or nullptr
+ *	\param		world			[in] object's world matrix, or null
+ *	\param		cache			[in] a possibly cached face index, or null
  *	\return		true if success
  *	\warning	SCALE NOT SUPPORTED. The matrix must contain rotation & translation parts only.
  */
@@ -426,8 +426,8 @@ bool RayCollider::Collide(const Ray& world_ray, const AABBCollisionTree* tree, c
  *	Stabbing query for no-leaf trees.
  *	\param		world_ray		[in] stabbing ray in world space
  *	\param		tree			[in] object's AABB tree
- *	\param		world			[in] object's world matrix, or nullptr
- *	\param		cache			[in] a possibly cached face index, or nullptr
+ *	\param		world			[in] object's world matrix, or null
+ *	\param		cache			[in] a possibly cached face index, or null
  *	\return		true if success
  *	\warning	SCALE NOT SUPPORTED. The matrix must contain rotation & translation parts only.
  */
@@ -459,8 +459,8 @@ bool RayCollider::Collide(const Ray& world_ray, const AABBNoLeafTree* tree, cons
  *	Stabbing query for quantized trees.
  *	\param		world_ray		[in] stabbing ray in world space
  *	\param		tree			[in] object's AABB tree
- *	\param		world			[in] object's world matrix, or nullptr
- *	\param		cache			[in] a possibly cached face index, or nullptr
+ *	\param		world			[in] object's world matrix, or null
+ *	\param		cache			[in] a possibly cached face index, or null
  *	\return		true if success
  *	\warning	SCALE NOT SUPPORTED. The matrix must contain rotation & translation parts only.
  */
@@ -496,8 +496,8 @@ bool RayCollider::Collide(const Ray& world_ray, const AABBQuantizedTree* tree, c
  *	Stabbing query for quantized no-leaf trees.
  *	\param		world_ray		[in] stabbing ray in world space
  *	\param		tree			[in] object's AABB tree
- *	\param		world			[in] object's world matrix, or nullptr
- *	\param		cache			[in] a possibly cached face index, or nullptr
+ *	\param		world			[in] object's world matrix, or null
+ *	\param		cache			[in] a possibly cached face index, or null
  *	\return		true if success
  *	\warning	SCALE NOT SUPPORTED. The matrix must contain rotation & translation parts only.
  */

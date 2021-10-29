@@ -925,9 +925,9 @@ D3DXMATRIX* WINAPI D3DXMatrixMultiply
 D3DXMATRIX* WINAPI D3DXMatrixMultiplyTranspose
     ( D3DXMATRIX *pOut, CONST D3DXMATRIX *pM1, CONST D3DXMATRIX *pM2 );
 
-// Calculate inverse of matrix.  Inversion my fail, in which case nullptr will
+// Calculate inverse of matrix.  Inversion my fail, in which case NULL will
 // be returned.  The determinant of pM is also returned it pfDeterminant
-// is non-nullptr.
+// is non-NULL.
 D3DXMATRIX* WINAPI D3DXMatrixInverse
     ( D3DXMATRIX *pOut, FLOAT *pDeterminant, CONST D3DXMATRIX *pM );
 
@@ -964,7 +964,7 @@ D3DXMATRIX* WINAPI D3DXMatrixRotationQuaternion
 D3DXMATRIX* WINAPI D3DXMatrixRotationYawPitchRoll
     ( D3DXMATRIX *pOut, FLOAT Yaw, FLOAT Pitch, FLOAT Roll );
 
-// Build transformation matrix.  nullptr arguments are treated as identity.
+// Build transformation matrix.  NULL arguments are treated as identity.
 // Mout = Msc-1 * Msr-1 * Ms * Msr * Msc * Mrc-1 * Mr * Mrc * Mt
 D3DXMATRIX* WINAPI D3DXMatrixTransformation
     ( D3DXMATRIX *pOut, CONST D3DXVECTOR3 *pScalingCenter,
@@ -972,7 +972,7 @@ D3DXMATRIX* WINAPI D3DXMatrixTransformation
       CONST D3DXVECTOR3 *pRotationCenter, CONST D3DXQUATERNION *pRotation,
       CONST D3DXVECTOR3 *pTranslation);
 
-// Build 2D transformation matrix in XY plane.  nullptr arguments are treated as identity.
+// Build 2D transformation matrix in XY plane.  NULL arguments are treated as identity.
 // Mout = Msc-1 * Msr-1 * Ms * Msr * Msc * Mrc-1 * Mr * Mrc * Mt
 D3DXMATRIX* WINAPI D3DXMatrixTransformation2D
     ( D3DXMATRIX *pOut, CONST D3DXVECTOR2* pScalingCenter, 
@@ -980,13 +980,13 @@ D3DXMATRIX* WINAPI D3DXMatrixTransformation2D
       CONST D3DXVECTOR2* pRotationCenter, FLOAT Rotation, 
       CONST D3DXVECTOR2* pTranslation);
 
-// Build affine transformation matrix.  nullptr arguments are treated as identity.
+// Build affine transformation matrix.  NULL arguments are treated as identity.
 // Mout = Ms * Mrc-1 * Mr * Mrc * Mt
 D3DXMATRIX* WINAPI D3DXMatrixAffineTransformation
     ( D3DXMATRIX *pOut, FLOAT Scaling, CONST D3DXVECTOR3 *pRotationCenter,
       CONST D3DXQUATERNION *pRotation, CONST D3DXVECTOR3 *pTranslation);
 
-// Build 2D affine transformation matrix in XY plane.  nullptr arguments are treated as identity.
+// Build 2D affine transformation matrix in XY plane.  NULL arguments are treated as identity.
 // Mout = Ms * Mrc-1 * Mr * Mrc * Mt
 D3DXMATRIX* WINAPI D3DXMatrixAffineTransformation2D
     ( D3DXMATRIX *pOut, FLOAT Scaling, CONST D3DXVECTOR2* pRotationCenter, 
@@ -1198,7 +1198,7 @@ D3DXPLANE* WINAPI D3DXPlaneNormalize
     ( D3DXPLANE *pOut, CONST D3DXPLANE *pP);
 
 // Find the intersection between a plane and a line.  If the line is
-// parallel to the plane, nullptr is returned.
+// parallel to the plane, NULL is returned.
 D3DXVECTOR3* WINAPI D3DXPlaneIntersectLine
     ( D3DXVECTOR3 *pOut, CONST D3DXPLANE *pP, CONST D3DXVECTOR3 *pV1,
       CONST D3DXVECTOR3 *pV2);

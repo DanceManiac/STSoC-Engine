@@ -55,7 +55,7 @@ public:
 		const ITEM_DATA* item = GetById(str_id, no_assert);
 		return item?item->index:default_index;
 	}
-	static const shared_str		IndexToId	(int index, shared_str default_id = nullptr, bool no_assert = false)
+	static const shared_str		IndexToId	(int index, shared_str default_id = NULL, bool no_assert = false)
 	{
 		const ITEM_DATA* item = GetByIndex(index, no_assert);
 		return item?item->id:default_id;
@@ -69,12 +69,12 @@ public:
 
 
 TEMPLATE_SPECIALIZATION
-typename T_VECTOR* CSXML_IdToIndex::m_pItemDataVector = nullptr;
+typename T_VECTOR* CSXML_IdToIndex::m_pItemDataVector = NULL;
 
 TEMPLATE_SPECIALIZATION
-LPCSTR CSXML_IdToIndex::file_str = nullptr;
+LPCSTR CSXML_IdToIndex::file_str = NULL;
 TEMPLATE_SPECIALIZATION
-LPCSTR CSXML_IdToIndex::tag_name = nullptr;
+LPCSTR CSXML_IdToIndex::tag_name = NULL;
 
 
 TEMPLATE_SPECIALIZATION
@@ -108,7 +108,7 @@ const typename ITEM_DATA* CSXML_IdToIndex::GetById (const shared_str& str_id, bo
 			Msg("[%d]=[%s]",i,*(*it).id );
 
 		R_ASSERT3(no_assert, "item not found, id", *str_id);
-		return nullptr;
+		return NULL;
 	}
 		
 	return &(*it);
@@ -120,7 +120,7 @@ const typename ITEM_DATA* CSXML_IdToIndex::GetByIndex(int index, bool no_assert)
 	if((size_t)index>=m_pItemDataVector->size())
 	{
 		R_ASSERT3(no_assert, "item by index not found in files", file_str);
-		return nullptr;
+		return NULL;
 	}
 	return &(*m_pItemDataVector)[index];
 }
@@ -163,7 +163,7 @@ typename void	CSXML_IdToIndex::InitInternal ()
 
 			for(int i=0; i<items_num; ++i)
 			{
-				LPCSTR item_name	= uiXml->ReadAttrib(uiXml->GetRoot(), tag_name, i, "id", nullptr);
+				LPCSTR item_name	= uiXml->ReadAttrib(uiXml->GetRoot(), tag_name, i, "id", NULL);
 
 				string256			buf;
 			sprintf_s				(buf, "id for item don't set, number %d in %s", i, xml_file);

@@ -42,7 +42,7 @@ static TValue *cpparser(lua_State *L, lua_CFunction dummy, void *ud)
   fn = lj_func_newL_empty(L, pt, tabref(L->env));
   /* Don't combine above/below into one statement. */
   setfuncV(L, L->top++, fn);
-  return nullptr;
+  return NULL;
 }
 
 LUA_API int lua_loadx(lua_State *L, lua_Reader reader, void *data,
@@ -55,7 +55,7 @@ LUA_API int lua_loadx(lua_State *L, lua_Reader reader, void *data,
   ls.chunkarg = chunkname ? chunkname : "?";
   ls.mode = mode;
   lj_buf_init(L, &ls.sb);
-  status = lj_vm_cpcall(L, nullptr, &ls, cpparser);
+  status = lj_vm_cpcall(L, NULL, &ls, cpparser);
   lj_lex_cleanup(L, &ls);
   lj_gc_check(L);
   return status;
@@ -64,7 +64,7 @@ LUA_API int lua_loadx(lua_State *L, lua_Reader reader, void *data,
 LUA_API int lua_load(lua_State *L, lua_Reader reader, void *data,
 		     const char *chunkname)
 {
-  return lua_loadx(L, reader, data, chunkname, nullptr);
+  return lua_loadx(L, reader, data, chunkname, NULL);
 }
 
 typedef struct FileReaderCtx {
@@ -76,9 +76,9 @@ static const char *reader_file(lua_State *L, void *ud, size_t *size)
 {
   FileReaderCtx *ctx = (FileReaderCtx *)ud;
   UNUSED(L);
-  if (feof(ctx->fp)) return nullptr;
+  if (feof(ctx->fp)) return NULL;
   *size = fread(ctx->buf, 1, sizeof(ctx->buf), ctx->fp);
-  return *size > 0 ? ctx->buf : nullptr;
+  return *size > 0 ? ctx->buf : NULL;
 }
 
 LUALIB_API int luaL_loadfilex(lua_State *L, const char *filename,
@@ -89,7 +89,7 @@ LUALIB_API int luaL_loadfilex(lua_State *L, const char *filename,
   const char *chunkname;
   if (filename) {
     ctx.fp = fopen(filename, "rb");
-    if (ctx.fp == nullptr) {
+    if (ctx.fp == NULL) {
       lua_pushfstring(L, "cannot open %s: %s", filename, strerror(errno));
       return LUA_ERRFILE;
     }
@@ -116,7 +116,7 @@ LUALIB_API int luaL_loadfilex(lua_State *L, const char *filename,
 
 LUALIB_API int luaL_loadfile(lua_State *L, const char *filename)
 {
-  return luaL_loadfilex(L, filename, nullptr);
+  return luaL_loadfilex(L, filename, NULL);
 }
 
 typedef struct StringReaderCtx {
@@ -128,7 +128,7 @@ static const char *reader_string(lua_State *L, void *ud, size_t *size)
 {
   StringReaderCtx *ctx = (StringReaderCtx *)ud;
   UNUSED(L);
-  if (ctx->size == 0) return nullptr;
+  if (ctx->size == 0) return NULL;
   *size = ctx->size;
   ctx->size = 0;
   return ctx->str;
@@ -146,7 +146,7 @@ LUALIB_API int luaL_loadbufferx(lua_State *L, const char *buf, size_t size,
 LUALIB_API int luaL_loadbuffer(lua_State *L, const char *buf, size_t size,
 			       const char *name)
 {
-  return luaL_loadbufferx(L, buf, size, name, nullptr);
+  return luaL_loadbufferx(L, buf, size, name, NULL);
 }
 
 LUALIB_API int luaL_loadstring(lua_State *L, const char *s)

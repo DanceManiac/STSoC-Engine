@@ -34,7 +34,7 @@
 	#define INV9				0.11111111111111111111f									//!<	1/9
 	#define INV255				0.00392156862745098039f									//!<	1/255
 
-	#define nullptr				0														//!<	our own nullptr pointer
+	#define null				0														//!<	our own NULL pointer
 
 	// New types
 	typedef signed char			sbyte;		//!<	sizeof(sbyte)	must be 1
@@ -65,7 +65,7 @@
 	typedef udword				DynID;		//!<	Dynamic identifier
 	typedef uword				KID;		//!<	Kernel ID
 	typedef udword				RTYPE;		//!<	Relationship-type (!) between owners and references
-	#define	INVALID_ID			0xffffffff	//!<	Invalid dword ID (counterpart of nullptr pointers)
+	#define	INVALID_ID			0xffffffff	//!<	Invalid dword ID (counterpart of null pointers)
 	#define	INVALID_KID			0xffff		//!<	Invalid Kernel ID
 	#define	INVALID_NUMBER		0xDEADBEEF	//!<	Standard junk value
 

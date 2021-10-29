@@ -142,7 +142,7 @@ void CUIEventsWnd::ReloadList(bool bClearOnly)
 	  );
 
 	for ( const auto& task : game_tasks ) {
-		CUITaskItem* pTaskItem	= nullptr;
+		CUITaskItem* pTaskItem	= NULL;
 /*
 		if(task->m_Objectives[0].TaskState()==eTaskUserDefined)
 		{
@@ -290,7 +290,7 @@ bool CUIEventsWnd::ItemHasDescription(CUITaskItem* itm)
 	{
 		SGameTaskObjective	*obj				= itm->Objective();
 		CMapLocation* ml						= obj->LinkedMapLocation();
-		bool bHasLocation						= (nullptr != ml);
+		bool bHasLocation						= (NULL != ml);
 		bool bIsMapMode							= GetDescriptionMode(); 
 		bool b									= (bIsMapMode&&bHasLocation&&ml->SpotEnabled());
 		return b;

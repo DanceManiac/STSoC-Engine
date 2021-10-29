@@ -551,19 +551,19 @@ public:
 };
 
 
-class dnullptrJoint : public dJoint {
+class dNullJoint : public dJoint {
   // intentionally undefined, don't use these
-  dnullptrJoint (const dnullptrJoint &);
-  void operator = (const dnullptrJoint &);
+  dNullJoint (const dNullJoint &);
+  void operator = (const dNullJoint &);
 
 public:
-  dnullptrJoint() = default;
-  dnullptrJoint (dWorldID world, dJointGroupID group=0)
-    { _id = dJointCreatenullptr (world, group); }
+  dNullJoint() = default;
+  dNullJoint (dWorldID world, dJointGroupID group=0)
+    { _id = dJointCreateNull (world, group); }
 
   void create (dWorldID world, dJointGroupID group=0) {
     if (_id) dJointDestroy (_id);
-    _id = dJointCreatenullptr (world, group);
+    _id = dJointCreateNull (world, group);
   }
 };
 

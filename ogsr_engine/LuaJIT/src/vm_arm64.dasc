@@ -631,7 +631,7 @@ static void build_subroutines(BuildCtx *ctx)
   |  mov CARG1, L
   |   str PC, SAVE_PC
   |  bl extern lj_meta_tget		// (lua_State *L, TValue *o, TValue *k)
-  |  // Returns TValue * (finished) or nullptr (metamethod).
+  |  // Returns TValue * (finished) or NULL (metamethod).
   |  cbz CRET1, >3
   |  ldr TMP0, [CRET1]
   |  str TMP0, [BASE, RA, lsl #3]
@@ -651,7 +651,7 @@ static void build_subroutines(BuildCtx *ctx)
   |->vmeta_tgetr:
   |  sxtw CARG2, TMP1w
   |  bl extern lj_tab_getinth		// (GCtab *t, int32_t key)
-  |  // Returns cTValue * or nullptr.
+  |  // Returns cTValue * or NULL.
   |  mov TMP0, TISNIL
   |  cbz CRET1, ->BC_TGETR_Z
   |  ldr TMP0, [CRET1]
@@ -689,7 +689,7 @@ static void build_subroutines(BuildCtx *ctx)
   |  mov CARG1, L
   |   str PC, SAVE_PC
   |  bl extern lj_meta_tset		// (lua_State *L, TValue *o, TValue *k)
-  |  // Returns TValue * (finished) or nullptr (metamethod).
+  |  // Returns TValue * (finished) or NULL (metamethod).
   |   ldr TMP0, [BASE, RA, lsl #3]
   |  cbz CRET1, >3
   |  // NOBARRIER: lj_meta_tset ensures the table is not black.
@@ -820,7 +820,7 @@ static void build_subroutines(BuildCtx *ctx)
   |   mov CARG1, L
   |    str PC, SAVE_PC
   |  bl extern lj_meta_arith  // (lua_State *L, TValue *ra,*rb,*rc, BCReg op)
-  |  // Returns nullptr (finished) or TValue * (metamethod).
+  |  // Returns NULL (finished) or TValue * (metamethod).
   |  cbz CRET1, ->cont_nop
   |
   |  // Call metamethod for binary op.
@@ -842,7 +842,7 @@ static void build_subroutines(BuildCtx *ctx)
   |  mov CARG1, L
   |   str PC, SAVE_PC
   |  bl extern lj_meta_len		// (lua_State *L, TValue *o)
-  |  // Returns nullptr (retry) or TValue * (metamethod base).
+  |  // Returns NULL (retry) or TValue * (metamethod base).
 #if LJ_52
   |  cbnz CRET1, ->vmeta_binop		// Binop call for compatibility.
   |  mov TAB:CARG1, TAB:RC
@@ -1140,7 +1140,7 @@ static void build_subroutines(BuildCtx *ctx)
   |2:  // Check for empty hash part first. Otherwise call C function.
   |  cbz TMP0w, ->fff_res
   |  bl extern lj_tab_getinth		// (GCtab *t, int32_t key)
-  |  // Returns cTValue * or nullptr.
+  |  // Returns cTValue * or NULL.
   |  cbz CRET1, ->fff_res
   |  ldr TMP0, [CRET1]
   |  b <1
@@ -2655,7 +2655,7 @@ static void build_ins(BuildCtx *ctx, BCOp op, int defop)
     |  mov CARG1, L
     |   str PC, SAVE_PC
     |  bl extern lj_meta_cat		// (lua_State *L, TValue *top, int left)
-    |  // Returns nullptr (finished) or TValue * (metamethod).
+    |  // Returns NULL (finished) or TValue * (metamethod).
     |  ldrb RBw, [PC, #-4+OFS_RB]
     |   ldr BASE, L->base
     |   cbnz CRET1, ->vmeta_binop

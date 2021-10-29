@@ -28,7 +28,7 @@ static void buf_grow(SBuf *sb, MSize sz)
     lj_assertG_(G(sbufL(sb)), sb->w == sb->e, "bad SBuf COW");
     b = (char *)lj_mem_new(sbufL(sb), nsz);
     setsbufflag(sb, flag & ~(GCSize)SBUF_FLAG_COW);
-    setgcrefnullptr(sbufX(sb)->cowref);
+    setgcrefnull(sbufX(sb)->cowref);
     memcpy(b, sb->b, osz);
   } else {
     b = (char *)lj_mem_realloc(sbufL(sb), sb->b, osz, nsz);
@@ -250,7 +250,7 @@ SBuf *lj_buf_puttab(SBuf *sb, GCtab *t, GCstr *sep, int32_t i, int32_t e)
       if (!o) {
       badtype:  /* Error: bad element type. */
 	sb->w = (char *)(intptr_t)i;  /* Store failing index. */
-	return nullptr;
+	return NULL;
       } else if (tvisstr(o)) {
 	MSize len = strV(o)->len;
 	w = lj_buf_wmem(lj_buf_more(sb, len + seplen), strVdata(o), len);

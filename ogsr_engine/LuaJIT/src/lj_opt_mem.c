@@ -594,7 +594,7 @@ TRef LJ_FASTCALL lj_opt_fwd_fload(jit_State *J)
   if (fid == IRFL_TAB_META) {
     IRIns *ir = IR(oref);
     if (ir->o == IR_TNEW || ir->o == IR_TDUP)
-      return lj_ir_knullptr(J, IRT_TAB);
+      return lj_ir_knull(J, IRT_TAB);
   }
 
 cselim:
@@ -676,10 +676,10 @@ static IRIns *aa_findcnew(jit_State *J, IRIns *ir)
       IRIns *ir1 = aa_findcnew(J, IR(ir->op1));  /* Left-recursion. */
       if (ir1) return ir1;
     }
-    if (irref_isk(ir->op2)) return nullptr;
+    if (irref_isk(ir->op2)) return NULL;
     ir = IR(ir->op2);  /* Flatten right-recursion. */
   }
-  return ir->o == IR_CNEW ? ir : nullptr;
+  return ir->o == IR_CNEW ? ir : NULL;
 }
 
 /* Alias analysis for two cdata allocations. */

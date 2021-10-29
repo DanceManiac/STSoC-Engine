@@ -64,7 +64,7 @@ LJ_DATADEF const CCallInfo lj_ir_callinfo[] = {
     (nargs)|(CCI_CALL_##kind)|(IRT_##type<<CCI_OTSHIFT)|(flags) },
 IRCALLDEF(IRCALLCI)
 #undef IRCALLCI
-  { nullptr, 0 }
+  { NULL, 0 }
 };
 
 /* -- IR emitter ---------------------------------------------------------- */
@@ -79,7 +79,7 @@ void LJ_FASTCALL lj_ir_growtop(jit_State *J)
 				     2*szins*sizeof(IRIns));
     J->irtoplim = J->irbotlim + 2*szins;
   } else {
-    baseir = (IRIns *)lj_mem_realloc(J->L, nullptr, 0, LJ_MIN_IRSZ*sizeof(IRIns));
+    baseir = (IRIns *)lj_mem_realloc(J->L, NULL, 0, LJ_MIN_IRSZ*sizeof(IRIns));
     J->irbotlim = REF_BASE - LJ_MIN_IRSZ/4;
     J->irtoplim = J->irbotlim + LJ_MIN_IRSZ;
   }
@@ -304,7 +304,7 @@ TRef lj_ir_ktrace(jit_State *J)
   IRIns *ir = IR(ref);
   lj_assertJ(irt_toitype_(IRT_P64) == LJ_TTRACE, "mismatched type mapping");
   ir->t.irt = IRT_P64;
-  ir->o = LJ_GC64 ? IR_KNUM : IR_Knullptr;  /* Not IR_KGC yet, but same size. */
+  ir->o = LJ_GC64 ? IR_KNUM : IR_KNULL;  /* Not IR_KGC yet, but same size. */
   ir->op12 = 0;
   ir->prev = 0;
   return TREF(ref, IRT_P64);
@@ -337,21 +337,21 @@ found:
   return TREF(ref, IRT_PGC);
 }
 
-/* Intern typed nullptr constant. */
-TRef lj_ir_knullptr(jit_State *J, IRType t)
+/* Intern typed NULL constant. */
+TRef lj_ir_knull(jit_State *J, IRType t)
 {
   IRIns *ir, *cir = J->cur.ir;
   IRRef ref;
-  for (ref = J->chain[IR_Knullptr]; ref; ref = cir[ref].prev)
+  for (ref = J->chain[IR_KNULL]; ref; ref = cir[ref].prev)
     if (irt_t(cir[ref].t) == t)
       goto found;
   ref = ir_nextk(J);
   ir = IR(ref);
   ir->i = 0;
   ir->t.irt = (uint8_t)t;
-  ir->o = IR_Knullptr;
-  ir->prev = J->chain[IR_Knullptr];
-  J->chain[IR_Knullptr] = (IRRef1)ref;
+  ir->o = IR_KNULL;
+  ir->prev = J->chain[IR_KNULL];
+  J->chain[IR_KNULL] = (IRRef1)ref;
 found:
   return TREF(ref, t);
 }
@@ -393,7 +393,7 @@ void lj_ir_kvalue(lua_State *L, TValue *tv, const IRIns *ir)
   case IR_KPTR: case IR_KKPTR:
     setnumV(tv, (lua_Number)(uintptr_t)ir_kptr(ir));
     break;
-  case IR_Knullptr: setintV(tv, 0); break;
+  case IR_KNULL: setintV(tv, 0); break;
   case IR_KNUM: setnumV(tv, ir_knum(ir)->n); break;
 #if LJ_HASFFI
   case IR_KINT64: {

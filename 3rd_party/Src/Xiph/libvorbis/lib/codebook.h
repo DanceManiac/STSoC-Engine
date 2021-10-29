@@ -23,7 +23,7 @@
 /* This structure encapsulates huffman and VQ style encoding books; it
    doesn't do anything specific to either.
 
-   valuelist/quantlist are nonnullptr (and q_* significant) only if
+   valuelist/quantlist are nonNULL (and q_* significant) only if
    there's entry->value mapping to be done.
 
    If encode-side mapping must be done (and thus the entry needs to be

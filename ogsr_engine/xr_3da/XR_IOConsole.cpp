@@ -20,7 +20,7 @@
 
 #define  LDIST .05f
 
-ENGINE_API CConsole*	Console		=	nullptr;
+ENGINE_API CConsole*	Console		=	NULL;
 const char *			ioc_prompt	=	">>> ";
 
 //////////////////////////////////////////////////////////////////////
@@ -534,7 +534,7 @@ char * CConsole::GetString(LPCSTR cmd)
 
 /*
 	ioc_command *cmd = (ioc_command *)bsearch(name, ioc_cmd_array,ioc_num_cmd,sizeof(ioc_command),ioc_compare_search_cmd);
-	if (cmd!=nullptr && cmd->type==cmdVALUE) {
+	if (cmd!=NULL && cmd->type==cmdVALUE) {
 		u32 *v = (u32 *) cmd->ptr; // pointer to value
 		xr_token *tok=cmd->tok;
 		while (tok->name) {
@@ -545,7 +545,7 @@ char * CConsole::GetString(LPCSTR cmd)
 		}
 	}
 */
-	return nullptr;
+	return NULL;
 }
 char * CConsole::GetToken(LPCSTR cmd)
 {
@@ -560,14 +560,14 @@ const xr_token* CConsole::GetXRToken(LPCSTR cmd)
 		CCC_Token* cf = dynamic_cast<CCC_Token*>(C);
 		return cf->GetToken();
 	}
-	return nullptr;
+	return NULL;
 }
 
 IConsole_Command* CConsole::GetCommand( LPCSTR cmd )
 {
 	vecCMD_IT it = Commands.find( cmd );
 	if ( it == Commands.end() )
-		return nullptr;
+		return NULL;
 	else
 		return it->second;
 }
@@ -580,7 +580,7 @@ Fvector* CConsole::GetFVectorPtr( LPCSTR cmd )
 	{
 		return cf->GetValuePtr();
 	}
-	return					nullptr;
+	return					NULL;
 }
 
 Fvector CConsole::GetFVector( LPCSTR cmd )
@@ -597,7 +597,7 @@ char * CConsole::GetNextValue(LPCSTR cmd)
 {
 
 	ioc_command *cmd = (ioc_command *)bsearch(name, ioc_cmd_array,ioc_num_cmd,sizeof(ioc_command),ioc_compare_search_cmd);
-	if (cmd!=nullptr && cmd->type==cmdVALUE) {
+	if (cmd!=NULL && cmd->type==cmdVALUE) {
 		u32 *v = (u32 *) cmd->ptr; // pointer to value
 		xr_token *tok=cmd->tok;
 		while (tok->name) {
@@ -618,7 +618,7 @@ char * CConsole::GetPrevValue(LPCSTR cmd)
 {
 
 	ioc_command *cmd = (ioc_command *)bsearch(name, ioc_cmd_array,ioc_num_cmd,sizeof(ioc_command),ioc_compare_search_cmd);
-	if (cmd!=nullptr && cmd->type==cmdVALUE) {
+	if (cmd!=NULL && cmd->type==cmdVALUE) {
 		u32 *v = (u32 *) cmd->ptr; // pointer to value
 		xr_token *tok=cmd->tok;
 		while (tok->name) {

@@ -112,12 +112,12 @@ static int ffi_index_meta(lua_State *L, CTState *cts, CType *ct, MMS mm)
   if (!tv) {
     const char *s;
   err_index:
-    s = strdata(lj_ctype_repr(L, id, nullptr));
+    s = strdata(lj_ctype_repr(L, id, NULL));
     if (tvisstr(L->base+1)) {
       lj_err_callerv(L, LJ_ERR_FFI_BADMEMBER, s, strVdata(L->base+1));
     } else {
       const char *key = tviscdata(L->base+1) ?
-	strdata(lj_ctype_repr(L, cdataV(L->base+1)->ctypeid, nullptr)) :
+	strdata(lj_ctype_repr(L, cdataV(L->base+1)->ctypeid, NULL)) :
 	lj_typename(L->base+1);
       lj_err_callerv(L, LJ_ERR_FFI_BADIDXW, s, key);
     }
@@ -238,7 +238,7 @@ LJLIB_CF(ffi_meta___call)	LJLIB_REC(cdata_call)
   if (tv)
     return lj_meta_tailcall(L, tv);
   else if (mm == MM_call)
-    lj_err_callerv(L, LJ_ERR_FFI_BADCALL, strdata(lj_ctype_repr(L, id, nullptr)));
+    lj_err_callerv(L, LJ_ERR_FFI_BADCALL, strdata(lj_ctype_repr(L, id, NULL)));
   return lj_cf_ffi_new(L);
 }
 
@@ -319,7 +319,7 @@ LJLIB_CF(ffi_meta___tostring)
       }
     }
   }
-  lj_strfmt_pushf(L, msg, strdata(lj_ctype_repr(L, id, nullptr)), p);
+  lj_strfmt_pushf(L, msg, strdata(lj_ctype_repr(L, id, NULL)), p);
 checkgc:
   lj_gc_check(L);
   return 1;
@@ -334,7 +334,7 @@ static int ffi_pairs(lua_State *L, MMS mm)
   if (ctype_isptr(ct->info)) id = ctype_cid(ct->info);
   tv = lj_ctype_meta(cts, id, mm);
   if (!tv)
-    lj_err_callerv(L, LJ_ERR_FFI_BADMM, strdata(lj_ctype_repr(L, id, nullptr)),
+    lj_err_callerv(L, LJ_ERR_FFI_BADMM, strdata(lj_ctype_repr(L, id, NULL)),
 		   strdata(mmname_str(G(L), mm)));
   return lj_meta_tailcall(L, tv);
 }
@@ -456,7 +456,7 @@ static int ffi_callback_set(lua_State *L, GCfunc *fn)
 
 LJLIB_CF(ffi_callback_free)
 {
-  return ffi_callback_set(L, nullptr);
+  return ffi_callback_set(L, NULL);
 }
 
 LJLIB_CF(ffi_callback_set)
@@ -493,7 +493,7 @@ LJLIB_CF(ffi_cdef)
 LJLIB_CF(ffi_new)	LJLIB_REC(.)
 {
   CTState *cts = ctype_cts(L);
-  CTypeID id = ffi_checkctype(L, cts, nullptr);
+  CTypeID id = ffi_checkctype(L, cts, NULL);
   CType *ct = ctype_raw(cts, id);
   CTSize sz;
   CTInfo info = lj_ctype_info(cts, id, &sz);
@@ -530,7 +530,7 @@ LJLIB_CF(ffi_new)	LJLIB_REC(.)
 LJLIB_CF(ffi_cast)	LJLIB_REC(ffi_new)
 {
   CTState *cts = ctype_cts(L);
-  CTypeID id = ffi_checkctype(L, cts, nullptr);
+  CTypeID id = ffi_checkctype(L, cts, NULL);
   CType *d = ctype_raw(cts, id);
   TValue *o = lj_lib_checkany(L, 2);
   L->top = o+1;  /* Make sure this is the last item on the stack. */
@@ -584,7 +584,7 @@ LJLIB_CF(ffi_typeinfo)
 LJLIB_CF(ffi_istype)	LJLIB_REC(.)
 {
   CTState *cts = ctype_cts(L);
-  CTypeID id1 = ffi_checkctype(L, cts, nullptr);
+  CTypeID id1 = ffi_checkctype(L, cts, NULL);
   TValue *o = lj_lib_checkany(L, 2);
   int b = 0;
   if (tviscdata(o)) {
@@ -614,7 +614,7 @@ LJLIB_CF(ffi_istype)	LJLIB_REC(.)
 LJLIB_CF(ffi_sizeof)	LJLIB_REC(ffi_xof FF_ffi_sizeof)
 {
   CTState *cts = ctype_cts(L);
-  CTypeID id = ffi_checkctype(L, cts, nullptr);
+  CTypeID id = ffi_checkctype(L, cts, NULL);
   CTSize sz;
   if (LJ_UNLIKELY(tviscdata(L->base) && cdataisv(cdataV(L->base)))) {
     sz = cdatavlen(cdataV(L->base));
@@ -636,7 +636,7 @@ LJLIB_CF(ffi_sizeof)	LJLIB_REC(ffi_xof FF_ffi_sizeof)
 LJLIB_CF(ffi_alignof)	LJLIB_REC(ffi_xof FF_ffi_alignof)
 {
   CTState *cts = ctype_cts(L);
-  CTypeID id = ffi_checkctype(L, cts, nullptr);
+  CTypeID id = ffi_checkctype(L, cts, NULL);
   CTSize sz = 0;
   CTInfo info = lj_ctype_info(cts, id, &sz);
   setintV(L->top-1, 1 << ctype_align(info));
@@ -646,7 +646,7 @@ LJLIB_CF(ffi_alignof)	LJLIB_REC(ffi_xof FF_ffi_alignof)
 LJLIB_CF(ffi_offsetof)	LJLIB_REC(ffi_xof FF_ffi_offsetof)
 {
   CTState *cts = ctype_cts(L);
-  CTypeID id = ffi_checkctype(L, cts, nullptr);
+  CTypeID id = ffi_checkctype(L, cts, NULL);
   GCstr *name = lj_lib_checkstr(L, 2);
   CType *ct = lj_ctype_rawref(cts, id);
   CTSize ofs;
@@ -766,7 +766,7 @@ LJLIB_PUSH(top-8) LJLIB_SET(!)  /* Store reference to miscmap table. */
 LJLIB_CF(ffi_metatype)
 {
   CTState *cts = ctype_cts(L);
-  CTypeID id = ffi_checkctype(L, cts, nullptr);
+  CTypeID id = ffi_checkctype(L, cts, NULL);
   GCtab *mt = lj_lib_checktab(L, 2);
   GCtab *t = cts->miscmap;
   CType *ct = ctype_get(cts, id);  /* Only allow raw types. */
@@ -850,18 +850,18 @@ LUALIB_API int luaopen_ffi(lua_State *L)
   CTState *cts = lj_ctype_init(L);
   settabV(L, L->top++, (cts->miscmap = lj_tab_new(L, 0, 1)));
   cts->finalizer = ffi_finalizer(L);
-  LJ_LIB_REG(L, nullptr, ffi_meta);
+  LJ_LIB_REG(L, NULL, ffi_meta);
   /* NOBARRIER: basemt is a GC root. */
   setgcref(basemt_it(G(L), LJ_TCDATA), obj2gco(tabV(L->top-1)));
-  LJ_LIB_REG(L, nullptr, ffi_clib);
-  LJ_LIB_REG(L, nullptr, ffi_callback);
+  LJ_LIB_REG(L, NULL, ffi_clib);
+  LJ_LIB_REG(L, NULL, ffi_callback);
   /* NOBARRIER: the key is new and lj_tab_newkey() handles the barrier. */
   settabV(L, lj_tab_setstr(L, cts->miscmap, &cts->g->strempty), tabV(L->top-1));
   L->top--;
   lj_clib_default(L, tabV(L->top-1));  /* Create ffi.C default namespace. */
   lua_pushliteral(L, LJ_OS_NAME);
   lua_pushliteral(L, LJ_ARCH_NAME);
-  LJ_LIB_REG(L, nullptr, ffi);  /* Note: no global "ffi" created! */
+  LJ_LIB_REG(L, NULL, ffi);  /* Note: no global "ffi" created! */
   ffi_register_module(L);
   return 1;
 }

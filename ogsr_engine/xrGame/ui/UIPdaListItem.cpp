@@ -19,8 +19,8 @@
 
 CUIPdaListItem::CUIPdaListItem()
 {
-	UIMask = nullptr;
-	UIInfo = nullptr;
+	UIMask = NULL;
+	UIInfo = NULL;
 }
 
 CUIPdaListItem::~CUIPdaListItem()

@@ -10,7 +10,7 @@
 #	include "ps_instance.h"
 #	include "CustomHUD.h"
 
-ENGINE_API	IGame_Persistent*		g_pGamePersistent	= nullptr;
+ENGINE_API	IGame_Persistent*		g_pGamePersistent	= NULL;
 
 bool IsMainMenuActive() { return  g_pGamePersistent && g_pGamePersistent->m_pMainMenu && g_pGamePersistent->m_pMainMenu->IsActive(); }
 
@@ -22,7 +22,7 @@ IGame_Persistent::IGame_Persistent	()
 	Device.seqAppActivate.Add		(this);
 	Device.seqAppDeactivate.Add		(this);
 
-	m_pMainMenu						= nullptr;
+	m_pMainMenu						= NULL;
 
 	pEnvironment					= xr_new<CEnvironment>();
 

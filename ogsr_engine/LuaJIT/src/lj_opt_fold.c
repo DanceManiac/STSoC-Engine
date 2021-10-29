@@ -948,16 +948,16 @@ LJFOLDF(kfold_strto)
 
 /* -- Constant folding of equality checks --------------------------------- */
 
-/* Don't constant-fold away FLOAD checks against Knullptr. */
-LJFOLD(EQ FLOAD Knullptr)
-LJFOLD(NE FLOAD Knullptr)
+/* Don't constant-fold away FLOAD checks against KNULL. */
+LJFOLD(EQ FLOAD KNULL)
+LJFOLD(NE FLOAD KNULL)
 LJFOLDX(lj_opt_cse)
 
-/* But fold all other Knullptr compares, since only Knullptr is equal to Knullptr. */
-LJFOLD(EQ any Knullptr)
-LJFOLD(NE any Knullptr)
-LJFOLD(EQ Knullptr any)
-LJFOLD(NE Knullptr any)
+/* But fold all other KNULL compares, since only KNULL is equal to KNULL. */
+LJFOLD(EQ any KNULL)
+LJFOLD(NE any KNULL)
+LJFOLD(EQ KNULL any)
+LJFOLD(NE KNULL any)
 LJFOLD(EQ KINT KINT)  /* Constants are unique, so same refs <==> same value. */
 LJFOLD(NE KINT KINT)
 LJFOLD(EQ KINT64 KINT64)

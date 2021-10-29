@@ -39,7 +39,7 @@ CObject*	CObjectList::FindObjectByName	( shared_str name )
 		if ((*I)->cName().equal(name))	return (*I);
 	for (xr_vector<CObject*>::iterator I=objects_sleeping.begin(); I!=objects_sleeping.end(); I++)
 		if ((*I)->cName().equal(name))	return (*I);
-	return	nullptr;
+	return	NULL;
 }
 CObject*	CObjectList::FindObjectByName	( LPCSTR name )
 {
@@ -57,7 +57,7 @@ CObject*	CObjectList::FindObjectByCLS_ID	( CLASS_ID cls )
 		if (O!=objects_sleeping.end())	return *O;
 	}
 
-	return	nullptr;
+	return	NULL;
 }
 
 

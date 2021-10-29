@@ -14,8 +14,8 @@ CUIScrollView::CUIScrollView()
 	m_downIndent		= 0.0f;
 	m_flags.zero		();
 	SetFixedScrollBar	(true);
-	m_pad = nullptr;
-	m_VScrollBar = nullptr;
+	m_pad = NULL;
+	m_VScrollBar = NULL;
 }
 
 CUIScrollView::~CUIScrollView()
@@ -288,7 +288,7 @@ void CUIScrollView::SetScrollPos(int value)
 	m_VScrollBar->SetScrollPos(value);
 	if (!m_flags.test(eInverseDir))
 	{
-		OnScrollV(nullptr, nullptr);
+		OnScrollV(NULL, NULL);
 	}
 }
 
@@ -298,7 +298,7 @@ void CUIScrollView::ScrollToBegin		()
 		RecalcSize			();
 
 	m_VScrollBar->SetScrollPos(m_VScrollBar->GetMinRange());
-	OnScrollV(nullptr,nullptr);
+	OnScrollV(NULL,NULL);
 }
 
 void CUIScrollView::ScrollToEnd			()
@@ -307,7 +307,7 @@ void CUIScrollView::ScrollToEnd			()
 		RecalcSize			();
 
 	m_VScrollBar->SetScrollPos(m_VScrollBar->GetMaxRange());
-	OnScrollV(nullptr,nullptr);
+	OnScrollV(NULL,NULL);
 }
 
 void CUIScrollView::SetRightIndention	(float val)
@@ -371,7 +371,7 @@ void CUIScrollView::SetSelected			(CUIWindow* w)
 
 CUIWindow* CUIScrollView::GetSelected(){
 	if(!m_flags.test(eItemsSelectabe))
-		return nullptr;
+		return NULL;
 
 	for(WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); m_pad->GetChildWndList().end()!=it; ++it)
 	{
@@ -379,7 +379,7 @@ CUIWindow* CUIScrollView::GetSelected(){
 			return *it;
 	}
 
-	return nullptr;
+	return NULL;
 }
 
 void CUIScrollView::UpdateChildrenLenght(){

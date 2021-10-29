@@ -114,7 +114,7 @@ lzo_adler32(lzo_uint32_t adler, const lzo_bytep buf, lzo_uint len)
     lzo_uint32_t s2 = (adler >> 16) & 0xffff;
     unsigned k;
 
-    if (buf == nullptr)
+    if (buf == NULL)
         return 1;
 
     while (len > 0)

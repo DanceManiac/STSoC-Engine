@@ -318,7 +318,7 @@ struct ovectl_ratemanage2_arg {
  * Argument: <tt>struct ovectl_ratemanage2_arg *</tt>
  *
  * Used to set the current encoder bitrate management settings to the values
- * listed in the ovectl_ratemanage2_arg. Passing a nullptr pointer will disable
+ * listed in the ovectl_ratemanage2_arg. Passing a NULL pointer will disable
  * bitrate management.
 */
 #define OV_ECTL_RATEMANAGE2_SET      0x15

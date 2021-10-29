@@ -60,11 +60,11 @@ protected:
 
 template <class T>
 CUIInteractiveBackground<T>::CUIInteractiveBackground(){
-	m_stateCurrent     = nullptr;
-	m_stateEnabled     = nullptr;
-	m_stateDisabled    = nullptr;
-	m_stateHighlighted = nullptr;
-	m_stateTouched     = nullptr;	
+	m_stateCurrent     = NULL;
+	m_stateEnabled     = NULL;
+	m_stateDisabled    = NULL;
+	m_stateHighlighted = NULL;
+	m_stateTouched     = NULL;	
 }
 
 template <class T>

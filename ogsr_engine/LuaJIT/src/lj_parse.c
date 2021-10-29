@@ -1055,7 +1055,7 @@ static void var_new(LexState *ls, BCReg n, GCstr *name)
     lj_mem_growvec(ls->L, ls->vstack, ls->sizevstack, LJ_MAX_VSTACK, VarInfo);
   }
   lj_assertFS((uintptr_t)name < VARNAME__MAX ||
-	      lj_tab_getstr(fs->kt, name) != nullptr,
+	      lj_tab_getstr(fs->kt, name) != NULL,
 	      "unanchored variable name");
   /* NOBARRIER: name is anchored in fs->kt and ls->vstack is not a GCobj. */
   setgcref(ls->vstack[vtop].name, obj2gco(name));
@@ -1162,7 +1162,7 @@ static MSize gola_new(LexState *ls, GCstr *name, uint8_t info, BCPos pc)
       lj_lex_error(ls, 0, LJ_ERR_XLIMC, LJ_MAX_VSTACK);
     lj_mem_growvec(ls->L, ls->vstack, ls->sizevstack, LJ_MAX_VSTACK, VarInfo);
   }
-  lj_assertFS(name == NAME_BREAK || lj_tab_getstr(fs->kt, name) != nullptr,
+  lj_assertFS(name == NAME_BREAK || lj_tab_getstr(fs->kt, name) != NULL,
 	      "unanchored label name");
   /* NOBARRIER: name is anchored in fs->kt and ls->vstack is not a GCobj. */
   setgcref(ls->vstack[vtop].name, obj2gco(name));
@@ -1182,7 +1182,7 @@ static void gola_patch(LexState *ls, VarInfo *vg, VarInfo *vl)
 {
   FuncState *fs = ls->fs;
   BCPos pc = vg->startpc;
-  setgcrefnullptr(vg->name);  /* Invalidate pending goto. */
+  setgcrefnull(vg->name);  /* Invalidate pending goto. */
   setbc_a(&fs->bcbase[pc].ins, vl->slot);
   jmp_patch(fs, pc, vl->startpc);
 }
@@ -1231,10 +1231,10 @@ static void gola_fixup(LexState *ls, FuncScope *bl)
   VarInfo *ve = ls->vstack + ls->vtop;
   for (; v < ve; v++) {
     GCstr *name = strref(v->name);
-    if (name != nullptr) {  /* Only consider remaining valid gotos/labels. */
+    if (name != NULL) {  /* Only consider remaining valid gotos/labels. */
       if (gola_islabel(v)) {
 	VarInfo *vg;
-	setgcrefnullptr(v->name);  /* Invalidate label that goes out of scope. */
+	setgcrefnull(v->name);  /* Invalidate label that goes out of scope. */
 	for (vg = v+1; vg < ve; vg++)  /* Resolve pending backward gotos. */
 	  if (strref(vg->name) == name && gola_isgoto(vg)) {
 	    if ((bl->flags&FSCOPE_UPVAL) && vg->slot > v->slot)
@@ -1267,7 +1267,7 @@ static VarInfo *gola_findlabel(LexState *ls, GCstr *name)
   for (; v < ve; v++)
     if (strref(v->name) == name && gola_islabel(v))
       return v;
-  return nullptr;
+  return NULL;
 }
 
 /* -- Scope handling ------------------------------------------------------ */
@@ -1506,10 +1506,10 @@ static void fs_fixup_var(LexState *ls, GCproto *pt, uint8_t *p, size_t ofsvar)
 /* Initialize with empty debug info, if disabled. */
 #define fs_prep_line(fs, numline)		(UNUSED(numline), 0)
 #define fs_fixup_line(fs, pt, li, numline) \
-  pt->firstline = pt->numline = 0, setmref((pt)->lineinfo, nullptr)
+  pt->firstline = pt->numline = 0, setmref((pt)->lineinfo, NULL)
 #define fs_prep_var(ls, fs, ofsvar)		(UNUSED(ofsvar), 0)
 #define fs_fixup_var(ls, pt, p, ofsvar) \
-  setmref((pt)->uvinfo, nullptr), setmref((pt)->varinfo, nullptr)
+  setmref((pt)->uvinfo, NULL), setmref((pt)->varinfo, NULL)
 
 #endif
 
@@ -1536,7 +1536,7 @@ static void fs_fixup_ret(FuncState *fs)
   }
   fs->bl->flags |= FSCOPE_NOCLOSE;  /* Handled above. */
   fscope_end(fs);
-  lj_assertFS(fs->bl == nullptr, "bad scope nesting");
+  lj_assertFS(fs->bl == NULL, "bad scope nesting");
   /* May need to fixup returns encoded before first function was created. */
   if (fs->flags & PROTO_FIXUP_RETURN) {
     BCPos pc;
@@ -1608,7 +1608,7 @@ static GCproto *fs_finish(LexState *ls, BCLine line)
   L->top--;  /* Pop table of constants. */
   ls->vtop = fs->vbase;  /* Reset variable stack. */
   ls->fs = fs->prev;
-  lj_assertL(ls->fs != nullptr || ls->tok == TK_eof, "bad parser state");
+  lj_assertL(ls->fs != NULL || ls->tok == TK_eof, "bad parser state");
   return pt;
 }
 
@@ -1628,7 +1628,7 @@ static void fs_init(LexState *ls, FuncState *fs)
   fs->nkn = 0;
   fs->nactvar = 0;
   fs->nuv = 0;
-  fs->bl = nullptr;
+  fs->bl = NULL;
   fs->flags = 0;
   fs->framesize = 1;  /* Minimum frame size. */
   fs->kt = lj_tab_new(L, 0, 0);
@@ -1720,7 +1720,7 @@ static void expr_table(LexState *ls, ExpDesc *e)
 {
   FuncState *fs = ls->fs;
   BCLine line = ls->linenumber;
-  GCtab *t = nullptr;
+  GCtab *t = NULL;
   int vcall = 0, needarr = 0, fixt = 0;
   uint32_t narr = 1;  /* First array index. */
   uint32_t nhash = 0;  /* Number of hash entries. */
@@ -2248,7 +2248,7 @@ static void parse_call_assign(LexState *ls)
   if (vl.v.k == VCALL) {  /* Function call statement. */
     setbc_b(bcptr(fs, &vl.v), 1);  /* No results. */
   } else {  /* Start of an assignment. */
-    vl.prev = nullptr;
+    vl.prev = NULL;
     parse_assignment(ls, &vl, 1);
   }
 }
@@ -2729,7 +2729,7 @@ GCproto *lj_parse(LexState *ls)
   fs_init(ls, &fs);
   fs.linedefined = 0;
   fs.numparams = 0;
-  fs.bcbase = nullptr;
+  fs.bcbase = NULL;
   fs.bclim = 0;
   fs.flags |= PROTO_VARARG;  /* Main chunk is always a vararg func. */
   fscope_begin(&fs, &bl, 0);
@@ -2740,7 +2740,7 @@ GCproto *lj_parse(LexState *ls)
     err_token(ls, TK_eof);
   pt = fs_finish(ls, ls->linenumber);
   L->top--;  /* Drop chunkname. */
-  lj_assertL(fs.prev == nullptr && ls->fs == nullptr, "mismatched frame nesting");
+  lj_assertL(fs.prev == NULL && ls->fs == NULL, "mismatched frame nesting");
   lj_assertL(pt->sizeuv == 0, "toplevel proto has upvalues");
   return pt;
 }

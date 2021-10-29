@@ -86,18 +86,18 @@ void dasm_init(Dst_DECL, int maxsection)
   dasm_State *D;
   size_t psz = 0;
   int i;
-  Dst_REF = nullptr;
+  Dst_REF = NULL;
   DASM_M_GROW(Dst, struct dasm_State, Dst_REF, psz, DASM_PSZ(maxsection));
   D = Dst_REF;
   D->psize = psz;
-  D->lglabels = nullptr;
+  D->lglabels = NULL;
   D->lgsize = 0;
-  D->pclabels = nullptr;
+  D->pclabels = NULL;
   D->pcsize = 0;
-  D->globals = nullptr;
+  D->globals = NULL;
   D->maxsection = maxsection;
   for (i = 0; i < maxsection; i++) {
-    D->sections[i].buf = nullptr;  /* Need this for pass3. */
+    D->sections[i].buf = NULL;  /* Need this for pass3. */
     D->sections[i].rbuf = D->sections[i].buf - DASM_SEC2POS(i);
     D->sections[i].bsize = 0;
     D->sections[i].epos = 0;  /* Wrong, but is recalculated after resize. */
@@ -401,14 +401,14 @@ int dasm_encode(Dst_DECL, void *buffer)
 
     while (b != endb) {
       dasm_ActList p = D->actionlist + *b++;
-      unsigned char *mark = nullptr;
+      unsigned char *mark = NULL;
       while (1) {
 	int action = *p++;
 	int n = (action >= DASM_DISP && action <= DASM_ALIGN) ? *b++ : 0;
 	switch (action) {
 	case DASM_DISP: if (!mark) mark = cp; {
 	  unsigned char *mm = mark;
-	  if (*p != DASM_IMM_DB && *p != DASM_IMM_WB) mark = nullptr;
+	  if (*p != DASM_IMM_DB && *p != DASM_IMM_WB) mark = NULL;
 	  if (n == 0) { int mrm = mm[-1]&7; if (mrm == 4) mrm = mm[0]&7;
 	    if (mrm != 5) { mm[-1] -= 0x80; break; } }
 	  if (((n+128) & -256) != 0) goto wd; else mm[-1] -= 0x40;
@@ -416,11 +416,11 @@ int dasm_encode(Dst_DECL, void *buffer)
 	  /* fallthrough */
 	case DASM_IMM_S: case DASM_IMM_B: wb: dasmb(n); break;
 	case DASM_IMM_DB: if (((n+128)&-256) == 0) {
-	    db: if (!mark) mark = cp; mark[-2] += 2; mark = nullptr; goto wb;
-	  } else mark = nullptr;
+	    db: if (!mark) mark = cp; mark[-2] += 2; mark = NULL; goto wb;
+	  } else mark = NULL;
 	  /* fallthrough */
 	case DASM_IMM_D: wd: dasmd(n); break;
-	case DASM_IMM_WB: if (((n+128)&-256) == 0) goto db; else mark = nullptr;
+	case DASM_IMM_WB: if (((n+128)&-256) == 0) goto db; else mark = NULL;
 	  /* fallthrough */
 	case DASM_IMM_W: dasmw(n); break;
 	case DASM_VREG: {

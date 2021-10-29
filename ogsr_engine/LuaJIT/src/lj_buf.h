@@ -73,7 +73,7 @@ LJ_FUNC char * LJ_FASTCALL lj_buf_tmp(lua_State *L, MSize sz);
 static LJ_AINLINE void lj_buf_init(lua_State *L, SBuf *sb)
 {
   setsbufL(sb, L);
-  sb->w = sb->e = sb->b = nullptr;
+  sb->w = sb->e = sb->b = NULL;
 }
 
 static LJ_AINLINE void lj_buf_reset(SBuf *sb)
@@ -136,8 +136,8 @@ static LJ_AINLINE void lj_bufx_reset(SBufExt *sbx)
 {
   if (sbufiscow(sbx)) {
     setmrefu(sbx->L, (mrefu(sbx->L) & ~(GCSize)SBUF_FLAG_COW));
-    setgcrefnullptr(sbx->cowref);
-    sbx->b = sbx->e = nullptr;
+    setgcrefnull(sbx->cowref);
+    sbx->b = sbx->e = NULL;
   }
   sbx->r = sbx->w = sbx->b;
 }
@@ -146,8 +146,8 @@ static LJ_AINLINE void lj_bufx_free(lua_State *L, SBufExt *sbx)
 {
   if (!sbufiscoworborrow(sbx)) lj_mem_free(G(L), sbx->b, sbufsz(sbx));
   setsbufXL(sbx, L, SBUF_FLAG_EXT);
-  setgcrefnullptr(sbx->cowref);
-  sbx->r = sbx->w = sbx->b = sbx->e = nullptr;
+  setgcrefnull(sbx->cowref);
+  sbx->r = sbx->w = sbx->b = sbx->e = NULL;
 }
 
 #if LJ_HASBUFFER && LJ_HASJIT

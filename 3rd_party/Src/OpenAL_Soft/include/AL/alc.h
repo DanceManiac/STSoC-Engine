@@ -122,7 +122,7 @@ typedef void ALCvoid;
 /**
  * String for the given device's specifier.
  *
- * If device handle is nullptr, it is instead a nullptr-char separated list of
+ * If device handle is NULL, it is instead a null-char separated list of
  * strings of known device specifiers (list ends with an empty string).
  */
 #define ALC_DEVICE_SPECIFIER                     0x1005
@@ -135,7 +135,7 @@ typedef void ALCvoid;
 /**
  * String for the given capture device's specifier.
  *
- * If device handle is nullptr, it is instead a nullptr-char separated list of
+ * If device handle is NULL, it is instead a null-char separated list of
  * strings of known capture device specifiers (list ends with an empty string).
  */
 #define ALC_CAPTURE_DEVICE_SPECIFIER             0x310
@@ -152,7 +152,7 @@ typedef void ALCvoid;
 /**
  * String for the given extended device's specifier.
  *
- * If device handle is nullptr, it is instead a nullptr-char separated list of
+ * If device handle is NULL, it is instead a null-char separated list of
  * strings of known extended device specifiers (list ends with an empty string).
  */
 #define ALC_ALL_DEVICES_SPECIFIER                0x1013

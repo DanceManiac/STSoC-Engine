@@ -624,7 +624,7 @@ static double setting_to_approx_bitrate(vorbis_info *vi){
   int ch=vi->channels;
   const double *r=setup->rate_mapping;
 
-  if(r==nullptr)
+  if(r==NULL)
     return(-1);
 
   return((r[is]*(1.-ds)+r[is+1]*ds)*ch);
@@ -668,7 +668,7 @@ static const void *get_setup_template(long ch,long srate,
     i++;
   }
 
-  return nullptr;
+  return NULL;
 }
 
 /* encoders will need to use vorbis_info_init beforehand and call
@@ -681,10 +681,10 @@ static const void *get_setup_template(long ch,long srate,
 int vorbis_encode_setup_init(vorbis_info *vi){
   int i,i0=0,singleblock=0;
   codec_setup_info *ci=vi->codec_setup;
-  ve_setup_data_template *setup=nullptr;
+  ve_setup_data_template *setup=NULL;
   highlevel_encode_setup *hi=&ci->hi;
 
-  if(ci==nullptr)return(OV_EINVAL);
+  if(ci==NULL)return(OV_EINVAL);
   if(!hi->impulse_block_p)i0=1;
 
   /* too low/high an ATH floater is nonsensical, but doesn't break anything */
@@ -699,7 +699,7 @@ int vorbis_encode_setup_init(vorbis_info *vi){
   /* get the appropriate setup template; matches the fetch in previous
      stages */
   setup=(ve_setup_data_template *)hi->setup;
-  if(setup==nullptr)return(OV_EINVAL);
+  if(setup==NULL)return(OV_EINVAL);
 
   hi->set_in_stone=1;
   /* choose block sizes from configured sizes as well as paying
@@ -1044,7 +1044,7 @@ int vorbis_encode_ctl(vorbis_info *vi,int number,void *arg){
       {
         struct ovectl_ratemanage_arg *ai=
           (struct ovectl_ratemanage_arg *)arg;
-        if(ai==nullptr){
+        if(ai==NULL){
           hi->managed=0;
         }else{
           hi->managed=ai->management_active;
@@ -1059,7 +1059,7 @@ int vorbis_encode_ctl(vorbis_info *vi,int number,void *arg){
       {
         struct ovectl_ratemanage_arg *ai=
           (struct ovectl_ratemanage_arg *)arg;
-        if(ai==nullptr){
+        if(ai==NULL){
           hi->bitrate_av=0;
         }else{
           hi->bitrate_av=(ai->bitrate_av_lo+ai->bitrate_av_hi)*.5;
@@ -1071,7 +1071,7 @@ int vorbis_encode_ctl(vorbis_info *vi,int number,void *arg){
       {
         struct ovectl_ratemanage_arg *ai=
           (struct ovectl_ratemanage_arg *)arg;
-        if(ai==nullptr){
+        if(ai==NULL){
           hi->bitrate_min=0;
           hi->bitrate_max=0;
         }else{
@@ -1090,7 +1090,7 @@ int vorbis_encode_ctl(vorbis_info *vi,int number,void *arg){
       {
         struct ovectl_ratemanage2_arg *ai=
           (struct ovectl_ratemanage2_arg *)arg;
-        if(ai==nullptr)return OV_EINVAL;
+        if(ai==NULL)return OV_EINVAL;
 
         ai->management_active=hi->managed;
         ai->bitrate_limit_min_kbps=hi->bitrate_min/1000;
@@ -1105,7 +1105,7 @@ int vorbis_encode_ctl(vorbis_info *vi,int number,void *arg){
       {
         struct ovectl_ratemanage2_arg *ai=
           (struct ovectl_ratemanage2_arg *)arg;
-        if(ai==nullptr){
+        if(ai==NULL){
           hi->managed=0;
         }else{
           /* sanity check; only catch invariant violations */

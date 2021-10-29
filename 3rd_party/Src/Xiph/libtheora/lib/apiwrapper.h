@@ -32,7 +32,7 @@ typedef struct th_api_info    th_api_info;
   In addition, this makes several other pieces of the API wrapper cleaner.*/
 typedef void (*oc_setup_clear_func)(void *_ts);
 
-/*Generally only one of these pointers will be non-nullptr in any given instance.
+/*Generally only one of these pointers will be non-NULL in any given instance.
   Technically we do not even really need this struct, since we should be able
    to figure out which one from "context", but doing it this way makes sure we
    don't flub it up.*/

@@ -59,7 +59,7 @@ static const char *const ctoknames[] = {
 #define CTOKSTR(name, str)	str,
 CTOKDEF(CTOKSTR)
 #undef CTOKSTR
-  nullptr
+  NULL
 };
 
 /* Forward declaration. */
@@ -130,7 +130,7 @@ LJ_NORET static void cp_errmsg(CPState *cp, CPToken tok, ErrMsg em, ...)
   lua_State *L;
   va_list argp;
   if (tok == 0) {
-    tokstr = nullptr;
+    tokstr = NULL;
   } else if (tok == CTOK_IDENT || tok == CTOK_INTEGER || tok == CTOK_STRING ||
 	     tok >= CTOK_FIRSTDECL) {
     if (cp->sb.w == cp->sb.b) cp_save(cp, '$');
@@ -157,7 +157,7 @@ LJ_NORET LJ_NOINLINE static void cp_err_token(CPState *cp, CPToken tok)
 
 LJ_NORET LJ_NOINLINE static void cp_err_badidx(CPState *cp, CType *ct)
 {
-  GCstr *s = lj_ctype_repr(cp->cts->L, ctype_typeid(cp->cts, ct), nullptr);
+  GCstr *s = lj_ctype_repr(cp->cts->L, ctype_typeid(cp->cts, ct), NULL);
   cp_errmsg(cp, 0, LJ_ERR_FFI_BADIDX, strdata(s));
 }
 
@@ -398,7 +398,7 @@ static void cp_init(CPState *cp)
   cp->curpack = 0;
   cp->packstack[0] = 255;
   lj_buf_init(cp->L, &cp->sb);
-  lj_assertCP(cp->p != nullptr, "uninitialized cp->p");
+  lj_assertCP(cp->p != NULL, "uninitialized cp->p");
   cp_get(cp);  /* Read-ahead first char. */
   cp->tok = 0;
   cp->tmask = CPNS_DEFAULT;
@@ -571,7 +571,7 @@ static void cp_expr_postfix(CPState *cp, CPValue *k)
       if (!ctype_isstruct(ct->info) || ct->size == CTSIZE_INVALID ||
 	  !(fct = lj_ctype_getfield(cp->cts, ct, cp->str, &ofs)) ||
 	  ctype_isbitfield(fct->info)) {
-	GCstr *s = lj_ctype_repr(cp->cts->L, ctype_typeid(cp->cts, ct), nullptr);
+	GCstr *s = lj_ctype_repr(cp->cts->L, ctype_typeid(cp->cts, ct), NULL);
 	cp_errmsg(cp, 0, LJ_ERR_FFI_BADMEMBER, strdata(s), strdata(cp->str));
       }
       ct = fct;
@@ -772,7 +772,7 @@ static CPDeclIdx cp_add(CPDecl *decl, CTInfo info, CTSize size)
   decl->stack[top].info = info;
   decl->stack[top].size = size;
   decl->stack[top].sib = 0;
-  setgcrefnullptr(decl->stack[top].name);
+  setgcrefnull(decl->stack[top].name);
   decl->stack[top].next = decl->stack[decl->pos].next;
   decl->stack[decl->pos].next = (CTypeID1)top;
   decl->top = top+1;
@@ -973,8 +973,8 @@ static void cp_decl_reset(CPDecl *decl)
   decl->stack[decl->specpos].next = 0;
   decl->attr = decl->specattr;
   decl->fattr = decl->specfattr;
-  decl->name = nullptr;
-  decl->redir = nullptr;
+  decl->name = NULL;
+  decl->redir = NULL;
 }
 
 /* Parse constant initializer. */
@@ -1499,8 +1499,8 @@ static CPscl cp_decl_spec(CPState *cp, CPDecl *decl, CPscl scl)
 
   decl->cp = cp;
   decl->mode = cp->mode;
-  decl->name = nullptr;
-  decl->redir = nullptr;
+  decl->name = NULL;
+  decl->redir = NULL;
   decl->attr = 0;
   decl->fattr = 0;
   decl->pos = decl->top = 0;
@@ -1852,7 +1852,7 @@ static void cp_decl_multi(CPState *cp)
 	  /* Treat both static and extern function declarations as extern. */
 	  ct = ctype_get(cp->cts, ctypeid);
 	  /* We always get new anonymous functions (typedefs are copied). */
-	  lj_assertCP(gcref(ct->name) == nullptr, "unexpected named function");
+	  lj_assertCP(gcref(ct->name) == NULL, "unexpected named function");
 	  id = ctypeid;  /* Just name it. */
 	} else if ((scl & CDF_STATIC)) {  /* Accept static constants. */
 	  id = cp_decl_constinit(cp, &ct, ctypeid);
@@ -1910,14 +1910,14 @@ static TValue *cpcparser(lua_State *L, lua_CFunction dummy, void *ud)
   if (cp->param && cp->param != cp->L->top)
     cp_err(cp, LJ_ERR_FFI_NUMPARAM);
   lj_assertCP(cp->depth == 0, "unbalanced cparser declaration depth");
-  return nullptr;
+  return NULL;
 }
 
 /* C parser. */
 int lj_cparse(CPState *cp)
 {
   LJ_CTYPE_SAVE(cp->cts);
-  int errcode = lj_vm_cpcall(cp->L, nullptr, cp, cpcparser);
+  int errcode = lj_vm_cpcall(cp->L, NULL, cp, cpcparser);
   if (errcode)
     LJ_CTYPE_RESTORE(cp->cts);
   cp_cleanup(cp);

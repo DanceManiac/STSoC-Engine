@@ -13,7 +13,7 @@ static struct _DF {
 	{"rsClearBB",		rsClearBB 		},
 	{"rsVSync",			rsVSync 		},
 	{"rsWireframe",		rsWireframe		},
-    {nullptr,0}
+    {NULL,0}
 };
 
 void CRenderDevice::DumpFlags()

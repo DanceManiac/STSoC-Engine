@@ -24,13 +24,13 @@
 
 CUITalkWnd::CUITalkWnd()
 {
-	m_pActor				= nullptr;
+	m_pActor				= NULL;
 
-	m_pOurInvOwner			= nullptr;
-	m_pOthersInvOwner		= nullptr;
+	m_pOurInvOwner			= NULL;
+	m_pOthersInvOwner		= NULL;
 
-	m_pOurDialogManager		= nullptr;
-	m_pOthersDialogManager	= nullptr;
+	m_pOurDialogManager		= NULL;
+	m_pOthersDialogManager	= NULL;
 
 	ToTopicMode				();
 
@@ -223,7 +223,7 @@ void CUITalkWnd::Update()
 		CGameObject* pOurGO = smart_cast<CGameObject*>(m_pOurInvOwner);
 		CGameObject* pOtherGO = smart_cast<CGameObject*>(m_pOthersInvOwner);
 
-		if (nullptr == pOurGO || nullptr == pOtherGO || ((pOurGO->Position().distance_to(pOtherGO->Position()) - pOtherGO->Radius() - pOurGO->Radius() > m_pOurInvOwner->inventory().GetTakeDist() + 0.5f) && !m_pOthersInvOwner->NeedOsoznanieMode()))
+		if (NULL == pOurGO || NULL == pOtherGO || ((pOurGO->Position().distance_to(pOtherGO->Position()) - pOtherGO->Radius() - pOurGO->Radius() > m_pOurInvOwner->inventory().GetTakeDist() + 0.5f) && !m_pOthersInvOwner->NeedOsoznanieMode()))
 			Game().StartStopMenu(this, true);
 	}
 
@@ -272,21 +272,21 @@ void CUITalkWnd::Hide()
 	if (Core.Features.test(xrCore::Feature::more_hide_weapon))
 		m_pActor->SetWeaponHideState(INV_STATE_BLOCK_ALL, false);
 
-	m_pActor = nullptr;
+	m_pActor = NULL;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 bool  CUITalkWnd::TopicMode			() 
 {
-	return nullptr == m_pCurrentDialog.get();
+	return NULL == m_pCurrentDialog.get();
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void  CUITalkWnd::ToTopicMode		() 
 {
-	m_pCurrentDialog = DIALOG_SHARED_PTR((CPhraseDialog*)nullptr);
+	m_pCurrentDialog = DIALOG_SHARED_PTR((CPhraseDialog*)NULL);
 }
 
 //////////////////////////////////////////////////////////////////////////

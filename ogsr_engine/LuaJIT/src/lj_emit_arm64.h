@@ -18,7 +18,7 @@ static uint64_t get_k64val(ASMState *as, IRRef ref)
   } else if (ir->o == IR_KPTR || ir->o == IR_KKPTR) {
     return (uint64_t)ir_kptr(ir);
   } else {
-    lj_assertA(ir->o == IR_KINT || ir->o == IR_Knullptr,
+    lj_assertA(ir->o == IR_KINT || ir->o == IR_KNULL,
 	       "bad 64 bit const IR op %d", ir->o);
     return ir->i;  /* Sign-extended. */
   }

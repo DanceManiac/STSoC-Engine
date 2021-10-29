@@ -14,8 +14,8 @@ CUIEditKeyBind::CUIEditKeyBind(bool bPrim)
 	m_pAnimation->Cyclic		(true);
 	m_bChanged					= false;
 	m_lines.SetTextComplexMode	(false);
-	m_keyboard					= nullptr;
-	m_action					= nullptr;
+	m_keyboard					= NULL;
+	m_action					= NULL;
 }
 CUIEditKeyBind::~CUIEditKeyBind()
 {
@@ -160,7 +160,7 @@ void CUIEditKeyBind::SetCurrentValue()
 	if(m_keyboard)
 		SetText				(m_keyboard->key_local_name.c_str());
 	else
-		SetText				(nullptr);
+		SetText				(NULL);
 }
 
 void CUIEditKeyBind::SaveValue()
@@ -210,5 +210,5 @@ void CUIEditKeyBind::OnMessage(const char* message){
 		return;// fuck
 
 	SetText				("---");
-	m_keyboard			= nullptr;
+	m_keyboard			= NULL;
 }

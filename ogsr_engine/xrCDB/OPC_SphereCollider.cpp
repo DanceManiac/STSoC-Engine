@@ -90,7 +90,7 @@ SphereCollider::~SphereCollider()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  *	Validates current settings. You should call this method after all the settings and callbacks have been defined.
- *	\return		nullptr if everything is ok, else a string describing the problem
+ *	\return		null if everything is ok, else a string describing the problem
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const char* SphereCollider::ValidateSettings()
@@ -108,8 +108,8 @@ const char* SphereCollider::ValidateSettings()
  *	\param		cache		[in/out] a sphere cache
  *	\param		sphere		[in] collision sphere in local space
  *	\param		model		[in] Opcode model to collide with
- *	\param		worlds		[in] sphere's world matrix, or nullptr
- *	\param		worldm		[in] model's world matrix, or nullptr
+ *	\param		worlds		[in] sphere's world matrix, or null
+ *	\param		worldm		[in] model's world matrix, or null
  *	\return		true if success
  *	\warning	SCALE NOT SUPPORTED. The matrices must contain rotation & translation parts only.
  */
@@ -141,8 +141,8 @@ bool SphereCollider::Collide(SphereCache& cache, const Sphere& sphere, OPCODE_Mo
  *
  *	\param		cache		[in/out] a sphere cache
  *	\param		sphere		[in] sphere in local space
- *	\param		worlds		[in] sphere's world matrix, or nullptr
- *	\param		worldm		[in] model's world matrix, or nullptr
+ *	\param		worlds		[in] sphere's world matrix, or null
+ *	\param		worldm		[in] model's world matrix, or null
  *	\return		contact status
  *	\warning	SCALE NOT SUPPORTED. The matrices must contain rotation & translation parts only.
  */
@@ -239,8 +239,8 @@ BOOL SphereCollider::InitQuery(SphereCache& cache, const Sphere& sphere, const M
  *	\param		cache		[in/out] a sphere cache
  *	\param		sphere		[in] collision sphere in local space
  *	\param		tree		[in] model's AABB tree
- *	\param		worlds		[in] sphere's world matrix, or nullptr
- *	\param		worldm		[in] model's world matrix, or nullptr
+ *	\param		worlds		[in] sphere's world matrix, or null
+ *	\param		worldm		[in] model's world matrix, or null
  *	\return		true if success
  *	\warning	SCALE NOT SUPPORTED. The matrices must contain rotation & translation parts only.
  */
@@ -270,8 +270,8 @@ bool SphereCollider::Collide(SphereCache& cache, const Sphere& sphere, const AAB
  *	\param		cache		[in/out] a sphere cache
  *	\param		sphere		[in] collision sphere in local space
  *	\param		tree		[in] model's AABB tree
- *	\param		worlds		[in] sphere's world matrix, or nullptr
- *	\param		worldm		[in] model's world matrix, or nullptr
+ *	\param		worlds		[in] sphere's world matrix, or null
+ *	\param		worldm		[in] model's world matrix, or null
  *	\return		true if success
  *	\warning	SCALE NOT SUPPORTED. The matrices must contain rotation & translation parts only.
  */
@@ -301,8 +301,8 @@ bool SphereCollider::Collide(SphereCache& cache, const Sphere& sphere, const AAB
  *	\param		cache		[in/out] a sphere cache
  *	\param		sphere		[in] collision sphere in local space
  *	\param		tree		[in] model's AABB tree
- *	\param		worlds		[in] sphere's world matrix, or nullptr
- *	\param		worldm		[in] model's world matrix, or nullptr
+ *	\param		worlds		[in] sphere's world matrix, or null
+ *	\param		worldm		[in] model's world matrix, or null
  *	\return		true if success
  *	\warning	SCALE NOT SUPPORTED. The matrices must contain rotation & translation parts only.
  */
@@ -336,8 +336,8 @@ bool SphereCollider::Collide(SphereCache& cache, const Sphere& sphere, const AAB
  *	\param		cache		[in/out] a sphere cache
  *	\param		sphere		[in] collision sphere in local space
  *	\param		tree		[in] model's AABB tree
- *	\param		worlds		[in] sphere's world matrix, or nullptr
- *	\param		worldm		[in] model's world matrix, or nullptr
+ *	\param		worlds		[in] sphere's world matrix, or null
+ *	\param		worldm		[in] model's world matrix, or null
  *	\return		true if success
  *	\warning	SCALE NOT SUPPORTED. The matrices must contain rotation & translation parts only.
  */

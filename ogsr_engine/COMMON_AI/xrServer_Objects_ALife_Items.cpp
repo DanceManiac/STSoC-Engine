@@ -107,8 +107,8 @@ void CSE_ALifeInventoryItem::UPDATE_Write	(NET_Packet &tNetPacket)
 	);
 
 	if (State.enabled)									num_items.mask |= inventory_item_state_enabled;
-	if (fis_zero(State.angular_vel.square_magnitude()))	num_items.mask |= inventory_item_angular_nullptr;
-	if (fis_zero(State.linear_vel.square_magnitude()))	num_items.mask |= inventory_item_linear_nullptr;
+	if (fis_zero(State.angular_vel.square_magnitude()))	num_items.mask |= inventory_item_angular_null;
+	if (fis_zero(State.linear_vel.square_magnitude()))	num_items.mask |= inventory_item_linear_null;
 
 	tNetPacket.w_u8					(num_items.common);
 
@@ -119,13 +119,13 @@ void CSE_ALifeInventoryItem::UPDATE_Write	(NET_Packet &tNetPacket)
 	tNetPacket.w_float_q8			(State.quaternion.z,0.f,1.f);
 	tNetPacket.w_float_q8			(State.quaternion.w,0.f,1.f);	
 
-	if (!check(num_items.mask,inventory_item_angular_nullptr)) {
+	if (!check(num_items.mask,inventory_item_angular_null)) {
 		tNetPacket.w_float_q8		(State.angular_vel.x,0.f,10*PI_MUL_2);
 		tNetPacket.w_float_q8		(State.angular_vel.y,0.f,10*PI_MUL_2);
 		tNetPacket.w_float_q8		(State.angular_vel.z,0.f,10*PI_MUL_2);
 	}
 
-	if (!check(num_items.mask,inventory_item_linear_nullptr)) {
+	if (!check(num_items.mask,inventory_item_linear_null)) {
 		tNetPacket.w_float_q8		(State.linear_vel.x,-32.f,32.f);
 		tNetPacket.w_float_q8		(State.linear_vel.y,-32.f,32.f);
 		tNetPacket.w_float_q8		(State.linear_vel.z,-32.f,32.f);
@@ -157,7 +157,7 @@ void CSE_ALifeInventoryItem::UPDATE_Read	(NET_Packet &tNetPacket)
 
 	State.enabled					= check(num_items.mask,inventory_item_state_enabled);
 
-	if (!check(num_items.mask,inventory_item_angular_nullptr)) {
+	if (!check(num_items.mask,inventory_item_angular_null)) {
 		tNetPacket.r_float_q8		(State.angular_vel.x,0.f,10*PI_MUL_2);
 		tNetPacket.r_float_q8		(State.angular_vel.y,0.f,10*PI_MUL_2);
 		tNetPacket.r_float_q8		(State.angular_vel.z,0.f,10*PI_MUL_2);
@@ -165,7 +165,7 @@ void CSE_ALifeInventoryItem::UPDATE_Read	(NET_Packet &tNetPacket)
 	else
 		State.angular_vel.set		(0.f,0.f,0.f);
 
-	if (!check(num_items.mask,inventory_item_linear_nullptr)) {
+	if (!check(num_items.mask,inventory_item_linear_null)) {
 		tNetPacket.r_float_q8		(State.linear_vel.x,-32.f,32.f);
 		tNetPacket.r_float_q8		(State.linear_vel.y,-32.f,32.f);
 		tNetPacket.r_float_q8		(State.linear_vel.z,-32.f,32.f);
@@ -754,8 +754,8 @@ BOOL CSE_ALifeItemArtefact::Net_Relevant	()
 CSE_ALifeItemPDA::CSE_ALifeItemPDA		(LPCSTR caSection) : CSE_ALifeItem(caSection)
 {
 	m_original_owner		= 0xffff;
-	m_specific_character	= nullptr;
-	m_info_portion			= nullptr;
+	m_specific_character	= NULL;
+	m_info_portion			= NULL;
 }
 
 
@@ -776,8 +776,8 @@ void CSE_ALifeItemPDA::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		int tmp,tmp2;
 		tNetPacket.r			(&tmp,		sizeof(int));
 		tNetPacket.r			(&tmp2,		sizeof(int));
-		m_info_portion			=	nullptr;
-		m_specific_character	= nullptr;
+		m_info_portion			=	NULL;
+		m_specific_character	= NULL;
 	}else{
 		tNetPacket.r_stringZ	(m_specific_character);
 		tNetPacket.r_stringZ	(m_info_portion);
@@ -793,8 +793,8 @@ void CSE_ALifeItemPDA::STATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_stringZ		(m_specific_character);
 	tNetPacket.w_stringZ		(m_info_portion);
 #else
-	shared_str		tmp_1	= nullptr;
-	shared_str						tmp_2	= nullptr;
+	shared_str		tmp_1	= NULL;
+	shared_str						tmp_2	= NULL;
 
 	tNetPacket.w_stringZ		(tmp_1);
 	tNetPacket.w_stringZ		(tmp_2);
@@ -817,7 +817,7 @@ void CSE_ALifeItemPDA::UPDATE_Write	(NET_Packet	&tNetPacket)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeItemDocument::CSE_ALifeItemDocument(LPCSTR caSection): CSE_ALifeItem(caSection)
 {
-	m_wDoc					= nullptr;
+	m_wDoc					= NULL;
 }
 
 CSE_ALifeItemDocument::~CSE_ALifeItemDocument()
@@ -831,7 +831,7 @@ void CSE_ALifeItemDocument::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	if ( m_wVersion < 98  ){
 		u16 tmp;
 		tNetPacket.r_u16			(tmp);
-		m_wDoc = nullptr;
+		m_wDoc = NULL;
 	}else
 		tNetPacket.r_stringZ		(m_wDoc);
 }

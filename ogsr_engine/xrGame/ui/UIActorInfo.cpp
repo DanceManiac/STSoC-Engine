@@ -304,7 +304,7 @@ void CUIActorStaticticHeader::Init	(CUIXml* xml, LPCSTR path, int idx_in_xml)
 
 	xml_init.InitAutoStaticGroup		(*xml, "auto", 0, this);
 
-	m_id								= xml->ReadAttrib(xml->GetLocalRoot(),"id",nullptr);
+	m_id								= xml->ReadAttrib(xml->GetLocalRoot(),"id",NULL);
 
 	m_stored_alpha						= color_get_A(m_text1->GetTextColor());
 	xml->SetLocalRoot					(_stored_root);

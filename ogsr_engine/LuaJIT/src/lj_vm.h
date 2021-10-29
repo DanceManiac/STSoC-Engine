@@ -83,7 +83,7 @@ LJ_ASMF void lj_vm_floor_sse(void);
 LJ_ASMF void lj_vm_ceil_sse(void);
 LJ_ASMF void lj_vm_trunc_sse(void);
 LJ_ASMF void lj_vm_powi_sse(void);
-#define lj_vm_powi	nullptr
+#define lj_vm_powi	NULL
 #else
 LJ_ASMF double lj_vm_powi(double, int32_t);
 #endif

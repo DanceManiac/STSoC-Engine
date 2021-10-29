@@ -298,7 +298,7 @@ IC	bool		__aabb_tri		(Point center,Point extents,const Point* mLeafVerts)
 			// compute triangle edges
 			// - edges lazy evaluated to take advantage of early exits
 			// - fabs precomputed (half less work, possible since extents are always >0)
-			// - customized macros to take advantage of the nullptr component
+			// - customized macros to take advantage of the null component
 			// - axis vector3 discarded, possibly saves useless movs
 			
 			const float fey0 = _abs(e0.y);

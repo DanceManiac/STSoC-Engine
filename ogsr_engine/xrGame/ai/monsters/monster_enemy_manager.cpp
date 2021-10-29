@@ -302,14 +302,14 @@ void CMonsterEnemyManager::remove_links (CObject* O)
 {
 	if ( enemy == O )
 	{
-		enemy			= nullptr;
+		enemy			= NULL;
 	}
 	if ( prev_enemy == O )
 	{
-		prev_enemy		= nullptr;
+		prev_enemy		= NULL;
 	}
 	if ( m_script_enemy	==	O )
 	{
-		m_script_enemy	= nullptr;
+		m_script_enemy	= NULL;
 	}
 }

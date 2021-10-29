@@ -371,7 +371,7 @@ void oc_fdct8x8_border(const oc_border_info *_border,
     mask>>=8;
   }
   /*Find the associated extension info for these shapes.*/
-  if(cmask==0xFF)cext=nullptr;
+  if(cmask==0xFF)cext=NULL;
   else for(cext=OC_EXTENSION_INFO;cext->mask!=cmask;){
     /*If we somehow can't find the shape, then just do an unpadded fDCT.
       It won't be efficient, but it should still be correct.*/
@@ -380,7 +380,7 @@ void oc_fdct8x8_border(const oc_border_info *_border,
       return;
     }
   }
-  if(rmask==0xFF)rext=nullptr;
+  if(rmask==0xFF)rext=NULL;
   else for(rext=OC_EXTENSION_INFO;rext->mask!=rmask;){
     /*If we somehow can't find the shape, then just do an unpadded fDCT.
       It won't be efficient, but it should still be correct.*/
@@ -404,7 +404,7 @@ void oc_fdct8x8_border(const oc_border_info *_border,
     We can ignore zero columns without a problem.*/
   in=w;
   out=_y;
-  if(cext==nullptr)for(ci=0;ci<8;ci++)oc_fdct8(out+(ci<<3),in+ci);
+  if(cext==NULL)for(ci=0;ci<8;ci++)oc_fdct8(out+(ci<<3),in+ci);
   else for(ci=0;ci<8;ci++)if(rmask&(1<<ci))oc_fdct8_ext(out+(ci<<3),in+ci,cext);
   /*Transform the rows.
     We transform even rows that are supposedly zero, because rounding errors
@@ -412,7 +412,7 @@ void oc_fdct8x8_border(const oc_border_info *_border,
      reconstruction with very small quantizers.*/
   in=_y;
   out=w;
-  if(rext==nullptr)for(ri=0;ri<8;ri++)oc_fdct8(out+(ri<<3),in+ri);
+  if(rext==NULL)for(ri=0;ri<8;ri++)oc_fdct8(out+(ri<<3),in+ri);
   else for(ri=0;ri<8;ri++)oc_fdct8_ext(out+(ri<<3),in+ri,rext);
   /*Round the result back to the external working precision (which is still
      scaled by four relative to the orthogonal result).

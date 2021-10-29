@@ -170,7 +170,7 @@ typedef D3DXMATERIAL *LPD3DXMATERIAL;
 
 typedef enum _D3DXEFFECTDEFAULTTYPE
 {
-    D3DXEDT_STRING = 0x1,       // pValue points to a nullptr terminated ASCII string 
+    D3DXEDT_STRING = 0x1,       // pValue points to a null terminated ASCII string 
     D3DXEDT_FLOATS = 0x2,       // pValue points to an array of floats - number of floats is NumBytes / sizeof(float)
     D3DXEDT_DWORD  = 0x3,       // pValue points to a DWORD
 
@@ -869,7 +869,7 @@ HRESULT WINAPI
         LPD3DXMESH *ppMesh);
 
 // This similar to D3DXLoadMeshFromXof, except also returns skinning info if present in the file
-// If skinning info is not present, ppSkinInfo will be nullptr     
+// If skinning info is not present, ppSkinInfo will be NULL     
 HRESULT WINAPI
     D3DXLoadSkinMeshFromXof(
         LPD3DXFILEDATA pxofMesh, 
@@ -1175,8 +1175,8 @@ typedef HRESULT (WINAPI *LPD3DXUVATLASCB)(FLOAT fPercentDone,  LPVOID lpUserCont
 //  pdwFalseEdgeAdjacency - a pointer to an array with 3 DWORDS per face, indicating
 //                          at each face, whether an edge is a false edge or not (using
 //                          the same ordering as the adjacency data structure). If this
-//                          is nullptr, then it is assumed that there are no false edges. If
-//                          not nullptr, then a non-false edge is indicated by -1 and a false
+//                          is NULL, then it is assumed that there are no false edges. If
+//                          not NULL, then a non-false edge is indicated by -1 and a false
 //                          edge is indicated by any other value (it is not required, but
 //                          it may be useful for the caller to use the original adjacency
 //                          value). This allows you to parameterize a mesh of quads, and
@@ -1268,7 +1268,7 @@ HRESULT WINAPI D3DXUVAtlasCreate(LPD3DXMESH pMesh,
 // | |_|_|
 // |_____|
 //
-// The resulting partition adjacency parameter cannot be nullptr, because it is
+// The resulting partition adjacency parameter cannot be NULL, because it is
 // required for the packing step.
 
 
@@ -1293,7 +1293,7 @@ HRESULT WINAPI D3DXUVAtlasPartition(LPD3DXMESH pMesh,
 
 // This takes the face partitioning result from Partition and packs it into an
 // atlas of the given size. pdwPartitionResultAdjacency should be derived from
-// the adjacency returned from the partition step. This value cannot be nullptr
+// the adjacency returned from the partition step. This value cannot be NULL
 // because Pack needs to know where charts were cut in the partition step in
 // order to find the edges of each chart.
 // The options parameter is currently reserved.
@@ -2193,7 +2193,7 @@ DECLARE_INTERFACE_(ID3DXPRTEngine, IUnknown)
     // pSampleLocs  - position for each sample
     // pSampleNorms - normal for each sample
     // pDataOut     - PRT Buffer that will store output results
-    // pDataTotal   - optional buffer to sum results into - can be nullptr
+    // pDataTotal   - optional buffer to sum results into - can be NULL
     STDMETHOD(ComputeSurfSamplesBounce)(THIS_ LPD3DXPRTBUFFER pSurfDataIn,
                                         UINT NumSamples,
                                         CONST D3DXVECTOR3 *pSampleLocs,

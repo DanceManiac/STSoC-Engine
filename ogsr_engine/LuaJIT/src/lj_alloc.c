@@ -144,7 +144,7 @@ static void init_mmap(void)
 static void *mmap_plain(size_t size)
 {
   DWORD olderr = GetLastError();
-  void *ptr = nullptr;
+  void *ptr = NULL;
   long st = ntavm(INVALID_HANDLE_VALUE, &ptr, NTAVM_ZEROBITS, &size,
 		  MEM_RESERVE|MEM_COMMIT, PAGE_READWRITE);
   SetLastError(olderr);
@@ -155,7 +155,7 @@ static void *mmap_plain(size_t size)
 static void *direct_mmap(size_t size)
 {
   DWORD olderr = GetLastError();
-  void *ptr = nullptr;
+  void *ptr = NULL;
   long st = ntavm(INVALID_HANDLE_VALUE, &ptr, NTAVM_ZEROBITS, &size,
 		  MEM_RESERVE|MEM_COMMIT|MEM_TOP_DOWN, PAGE_READWRITE);
   SetLastError(olderr);
@@ -323,7 +323,7 @@ static void *mmap_map32(size_t size)
 static void *mmap_plain(size_t size)
 {
   int olderr = errno;
-  void *ptr = mmap(nullptr, size, MMAP_PROT, MMAP_FLAGS, -1, 0);
+  void *ptr = mmap(NULL, size, MMAP_PROT, MMAP_FLAGS, -1, 0);
   errno = olderr;
   return ptr;
 }
@@ -839,14 +839,14 @@ static void *direct_alloc(mstate m, size_t nb)
     }
   }
   UNUSED(m);
-  return nullptr;
+  return NULL;
 }
 
 static mchunkptr direct_resize(mchunkptr oldp, size_t nb)
 {
   size_t oldsize = chunksize(oldp);
   if (is_small(nb)) /* Can't shrink direct regions below small size */
-    return nullptr;
+    return NULL;
   /* Keep old chunk if big enough but not too big */
   if (oldsize >= nb + SIZE_T_SIZE &&
       (oldsize - nb) <= (DEFAULT_GRANULARITY >> 1)) {
@@ -866,7 +866,7 @@ static mchunkptr direct_resize(mchunkptr oldp, size_t nb)
       return newp;
     }
   }
-  return nullptr;
+  return NULL;
 }
 
 /* -------------------------- mspace management -------------------------- */
@@ -1036,7 +1036,7 @@ static void *alloc_sys(mstate m, size_t nb)
     }
   }
 
-  return nullptr;
+  return NULL;
 }
 
 /* -----------------------  system deallocation -------------------------- */
@@ -1174,7 +1174,7 @@ static void *tmalloc_large(mstate m, size_t nb)
     t = leftmost_child(t);
   }
 
-  /*  If dv is a better fit, return nullptr so malloc will use it */
+  /*  If dv is a better fit, return NULL so malloc will use it */
   if (v != 0 && rsize < (size_t)(m->dvsize - nb)) {
     mchunkptr r = chunk_plus_offset(v, nb);
     unlink_large_chunk(m, v);
@@ -1187,7 +1187,7 @@ static void *tmalloc_large(mstate m, size_t nb)
     }
     return chunk2mem(v);
   }
-  return nullptr;
+  return NULL;
 }
 
 /* allocate a small request from the best fitting chunk in a treebin */
@@ -1245,7 +1245,7 @@ void *lj_alloc_create(PRNGState *rs)
     init_top(m, mn, (size_t)((tbase + tsize) - (char *)mn) - TOP_FOOT_SIZE);
     return m;
   }
-  return nullptr;
+  return NULL;
 }
 
 void lj_alloc_setprng(void *msp, PRNGState *rs)
@@ -1362,7 +1362,7 @@ static LJ_NOINLINE void *lj_alloc_free(void *msp, void *ptr)
 	prevsize &= ~IS_DIRECT_BIT;
 	psize += prevsize + DIRECT_FOOT_PAD;
 	CALL_MUNMAP((char *)p - prevsize, psize);
-	return nullptr;
+	return NULL;
       } else {
 	mchunkptr prev = chunk_minus_offset(p, prevsize);
 	psize += prevsize;
@@ -1373,7 +1373,7 @@ static LJ_NOINLINE void *lj_alloc_free(void *msp, void *ptr)
 	} else if ((next->head & INUSE_BITS) == INUSE_BITS) {
 	  fm->dvsize = psize;
 	  set_free_with_pinuse(p, psize, next);
-	  return nullptr;
+	  return NULL;
 	}
       }
     }
@@ -1388,12 +1388,12 @@ static LJ_NOINLINE void *lj_alloc_free(void *msp, void *ptr)
 	}
 	if (tsize > fm->trim_check)
 	  alloc_trim(fm, 0);
-	return nullptr;
+	return NULL;
       } else if (next == fm->dv) {
 	size_t dsize = fm->dvsize += psize;
 	fm->dv = p;
 	set_size_and_pinuse_of_free_chunk(p, dsize);
-	return nullptr;
+	return NULL;
       } else {
 	size_t nsize = chunksize(next);
 	psize += nsize;
@@ -1401,7 +1401,7 @@ static LJ_NOINLINE void *lj_alloc_free(void *msp, void *ptr)
 	set_size_and_pinuse_of_free_chunk(p, psize);
 	if (p == fm->dv) {
 	  fm->dvsize = psize;
-	  return nullptr;
+	  return NULL;
 	}
       }
     } else {
@@ -1417,13 +1417,13 @@ static LJ_NOINLINE void *lj_alloc_free(void *msp, void *ptr)
 	release_unused_segments(fm);
     }
   }
-  return nullptr;
+  return NULL;
 }
 
 static LJ_NOINLINE void *lj_alloc_realloc(void *msp, void *ptr, size_t nsize)
 {
   if (nsize >= MAX_REQUEST) {
-    return nullptr;
+    return NULL;
   } else {
     mstate m = (mstate)msp;
     mchunkptr oldp = mem2chunk(ptr);
@@ -1434,7 +1434,7 @@ static LJ_NOINLINE void *lj_alloc_realloc(void *msp, void *ptr, size_t nsize)
 
     /* Try to either shrink or extend into top. Else malloc-copy-free */
     if (is_direct(oldp)) {
-      newp = direct_resize(oldp, nb);  /* this may return nullptr. */
+      newp = direct_resize(oldp, nb);  /* this may return NULL. */
     } else if (oldsize >= nb) { /* already big enough */
       size_t rsize = oldsize - nb;
       newp = oldp;
@@ -1475,7 +1475,7 @@ void *lj_alloc_f(void *msp, void *ptr, size_t osize, size_t nsize)
   (void)osize;
   if (nsize == 0) {
     return lj_alloc_free(msp, ptr);
-  } else if (ptr == nullptr) {
+  } else if (ptr == NULL) {
     return lj_alloc_malloc(msp, nsize);
   } else {
     return lj_alloc_realloc(msp, ptr, nsize);

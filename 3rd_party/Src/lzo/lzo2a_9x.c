@@ -107,7 +107,7 @@ lzo2a_999_compress_callback ( const lzo_bytep in , lzo_uint  in_len,
 
     op = out;
 
-    r = init_match(c,swd,nullptr,0,0);
+    r = init_match(c,swd,NULL,0,0);
     if (r != 0)
         return r;
     if (max_chain > 0)

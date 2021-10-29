@@ -39,8 +39,8 @@ struct _SoundProcessor	: public pureFrame
 }	SoundProcessor;
 
 // global variables
-ENGINE_API	CApplication*	pApp			= nullptr;
-static		HWND			logoWindow		= nullptr;
+ENGINE_API	CApplication*	pApp			= NULL;
+static		HWND			logoWindow		= NULL;
 
 ENGINE_API	bool			g_bBenchmark	= false;
 string512	g_sBenchmarkName;
@@ -206,7 +206,7 @@ void Startup					( )
 	
 	// Destroy LOGO
 	DestroyWindow				(logoWindow);
-	logoWindow					= nullptr;
+	logoWindow					= NULL;
 
 	Discord.Init();
 
@@ -289,7 +289,7 @@ struct damn_keys_filter {
 
 		if ( bScreenSaverState )
 			// Disable screensaver
-			SystemParametersInfo( SPI_SETSCREENSAVEACTIVE , FALSE , nullptr , 0 );
+			SystemParametersInfo( SPI_SETSCREENSAVEACTIVE , FALSE , NULL , 0 );
 
 		dwStickyKeysFlags = 0;
 		dwFilterKeysFlags = 0;
@@ -335,7 +335,7 @@ struct damn_keys_filter {
 	{
 		if ( bScreenSaverState )
 			// Restoring screen saver
-			SystemParametersInfo( SPI_SETSCREENSAVEACTIVE , TRUE , nullptr , 0 );
+			SystemParametersInfo( SPI_SETSCREENSAVEACTIVE , TRUE , NULL , 0 );
 
 		if ( dwStickyKeysFlags) {
 			// Restore StickyKeys feature
@@ -398,7 +398,7 @@ int APIENTRY WinMain_impl(HINSTANCE hInstance, HINSTANCE hPrevInstance, char* lp
 		sscanf					(strstr(lpCmdLine,fsgame_ltx_name)+sz,"%[^ ] ",fsgame);
 	}
 	
-	Core._initialize			("xray",nullptr, TRUE, fsgame[0] ? fsgame : nullptr);
+	Core._initialize			("xray",NULL, TRUE, fsgame[0] ? fsgame : NULL);
 	InitSettings				();
 
 	{

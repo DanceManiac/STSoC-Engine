@@ -192,7 +192,7 @@ private:
         // "Since the first two characters of a JSON text will always be ASCII
         // characters [RFC0020], it is possible to determine whether an octet
         // stream is UTF-8, UTF-16 (BE or LE), or UTF-32 (BE or LE) by looking
-        // at the pattern of nullptrs in the first four octets."
+        // at the pattern of nulls in the first four octets."
         // 00 00 00 xx  UTF-32BE
         // 00 xx 00 xx  UTF-16BE
         // xx 00 00 00  UTF-32LE

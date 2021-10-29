@@ -187,7 +187,7 @@ static const char *getJointName (dxJoint *j)
 		case dJointTypeUniversal: return "universal";
 		case dJointTypeHinge2: return "ODE_hinge2";
 		case dJointTypeFixed: return "fixed";
-		case dJointTypenullptr: return "nullptr";
+		case dJointTypeNull: return "null";
 		case dJointTypeAMotor: return "ODE_angular_motor";
 	}
 	return "unknown";

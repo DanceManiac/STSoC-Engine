@@ -43,8 +43,8 @@
 try_match:
 #if !defined(NDEBUG) && (LZO_DICT_USE_PTR)
 #if (LZO_DETERMINISTIC)
-        assert(m_pos == nullptr || m_pos >= in);
-        assert(m_pos == nullptr || m_pos < ip);
+        assert(m_pos == NULL || m_pos >= in);
+        assert(m_pos == NULL || m_pos < ip);
 #endif
         m_pos_sav = m_pos;
 #endif

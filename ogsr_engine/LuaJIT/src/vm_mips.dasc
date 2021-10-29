@@ -743,7 +743,7 @@ static void build_subroutines(BuildCtx *ctx)
   |  sw PC, SAVE_PC
   |  call_intern lj_meta_tget		// (lua_State *L, TValue *o, TValue *k)
   |.  move CARG1, L
-  |  // Returns TValue * (finished) or nullptr (metamethod).
+  |  // Returns TValue * (finished) or NULL (metamethod).
   |  beqz CRET1, >3
   |.  addiu TMP1, BASE, -FRAME_CONT
   |  lw SFARG1HI, HI(CRET1)
@@ -766,7 +766,7 @@ static void build_subroutines(BuildCtx *ctx)
   |  load_got lj_tab_getinth
   |  call_intern lj_tab_getinth		// (GCtab *t, int32_t key)
   |.  nop
-  |  // Returns cTValue * or nullptr.
+  |  // Returns cTValue * or NULL.
   |  beqz CRET1, ->BC_TGETR_Z
   |.  move SFARG2HI, TISNIL
   |  lw SFARG2HI, HI(CRET1)
@@ -805,7 +805,7 @@ static void build_subroutines(BuildCtx *ctx)
   |  sw PC, SAVE_PC
   |  call_intern lj_meta_tset		// (lua_State *L, TValue *o, TValue *k)
   |.  move CARG1, L
-  |  // Returns TValue * (finished) or nullptr (metamethod).
+  |  // Returns TValue * (finished) or NULL (metamethod).
   |  lw SFARG1HI, HI(RA)
   |  beqz CRET1, >3
   |.  lw SFARG1LO, LO(RA)
@@ -945,7 +945,7 @@ static void build_subroutines(BuildCtx *ctx)
   |  sw TMP0, ARG5
   |  call_intern lj_meta_arith  // (lua_State *L, TValue *ra,*rb,*rc, BCReg op)
   |.  move CARG1, L
-  |  // Returns nullptr (finished) or TValue * (metamethod).
+  |  // Returns NULL (finished) or TValue * (metamethod).
   |  beqz CRET1, ->cont_nop
   |.  nop
   |
@@ -970,7 +970,7 @@ static void build_subroutines(BuildCtx *ctx)
   |   sw PC, SAVE_PC
   |  call_intern lj_meta_len		// (lua_State *L, TValue *o)
   |.  move CARG1, L
-  |  // Returns nullptr (retry) or TValue * (metamethod base).
+  |  // Returns NULL (retry) or TValue * (metamethod base).
 #if LJ_52
   |  bnez CRET1, ->vmeta_binop		// Binop call for compatibility.
   |.  nop
@@ -1351,7 +1351,7 @@ static void build_subroutines(BuildCtx *ctx)
   |.  li RD, (0+1)*8
   |  call_intern lj_tab_getinth		// (GCtab *t, int32_t key)
   |.  move CARG2, TMP2
-  |  // Returns cTValue * or nullptr.
+  |  // Returns cTValue * or NULL.
   |  beqz CRET1, ->fff_res
   |.  li RD, (0+1)*8
   |  lw TMP1, HI(CRET1)
@@ -3667,7 +3667,7 @@ static void build_ins(BuildCtx *ctx, BCOp op, int defop)
     |   sw PC, SAVE_PC
     |  call_intern lj_meta_cat		// (lua_State *L, TValue *top, int left)
     |.  move CARG1, L
-    |  // Returns nullptr (finished) or TValue * (metamethod).
+    |  // Returns NULL (finished) or TValue * (metamethod).
     |  bnez CRET1, ->vmeta_binop
     |.  lw BASE, L->base
     |  addu RB, BASE, MULTRES

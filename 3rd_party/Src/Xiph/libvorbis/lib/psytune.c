@@ -186,12 +186,12 @@ static vorbis_info_floor1 _floor_set0={1,
 static vorbis_info_mapping0 mapping_info={1,{0,1},{0},{0},{0},0, 1, {0},{1}};
 static codec_setup_info codec_setup0={ {0,0}, 
                                        1,1,1,1,1,0,1,        
-                                       {nullptr},
+                                       {NULL},
                                        {0},{&mapping_info},
-                                       {0},{nullptr},
+                                       {0},{NULL},
                                        {1},{&_floor_set0},
-                                       {2},{nullptr},
-                                       {nullptr},
+                                       {2},{NULL},
+                                       {NULL},
                                        {&_psy_set0},
                                        &_psy_set0G};
                                        
@@ -288,7 +288,7 @@ int main(int argc,char *argv[]){
   drft_init(&f_look,framesize);
   _vp_psy_init(&p_look,&_psy_set0,&_psy_set0G,framesize/2,44100);
   pg_look=_vp_global_look(&vi);
-  floor_look=_floor_P[1]->look(nullptr,nullptr,&_floor_set0);
+  floor_look=_floor_P[1]->look(NULL,NULL,&_floor_set0);
 
   /* we cheat on the WAV header; we just bypass 44 bytes and never
      verify that it matches 16bit/stereo/44.1kHz. */

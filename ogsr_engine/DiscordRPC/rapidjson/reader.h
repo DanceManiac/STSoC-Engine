@@ -156,14 +156,14 @@ enum ParseFlag {
 \code
 concept Handler {
     typename Ch;
-    bool nullptr();
+    bool Null();
     bool Bool(bool b);
     bool Int(int i);
     bool Uint(unsigned i);
     bool Int64(int64_t i);
     bool Uint64(uint64_t i);
     bool Double(double d);
-    /// enabled via kParseNumbersAsStringsFlag, string is not nullptr-terminated (use length)
+    /// enabled via kParseNumbersAsStringsFlag, string is not null-terminated (use length)
     bool RawNumber(const Ch* str, SizeType length, bool copy);
     bool String(const Ch* str, SizeType length, bool copy);
     bool StartObject();
@@ -188,14 +188,14 @@ struct BaseReaderHandler {
     typedef typename internal::SelectIf<internal::IsSame<Derived, void>, BaseReaderHandler, Derived>::Type Override;
 
     bool Default() { return true; }
-    bool nullptr() { return static_cast<Override&>(*this).Default(); }
+    bool Null() { return static_cast<Override&>(*this).Default(); }
     bool Bool(bool) { return static_cast<Override&>(*this).Default(); }
     bool Int(int) { return static_cast<Override&>(*this).Default(); }
     bool Uint(unsigned) { return static_cast<Override&>(*this).Default(); }
     bool Int64(int64_t) { return static_cast<Override&>(*this).Default(); }
     bool Uint64(uint64_t) { return static_cast<Override&>(*this).Default(); }
     bool Double(double) { return static_cast<Override&>(*this).Default(); }
-    /// enabled via kParseNumbersAsStringsFlag, string is not nullptr-terminated (use length)
+    /// enabled via kParseNumbersAsStringsFlag, string is not null-terminated (use length)
     bool RawNumber(const Ch* str, SizeType len, bool copy) { return static_cast<Override&>(*this).String(str, len, copy); }
     bool String(const Ch*, SizeType, bool) { return static_cast<Override&>(*this).Default(); }
     bool StartObject() { return static_cast<Override&>(*this).Default(); }
@@ -687,12 +687,12 @@ private:
     }
 
     template<unsigned parseFlags, typename InputStream, typename Handler>
-    void Parsenullptr(InputStream& is, Handler& handler) {
+    void ParseNull(InputStream& is, Handler& handler) {
         RAPIDJSON_ASSERT(is.Peek() == 'n');
         is.Take();
 
         if (RAPIDJSON_LIKELY(Consume(is, 'u') && Consume(is, 'l') && Consume(is, 'l'))) {
-            if (RAPIDJSON_UNLIKELY(!handler.nullptr()))
+            if (RAPIDJSON_UNLIKELY(!handler.Null()))
                 RAPIDJSON_PARSE_ERROR(kParseErrorTermination, is.Tell());
         }
         else
@@ -870,7 +870,7 @@ private:
             }
             else if (RAPIDJSON_UNLIKELY(c == '"')) {    // Closing double quote
                 is.Take();
-                os.Put('\0');   // nullptr-terminate the string
+                os.Put('\0');   // null-terminate the string
                 return;
             }
             else if (RAPIDJSON_UNLIKELY(static_cast<unsigned>(c) < 0x20)) { // RFC 4627: unescaped = %x20-21 / %x23-5B / %x5D-10FFFF
@@ -1376,7 +1376,7 @@ private:
     template<unsigned parseFlags, typename InputStream, typename Handler>
     void ParseValue(InputStream& is, Handler& handler) {
         switch (is.Peek()) {
-            case 'n': Parsenullptr  <parseFlags>(is, handler); break;
+            case 'n': ParseNull  <parseFlags>(is, handler); break;
             case 't': ParseTrue  <parseFlags>(is, handler); break;
             case 'f': ParseFalse <parseFlags>(is, handler); break;
             case '"': ParseString<parseFlags>(is, handler); break;
@@ -1431,7 +1431,7 @@ private:
         StringToken,
         FalseToken,
         TrueToken,
-        nullptrToken,
+        NullToken,
         NumberToken,
 
         kTokenCount
@@ -1450,7 +1450,7 @@ private:
             N, N, N, N, N, N, N, N, N, N, ColonToken, N, N, N, N, N, // 30~3F
             N16, // 40~4F
             N, N, N, N, N, N, N, N, N, N, N, LeftBracketToken, N, RightBracketToken, N, N, // 50~5F
-            N, N, N, N, N, N, FalseToken, N, N, N, N, N, N, N, nullptrToken, N, // 60~6F
+            N, N, N, N, N, N, FalseToken, N, N, N, N, N, N, N, NullToken, N, // 60~6F
             N, N, N, N, TrueToken, N, N, N, N, N, N, LeftCurlyBracketToken, N, RightCurlyBracketToken, N, N, // 70~7F
             N16, N16, N16, N16, N16, N16, N16, N16 // 80~FF
         };
@@ -1478,7 +1478,7 @@ private:
                 IterativeParsingValueState,         // String
                 IterativeParsingValueState,         // False
                 IterativeParsingValueState,         // True
-                IterativeParsingValueState,         // nullptr
+                IterativeParsingValueState,         // Null
                 IterativeParsingValueState          // Number
             },
             // Finish(sink state)
@@ -1504,7 +1504,7 @@ private:
                 IterativeParsingMemberKeyState,     // String
                 IterativeParsingErrorState,         // False
                 IterativeParsingErrorState,         // True
-                IterativeParsingErrorState,         // nullptr
+                IterativeParsingErrorState,         // Null
                 IterativeParsingErrorState          // Number
             },
             // MemberKey
@@ -1518,7 +1518,7 @@ private:
                 IterativeParsingErrorState,             // String
                 IterativeParsingErrorState,             // False
                 IterativeParsingErrorState,             // True
-                IterativeParsingErrorState,             // nullptr
+                IterativeParsingErrorState,             // Null
                 IterativeParsingErrorState              // Number
             },
             // KeyValueDelimiter
@@ -1532,7 +1532,7 @@ private:
                 IterativeParsingMemberValueState,       // String
                 IterativeParsingMemberValueState,       // False
                 IterativeParsingMemberValueState,       // True
-                IterativeParsingMemberValueState,       // nullptr
+                IterativeParsingMemberValueState,       // Null
                 IterativeParsingMemberValueState        // Number
             },
             // MemberValue
@@ -1546,7 +1546,7 @@ private:
                 IterativeParsingErrorState,             // String
                 IterativeParsingErrorState,             // False
                 IterativeParsingErrorState,             // True
-                IterativeParsingErrorState,             // nullptr
+                IterativeParsingErrorState,             // Null
                 IterativeParsingErrorState              // Number
             },
             // MemberDelimiter
@@ -1560,7 +1560,7 @@ private:
                 IterativeParsingMemberKeyState,     // String
                 IterativeParsingErrorState,         // False
                 IterativeParsingErrorState,         // True
-                IterativeParsingErrorState,         // nullptr
+                IterativeParsingErrorState,         // Null
                 IterativeParsingErrorState          // Number
             },
             // ObjectFinish(sink state)
@@ -1580,7 +1580,7 @@ private:
                 IterativeParsingElementState,           // String
                 IterativeParsingElementState,           // False
                 IterativeParsingElementState,           // True
-                IterativeParsingElementState,           // nullptr
+                IterativeParsingElementState,           // Null
                 IterativeParsingElementState            // Number
             },
             // Element
@@ -1594,7 +1594,7 @@ private:
                 IterativeParsingErrorState,             // String
                 IterativeParsingErrorState,             // False
                 IterativeParsingErrorState,             // True
-                IterativeParsingErrorState,             // nullptr
+                IterativeParsingErrorState,             // Null
                 IterativeParsingErrorState              // Number
             },
             // ElementDelimiter
@@ -1608,7 +1608,7 @@ private:
                 IterativeParsingElementState,           // String
                 IterativeParsingElementState,           // False
                 IterativeParsingElementState,           // True
-                IterativeParsingElementState,           // nullptr
+                IterativeParsingElementState,           // Null
                 IterativeParsingElementState            // Number
             },
             // ArrayFinish(sink state)

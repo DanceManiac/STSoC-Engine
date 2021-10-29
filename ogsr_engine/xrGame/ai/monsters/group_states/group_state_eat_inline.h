@@ -65,7 +65,7 @@ void CStateGroupEatAbstract::finalize()
 	}
 	if (object->character_physics_support()->movement()->PHCapture())
 		object->character_physics_support()->movement()->PHReleaseObject();
-	object->EatedCorpse = nullptr;
+	object->EatedCorpse = NULL;
 	object->b_end_state_eat = true;
 }
 
@@ -79,13 +79,13 @@ void CStateGroupEatAbstract::critical_finalize()
 			object->character_physics_support()->movement()->PHReleaseObject();
 		const_cast<CEntityAlive *>(object->EatedCorpse)->m_use_timeout = object->m_corpse_use_timeout;
 		const_cast<CEntityAlive *>(object->EatedCorpse)->set_lock_corpse(false);
-		object->EatedCorpse = nullptr;
+		object->EatedCorpse = NULL;
 		object->b_end_state_eat = true;
 	}
 	if (object->EnemyMan.get_enemy())
 		if (object->character_physics_support()->movement()->PHCapture())
 			object->character_physics_support()->movement()->PHReleaseObject();
-	object->EatedCorpse = nullptr;
+	object->EatedCorpse = NULL;
 	object->b_end_state_eat = true;
 }
 
@@ -210,7 +210,7 @@ void CStateGroupEatAbstract::setup_substates()
 		// Определить позицию ближайшей боны у трупа
 		Fvector nearest_bone_pos;
 		const CEntityAlive *corpse = object->EatedCorpse;
-		if ((corpse->m_pPhysicsShell == nullptr) || (!corpse->m_pPhysicsShell->isActive())) {
+		if ((corpse->m_pPhysicsShell == NULL) || (!corpse->m_pPhysicsShell->isActive())) {
 			nearest_bone_pos	= corpse->Position(); 
 		} else nearest_bone_pos = object->character_physics_support()->movement()->PHCaptureGetNearestElemPos(corpse);
 
@@ -293,7 +293,7 @@ void CStateGroupEatAbstract::setup_substates()
 		#endif //#ifdef DEBUG
 */
 
-		if ( (corpse->m_pPhysicsShell == nullptr) || (!corpse->m_pPhysicsShell->isActive()) ) {
+		if ( (corpse->m_pPhysicsShell == NULL) || (!corpse->m_pPhysicsShell->isActive()) ) {
 			nearest_bone_pos	= corpse->Position();
 		} else nearest_bone_pos = object->character_physics_support()->movement()->PHCaptureGetNearestElemPos(corpse);
 

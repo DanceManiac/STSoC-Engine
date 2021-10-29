@@ -569,7 +569,7 @@ HRESULT WINAPI
 //  pSrcFile
 //      Name of the file containing the effect description
 //  hSrcModule
-//      Module handle. if nullptr, current module will be used.
+//      Module handle. if NULL, current module will be used.
 //  pSrcResource
 //      Resource name in module
 //  pSrcData
@@ -577,7 +577,7 @@ HRESULT WINAPI
 //  SrcDataSize
 //      Size of the effect description in bytes
 //  pDefines
-//      Optional nullptr-terminated array of preprocessor macro definitions.
+//      Optional NULL-terminated array of preprocessor macro definitions.
 //  Flags
 //      See D3DXSHADER_xxx flags.
 //  pSkipConstants
@@ -588,16 +588,16 @@ HRESULT WINAPI
 //      in passes or samplers or the file will not load.
 //  pInclude
 //      Optional interface pointer to use for handling #include directives.
-//      If this parameter is nullptr, #includes will be honored when compiling
+//      If this parameter is NULL, #includes will be honored when compiling
 //      from file, and will error when compiling from resource or memory.
 //  pPool
 //      Pointer to ID3DXEffectPool object to use for shared parameters.
-//      If nullptr, no parameters will be shared.
+//      If NULL, no parameters will be shared.
 //  ppEffect
 //      Returns a buffer containing created effect.
 //  ppCompilationErrors
 //      Returns a buffer containing any error messages which occurred during
-//      compile.  Or nullptr if you do not care about the error messages.
+//      compile.  Or NULL if you do not care about the error messages.
 //
 //----------------------------------------------------------------------------
 
@@ -763,7 +763,7 @@ HRESULT WINAPI
 //  pSrcFile
 //      Name of the file containing the effect description
 //  hSrcModule
-//      Module handle. if nullptr, current module will be used.
+//      Module handle. if NULL, current module will be used.
 //  pSrcResource
 //      Resource name in module
 //  pSrcData
@@ -771,19 +771,19 @@ HRESULT WINAPI
 //  SrcDataSize
 //      Size of the effect description in bytes
 //  pDefines
-//      Optional nullptr-terminated array of preprocessor macro definitions.
+//      Optional NULL-terminated array of preprocessor macro definitions.
 //  pInclude
 //      Optional interface pointer to use for handling #include directives.
-//      If this parameter is nullptr, #includes will be honored when compiling
+//      If this parameter is NULL, #includes will be honored when compiling
 //      from file, and will error when compiling from resource or memory.
 //  pPool
 //      Pointer to ID3DXEffectPool object to use for shared parameters.
-//      If nullptr, no parameters will be shared.
+//      If NULL, no parameters will be shared.
 //  ppCompiler
 //      Returns a buffer containing created effect compiler.
 //  ppParseErrors
 //      Returns a buffer containing any error messages which occurred during
-//      parse.  Or nullptr if you do not care about the error messages.
+//      parse.  Or NULL if you do not care about the error messages.
 //
 //----------------------------------------------------------------------------
 

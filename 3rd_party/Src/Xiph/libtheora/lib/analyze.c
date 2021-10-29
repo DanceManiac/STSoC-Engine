@@ -1216,7 +1216,7 @@ static void oc_enc_sb_transform_quantize_intra_chroma(oc_enc_ctx *_enc,
         oc_analyze_intra_chroma_block(_enc,_pipe->qs+_pli,_pli,fragi);
         stackptr=stack;
         oc_enc_block_transform_quantize(_enc,
-         _pipe,_pli,fragi,0,nullptr,&stackptr);
+         _pipe,_pli,fragi,0,NULL,&stackptr);
         coded_fragis[ncoded_fragis++]=fragi;
       }
     }
@@ -2504,7 +2504,7 @@ void oc_enc_mode_metrics_collect(oc_enc_ctx *_enc){
     FILE *fmetrics;
     memset(OC_MODE_METRICS,0,sizeof(OC_MODE_METRICS));
     fmetrics=fopen("modedec.stats","rb");
-    if(fmetrics!=nullptr){
+    if(fmetrics!=NULL){
       fread(OC_MODE_METRICS,sizeof(OC_MODE_METRICS),1,fmetrics);
       fclose(fmetrics);
     }
@@ -2603,7 +2603,7 @@ void oc_enc_mode_metrics_dump(oc_enc_ctx *_enc){
   /*Generate sample points for complete list of QI values.*/
   for(qi=0;qi<64;qi++)oc_enc_mode_metrics_update(_enc,qi);
   fmetrics=fopen("modedec.stats","wb");
-  if(fmetrics!=nullptr){
+  if(fmetrics!=NULL){
     fwrite(OC_MODE_METRICS,sizeof(OC_MODE_METRICS),1,fmetrics);
     fclose(fmetrics);
   }

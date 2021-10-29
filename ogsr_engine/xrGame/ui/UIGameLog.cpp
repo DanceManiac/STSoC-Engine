@@ -27,7 +27,7 @@ CUIGameLog::~CUIGameLog()
 
 CUIStatic* CUIGameLog::AddLogMessage(LPCSTR msg)
 {
-	CUIStatic* pItem				= nullptr;
+	CUIStatic* pItem				= NULL;
 	ADD_TEXT_TO_VIEW3				(msg, pItem, this);
 	pItem->SetTextComplexMode		(true);
 	pItem->SetFont					(GetFont());

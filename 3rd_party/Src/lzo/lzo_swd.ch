@@ -184,7 +184,7 @@ lzo_swd_t;
 static
 void swd_initdict(lzo_swd_p s, const lzo_bytep dict, lzo_uint dict_len)
 {
-    s->dict = s->dict_end = nullptr;
+    s->dict = s->dict_end = NULL;
     s->dict_len = 0;
 
     if (!dict || dict_len == 0)
@@ -249,15 +249,15 @@ int swd_init(lzo_swd_p s, const lzo_bytep dict, lzo_uint dict_len)
     s->succ3 = (swd_uintp) malloc(sizeof(swd_uint) * (SWD_N + SWD_F));
     s->best3 = (swd_uintp) malloc(sizeof(swd_uint) * (SWD_N + SWD_F));
     s->llen3 = (swd_uintp) malloc(sizeof(swd_uint) * SWD_HSIZE);
-    r &= s->b != nullptr;
-    r &= s->head3 != nullptr;
-    r &= s->succ3 != nullptr;
-    r &= s->best3 != nullptr;
-    r &= s->llen3 != nullptr;
+    r &= s->b != NULL;
+    r &= s->head3 != NULL;
+    r &= s->succ3 != NULL;
+    r &= s->best3 != NULL;
+    r &= s->llen3 != NULL;
 #ifdef HEAD2
     IF_HEAD2(s) {
         s->head2 = (swd_uintp) malloc(sizeof(swd_uint) * 65536L);
-        r &= s->head2 != nullptr;
+        r &= s->head2 != NULL;
     }
 #endif
     if (r != 1) {
@@ -370,13 +370,13 @@ void swd_exit(lzo_swd_p s)
 #if defined(__LZO_CHECKER)
     /* free in reverse order of allocations */
 #ifdef HEAD2
-    free(s->head2); s->head2 = nullptr;
+    free(s->head2); s->head2 = NULL;
 #endif
-    free(s->llen3); s->llen3 = nullptr;
-    free(s->best3); s->best3 = nullptr;
-    free(s->succ3); s->succ3 = nullptr;
-    free(s->head3); s->head3 = nullptr;
-    free(s->b); s->b = nullptr;
+    free(s->llen3); s->llen3 = NULL;
+    free(s->best3); s->best3 = NULL;
+    free(s->succ3); s->succ3 = NULL;
+    free(s->head3); s->head3 = NULL;
+    free(s->b); s->b = NULL;
 #else
     LZO_UNUSED(s);
 #endif

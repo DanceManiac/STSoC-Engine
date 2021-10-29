@@ -3,12 +3,12 @@
 #include "UIFrameLineWnd.h"
 #include "UIXmlInit.h"
 
-CUIButtonHint*		g_btnHint = nullptr; 
+CUIButtonHint*		g_btnHint = NULL; 
 
 
 
 CUIButtonHint::CUIButtonHint	()
-:m_ownerWnd(nullptr),m_enabledOnFrame(false)
+:m_ownerWnd(NULL),m_enabledOnFrame(false)
 {
 	Device.seqRender.Add		(this, REG_PRIORITY_LOW-1000);
 

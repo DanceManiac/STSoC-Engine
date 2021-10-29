@@ -205,7 +205,7 @@ enum {
   dJointTypeUniversal,
   dJointTypeHinge2,
   dJointTypeFixed,
-  dJointTypenullptr,
+  dJointTypeNull,
   dJointTypeAMotor
 };
 

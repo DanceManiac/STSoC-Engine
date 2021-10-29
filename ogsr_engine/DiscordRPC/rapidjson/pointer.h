@@ -90,7 +90,7 @@ public:
         allocation, using a special constructor.
     */
     struct Token {
-        const Ch* name;             //!< Name of the token. It has nullptr character at the end but it can contain nullptr character.
+        const Ch* name;             //!< Name of the token. It has null character at the end but it can contain null character.
         SizeType length;            //!< Length of the name.
         SizeType index;             //!< A valid array index, if it is not equal to kPointerInvalidIndex.
     };
@@ -103,7 +103,7 @@ public:
 
     //! Constructor that parses a string or URI fragment representation.
     /*!
-        \param source A nullptr-terminated, string or URI fragment representation of JSON pointer.
+        \param source A null-terminated, string or URI fragment representation of JSON pointer.
         \param allocator User supplied allocator for this pointer. If no allocator is provided, it creates a self-owned one.
     */
     explicit GenericPointer(const Ch* source, Allocator* allocator = 0) : allocator_(allocator), ownAllocator_(), nameBuffer_(), tokens_(), tokenCount_(), parseErrorOffset_(), parseErrorCode_(kPointerParseErrorNone) {
@@ -374,7 +374,7 @@ public:
 
     //! Create a value in a subtree.
     /*!
-        If the value is not exist, it creates all parent values and a JSON nullptr value.
+        If the value is not exist, it creates all parent values and a JSON Null value.
         So it always succeed and return the newly created or existing value.
         Remind that it may change types of parents according to tokens, so it 
         potentially removes previously stored values. For example, if a document 
@@ -382,8 +382,8 @@ public:
         will be changed to an object, and all existing array elements are lost.
         \param root Root value of a DOM subtree to be resolved. It can be any value other than document root.
         \param allocator Allocator for creating the values if the specified value or its parents are not exist.
-        \param alreadyExist If non-nullptr, it stores whether the resolved value is already exist.
-        \return The resolved newly created (a JSON nullptr value), or already exists value.
+        \param alreadyExist If non-null, it stores whether the resolved value is already exist.
+        \return The resolved newly created (a JSON Null value), or already exists value.
     */
     ValueType& Create(ValueType& root, typename ValueType::AllocatorType& allocator, bool* alreadyExist = 0) const {
         RAPIDJSON_ASSERT(IsValid());
@@ -436,7 +436,7 @@ public:
     //! Creates a value in a document.
     /*!
         \param document A document to be resolved.
-        \param alreadyExist If non-nullptr, it stores whether the resolved value is already exist.
+        \param alreadyExist If non-null, it stores whether the resolved value is already exist.
         \return The resolved newly created, or already exists value.
     */
     template <typename stackAllocator>
@@ -453,7 +453,7 @@ public:
     /*!
         \param root Root value of a DOM sub-tree to be resolved. It can be any value other than document root.
         \param unresolvedTokenIndex If the pointer cannot resolve a token in the pointer, this parameter can obtain the index of unresolved token.
-        \return Pointer to the value if it can be resolved. Otherwise nullptr.
+        \return Pointer to the value if it can be resolved. Otherwise null.
         \note
         There are only 3 situations when a value cannot be resolved:
         1. A value in the path is not an array nor object.
@@ -494,7 +494,7 @@ public:
     //! Query a const value in a const subtree.
     /*!
         \param root Root value of a DOM sub-tree to be resolved. It can be any value other than document root.
-        \return Pointer to the value if it can be resolved. Otherwise nullptr.
+        \return Pointer to the value if it can be resolved. Otherwise null.
     */
     const ValueType* Get(const ValueType& root, size_t* unresolvedTokenIndex = 0) const { 
         return Get(const_cast<ValueType&>(root), unresolvedTokenIndex);
@@ -520,7 +520,7 @@ public:
         return alreadyExist ? v : v.CopyFrom(defaultValue, allocator);
     }
 
-    //! Query a value in a subtree with default nullptr-terminated string.
+    //! Query a value in a subtree with default null-terminated string.
     ValueType& GetWithDefault(ValueType& root, const Ch* defaultValue, typename ValueType::AllocatorType& allocator) const {
         bool alreadyExist;
         Value& v = Create(root, allocator, &alreadyExist);
@@ -552,7 +552,7 @@ public:
         return GetWithDefault(document, defaultValue, document.GetAllocator());
     }
 
-    //! Query a value in a document with default nullptr-terminated string.
+    //! Query a value in a document with default null-terminated string.
     template <typename stackAllocator>
     ValueType& GetWithDefault(GenericDocument<EncodingType, typename ValueType::AllocatorType, stackAllocator>& document, const Ch* defaultValue) const {
         return GetWithDefault(document, defaultValue, document.GetAllocator());
@@ -599,7 +599,7 @@ public:
         return Create(root, allocator).CopyFrom(value, allocator);
     }
 
-    //! Set a nullptr-terminated string in a subtree.
+    //! Set a null-terminated string in a subtree.
     ValueType& Set(ValueType& root, const Ch* value, typename ValueType::AllocatorType& allocator) const {
         return Create(root, allocator) = ValueType(value, allocator).Move();
     }
@@ -633,7 +633,7 @@ public:
         return Create(document).CopyFrom(value, document.GetAllocator());
     }
 
-    //! Set a nullptr-terminated string in a document.
+    //! Set a null-terminated string in a document.
     template <typename stackAllocator>
     ValueType& Set(GenericDocument<EncodingType, typename ValueType::AllocatorType, stackAllocator>& document, const Ch* value) const {
         return Create(document) = ValueType(value, document.GetAllocator()).Move();
@@ -741,7 +741,7 @@ private:
         if (!allocator_) // allocator is independently owned.
             ownAllocator_ = allocator_ = RAPIDJSON_NEW(Allocator());
 
-        size_t nameBufferSize = rhs.tokenCount_; // nullptr terminators for tokens
+        size_t nameBufferSize = rhs.tokenCount_; // null terminators for tokens
         for (Token *t = rhs.tokens_; t != rhs.tokens_ + rhs.tokenCount_; ++t)
             nameBufferSize += t->length;
 
@@ -775,13 +775,13 @@ private:
     //! Parse a JSON String or its URI fragment representation into tokens.
 #ifndef __clang__ // -Wdocumentation
     /*!
-        \param source Either a JSON Pointer string, or its URI fragment representation. Not need to be nullptr terminated.
+        \param source Either a JSON Pointer string, or its URI fragment representation. Not need to be null terminated.
         \param length Length of the source string.
         \note Source cannot be JSON String Representation of JSON Pointer, e.g. In "/\u0000", \u0000 will not be unescaped.
     */
 #endif
     void Parse(const Ch* source, size_t length) {
-        RAPIDJSON_ASSERT(source != nullptr);
+        RAPIDJSON_ASSERT(source != NULL);
         RAPIDJSON_ASSERT(nameBuffer_ == 0);
         RAPIDJSON_ASSERT(tokens_ == 0);
 
@@ -876,7 +876,7 @@ private:
             token->length = static_cast<SizeType>(name - token->name);
             if (token->length == 0)
                 isNumber = false;
-            *name++ = '\0'; // nullptr terminator
+            *name++ = '\0'; // Null terminator
 
             // Second check for index: more than one digit cannot have leading zero
             if (isNumber && token->length > 1 && token->name[0] == '0')

@@ -171,7 +171,7 @@ void emit_fold(BuildCtx *ctx)
   const char *fname = ctx->args[0];
   FILE *fp;
 
-  if (fname == nullptr) {
+  if (fname == NULL) {
     fprintf(stderr, "Error: missing input filename\n");
     exit(1);
   }
@@ -193,7 +193,7 @@ void emit_fold(BuildCtx *ctx)
   lineno = 0;
   funcidx = 0;
   nkeys = 0;
-  while (fgets(buf, sizeof(buf), fp) != nullptr) {
+  while (fgets(buf, sizeof(buf), fp) != NULL) {
     lineno++;
     /* The prefix must be at the start of a line, otherwise it's ignored. */
     if (!strncmp(buf, FOLDDEF_PREFIX, sizeof(FOLDDEF_PREFIX)-1)) {

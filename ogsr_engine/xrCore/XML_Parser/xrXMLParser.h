@@ -58,7 +58,7 @@ public:
 
 #ifdef DEBUG // debug & mixed
 	//проверка того, что аттрибуты у тегов уникальны
-	//(если не nullptr, то уникальность нарушена и возврашается имя 
+	//(если не NULL, то уникальность нарушена и возврашается имя 
 	//повторяющегося атрибута)
 	LPCSTR				CheckUniqueAttrib		(XML_NODE* start_node, LPCSTR tag_name, LPCSTR attrib_name);
 #endif

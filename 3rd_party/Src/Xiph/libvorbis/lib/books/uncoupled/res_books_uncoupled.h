@@ -410,7 +410,7 @@ static const static_codebook _huff_book__16u0__single = {
         2, 64,
         (char *)_huff_lengthlist__16u0__single,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -428,7 +428,7 @@ static const static_codebook _huff_book__16u1__long = {
         2, 100,
         (char *)_huff_lengthlist__16u1__long,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -928,7 +928,7 @@ static const static_codebook _huff_book__16u1__short = {
         2, 100,
         (char *)_huff_lengthlist__16u1__short,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -946,7 +946,7 @@ static const static_codebook _huff_book__16u2__long = {
 	2, 100,
 	(char *)_huff_lengthlist__16u2__long,
 	0, 0, 0, 0, 0,
-	nullptr,
+	NULL,
 	0
 };
 
@@ -1585,7 +1585,7 @@ static const static_codebook _huff_book__16u2__short = {
 	2, 100,
 	(char *)_huff_lengthlist__16u2__short,
 	0, 0, 0, 0, 0,
-	nullptr,
+	NULL,
 	0
 };
 
@@ -1982,7 +1982,7 @@ static const static_codebook _huff_book__8u0__single = {
         2, 64,
         (char *)_huff_lengthlist__8u0__single,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -2482,7 +2482,7 @@ static const static_codebook _huff_book__8u1__single = {
         2, 100,
         (char *)_huff_lengthlist__8u1__single,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -2497,7 +2497,7 @@ static const static_codebook _huff_book__44u0__long = {
         2, 64,
         (char *)_huff_lengthlist__44u0__long,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -2899,7 +2899,7 @@ static const static_codebook _huff_book__44u0__short = {
         2, 64,
         (char *)_huff_lengthlist__44u0__short,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -2914,7 +2914,7 @@ static const static_codebook _huff_book__44u1__long = {
         2, 64,
         (char *)_huff_lengthlist__44u1__long,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -3282,7 +3282,7 @@ static const static_codebook _huff_book__44u1__short = {
         2, 64,
         (char *)_huff_lengthlist__44u1__short,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -3297,7 +3297,7 @@ static const static_codebook _huff_book__44u2__long = {
         2, 64,
         (char *)_huff_lengthlist__44u2__long,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -3669,7 +3669,7 @@ static const static_codebook _huff_book__44u2__short = {
         2, 64,
         (char *)_huff_lengthlist__44u2__short,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -3684,7 +3684,7 @@ static const static_codebook _huff_book__44u3__long = {
         2, 64,
         (char *)_huff_lengthlist__44u3__long,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -4074,7 +4074,7 @@ static const static_codebook _huff_book__44u3__short = {
         2, 64,
         (char *)_huff_lengthlist__44u3__short,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -4089,7 +4089,7 @@ static const static_codebook _huff_book__44u4__long = {
         2, 64,
         (char *)_huff_lengthlist__44u4__long,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -4488,7 +4488,7 @@ static const static_codebook _huff_book__44u4__short = {
         2, 64,
         (char *)_huff_lengthlist__44u4__short,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -4506,7 +4506,7 @@ static const static_codebook _huff_book__44u5__long = {
         2, 100,
         (char *)_huff_lengthlist__44u5__long,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -5000,7 +5000,7 @@ static const static_codebook _huff_book__44u5__short = {
         2, 100,
         (char *)_huff_lengthlist__44u5__short,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -5018,7 +5018,7 @@ static const static_codebook _huff_book__44u6__long = {
         2, 100,
         (char *)_huff_lengthlist__44u6__long,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -5518,7 +5518,7 @@ static const static_codebook _huff_book__44u6__short = {
         2, 100,
         (char *)_huff_lengthlist__44u6__short,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -5536,7 +5536,7 @@ static const static_codebook _huff_book__44u7__long = {
         2, 100,
         (char *)_huff_lengthlist__44u7__long,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -6036,7 +6036,7 @@ static const static_codebook _huff_book__44u7__short = {
         2, 100,
         (char *)_huff_lengthlist__44u7__short,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -6054,7 +6054,7 @@ static const static_codebook _huff_book__44u8__long = {
         2, 100,
         (char *)_huff_lengthlist__44u8__long,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -6072,7 +6072,7 @@ static const static_codebook _huff_book__44u8__short = {
         2, 100,
         (char *)_huff_lengthlist__44u8__short,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -6696,7 +6696,7 @@ static const static_codebook _huff_book__44u9__long = {
         2, 100,
         (char *)_huff_lengthlist__44u9__long,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -6714,7 +6714,7 @@ static const static_codebook _huff_book__44u9__short = {
         2, 100,
         (char *)_huff_lengthlist__44u9__short,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -7350,7 +7350,7 @@ static const static_codebook _huff_book__44un1__long = {
         2, 64,
         (char *)_huff_lengthlist__44un1__long,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 
@@ -7752,7 +7752,7 @@ static const static_codebook _huff_book__44un1__short = {
         2, 64,
         (char *)_huff_lengthlist__44un1__short,
         0, 0, 0, 0, 0,
-        nullptr,
+        NULL,
         0
 };
 

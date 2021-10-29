@@ -44,23 +44,23 @@ static void ll_unloadlib(void *lib)
 static void *ll_load(lua_State *L, const char *path, int gl)
 {
   void *lib = dlopen(path, RTLD_NOW | (gl ? RTLD_GLOBAL : RTLD_LOCAL));
-  if (lib == nullptr) lua_pushstring(L, dlerror());
+  if (lib == NULL) lua_pushstring(L, dlerror());
   return lib;
 }
 
 static lua_CFunction ll_sym(lua_State *L, void *lib, const char *sym)
 {
   lua_CFunction f = (lua_CFunction)dlsym(lib, sym);
-  if (f == nullptr) lua_pushstring(L, dlerror());
+  if (f == NULL) lua_pushstring(L, dlerror());
   return f;
 }
 
 static const char *ll_bcsym(void *lib, const char *sym)
 {
 #if defined(RTLD_DEFAULT)
-  if (lib == nullptr) lib = RTLD_DEFAULT;
+  if (lib == NULL) lib = RTLD_DEFAULT;
 #elif LJ_TARGET_OSX || LJ_TARGET_BSD
-  if (lib == nullptr) lib = (void *)(intptr_t)-2;
+  if (lib == NULL) lib = (void *)(intptr_t)-2;
 #endif
   return (const char *)dlsym(lib, sym);
 }
@@ -81,7 +81,7 @@ void *LJ_WIN_LOADLIBA(const char *path)
 {
   DWORD err = GetLastError();
   wchar_t wpath[256];
-  HANDLE lib = nullptr;
+  HANDLE lib = NULL;
   if (MultiByteToWideChar(CP_ACP, 0, path, -1, wpath, 256) > 0) {
     lib = LoadPackagedLibrary(wpath, 0);
   }
@@ -97,8 +97,8 @@ static void setprogdir(lua_State *L)
   char buff[MAX_PATH + 1];
   char *lb;
   DWORD nsize = sizeof(buff);
-  DWORD n = GetModuleFileNameA(nullptr, buff, nsize);
-  if (n == 0 || n == nsize || (lb = strrchr(buff, '\\')) == nullptr) {
+  DWORD n = GetModuleFileNameA(NULL, buff, nsize);
+  if (n == 0 || n == nsize || (lb = strrchr(buff, '\\')) == NULL) {
     luaL_error(L, "unable to get ModuleFileName");
   } else {
     *lb = '\0';
@@ -114,12 +114,12 @@ static void pusherror(lua_State *L)
   wchar_t wbuffer[128];
   char buffer[128*2];
   if (FormatMessageW(FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_SYSTEM,
-      nullptr, error, 0, wbuffer, sizeof(wbuffer)/sizeof(wchar_t), nullptr) &&
-      WideCharToMultiByte(CP_ACP, 0, wbuffer, 128, buffer, 128*2, nullptr, nullptr))
+      NULL, error, 0, wbuffer, sizeof(wbuffer)/sizeof(wchar_t), NULL) &&
+      WideCharToMultiByte(CP_ACP, 0, wbuffer, 128, buffer, 128*2, NULL, NULL))
 #else
   char buffer[128];
   if (FormatMessageA(FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_SYSTEM,
-      nullptr, error, 0, buffer, sizeof(buffer), nullptr))
+      NULL, error, 0, buffer, sizeof(buffer), NULL))
 #endif
     lua_pushstring(L, buffer);
   else
@@ -134,7 +134,7 @@ static void ll_unloadlib(void *lib)
 static void *ll_load(lua_State *L, const char *path, int gl)
 {
   HINSTANCE lib = LJ_WIN_LOADLIBA(path);
-  if (lib == nullptr) pusherror(L);
+  if (lib == NULL) pusherror(L);
   UNUSED(gl);
   return lib;
 }
@@ -142,7 +142,7 @@ static void *ll_load(lua_State *L, const char *path, int gl)
 static lua_CFunction ll_sym(lua_State *L, void *lib, const char *sym)
 {
   lua_CFunction f = (lua_CFunction)GetProcAddress((HINSTANCE)lib, sym);
-  if (f == nullptr) pusherror(L);
+  if (f == NULL) pusherror(L);
   return f;
 }
 
@@ -158,9 +158,9 @@ static const char *ll_bcsym(void *lib, const char *sym)
 #if LJ_TARGET_UWP
     return (const char *)GetProcAddress((HINSTANCE)&__ImageBase, sym);
 #else
-    HINSTANCE h = GetModuleHandleA(nullptr);
+    HINSTANCE h = GetModuleHandleA(NULL);
     const char *p = (const char *)GetProcAddress(h, sym);
-    if (p == nullptr && GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+    if (p == NULL && GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
 					(const char *)ll_bcsym, &h))
       p = (const char *)GetProcAddress(h, sym);
     return p;
@@ -184,20 +184,20 @@ static void *ll_load(lua_State *L, const char *path, int gl)
 {
   UNUSED(path); UNUSED(gl);
   lua_pushliteral(L, DLMSG);
-  return nullptr;
+  return NULL;
 }
 
 static lua_CFunction ll_sym(lua_State *L, void *lib, const char *sym)
 {
   UNUSED(lib); UNUSED(sym);
   lua_pushliteral(L, DLMSG);
-  return nullptr;
+  return NULL;
 }
 
 static const char *ll_bcsym(void *lib, const char *sym)
 {
   UNUSED(lib); UNUSED(sym);
-  return nullptr;
+  return NULL;
 }
 
 #endif
@@ -214,7 +214,7 @@ static void **ll_register(lua_State *L, const char *path)
   } else {  /* no entry yet; create one */
     lua_pop(L, 1);
     plib = (void **)lua_newuserdata(L, sizeof(void *));
-    *plib = nullptr;
+    *plib = NULL;
     luaL_setmetatable(L, "_LOADLIB");
     lua_pushfstring(L, "LOADLIB: %s", path);
     lua_pushvalue(L, -2);
@@ -243,8 +243,8 @@ static int ll_loadfunc(lua_State *L, const char *path, const char *name, int r)
     return PACKAGE_ERR_LIB;
   }
   reg = ll_register(L, path);
-  if (*reg == nullptr) *reg = ll_load(L, path, (*name == '*'));
-  if (*reg == nullptr) {
+  if (*reg == NULL) *reg = ll_load(L, path, (*name == '*'));
+  if (*reg == NULL) {
     return PACKAGE_ERR_LIB;  /* Unable to load library. */
   } else if (*name == '*') {  /* Only load library into global namespace. */
     lua_pushboolean(L, 1);
@@ -288,7 +288,7 @@ static int lj_cf_package_unloadlib(lua_State *L)
 {
   void **lib = (void **)luaL_checkudata(L, 1, "_LOADLIB");
   if (*lib) ll_unloadlib(*lib);
-  *lib = nullptr;  /* mark library as closed */
+  *lib = NULL;  /* mark library as closed */
   return 0;
 }
 
@@ -297,7 +297,7 @@ static int lj_cf_package_unloadlib(lua_State *L)
 static int readable(const char *filename)
 {
   FILE *f = fopen(filename, "r");  /* try to open file */
-  if (f == nullptr) return 0;  /* open failed */
+  if (f == NULL) return 0;  /* open failed */
   fclose(f);
   return 1;
 }
@@ -306,9 +306,9 @@ static const char *pushnexttemplate(lua_State *L, const char *path)
 {
   const char *l;
   while (*path == *LUA_PATHSEP) path++;  /* skip separators */
-  if (*path == '\0') return nullptr;  /* no more templates */
+  if (*path == '\0') return NULL;  /* no more templates */
   l = strchr(path, *LUA_PATHSEP);  /* find next separator */
-  if (l == nullptr) l = path + strlen(path);
+  if (l == NULL) l = path + strlen(path);
   lua_pushlstring(L, path, (size_t)(l - path));  /* template */
   return l;
 }
@@ -321,7 +321,7 @@ static const char *searchpath (lua_State *L, const char *name,
   luaL_buffinit(L, &msg);
   if (*sep != '\0')  /* non-empty separator? */
     name = luaL_gsub(L, name, sep, dirsep);  /* replace it by 'dirsep' */
-  while ((path = pushnexttemplate(L, path)) != nullptr) {
+  while ((path = pushnexttemplate(L, path)) != NULL) {
     const char *filename = luaL_gsub(L, lua_tostring(L, -1),
 				     LUA_PATH_MARK, name);
     lua_remove(L, -2);  /* remove path template */
@@ -332,7 +332,7 @@ static const char *searchpath (lua_State *L, const char *name,
     luaL_addvalue(&msg);  /* concatenate error msg. entry */
   }
   luaL_pushresult(&msg);  /* create error message */
-  return nullptr;  /* not found */
+  return NULL;  /* not found */
 }
 
 static int lj_cf_package_searchpath(lua_State *L)
@@ -341,7 +341,7 @@ static int lj_cf_package_searchpath(lua_State *L)
 				luaL_checkstring(L, 2),
 				luaL_optstring(L, 3, "."),
 				luaL_optstring(L, 4, LUA_DIRSEP));
-  if (f != nullptr) {
+  if (f != NULL) {
     return 1;
   } else {  /* error message is on top of the stack */
     lua_pushnil(L);
@@ -356,7 +356,7 @@ static const char *findfile(lua_State *L, const char *name,
   const char *path;
   lua_getfield(L, LUA_ENVIRONINDEX, pname);
   path = lua_tostring(L, -1);
-  if (path == nullptr)
+  if (path == NULL)
     luaL_error(L, LUA_QL("package.%s") " must be a string", pname);
   return searchpath(L, name, path, ".", LUA_DIRSEP);
 }
@@ -372,7 +372,7 @@ static int lj_cf_package_loader_lua(lua_State *L)
   const char *filename;
   const char *name = luaL_checkstring(L, 1);
   filename = findfile(L, name, "path");
-  if (filename == nullptr) return 1;  /* library not found in this path */
+  if (filename == NULL) return 1;  /* library not found in this path */
   if (luaL_loadfile(L, filename) != 0)
     loaderror(L, filename);
   return 1;  /* library loaded successfully */
@@ -382,7 +382,7 @@ static int lj_cf_package_loader_c(lua_State *L)
 {
   const char *name = luaL_checkstring(L, 1);
   const char *filename = findfile(L, name, "cpath");
-  if (filename == nullptr) return 1;  /* library not found in this path */
+  if (filename == NULL) return 1;  /* library not found in this path */
   if (ll_loadfunc(L, filename, name, 0) != 0)
     loaderror(L, filename);
   return 1;  /* library loaded successfully */
@@ -394,10 +394,10 @@ static int lj_cf_package_loader_croot(lua_State *L)
   const char *name = luaL_checkstring(L, 1);
   const char *p = strchr(name, '.');
   int st;
-  if (p == nullptr) return 0;  /* is root */
+  if (p == NULL) return 0;  /* is root */
   lua_pushlstring(L, name, (size_t)(p - name));
   filename = findfile(L, lua_tostring(L, -1), "cpath");
-  if (filename == nullptr) return 1;  /* root not found */
+  if (filename == NULL) return 1;  /* root not found */
   if ((st = ll_loadfunc(L, filename, name, 0)) != 0) {
     if (st != PACKAGE_ERR_FUNC) loaderror(L, filename);  /* real error */
     lua_pushfstring(L, "\n\tno module " LUA_QS " in file " LUA_QS,
@@ -416,8 +416,8 @@ static int lj_cf_package_loader_preload(lua_State *L)
   lua_getfield(L, -1, name);
   if (lua_isnil(L, -1)) {  /* Not found? */
     const char *bcname = mksymname(L, name, SYMPREFIX_BC);
-    const char *bcdata = ll_bcsym(nullptr, bcname);
-    if (bcdata == nullptr || luaL_loadbuffer(L, bcdata, ~(size_t)0, name) != 0)
+    const char *bcdata = ll_bcsym(NULL, bcname);
+    if (bcdata == NULL || luaL_loadbuffer(L, bcdata, ~(size_t)0, name) != 0)
       lua_pushfstring(L, "\n\tno field package.preload['%s']", name);
   }
   return 1;
@@ -506,7 +506,7 @@ static void modinit(lua_State *L, const char *modname)
   lua_pushstring(L, modname);
   lua_setfield(L, -2, "_NAME");
   dot = strrchr(modname, '.');  /* look for last dot in module name */
-  if (dot == nullptr) dot = modname; else dot++;
+  if (dot == NULL) dot = modname; else dot++;
   /* set _PACKAGE as package name (full module name minus last part) */
   lua_pushlstring(L, modname, (size_t)(dot - modname));
   lua_setfield(L, -2, "_PACKAGE");
@@ -551,12 +551,12 @@ static void setpath(lua_State *L, const char *fieldname, const char *envname,
 		    const char *def, int noenv)
 {
 #if LJ_TARGET_CONSOLE
-  const char *path = nullptr;
+  const char *path = NULL;
   UNUSED(envname);
 #else
   const char *path = getenv(envname);
 #endif
-  if (path == nullptr || noenv) {
+  if (path == NULL || noenv) {
     lua_pushstring(L, def);
   } else {
     path = luaL_gsub(L, path, LUA_PATHSEP LUA_PATHSEP,
@@ -572,13 +572,13 @@ static const luaL_Reg package_lib[] = {
   { "loadlib",	lj_cf_package_loadlib },
   { "searchpath",  lj_cf_package_searchpath },
   { "seeall",	lj_cf_package_seeall },
-  { nullptr, nullptr }
+  { NULL, NULL }
 };
 
 static const luaL_Reg package_global[] = {
   { "module",	lj_cf_package_module },
   { "require",	lj_cf_package_require },
-  { nullptr, nullptr }
+  { NULL, NULL }
 };
 
 static const lua_CFunction package_loaders[] =
@@ -587,7 +587,7 @@ static const lua_CFunction package_loaders[] =
   lj_cf_package_loader_lua,
   lj_cf_package_loader_c,
   lj_cf_package_loader_croot,
-  nullptr
+  NULL
 };
 
 LUALIB_API int luaopen_package(lua_State *L)
@@ -600,7 +600,7 @@ LUALIB_API int luaopen_package(lua_State *L)
   luaL_register(L, LUA_LOADLIBNAME, package_lib);
   lua_copy(L, -1, LUA_ENVIRONINDEX);
   lua_createtable(L, sizeof(package_loaders)/sizeof(package_loaders[0])-1, 0);
-  for (i = 0; package_loaders[i] != nullptr; i++) {
+  for (i = 0; package_loaders[i] != NULL; i++) {
     lj_lib_pushcf(L, package_loaders[i], 1);
     lua_rawseti(L, -2, i+1);
   }
@@ -621,7 +621,7 @@ LUALIB_API int luaopen_package(lua_State *L)
   luaL_findtable(L, LUA_REGISTRYINDEX, "_PRELOAD", 4);
   lua_setfield(L, -2, "preload");
   lua_pushvalue(L, LUA_GLOBALSINDEX);
-  luaL_register(L, nullptr, package_global);
+  luaL_register(L, NULL, package_global);
   lua_pop(L, 1);
   return 1;
 }

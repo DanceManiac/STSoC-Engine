@@ -92,7 +92,7 @@ FIBITMAP*	Surface_Load(char* full_name)
 	// load
 	FREE_IMAGE_FORMAT	fif		= FreeImage_GetFIFFromFilename(full_name);
 	FIBITMAP*			map		= FreeImage_Load(fif,full_name);
-	if (0==map)			return nullptr;
+	if (0==map)			return NULL;
 
 	// check if already 32bpp
 	if (32==FreeImage_GetBPP(map))	return map;
@@ -111,7 +111,7 @@ u32*	Surface_Load(char* name, u32& w, u32& h)
 
 	// detect format
 	string_path		full;
-	if (!Surface_Detect(full,name)) return nullptr;
+	if (!Surface_Detect(full,name)) return NULL;
 
 	FIBITMAP* map32		= Surface_Load(full);
 
