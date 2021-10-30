@@ -162,7 +162,8 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 
 	// Load animation
 	IReader*	MS		= data->open_chunk(OGF_S_MOTIONS);
-	if (!MS) 			return false;
+	if (!MS) 	MS = data->open_chunk(OGF_S_MOTIONS2);
+	if (!MS) 	return false;
 
 	u32			dwCNT	= 0;
 	MS->r_chunk_safe	(0,&dwCNT,sizeof(dwCNT));

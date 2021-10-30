@@ -38,6 +38,7 @@ enum OGF_Chuncks {
 	OGF_S_MOTIONS 			= 14,	// * For skeletons only
 	OGF_S_SMPARAMS  		= 15,	// * For skeletons only
 	OGF_S_IKDATA			= 16,	// * For skeletons only
+	OGF_S_MOTIONS2 			= 85,	// * For skeletons only
 	OGF_S_USERDATA			= 17,	// * For skeletons only (Ini-file)
 	OGF_S_DESC				= 18,	// * For skeletons only
 	OGF_S_MOTION_REFS		= 19,	// * For skeletons only
