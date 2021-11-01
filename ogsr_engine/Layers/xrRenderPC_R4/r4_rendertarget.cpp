@@ -55,7 +55,7 @@ void	CRenderTarget::u_setrt			(const ref_rt& _1, const ref_rt& _2, const ref_rt&
 	if (_2) RCache.set_RT(_2->pRT,	1); else RCache.set_RT(nullptr,1);
 	if (_3) RCache.set_RT(_3->pRT,	2); else RCache.set_RT(nullptr,2);
 
-	if (ps_r2_ls_flags_ext.test(R2FLAGEXT_SSLR) && HW.DX11Only())
+	if (ps_r2_ls_flags_ext.test(R2FLAGEXT_SSLR) && HW.DX11Only() || HW.DX12Only())
 		RCache.set_RT(nullptr, 3); //rt_Wetness
 
 	RCache.set_ZB							(zb);
@@ -94,7 +94,7 @@ void	CRenderTarget::u_setrt			(const ref_rt& _1, const ref_rt& _2, ID3DDepthSten
 	if (_1) RCache.set_RT(_1->pRT,	0); else RCache.set_RT(nullptr,0);
 	if (_2) RCache.set_RT(_2->pRT,	1); else RCache.set_RT(nullptr,1);
 
-	if (ps_r2_ls_flags_ext.test(R2FLAGEXT_SSLR) && HW.DX11Only())
+	if (ps_r2_ls_flags_ext.test(R2FLAGEXT_SSLR) && HW.DX11Only() || HW.DX12Only())
 		RCache.set_RT(nullptr, 2); //rt_Wetness
 
 	RCache.set_ZB							(zb);

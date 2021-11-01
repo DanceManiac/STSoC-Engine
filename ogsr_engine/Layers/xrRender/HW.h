@@ -69,6 +69,7 @@ public:
 	
     bool DX10Only() const;
     bool DX11Only() const;
+    bool DX12Only() const;
 #elif defined(USE_DX10)
 public:
 	IDXGIFactory* pFactory = nullptr;
@@ -89,6 +90,7 @@ public:
 	
     bool DX10Only() const;
     bool DX11Only() const;
+    bool DX12Only() const;
 #else
 private:
 	HINSTANCE 				hD3D;

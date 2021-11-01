@@ -111,7 +111,7 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 	//	TODO: DX10: implement dynamic format selection
 	//sd.BufferDesc.Format		= fTarget;
 	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	sd.BufferCount = 1;
+	sd.BufferCount = 2;
 
 	// Multisample
 	sd.SampleDesc.Count = 1;
@@ -157,19 +157,30 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 #ifdef USE_DX11
 	HRESULT R;
 	
-    D3D_FEATURE_LEVEL featureLevels[] =
+	D3D_FEATURE_LEVEL featureLevels[] =
+	{
+		D3D_FEATURE_LEVEL_12_1,
+		D3D_FEATURE_LEVEL_12_0,
+	};
+	D3D_FEATURE_LEVEL featureLevels2[] =
+	{
+		D3D_FEATURE_LEVEL_12_0,
+		D3D_FEATURE_LEVEL_11_1,
+		D3D_FEATURE_LEVEL_11_0,
+	};
+    D3D_FEATURE_LEVEL featureLevels3[] =
     {
 		D3D_FEATURE_LEVEL_11_1,
 		D3D_FEATURE_LEVEL_11_0,
     };
-    D3D_FEATURE_LEVEL featureLevels2[] =
+    D3D_FEATURE_LEVEL featureLevels4[] =
     {
         D3D_FEATURE_LEVEL_11_0,
         D3D_FEATURE_LEVEL_10_1,
         D3D_FEATURE_LEVEL_10_0
     };
 
-    D3D_FEATURE_LEVEL featureLevels3[] =
+    D3D_FEATURE_LEVEL featureLevels5[] =
     {
         D3D_FEATURE_LEVEL_10_1,
         D3D_FEATURE_LEVEL_10_0
@@ -183,21 +194,27 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
     };
 
     if (DX10Only())
-        R = createDevice(featureLevels3, std::size(featureLevels3));
-    else
+        R = createDevice(featureLevels4, std::size(featureLevels5));
+    else if(DX11Only())
     {
-        R = createDevice(featureLevels, std::size(featureLevels));
+		R = createDevice(featureLevels2, std::size(featureLevels3));
+		if (FAILED(R))
+			R = createDevice(featureLevels2, std::size(featureLevels4));
+    }
+	else
+	{
+		R = createDevice(featureLevels2, std::size(featureLevels));
 		if (FAILED(R))
 			R = createDevice(featureLevels2, std::size(featureLevels2));
-    }
+	}
 
 	R_CHK(pFactory->CreateSwapChain(pDevice, &sd, &m_pSwapChain));
 
-	if (FeatureLevel != D3D_FEATURE_LEVEL_11_1)
+	/*if (FeatureLevel != D3D_FEATURE_LEVEL_11_1)
 	{
-		//R_ASSERT(FeatureLevel == D3D_FEATURE_LEVEL_11_0); //На всякий случай
+		R_ASSERT(FeatureLevel == D3D_FEATURE_LEVEL_11_0); //На всякий случай
 		Msg("!![%s] DirectX 11.1 not supported!", __FUNCTION__);
-	}
+	}*/
 
 	// https://habr.com/ru/post/308980/
 	IDXGIDevice1* pDeviceDXGI = nullptr;
@@ -571,7 +588,7 @@ void fill_vid_mode_list(CHW* _hw)
 		string32		str;
 
 		//-> Удаляем поддержку 4:3
-		if((desc.Width) / float(desc.Height) <= (1024.f / 768.f + 0.01f)) continue;
+		if(desc.Width <= 800 || ((desc.Width) / float(desc.Height) <= (1024.f / 768.f + 0.01f))) continue;
 
 		xr_sprintf(str, sizeof(str), "%dx%d", desc.Width, desc.Height);
 
@@ -660,6 +677,13 @@ bool CHW::DX10Only() const
 bool CHW::DX11Only() const
 {
 	if(ps_r_renderer_mode == RENDERER_MODE_DX11)
+		return true;
+	return false;
+}
+
+bool CHW::DX12Only() const
+{
+	if (ps_r_renderer_mode == RENDERER_MODE_DX12)
 		return true;
 	return false;
 }

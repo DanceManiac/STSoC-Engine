@@ -236,6 +236,7 @@ enum
 {
 	RENDERER_MODE_DX10,
 	RENDERER_MODE_DX11,
+	RENDERER_MODE_DX12,
 };
 
 // Postprocess anti-aliasing types
