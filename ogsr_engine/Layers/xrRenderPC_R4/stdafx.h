@@ -44,6 +44,9 @@
 #include "../xrRender/blenders\blender.h"
 #include "../xrRender/blenders\blender_clsid.h"
 #include "../xrRender/xrRender_console.h"
+
+#include "r4_test_hw.h"
+
 #include "r4.h"
 
 IC	void	jitter(CBlender_Compile& C)

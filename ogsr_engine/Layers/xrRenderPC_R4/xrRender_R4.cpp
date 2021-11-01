@@ -8,7 +8,8 @@
 void AttachRender()
 {
 	//	Can't call CreateDXGIFactory from DllMain
-	//if (!xrRender_test_hw())	return FALSE;
+	R4_Test_HW* test_hw = xr_new<R4_Test_HW>();
+	R_ASSERT(test_hw->TestDX11Present() || test_hw->TestDX10Present());
 	::Render = &RImplementation;
 	::RenderFactory = &RenderFactoryImpl;
 	::DU = &DUImpl;
@@ -18,25 +19,4 @@ void AttachRender()
 	DRender = &DebugRenderImpl;
 #endif	//	DEBUG
 	xrRender_initconsole();
-}
-
-#include "r2_test_hw.cpp"
-extern "C"
-{
-	bool SupportsDX11Rendering();
-};
-
-bool SupportsDX11Rendering()
-{
-	return xrRender_test_hw_DX11()?true:false;
-}
-
-extern "C"
-{
-	bool  SupportsDX10Rendering();
-};
-
-bool  SupportsDX10Rendering()
-{
-	return xrRender_test_hw_DX10()?true:false;
 }

@@ -380,7 +380,7 @@ void	CRenderTarget::phase_combine	()
    if (ps_r_pp_aa_mode)
 	   PhaseAA();
 
-   if (ps_r2_ls_flags_ext.test(R2FLAGEXT_SSLR) && HW.DX11Only() || HW.DX12Only())
+   if (ps_r2_ls_flags_ext.test(R2FLAGEXT_SSLR) /*&& HW.DX11Only() || HW.DX12Only()*/)
 	   phase_SSLR();
 
    // Rain droplets on screen

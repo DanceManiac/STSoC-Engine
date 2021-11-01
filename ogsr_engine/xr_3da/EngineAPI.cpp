@@ -40,10 +40,6 @@ CEngineAPI::~CEngineAPI()
 	}
 }
 
-#ifndef EXCLUDE_R1
-extern u32 renderer_value; //con cmd
-#endif
-
 ENGINE_API int g_current_renderer = 0;
 
 ENGINE_API bool is_enough_address_space_available()
@@ -73,13 +69,6 @@ void CEngineAPI::Initialize()
 	psDeviceFlags.set(rsR4, TRUE);
 	g_current_renderer = 4;
 #else
-#ifndef EXCLUDE_R1
-	constexpr LPCSTR r1_name = "xrRender_R1.dll";
-#endif
-#ifndef EXCLUDE_R2
-	constexpr LPCSTR r2_name = "xrRender_R2.dll";
-#endif
-	constexpr LPCSTR r3_name = "xrRender_R3.dll";
 	constexpr LPCSTR r4_name = "xrRender_R4.dll";
 
 	if (psDeviceFlags.test(rsR4))
@@ -97,11 +86,7 @@ void CEngineAPI::Initialize()
 			g_current_renderer = 4;
 	}
 
-#ifdef EXCLUDE_R2
 	if (!hRender)
-#else
-	if (psDeviceFlags.test(rsR3))
-#endif
 	{
 		// try to initialize R3
 		Msg("--Loading DLL: [%s]", r3_name);
@@ -109,61 +94,11 @@ void CEngineAPI::Initialize()
 		if (!hRender)
 		{
 			// try to load R1
-#ifndef EXCLUDE_R2
-			Msg("!![%s] Can't load module: [%s]! Error: %s", __FUNCTION__, r3_name, Debug.error2string(GetLastError()));
-			psDeviceFlags.set(rsR2, TRUE);
-#else
 			FATAL("!![%s] Can't load module: [%s]! Error: %s", __FUNCTION__, r3_name, Debug.error2string(GetLastError()));
-#endif
 		}
 		else
 			g_current_renderer = 3;
 	}
-#ifndef EXCLUDE_R2
-#ifdef EXCLUDE_R1
-	if (!hRender)
-#else
-	if ( psDeviceFlags.test(rsR2))
-#endif
-	{
-		// try to initialize R2
-#ifdef EXCLUDE_R1
-		if (!psDeviceFlags.test(rsR2))
-			Console->Execute("renderer renderer_r2");
-#else
-		psDeviceFlags.set(rsR4, FALSE);
-		psDeviceFlags.set(rsR3, FALSE);
-#endif
-		Msg("--Loading DLL: [%s]", r2_name);
-		hRender = LoadLibrary(r2_name);
-		if (!hRender)
-		{
-#ifdef EXCLUDE_R1
-			FATAL("!![%s] Can't load module: [%s]! Error: %s", __FUNCTION__, r2_name, Debug.error2string(GetLastError()));
-#else
-			// try to load R1
-			Msg("!![%s] Can't load module: [%s]! Error: %s", __FUNCTION__, r2_name, Debug.error2string(GetLastError()));
-#endif
-		}
-		else
-			g_current_renderer = 2;
-	}
-#endif
-#ifndef EXCLUDE_R1
-	if (!hRender)
-	{
-		// try to load R1
-		psDeviceFlags.set(rsR4, FALSE);
-		psDeviceFlags.set(rsR3, FALSE);
-		psDeviceFlags.set(rsR2, FALSE);
-		renderer_value = 0; //con cmd
-
-		Msg("--Loading DLL: [%s]", r1_name);
-		hRender = LoadLibrary(r1_name);
-		ASSERT_FMT(hRender, "!![%s] Can't load module: [%s]! Error: %s", __FUNCTION__, r1_name, Debug.error2string(GetLastError()));
-		g_current_renderer = 1;
-	}
-#endif
 #endif //XRRENDER_STATIC
 
 	Device.ConnectToRender();
@@ -196,13 +131,6 @@ void CEngineAPI::Destroy()
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-extern "C" {
-	typedef bool SupportsAdvancedRendering();
-	typedef bool SupportsDX10Rendering();
-	typedef bool SupportsDX11Rendering();
-};
-
 class ModuleHandler {
 	HMODULE Module = nullptr;
 
@@ -230,65 +158,6 @@ public:
 void CEngineAPI::CreateRendererList()
 {
 	std::vector<std::string> RendererTokens;
-
-#ifdef EXCLUDE_R2
-	size_t i = 3;
-#else
-#ifdef EXCLUDE_R1
-	size_t i = 2;
-#else
-	size_t i = 1;
-#endif
-#endif
-	for (; i <= 4; i++)
-	{
-		std::string ModuleName("xrRender_R");
-		ModuleName += std::to_string(i) + ".dll";
-
-		ModuleHandler RenderModule(ModuleName);
-		if (!RenderModule) {
-			Msg("!![%s] Can't load module: [%s]! Error: %s", __FUNCTION__, ModuleName.c_str(), Debug.error2string(GetLastError()));
-			break;
-		}
-
-		if (i == 1) { //-V547
-			RendererTokens.emplace_back("renderer_r1");
-		}
-		else if (i == 2) {
-			RendererTokens.emplace_back("renderer_r2a");
-			RendererTokens.emplace_back("renderer_r2");
-
-			auto test_rendering = (SupportsAdvancedRendering*)RenderModule.GetProcAddress("SupportsAdvancedRendering");
-			R_ASSERT(test_rendering);
-			if (test_rendering())
-				RendererTokens.emplace_back("renderer_r2.5");
-			else {
-				Msg("!![%s] test [SupportsAdvancedRendering] failed!", __FUNCTION__);
-				break;
-			}
-		}
-		else if (i == 3) {
-			auto test_dx10_rendering = (SupportsDX10Rendering*)RenderModule.GetProcAddress("SupportsDX10Rendering");
-			R_ASSERT(test_dx10_rendering);
-			if (test_dx10_rendering())
-				RendererTokens.emplace_back("renderer_r3");
-			else {
-				Msg("!![%s] test [SupportsDX10Rendering] failed!", __FUNCTION__);
-				break;
-			}
-		}
-		else if (i == 4) {
-			auto test_dx11_rendering = (SupportsDX11Rendering*)RenderModule.GetProcAddress("SupportsDX11Rendering");
-			auto test_dx10_rendering = (SupportsDX10Rendering*)RenderModule.GetProcAddress("SupportsDX10Rendering");
-			R_ASSERT(test_dx10_rendering || test_dx11_rendering);
-			if (test_dx11_rendering())
-				RendererTokens.emplace_back("renderer_r4");
-			else {
-				Msg("!![%s] test [SupportsDX11Rendering] failed!", __FUNCTION__);
-				break;
-			}
-		}
-	}
 
 	size_t cnt = RendererTokens.size() + 1;
 	vid_quality_token = xr_alloc<xr_token>(cnt);
