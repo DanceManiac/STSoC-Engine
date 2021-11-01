@@ -1372,30 +1372,29 @@ HRESULT	CRender::shader_compile			(
 	// add a #define for DX10_1 MSAA support
    if( o.dx10_msaa )
    {
+	   static char samples[2];
+
 	   defines[def_it].Name		=	"USE_MSAA";
 	   defines[def_it].Definition	=	"1";
 	   def_it						++;
-       sh_name[len]='1'; ++len;
-
-	   static char samples[2];
 
 	   defines[def_it].Name		=	"MSAA_SAMPLES";
 	   samples[0] = char(o.dx10_msaa_samples) + '0';
 	   samples[1] = 0;
 	   defines[def_it].Definition	= samples;	
 	   def_it						++;
-	   sh_name[len]='0'+char(o.dx10_msaa_samples); ++len;
 
-	   static char def[256];
-	   if (m_MSAASample < 0 || o.dx10_msaa_opt)
-		   def[0] = '0';
-	   else
-		   def[0] = '0' + char(m_MSAASample);
+		static char def[ 256 ];
+		if( m_MSAASample < 0 )
+			def[0]= '0';
+		else
+			def[0]= '0' + char(m_MSAASample);
 
-	   def[1] = 0;
-	   defines[def_it].Name = "ISAMPLE";
-	   defines[def_it].Definition = def;
-	   def_it++;
+		def[1] = 0;
+		defines[def_it].Name		=	"ISAMPLE";
+		defines[def_it].Definition	=	def;
+		def_it						++	;
+
 
 	   if( o.dx10_msaa_opt )
 	   {
@@ -1403,6 +1402,10 @@ HRESULT	CRender::shader_compile			(
 		   defines[def_it].Definition	=	"1";
 		   def_it						++;
 	   }
+
+		sh_name[len]='1'; ++len;
+		sh_name[len]='0'+char(o.dx10_msaa_samples); ++len;
+		sh_name[len]='0'; ++len;
 		sh_name[len]='0'+char(o.dx10_msaa_opt); ++len;
 
 		switch(o.dx10_msaa_alphatest)
@@ -1444,7 +1447,8 @@ HRESULT	CRender::shader_compile			(
 		sh_name[len]='0'; ++len;
 		sh_name[len]='0'; ++len;
 		sh_name[len]='0'; ++len;
-   }
+		sh_name[len]='0'; ++len;
+	}
 
    sh_name[len] = 0;
 

@@ -3,7 +3,7 @@
 #include "../../xr_3da/xrLevel.h"
 #include "../../xr_3da/igame_persistent.h"
 #include "../../xr_3da/environment.h"
-#include "../../utils/xrLC_Light/R_light.h"
+#include "R_Light.h"
 #include "light_db.h"
 
 CLight_DB::CLight_DB()
