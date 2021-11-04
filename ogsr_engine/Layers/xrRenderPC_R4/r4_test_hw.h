@@ -107,15 +107,6 @@ public:
 
 		return SUCCEEDED(hr);
 	};
-
-	IC bool TestDX10Present()
-	{
-		CHW							_HW;
-		HRESULT						hr;
-		_HW.CreateD3D				()		;
-		hr = _HW.m_pAdapter->CheckInterfaceSupport(__uuidof(ID3D10Device), 0);
-		_HW.DestroyD3D				()		;
-
-		return	SUCCEEDED(hr);
-	};
 };
+
+extern R4_Test_HW test_hw;

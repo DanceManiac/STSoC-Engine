@@ -296,7 +296,7 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
       }
 
 	  // Igor: draw volumetric here
-	  if (RImplementation.o.advancedpp && (ps_r_sunshafts_mode == SS_VOLUMETRIC || ps_r_sunshafts_mode == SS_VOLUMETRIC_OGSE || ps_r_sunshafts_mode == SS_VOLUMETRIC_MRMNWAR))
+	  if (RImplementation.o.advancedpp && (ps_r_sunshafts_mode == SS_VOLUMETRIC || ps_r_sunshafts_mode == SS_VOLUMETRIC_OGSE || ps_r_sunshafts_mode == SS_VOLUMETRIC_MRMNWAR || ps_r_sunshafts_mode == SS_VOLUMETRIC_MRMNWAR_OGSE))
 		  accum_direct_volumetric(sub_phase, Offset, m_shadow);
 	}
 }

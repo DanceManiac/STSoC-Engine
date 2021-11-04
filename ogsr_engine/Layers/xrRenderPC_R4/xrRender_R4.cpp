@@ -5,12 +5,12 @@
 #include "../xrRender/dxUIRender.h"
 #include "../xrRender/dxDebugRender.h"
 
+R4_Test_HW test_hw;
+
 void AttachRender()
 {
 	//	Can't call CreateDXGIFactory from DllMain
-	R4_Test_HW* test_hw = xr_new<R4_Test_HW>();
-	R_ASSERT(test_hw->TestDX11Present() || test_hw->TestDX10Present());
-	xr_delete(test_hw);
+	CHECK_OR_EXIT(test_hw.TestDX11Present(), "DirectX 11 support required!");
 	::Render = &RImplementation;
 	::RenderFactory = &RenderFactoryImpl;
 	::DU = &DUImpl;
