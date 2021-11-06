@@ -281,14 +281,12 @@ void CSheduler::ProcessStep			()
 	// Normal priority
 	u32		dwTime					= Device.dwTimeGlobal;
 	CTimer							eTimer;
-	for (int i=0;!Items.empty() && Top().dwTimeForExecute < dwTime; ++i) {
-		//u32		delta_ms			= dwTime - Top().dwTimeForExecute;
+	u32 ogran = 0;
 
-		// Update
+	for (int i=0;!Items.empty() && Top().dwTimeForExecute < dwTime; ++i)
+	{
+		ogran = i;
 		Item	T					= Top	();
-#ifdef DEBUG_SCHEDULER
-		Msg		("SCHEDULER: process step [%s][%x][false]",*T.scheduled_name,T.Object);
-#endif // DEBUG_SCHEDULER
 		u32		Elapsed				= dwTime-T.dwTimeOfLastExecute;
 		bool	condition;
 		
@@ -306,14 +304,6 @@ void CSheduler::ProcessStep			()
 #endif // DEBUG
 
 		if (condition) {
-			// Erase element
-#ifdef DEBUG_SCHEDULER
-			Msg						("SCHEDULER: process unregister [%s][%x][%s]",*T.scheduled_name,T.Object,"false");
-#endif // DEBUG_SCHEDULER
-//			if (T.Object)
-//				Msg					("0x%08x UNREGISTERS because shedule_Needed() returned false",T.Object);
-//			else
-//				Msg					("UNREGISTERS unknown object");
 			Pop						();
 			continue;
 		}
@@ -324,30 +314,17 @@ void CSheduler::ProcessStep			()
 #ifndef DEBUG
 		__try {
 #endif // DEBUG
-			// Real update call
-			// Msg						("------- %d:",Device.dwFrame);
-#ifdef DEBUG
-			T.Object->dbg_startframe	= Device.dwFrame;
-			eTimer.Start				();
-			LPCSTR		_obj_name		= T.Object->shedule_Name().c_str();
-#endif // DEBUG
 
 			// Calc next update interval
 			u32		dwMin				= _max(u32(30),T.Object->shedule.t_min);
-			u32		dwMax				= (1000+T.Object->shedule.t_max)/2;
+			u32		dwMax				= (2000+T.Object->shedule.t_max);
 			float	scale				= T.Object->shedule_Scale	(); 
-			u32		dwUpdate			= dwMin+iFloor(float(dwMax-dwMin)*scale);
-			clamp	(dwUpdate,u32(_max(dwMin,u32(20))),dwMax);
+			CRandom random;
+			u32 dwUpdate = dwMin + iFloor(float(dwMax - dwMin)*scale * random.randF(0.9f, 1.5f) + random.randF(1.f, 100.f));
+			clamp(dwUpdate, u32(450), dwMax);
 
 
-//			try {
-				T.Object->shedule_Update	(clampr(Elapsed,u32(1),u32(_max(u32(T.Object->shedule.t_max),u32(1000)))) );
-//			} catch (...) {
-#ifdef DEBUG
-//				Msg		("! xrSheduler: object '%s' raised an exception", _obj_name);
-//				throw	;
-#endif
-//			}
+		T.Object->shedule_Update	(clampr(Elapsed,u32(1),u32(_max(u32(T.Object->shedule.t_max),u32(5000)))) );
 #ifdef DEBUG
 			u32	execTime				= eTimer.GetElapsed_ms		();
 #endif
@@ -361,11 +338,6 @@ void CSheduler::ProcessStep			()
 
 			ItemsProcessed.push_back	(TNext);
 #ifdef DEBUG
-//		u32	execTime				= eTimer.GetElapsed_ms		();
-			// VERIFY3					(T.Object->dbg_update_shedule == T.Object->dbg_startframe, "Broken sequence of calls to 'shedule_Update'", _obj_name );
-			//if (delta_ms> 3*dwUpdate)	{
-				//Msg	("! xrSheduler: failed to shedule object [%s] (%dms)",	_obj_name, delta_ms	);
-			//}
 			if (execTime> 15)			{
 				Msg	("* xrSheduler: too much time consumed by object [%s] (%dms)",	_obj_name, execTime	);
 			}
@@ -388,6 +360,12 @@ void CSheduler::ProcessStep			()
 			psShedulerTarget		+= (psShedulerReaction * 3);
 			break;
 		}
+
+		if (ogran > 750)
+		{
+			ogran = 0;
+			Sleep(1);
+		}
 	}
 
 	// Push "processed" back
@@ -399,16 +377,7 @@ void CSheduler::ProcessStep			()
 	// always try to decrease target
 	psShedulerTarget	-= psShedulerReaction;
 }
-/*
-void CSheduler::Switch				()
-{
-	if (fibered)	
-	{
-		fibered						= FALSE;
-		SwitchToFiber				(fiber_main);
-	}
-}
-*/
+
 void CSheduler::Update				()
 {
 	R_ASSERT						(Device.Statistic);
