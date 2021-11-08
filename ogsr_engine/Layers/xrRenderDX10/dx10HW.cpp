@@ -588,7 +588,7 @@ void fill_vid_mode_list(CHW* _hw)
 		string32		str;
 
 		//-> Удаляем поддержку 4:3
-		if(desc.Width <= 800 || ((desc.Width) / float(desc.Height) <= (1024.f / 768.f + 0.01f))) continue;
+		if(desc.Width <= 800 || (float(desc.Width) / float(desc.Height) <= (1024.f / 768.f + 0.01f))) continue;
 
 		xr_sprintf(str, sizeof(str), "%dx%d", desc.Width, desc.Height);
 

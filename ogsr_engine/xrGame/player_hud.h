@@ -42,7 +42,6 @@ struct hud_item_measures
 		e_fire_point = (1 << 0),
 		e_fire_point2 = (1 << 1),
 		e_shell_point = (1 << 2),
-		e_16x9_mode_now = (1 << 3)
 	};
 	void merge_measures_params();
 	Flags8 m_prop_flags;

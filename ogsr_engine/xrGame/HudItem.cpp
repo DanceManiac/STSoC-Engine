@@ -367,9 +367,7 @@ bool CHudItem::AnimationExist(const shared_str& anim_name) const
 	if (HudItemData())
 	{
 		string256 anim_name_r;
-		bool is_16x9 = UI()->is_widescreen();
-		u16 attach_place_idx = HudItemData()->m_attach_place_idx;
-		xr_sprintf(anim_name_r, "%s%s", anim_name.c_str(), (attach_place_idx == 1 && is_16x9) ? "_16x9" : "");
+		xr_sprintf(anim_name_r, "%s%s", anim_name.c_str(), HudItemData()->m_attach_place_idx ? "_16x9" : "");
 		player_hud_motion* anm = HudItemData()->m_hand_motions.find_motion(anim_name_r);
 		if (anm)
 			return true;
