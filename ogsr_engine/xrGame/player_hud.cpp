@@ -175,6 +175,10 @@ void attachable_hud_item::update(bool bForce)
 {
 	if (!bForce && m_upd_firedeps_frame == Device.dwFrame)
 		return;
+	bool is_16x9 = UI()->is_widescreen();
+
+	if (!!m_measures.m_prop_flags.test(hud_item_measures::e_16x9_mode_now) != is_16x9)
+		m_measures.load(m_sect_name, m_model);
 
 	Fvector ypr = m_measures.m_item_attach[1];
 	ypr.mul(PI / 180.f);
@@ -268,17 +272,20 @@ void attachable_hud_item::render_item_ui()
 
 void hud_item_measures::load(const shared_str& sect_name, IKinematics* K)
 {
+	bool is_16x9 = UI()->is_widescreen();
 	string64 _prefix;
-	xr_sprintf(_prefix, "%s""_16x9");
+	xr_sprintf(_prefix, "%s", is_16x9 ? "_16x9" : "");
 	string128 val_name;
 
+	
+
 	strconcat(sizeof(val_name), val_name, "hands_position", _prefix);
-	if (!pSettings->line_exist(sect_name, val_name))
+	if (is_16x9 && !pSettings->line_exist(sect_name, val_name))
 		xr_strcpy(val_name, "hands_position");
 	m_hands_attach[0] = READ_IF_EXISTS(pSettings, r_fvector3, sect_name, val_name, Fvector{});
 
 	strconcat(sizeof(val_name), val_name, "hands_orientation", _prefix);
-	if (!pSettings->line_exist(sect_name, val_name))
+	if (is_16x9 && !pSettings->line_exist(sect_name, val_name))
 		xr_strcpy(val_name, "hands_orientation");
 	m_hands_attach[1] = READ_IF_EXISTS(pSettings, r_fvector3, sect_name, val_name, Fvector{});
 
@@ -318,22 +325,22 @@ void hud_item_measures::load(const shared_str& sect_name, IKinematics* K)
 			m_shell_point_offset.set(0.f, 0.f, 0.f);
 
 	strconcat(sizeof(val_name), val_name, "aim_hud_offset_pos", _prefix);
-	if (!pSettings->line_exist(sect_name, val_name))
+	if (is_16x9 && !pSettings->line_exist(sect_name, val_name))
 		xr_strcpy(val_name, "aim_hud_offset_pos");
 		m_hands_offset[m_hands_offset_pos][m_hands_offset_type_aim] = READ_IF_EXISTS(pSettings, r_fvector3, sect_name, val_name, Fvector{});
 
 	strconcat(sizeof(val_name), val_name, "aim_hud_offset_rot", _prefix);
-	if (!pSettings->line_exist(sect_name, val_name))
+	if (is_16x9 && !pSettings->line_exist(sect_name, val_name))
 		xr_strcpy(val_name, "aim_hud_offset_rot");
 		m_hands_offset[m_hands_offset_rot][m_hands_offset_type_aim] = READ_IF_EXISTS(pSettings, r_fvector3, sect_name, val_name, Fvector{});
 
 	strconcat(sizeof(val_name), val_name, "gl_hud_offset_pos", _prefix);
-	if (!pSettings->line_exist(sect_name, val_name))
+	if (is_16x9 && !pSettings->line_exist(sect_name, val_name))
 		xr_strcpy(val_name, "gl_hud_offset_pos");
 		m_hands_offset[m_hands_offset_pos][m_hands_offset_type_gl] = READ_IF_EXISTS(pSettings, r_fvector3, sect_name, val_name, Fvector{});
 
 	strconcat(sizeof(val_name), val_name, "gl_hud_offset_rot", _prefix);
-	if (!pSettings->line_exist(sect_name, val_name))
+	if (is_16x9 && !pSettings->line_exist(sect_name, val_name))
 		xr_strcpy(val_name, "gl_hud_offset_rot");
 		m_hands_offset[m_hands_offset_rot][m_hands_offset_type_gl] = READ_IF_EXISTS(pSettings, r_fvector3, sect_name, val_name, Fvector{});
 
@@ -344,6 +351,7 @@ void hud_item_measures::load(const shared_str& sect_name, IKinematics* K)
 		R_ASSERT2(pSettings->line_exist(sect_name, "shell_point") == pSettings->line_exist(sect_name, "shell_bone"),
 			sect_name.c_str());
 
+	m_prop_flags.set(e_16x9_mode_now, is_16x9);
     bReloadShooting = READ_IF_EXISTS(pSettings, r_bool, sect_name, "use_new_shooting_params", true);
 
 	//Загрузка параметров инерции --#SM+# Begin--
@@ -407,7 +415,8 @@ u32 attachable_hud_item::anim_play(const shared_str& anm_name_b, BOOL bMixIn, co
 {
 	R_ASSERT(strstr(anm_name_b.c_str(), "anm_") == anm_name_b.c_str());
 	string256 anim_name_r;
-	xr_sprintf(anim_name_r, "%s%s", anm_name_b.c_str(), m_attach_place_idx == 1 ? "_16x9" : "");
+	bool is_16x9 = UI()->is_widescreen();
+	xr_sprintf(anim_name_r, "%s%s", anm_name_b.c_str(), ((m_attach_place_idx == 1) && is_16x9) ? "_16x9" : "");
 
 	player_hud_motion* anm = m_hand_motions.find_motion(anim_name_r);
 

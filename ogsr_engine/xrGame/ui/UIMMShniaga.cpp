@@ -107,8 +107,15 @@ void CUIMMShniaga::Init(CUIXml& xml_doc, LPCSTR path)
 
 void CUIMMShniaga::OnDeviceReset()
 {
-	m_anims[0]->SetWndSize(m_wheel_size[1]);
-	m_anims[1]->SetWndSize(m_wheel_size[1]);
+	if(UI()->is_16_9_mode())
+	{
+		m_anims[0]->SetWndSize(m_wheel_size[1]);
+		m_anims[1]->SetWndSize(m_wheel_size[1]);
+	}else
+	{
+		m_anims[0]->SetWndSize(m_wheel_size[0]);
+		m_anims[1]->SetWndSize(m_wheel_size[0]);
+	}
 }
 
 extern CActor*		g_actor;
