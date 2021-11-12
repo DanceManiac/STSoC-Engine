@@ -480,6 +480,7 @@ CRenderTarget::CRenderTarget		()
             rt_Generic_0_temp.create(r2_RT_generic0_temp, w, h, D3DFMT_A8R8G8B8, 1);
 
 		rt_secondVP.create(r2_RT_secondVP, w, h, D3DFMT_A8R8G8B8, 1); //--#SM+#-- +SecondVP+
+		rt_ui_pda.create(r2_RT_ui, w, h, D3DFMT_A8R8G8B8);
 
 		if( RImplementation.o.dx10_msaa )
 		{

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "..\xr_3da\feel_touch.h"
-#include "inventory_item_object.h"
+#include "hud_item_object.h"
 
 #include "InfoPortionDefs.h"
 #include "character_info_defs.h"
@@ -15,10 +15,10 @@ class CPda;
 DEF_VECTOR (PDA_LIST, CPda*);
 
 class CPda :
-	public CInventoryItemObject,
+	public CHudItemObject,
 	public Feel::Touch
 {
-	typedef	CInventoryItemObject inherited;
+	typedef	CHudItemObject inherited;
 public:
 											CPda					();
 	virtual									~CPda					();
@@ -42,6 +42,9 @@ public:
 	virtual CInventoryOwner*				GetOriginalOwner		();
 	virtual CObject*						GetOwnerObject			();
 
+	virtual void			Hide( bool = false );
+	virtual void			Show( bool = false );
+	virtual void			UpdateHudAdditonal		(Fmatrix& trans);
 
 			void							TurnOn					();
 			void							TurnOff					();
@@ -74,4 +77,50 @@ protected:
 	xr_string								m_sFullName;
 
 	bool									m_bTurnedOff;
+
+	shared_str m_functor_str;
+	float m_fZoomfactor;
+	float m_fDisplayBrightnessPowerSaving;
+	float m_fPowerSavingCharge;
+	bool bButtonL;
+	bool bButtonR;
+	LPCSTR m_joystick_bone;
+	u16 joystick;
+	float m_screen_on_delay, m_screen_off_delay;
+	float target_screen_switch;
+	float m_fLR_CameraFactor;
+	float m_fLR_MovingFactor;
+	float m_fLR_InertiaFactor;
+	float m_fUD_InertiaFactor;
+	bool hasEnoughBatteryPower(){ return true; }
+	static void _BCL JoystickCallback(CBoneInstance* B);
+	bool m_bNoticedEmptyBattery;
+public:
+	virtual void OnStateSwitch(u32 S, u32 oldState);
+	virtual void OnAnimationEnd(u32 state);
+	virtual void UpdateHudAdditional(Fmatrix& trans);
+	virtual void OnMoveToRuck();
+	virtual void UpdateCL();
+	virtual void UpdateXForm();
+	virtual void OnActiveItem();
+	virtual void OnHiddenItem();
+
+	enum eDeferredEnableState
+	{
+		eDefault,
+		eDisable,
+		eEnable,
+		eEnableZoomed
+	};
+
+	enum ePDAState
+	{
+		eEmptyBattery = 7
+	};
+
+	bool m_bZoomed;
+	eDeferredEnableState m_eDeferredEnable;
+	bool m_bPowerSaving;
+	float m_psy_factor;
+	float m_thumb_rot[2];
 };

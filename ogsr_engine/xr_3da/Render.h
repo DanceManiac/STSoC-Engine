@@ -176,6 +176,11 @@ public:
 		SM_FOR_MPSENDING			= 4,
 		SM_forcedword				= u32(-1)
 	};
+	enum RRT
+	{
+		rtPDA = 1,
+		rtSVP,
+	};
 public:
 	// options
 	s32								m_skinning;

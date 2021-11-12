@@ -18,6 +18,8 @@
 #define		r2_T_sky0			"$user$sky0" 
 #define		r2_T_sky1			"$user$sky1" 
 
+#define		r2_RT_ui			"$user$ui"
+
 #define		r2_RT_ssao_temp		"$user$ssao_temp"		//temporary rt for ssao calculation
 #define		r2_RT_half_depth	"$user$half_depth"		//temporary rt for ssao calculation
 

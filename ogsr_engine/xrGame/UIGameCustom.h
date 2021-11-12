@@ -66,11 +66,14 @@ public:
 	const GAME_WEATHERS&		GetGameWeathers	();
 };
 
+#include "ui/uipdawnd.h"
 class CUIGameCustom :public DLL_Pure, public ISheduled
 {
 	typedef ISheduled inherited;
 protected:
 	u32					uFlags;
+
+	CUIPdaWnd* PdaMenu;
 
 	void				SetFlag					(u32 mask, BOOL flag){if (flag) uFlags|=mask; else uFlags&=~mask; }
 	void				InvertFlag				(u32 mask){if (uFlags&mask) uFlags&=~mask; else uFlags|=mask; }
@@ -101,6 +104,7 @@ public:
 	virtual bool		IR_OnMouseMove			(int dx, int dy);
 	virtual bool		IR_OnMouseWheel			(int direction);
 
+	IC CUIPdaWnd& GetPdaMenu() const { return *PdaMenu; }	
 
 	void				AddDialogToRender		(CUIWindow* pDialog);
 	void				RemoveDialogToRender	(CUIWindow* pDialog);
@@ -124,6 +128,8 @@ public:
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CUIGameCustom)
+extern CUIGameCustom* CurrentGameUI();
+
 #undef script_type_list
 #define script_type_list save_type_list(CUIGameCustom)
 

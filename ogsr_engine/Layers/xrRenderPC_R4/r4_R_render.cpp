@@ -506,3 +506,21 @@ void CRender::render_forward				()
 
 	RImplementation.o.distortion				= FALSE;				// disable distorion
 }
+
+void RenderToTarget(/*RRT target*/)
+{
+	CRender* render = xr_new<CRender>();
+	ref_rt* RT = &render->Target->rt_ui_pda;;
+
+	/*switch (target)
+	{
+	case rtPDA:
+		RT = &Target->rt_ui_pda;
+		break;
+	}*/
+
+	ID3DTexture2D* pBuffer = nullptr;
+	HW.m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBuffer);
+	HW.pContext->CopyResource((*RT)->pSurface, pBuffer);
+	pBuffer->Release();
+};

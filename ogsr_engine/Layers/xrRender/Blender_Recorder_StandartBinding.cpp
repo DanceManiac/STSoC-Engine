@@ -178,6 +178,34 @@ class cl_fog_params	: public R_constant_setup {
 	}
 };	static cl_fog_params	binder_fog_params;
 
+static class cl_pda_params : public R_constant_setup
+{
+	u32 marker;
+	Fvector4 result;
+
+	virtual void setup(R_constant* C)
+	{
+		float pda_factor = g_pGamePersistent->pda_shader_data.pda_display_factor;
+		float pda_psy_factor = g_pGamePersistent->pda_shader_data.pda_psy_influence;
+		float pda_display_brightness = g_pGamePersistent->pda_shader_data.pda_displaybrightness;
+		RCache.set_c(C, pda_factor, pda_psy_factor, pda_display_brightness, 0.0f);
+	}
+
+} binder_pda_params;
+
+static class cl_near_far_plane : public R_constant_setup
+{
+	Fvector4 result;
+
+	virtual void setup(R_constant* C)
+	{
+		float nearPlane = float(VIEWPORT_NEAR);
+		float farPlane = g_pGamePersistent->Environment().CurrentEnv->far_plane;
+		result.set(nearPlane, farPlane, 0, 0);
+		RCache.set_c(C, result);
+	}
+} binder_near_far_plane;
+
 // fog-color
 class cl_fog_color	: public R_constant_setup {
 	u32			marker;
@@ -512,6 +540,10 @@ void	CBlender_Compile::SetMapping	()
 	r_Constant				("L_ambient",		&binder_amb_color);
 
 	r_Constant				("screen_res",		&binder_screen_res);
+
+	r_Constant("pda_params", &binder_pda_params);
+	r_Constant("near_far_plane", &binder_near_far_plane);
+
 	r_Constant("ogse_c_screen", &binder_screen_params);
 
 	r_Constant("ogse_c_artefacts", &binder_artifacts);

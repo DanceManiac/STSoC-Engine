@@ -345,7 +345,7 @@ public:
 	virtual void					rmNormal					();
 
 	u32 active_phase() const override { return phase; }
-
+	//void RenderToTarget(/*RRT target*/)/* override*/;
 	// Constructor/destructor/loader
 	CRender							();
 	virtual ~CRender				();

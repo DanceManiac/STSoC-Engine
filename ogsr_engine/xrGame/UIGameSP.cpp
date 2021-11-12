@@ -19,9 +19,11 @@
 #include "ui/UICarBodyWnd.h"
 #include "ui/UIMessageBox.h"
 
+#include "Inventory.h"
+
 CUIGameSP::CUIGameSP()
 {
-	m_game			= NULL;
+	m_game			= nullptr;
 	
 	InventoryMenu	= xr_new<CUIInventoryWnd>	();
 	PdaMenu			= xr_new<CUIPdaWnd>			();
@@ -93,12 +95,12 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 			return true;
 		}break;
 
-	case kACTIVE_JOBS:
+	/*case kACTIVE_JOBS:
 		if( !MainInputReceiver() || MainInputReceiver()==PdaMenu){
 			PdaMenu->SetActiveSubdialog(eptQuests);
 			m_game->StartStopMenu(PdaMenu,true);
 			return true;
-		}break;
+		}break;*/
 
 	case kMAP:
 		if( !MainInputReceiver() || MainInputReceiver()==PdaMenu){

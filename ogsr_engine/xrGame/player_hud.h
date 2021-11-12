@@ -241,6 +241,23 @@ private:
 public:
 	Fmatrix m_transform;
 	Fmatrix m_transform_2;
+	
+	Fvector target_thumb0rot, target_thumb01rot, target_thumb02rot;
+	Fvector thumb0rot, thumb01rot, thumb02rot;
+	IC void reset_thumb(bool bForce)
+	{
+		if (bForce)
+		{
+			thumb0rot.set(0.f, 0.f, 0.f);
+			thumb01rot.set(0.f, 0.f, 0.f);
+			thumb02rot.set(0.f, 0.f, 0.f);
+		}
+		
+		target_thumb0rot.set(0.f, 0.f, 0.f);
+		target_thumb01rot.set(0.f, 0.f, 0.f);
+		target_thumb02rot.set(0.f, 0.f, 0.f);
+	}
+
 private:
 	IKinematicsAnimated* m_model{};
 	IKinematicsAnimated* m_model_2{};
@@ -248,6 +265,10 @@ private:
 	attachable_hud_item* m_attached_items[2]{};
 	xr_vector<attachable_hud_item*> m_pool;
 	CWeaponBobbing* m_bobbing{};
+
+	static void _BCL Thumb0Callback(CBoneInstance* B);
+	static void _BCL Thumb01Callback(CBoneInstance* B);
+	static void _BCL Thumb02Callback(CBoneInstance* B);
 
 	private:
 		CWeaponCollision *m_collision;

@@ -27,6 +27,7 @@ CUIGameCustom::CUIGameCustom()
 	shedule.t_min			= 5;
 	shedule.t_max			= 20;
 	shedule_register		();
+	PdaMenu = xr_new<CUIPdaWnd>();
 	m_pgameCaptions			= xr_new<CUICaption>();
 	m_msgs_xml				= xr_new<CUIXml>();
 	m_msgs_xml->Init		(CONFIG_PATH, UI_PATH, "ui_custom_msgs.xml");
@@ -36,6 +37,7 @@ CUIGameCustom::~CUIGameCustom()
 {
 	delete_data				(m_pgameCaptions);
 	shedule_unregister		();
+	xr_delete(PdaMenu);
 	delete_data				(m_custom_statics);
 	delete_data				(m_custom_statics_sorted);
 	delete_data				(m_msgs_xml);
@@ -180,7 +182,7 @@ SDrawStaticStruct* CUIGameCustom::GetCustomStatic		(LPCSTR id)
 	if(it!=m_custom_statics.end()){
 		return &(*it);
 	}
-	return NULL;
+	return nullptr;
 }
 
 void CUIGameCustom::RemoveCustomStatic		(LPCSTR id)
@@ -216,7 +218,7 @@ void CUIGameCustom::reset_ui()
 
 SDrawStaticStruct::SDrawStaticStruct	()
 {
-	m_static	= NULL;
+	m_static	= nullptr;
 	m_endTime	= -1.0f;	
 }
 

@@ -27,6 +27,9 @@
 #include "GamePersistent.h"
 #include "MainMenu.h"
 
+#include "ui/uipdawnd.h"
+#include "uigamecustom.h"
+
 #ifdef DEBUG
 #	include "ai/monsters/BaseMonster/base_monster.h"
 #endif
@@ -149,6 +152,12 @@ void CLevel::IR_OnKeyboardPress	(int key)
 	};
 
 	if(	g_bDisableAllInput )	return;
+	
+	extern CUIWindow* GetPdaWindow();
+	CUIPdaWnd* pda = (CUIPdaWnd*)GetPdaWindow();
+	if (pda && HUD().GetUI()->UIGame()->MainInputReceiver() == pda) // Fix PDA hotkey input for disabled state
+		if (pda->IsShown() && !pda->IsEnabled() && pda->Action(key, WINDOW_KEY_PRESSED)) return;
+	
 	if ( !b_ui_exist )			return;
 
 	if ( b_ui_exist && pHUD->GetUI()->IR_OnKeyboardPress(key)) return;

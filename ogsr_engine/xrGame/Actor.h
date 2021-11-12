@@ -457,6 +457,11 @@ public:
 	float					CameraHeight			();
 	float					CurrentHeight;
 	bool					CanSprint				();
+	IC void 					StopSprint() { mstate_wishful &= ~mcSprint; }
+	
+	void DrawPickupItems();
+	bool m_bDelayDrawPickupItems;
+	
 	bool					CanRun					();
 	void					StopAnyMove				();
 

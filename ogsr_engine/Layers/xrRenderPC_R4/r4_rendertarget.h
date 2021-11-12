@@ -75,6 +75,8 @@ public:
 
 	// DWM: new rt init
 	ref_rt						rt_PPTemp;
+	
+	ref_rt rt_ui_pda;
 
 	// 
 	ref_rt						rt_Accumulator;		// 64bit		(r,g,b,specular)
