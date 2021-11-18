@@ -16,6 +16,8 @@
 
 #include <d3dx/D3DX10Core.h>
 
+CRender RImplementation;
+
 //////////////////////////////////////////////////////////////////////////
 class CGlow				: public IRender_Glow
 {
