@@ -31,8 +31,6 @@
 
 • OpenXRay
 
-• Bashy
-
 • Lost Alpha
 
 • ShokerStlk
