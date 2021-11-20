@@ -104,10 +104,10 @@ protected:
 	bool				m_bAllowTrade;
 
 	u32					m_tmp_active_slot_num;
+public:
 	u32 m_tmp_next_item_slot;
 	//////////////////////////////////////////////////////////////////////////
 	// сюжетная информация
-public:
 	//персонаж получил новую порцию информации
 	virtual bool OnReceiveInfo	(shared_str info_id) const;
 	//убрать информацию

@@ -32,6 +32,19 @@ void CWeaponBM16::UpdateSounds()
 
 void CWeaponBM16::PlayAnimShoot()
 {
+	if (m_magazine.empty())
+		return;
+
+	string_path guns_shoot_anm{};
+	xr_strconcat(guns_shoot_anm, "anm_shots", (this->IsZoomed() && !this->IsRotatingToZoom()) ? "_aim_" : "_", std::to_string(m_magazine.size()).c_str());
+	if (AnimationExist(guns_shoot_anm)) {
+		Msg("--[%s] Play anim [%s] for [%s]", __FUNCTION__, guns_shoot_anm, this->cNameSect().c_str());
+		PlayHUDMotion(guns_shoot_anm, false, this, GetState());
+		return;
+	}
+	else
+		Msg("!![%s] anim [%s] not found for [%s]", __FUNCTION__, guns_shoot_anm, this->cNameSect().c_str());
+
 	switch (m_magazine.size())
 	{
 	case 1: PlayHUDMotion("anm_shot_1", FALSE, this, GetState()); break;

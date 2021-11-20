@@ -198,8 +198,8 @@ void CCustomOutfit::OnDropOrMoveToRuck() {
 	}
 }
 
-void CCustomOutfit::OnMoveToRuck() {
-	inherited::OnMoveToRuck();
+void CCustomOutfit::OnMoveToRuck(EItemPlace prevPlace) {
+	inherited::OnMoveToRuck(prevPlace);
 
 	OnDropOrMoveToRuck();
 }

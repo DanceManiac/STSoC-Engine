@@ -1368,6 +1368,20 @@ void CWeaponMagazined::PlayAnimIdle()
 	if (GetState() != eIdle)
 		return;
 
+	if((/*!IsZoomed() && */m_fZoomRotationFactor < 0.f) || (IsZoomed() && IsRotatingToZoom()))
+	{
+		string_path guns_aim_anm{};
+		xr_strconcat(guns_aim_anm, "anm_idle_aim", IsZoomed() ? "_start" : "_end");
+		if (AnimationExist(guns_aim_anm))
+		{
+			Msg("--[%s] Play anim [%s] for [%s]", __FUNCTION__, guns_aim_anm, this->cNameSect().c_str());
+			PlayHUDMotion(guns_aim_anm, true, nullptr, GetState());
+			return;
+		}
+		else
+			Msg("!![%s] anim [%s] not found for [%s]", __FUNCTION__, guns_aim_anm, this->cNameSect().c_str());
+	}
+
 	if (IsZoomed())
 	{
 		PlayAnimAim();
@@ -1397,10 +1411,16 @@ void CWeaponMagazined::PlayAnimIdleMoving()
 void CWeaponMagazined::PlayAnimShoot()
 {
 	VERIFY(GetState()==eFire || GetState()==eFire2);
-	if(!IsZoomed() || !AnimationExist("anm_shots_aim"))
-		PlayHUDMotion("anm_shots", false, this, GetState());
-	else
-		PlayHUDMotion("anm_shots_aim", false, this, GetState());
+	string_path guns_shoot_anm{};
+	xr_strconcat(guns_shoot_anm, "anm_shots", (this->IsZoomed() && !this->IsRotatingToZoom()) ? (this->IsScopeAttached() ? "_aim_scope" : "_aim") : "", this->IsSilencerAttached() ? "_sil" : "");
+	if (AnimationExist(guns_shoot_anm)) {
+		Msg("--[%s] Play anim [%s] for [%s]", __FUNCTION__, guns_shoot_anm, this->cNameSect().c_str());
+		PlayHUDMotion(guns_shoot_anm, false, this, GetState());
+	}
+	else {
+		Msg("!![%s] anim [%s] not found for [%s]", __FUNCTION__, guns_shoot_anm, this->cNameSect().c_str());
+		PlayHUDMotion("anim_shoot", "anm_shots", false, this, GetState());
+	}
 }
 
 void CWeaponMagazined::OnZoomIn			()
@@ -1601,13 +1621,14 @@ void CWeaponMagazined::net_Relcase(CObject *object)
 
 
 bool CWeaponMagazined::ScopeRespawn( PIItem pIItem ) {
-  std::string scope_respawn = "scope_respawn";
-  if ( ScopeAttachable() && IsScopeAttached() ) {
+  /*std::string*/ std::string scope_respawn = "scope_respawn";
+  if ( /*ScopeAttachable() && */IsScopeAttached() ) {
     scope_respawn += "_";
-    if ( smart_cast<CScope*>( pIItem ) )
+    /*if ( smart_cast<CScope*>( pIItem ) )
       scope_respawn += pIItem->object().cNameSect().c_str();
     else
-      scope_respawn += m_sScopeName.c_str();
+      scope_respawn += m_sScopeName.c_str();*/
+	scope_respawn += smart_cast<CScope*>( pIItem ) ? pIItem->object().cNameSect().c_str() : m_sScopeName.c_str();
   }
 
   if ( pSettings->line_exist( cNameSect(), scope_respawn.c_str() ) ) {
@@ -1637,8 +1658,11 @@ bool CWeaponMagazined::ScopeRespawn( PIItem pIItem ) {
 
       auto io = smart_cast<CInventoryOwner*>( H_Parent() );
       auto ii = smart_cast<CInventoryItem*>( this );
-      if ( io->inventory().InSlot( ii ) )
+      /*if ( io->inventory().InSlot( ii ) )
         io->SetNextItemSlot( ii->GetSlot() );
+      else
+        io->SetNextItemSlot( 0 );*/
+		io->SetNextItemSlot( io->inventory().InSlot( ii ) ? ii->GetSlot() : 0);
 
       DestroyObject();
       sobj2->Spawn_Write( P, TRUE );

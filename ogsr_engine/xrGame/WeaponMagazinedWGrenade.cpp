@@ -693,36 +693,26 @@ void CWeaponMagazinedWGrenade::PlayAnimReload()
 
 void CWeaponMagazinedWGrenade::PlayAnimIdle()
 {
-	VERIFY(GetState() == eIdle);
 	if(GetState() != eIdle)
 		return;
 
 	if (IsGrenadeLauncherAttached())
 	{
-		if (m_bGrenadeMode)
-		{
-			if (IsZoomed())
-				PlayHUDMotion("anm_idle_g_aim", /*FALSE*/TRUE, nullptr, GetState());
-			else
-				PlayHUDMotion("anm_idle_g", /*FALSE*/TRUE, nullptr, GetState());
-		}
-		else
-		{
-			if (IsZoomed())
-				if(IsMisfire() && AnimationExist("anm_idle_jammed_w_gl_aim"))
-					PlayHUDMotion("anm_idle_jammed_w_gl_aim", TRUE, nullptr, GetState());
-				else
-					PlayHUDMotion("anm_idle_w_gl_aim", TRUE, nullptr, GetState());
-			else
-				if(IsMisfire() && AnimationExist("anm_idle_jammed_w_gl"))
-					PlayHUDMotion("anm_idle_jammed_w_gl", TRUE, nullptr, GetState());
-				else
-					PlayHUDMotion("anm_idle_w_gl", TRUE, nullptr, GetState());
-
-		}
-
 		if (IsZoomed())
 		{
+			if (IsRotatingToZoom())
+			{
+				string_path guns_aim_anm{};
+				xr_strconcat(guns_aim_anm, "anm_idle_aim_start", m_bGrenadeMode ? "_g" : "_w_gl");
+				if (AnimationExist(guns_aim_anm)) {
+					Msg("--[%s] Play anim [%s] for [%s]", __FUNCTION__, guns_aim_anm, this->cNameSect().c_str());
+					PlayHUDMotion(guns_aim_anm, true, nullptr, GetState());
+					return;
+				}
+				else
+					Msg("!![%s] anim [%s] not found for [%s]", __FUNCTION__, guns_aim_anm, this->cNameSect().c_str());
+			}
+
 			if (m_bGrenadeMode)
 				PlayHUDMotion("anm_idle_g_aim", /*FALSE*/TRUE, nullptr, GetState());
 			else
@@ -818,19 +808,30 @@ void CWeaponMagazinedWGrenade::PlayAnimShoot()
 	if (this->m_bGrenadeMode)
 	{
 		//анимация стрельбы из подствольника
-		if(!IsZoomed() || !AnimationExist("anm_shots_aim_g"))
-			PlayHUDMotion("anm_shots_g", "anm_shoot_g", FALSE, this, GetState());
-		else
-			PlayHUDMotion("anm_shots_aim_g", "anm_shots_g_aim", FALSE, this, GetState());
+		string_path guns_shoot_anm{};
+		xr_strconcat(guns_shoot_anm, "anm_shots", (this->IsZoomed() && !this->IsRotatingToZoom()) ? "_aim" : "", "_g");
+		if (AnimationExist(guns_shoot_anm)) {
+			Msg("--[%s] Play anim [%s] for [%s]", __FUNCTION__, guns_shoot_anm, this->cNameSect().c_str());
+			PlayHUDMotion(guns_shoot_anm, false, this, GetState());
+		}
+		else {
+			Msg("!![%s] anim [%s] not found for [%s]", __FUNCTION__, guns_shoot_anm, this->cNameSect().c_str());
+			PlayHUDMotion("anim_shoot_g", "anm_shots_g", false, this, GetState());
+		}
 	}
 	else
 	{
-		if (IsGrenadeLauncherAttached())
-		{
-			if(!IsZoomed() || !AnimationExist("anm_shots_aim"))
-				PlayHUDMotion("anm_shots_w_gl", "anm_shoot_w_gl", false, this, GetState());
-			else
-				PlayHUDMotion("anm_shots_aim_w_gl", "anm_shots_w_gl_aim", false, this, GetState());
+		if (IsGrenadeLauncherAttached()) {
+			string_path guns_shoot_anm{};
+			xr_strconcat(guns_shoot_anm, "anm_shots", (this->IsZoomed() && !this->IsRotatingToZoom()) ? (this->IsScopeAttached() ? "_aim_scope" : "_aim") : "", this->IsSilencerAttached() ? "_sil" : "", "_w_gl");
+			if (AnimationExist(guns_shoot_anm)) {
+				Msg("--[%s] Play anim [%s] for [%s]", __FUNCTION__, guns_shoot_anm, this->cNameSect().c_str());
+				PlayHUDMotion(guns_shoot_anm, false, this, GetState());
+			}
+			else {
+				Msg("!![%s] anim [%s] not found for [%s]", __FUNCTION__, guns_shoot_anm, this->cNameSect().c_str());
+				PlayHUDMotion("anim_shoot_gl", "anm_shots_w_gl", false, this, GetState());
+			}
 		}
 		else
 			inherited::PlayAnimShoot();

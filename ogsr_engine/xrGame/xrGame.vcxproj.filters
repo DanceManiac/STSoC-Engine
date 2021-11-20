@@ -1594,9 +1594,6 @@
     <Filter Include="Core\Client\Objects\items &amp; weapons\Devices\Detectors">
       <UniqueIdentifier>{835e441a-d24a-4060-8f6a-dc9f7927d467}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Client\Objects\items &amp; weapons\Devices\Detectors\Simple Detector">
-      <UniqueIdentifier>{77ca6622-7be4-41ee-9608-114581a27a19}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Client\Objects\items &amp; weapons\Devices\Torch">
       <UniqueIdentifier>{ac2a5263-256f-418a-b5ba-1c179d240390}</UniqueIdentifier>
     </Filter>
@@ -4702,7 +4699,19 @@
       <Filter>Core\Client\Objects\items &amp; weapons\Devices\Detectors</Filter>
     </ClInclude>
     <ClInclude Include="SimpleDetector.h">
-      <Filter>Core\Client\Objects\items &amp; weapons\Devices\Detectors\Simple Detector</Filter>
+      <Filter>Core\Client\Objects\items &amp; weapons\Devices\Detectors</Filter>
+    </ClInclude>
+    <ClInclude Include="AdvancedDetector.h">
+      <Filter>Core\Client\Objects\items &amp; weapons\Devices\Detectors</Filter>
+    </ClInclude>
+    <ClInclude Include="EliteDetector.h">
+      <Filter>Core\Client\Objects\items &amp; weapons\Devices\Detectors</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\ArtefactDetectorUI.h">
+      <Filter>Core\Client\Objects\items &amp; weapons\Devices\Detectors</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleDetectorSHOC.h">
+      <Filter>Core\Client\Objects\items &amp; weapons\Devices\Detectors</Filter>
     </ClInclude>
     <ClInclude Include="Torch.h">
       <Filter>Core\Client\Objects\items &amp; weapons\Devices\Torch</Filter>
@@ -7829,7 +7838,19 @@
       <Filter>Core\Client\Objects\items &amp; weapons\Devices\Detectors</Filter>
     </ClCompile>
     <ClCompile Include="SimpleDetector.cpp">
-      <Filter>Core\Client\Objects\items &amp; weapons\Devices\Detectors\Simple Detector</Filter>
+      <Filter>Core\Client\Objects\items &amp; weapons\Devices\Detectors</Filter>
+    </ClCompile>
+    <ClCompile Include="AdvancedDetector.cpp">
+      <Filter>Core\Client\Objects\items &amp; weapons\Devices\Detectors</Filter>
+    </ClCompile>
+    <ClCompile Include="EliteDetector.cpp">
+      <Filter>Core\Client\Objects\items &amp; weapons\Devices\Detectors</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\ArtefactDetectorUI.cpp">
+      <Filter>Core\Client\Objects\items &amp; weapons\Devices\Detectors</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleDetectorSHOC.cpp">
+      <Filter>Core\Client\Objects\items &amp; weapons\Devices\Detectors</Filter>
     </ClCompile>
     <ClCompile Include="Torch.cpp">
       <Filter>Core\Client\Objects\items &amp; weapons\Devices\Torch</Filter>

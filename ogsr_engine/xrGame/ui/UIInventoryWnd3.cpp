@@ -230,8 +230,12 @@ void CUIInventoryWnd::ProcessPropertiesBoxClicked	()
                   auto slots = item->GetSlots();
                   for ( u8 i = 0; i < (u8)slots.size(); ++i ) {
                     item->SetSlot( slots[ i ] );
-                    if ( ToSlot( CurrentItem(), false ) )
-                      return;
+					try
+					{
+						if ( ToSlot( CurrentItem(), false ) )
+						  return;
+					}
+					catch(...) {}
                   }
                   item->SetSlot( slots.size() ? slots[ 0 ]: NO_ACTIVE_SLOT );
                   ToSlot( CurrentItem(), true );

@@ -341,7 +341,7 @@ protected:
 			void						choose_food						();
 			void						choose_weapon					(ALife::EWeaponPriorityType weapon_priority_type);
 			void						choose_medikit					();
-			void						choose_detector					();
+			//void						choose_detector					();
 			void						choose_equipment				();
 
 			void						select_items					();
