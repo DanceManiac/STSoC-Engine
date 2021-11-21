@@ -341,9 +341,9 @@ void TextureLoading(u16 thread_num)
 	Msg("TextureLoading -> thread %d started!", thread_num);
 
 	u16 upperbound = thread_num * 100;
-	u32 lowerbound = upperbound - 100;
+	u16 lowerbound = upperbound - 100;
 
-	for (size_t i = lowerbound; i < upperbound; i++)
+	for (u16 i = lowerbound; i < upperbound; i++)
 	{
 		if (i < tex_to_load.size())
 			tex_to_load[i]->Load();
