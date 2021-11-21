@@ -545,7 +545,7 @@ void CRenderTarget::accum_volumetric(light* L)
 		//	Igor: no need to do it per sub-sample. Plain AA will go just fine.
 		RCache.Render(D3DPT_TRIANGLELIST,0,0,VOLUMETRIC_SLICES*4,0,VOLUMETRIC_SLICES*2);
 		
-		/*
+		
 		if( !RImplementation.o.dx10_msaa )
 			RCache.Render(D3DPT_TRIANGLELIST,0,0,iNumSlises*4,0,iNumSlises*2);
 		else
@@ -574,7 +574,7 @@ void CRenderTarget::accum_volumetric(light* L)
 				}
 				StateManager.SetSampleMask( 0xffffffff );
 			}
-		}*/
+		}
 
 		RCache.set_ColorWriteEnable();
 

@@ -77,7 +77,7 @@ void CRenderTarget::phase_ssao	()
 	else
 	{
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
-		/*RCache.set_Stencil( TRUE, D3DCMP_EQUAL, 0x01, 0x81, 0 );
+		RCache.set_Stencil( TRUE, D3DCMP_EQUAL, 0x01, 0x81, 0 );
 		RCache.Render		( D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		if( RImplementation.o.dx10_msaa_opt )
 		{
@@ -95,8 +95,8 @@ void CRenderTarget::phase_ssao	()
 				RCache.Render				( D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 			}
 			StateManager.SetSampleMask( 0xffffffff );
-		}*/
-		//RCache.set_Stencil( FALSE, D3DCMP_EQUAL, 0x01, 0xff, 0 );
+		}
+		RCache.set_Stencil( FALSE, D3DCMP_EQUAL, 0x01, 0xff, 0 );
 	}  
 
 	set_viewport(HW.pContext, float(Device.dwWidth), float(Device.dwHeight));
