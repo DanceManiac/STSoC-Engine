@@ -10,6 +10,7 @@
 static LogCallback LogCB = nullptr;
 std::vector<std::string> LogFile;
 static std::ofstream logstream;
+string_path logFName{};
 
 static void AddOne(std::string& split, bool first_line)
 {
@@ -153,19 +154,13 @@ void CreateLog(BOOL nl)
 {
 	if (!nl)
 	{
-		string_path logFName;
-		if (strstr(Core.Params, "-unique_logs")) {
-			string32 TimeBuf;
-			using namespace std::chrono;
-			const auto now = system_clock::now();
-			const auto time = system_clock::to_time_t(now);
-			std::strftime(TimeBuf, sizeof(TimeBuf), "%d-%m-%y_%H-%M-%S", std::localtime(&time));
+		string32 TimeBuf;
+		using namespace std::chrono;
+		const auto now = system_clock::now();
+		const auto time = system_clock::to_time_t(now);
+		std::strftime(TimeBuf, sizeof(TimeBuf), "%d-%m-%y_%H-%M-%S", std::localtime(&time));
 
-			xr_strconcat(logFName, Core.ApplicationName, "_", Core.UserName, "_", TimeBuf, ".log");
-		}
-		else {
-			xr_strconcat(logFName, Core.ApplicationName, "_", Core.UserName, ".log");
-		}
+		xr_strconcat(logFName, Core.ApplicationName, "_", Core.UserName, "_", TimeBuf, ".log");
 
 		try {
 			if (FS.path_exist("$logs$")) {

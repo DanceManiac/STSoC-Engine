@@ -478,7 +478,7 @@ void CStats::Show_HW_Stats()
 
 			// Getting info about memory
 			mem.dwLength = sizeof(MEMORYSTATUSEX);
-			GlobalMemoryStatusEx((&mem));
+			GlobalMemoryStatus((LPMEMORYSTATUS)&mem);
 
 			AvailableMem = (float)mem.ullAvailPhys;	// how much phys mem available
 			AvailableMem /= (1024 * 1024);

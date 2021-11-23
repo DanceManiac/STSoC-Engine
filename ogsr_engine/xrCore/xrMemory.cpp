@@ -77,7 +77,7 @@ void GetProcessMemInfo( SProcessMemInfo& minfo ) {
 
   MEMORYSTATUSEX mem;
   mem.dwLength = sizeof( mem );
-  GlobalMemoryStatusEx( &mem );
+  GlobalMemoryStatus( (LPMEMORYSTATUS) & mem);
 
   minfo.TotalPhysicalMemory = mem.ullTotalPhys;
   minfo.FreePhysicalMemory  = mem.ullAvailPhys;

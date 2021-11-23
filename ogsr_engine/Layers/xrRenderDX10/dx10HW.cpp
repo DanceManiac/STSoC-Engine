@@ -162,27 +162,18 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 		D3D_FEATURE_LEVEL_12_1,
 		D3D_FEATURE_LEVEL_12_0,
 	};
-	D3D_FEATURE_LEVEL featureLevels2[] =
-	{
-		D3D_FEATURE_LEVEL_12_0,
-		D3D_FEATURE_LEVEL_11_1,
-		D3D_FEATURE_LEVEL_11_0,
-	};
-    D3D_FEATURE_LEVEL featureLevels3[] =
+    D3D_FEATURE_LEVEL featureLevels2[] =
     {
 		D3D_FEATURE_LEVEL_11_1,
 		D3D_FEATURE_LEVEL_11_0,
     };
-    D3D_FEATURE_LEVEL featureLevels4[] =
+    D3D_FEATURE_LEVEL featureLevels3[] =
     {
-        D3D_FEATURE_LEVEL_11_0,
         D3D_FEATURE_LEVEL_10_1,
         D3D_FEATURE_LEVEL_10_0
     };
-
-    D3D_FEATURE_LEVEL featureLevels5[] =
+    D3D_FEATURE_LEVEL featureLevels4[] =
     {
-        D3D_FEATURE_LEVEL_10_1,
         D3D_FEATURE_LEVEL_10_0
     };
 
@@ -193,20 +184,14 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
             D3D11_SDK_VERSION, &pDevice, &FeatureLevel, &pContext);
     };
 
+	if (DX10StaticOnly())
+        R = createDevice(featureLevels4, std::size(featureLevels4));
     if (DX10Only())
-        R = createDevice(featureLevels4, std::size(featureLevels5));
+        R = createDevice(featureLevels3, std::size(featureLevels3));
     else if(DX11Only())
-    {
-		R = createDevice(featureLevels2, std::size(featureLevels3));
-		if (FAILED(R))
-			R = createDevice(featureLevels2, std::size(featureLevels4));
-    }
+		R = createDevice(featureLevels2, std::size(featureLevels2));
 	else
-	{
-		R = createDevice(featureLevels2, std::size(featureLevels));
-		if (FAILED(R))
-			R = createDevice(featureLevels2, std::size(featureLevels2));
-	}
+		R = createDevice(featureLevels, std::size(featureLevels));
 
 	R_CHK(pFactory->CreateSwapChain(pDevice, &sd, &m_pSwapChain));
 
@@ -667,23 +652,22 @@ void CHW::UpdateViews()
 	pDepthStencil->Release();
 }
 
+bool CHW::DX10StaticOnly() const
+{
+	return ps_r_renderer_mode == RENDERER_MODE_DX10_STATIC;
+}
+
 bool CHW::DX10Only() const
 {
-	if(ps_r_renderer_mode == RENDERER_MODE_DX10)
-		return true;
-	return false;
+	return ps_r_renderer_mode == RENDERER_MODE_DX10;
 }
 
 bool CHW::DX11Only() const
 {
-	if(ps_r_renderer_mode == RENDERER_MODE_DX11)
-		return true;
-	return false;
+	return ps_r_renderer_mode == RENDERER_MODE_DX11;
 }
 
 bool CHW::DX12Only() const
 {
-	if (ps_r_renderer_mode == RENDERER_MODE_DX12)
-		return true;
-	return false;
+	return ps_r_renderer_mode == RENDERER_MODE_DX12;
 }

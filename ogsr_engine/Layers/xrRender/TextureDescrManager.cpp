@@ -164,16 +164,18 @@ void CTextureDescrMngr::LoadTHM(LPCSTR initial)
 			desc.m_spec->m_material		= tp.material+tp.material_weight;
 			desc.m_spec->m_use_steep_parallax = false;
 			
-			if(tp.bump_mode==STextureParams::tbmUse)
+			if(!HW.DX10StaticOnly())
 			{
-				desc.m_spec->m_bump_name	= tp.bump_name;
+				if(tp.bump_mode==STextureParams::tbmUse)
+				{
+					desc.m_spec->m_bump_name	= tp.bump_name;
+				}
+				else if (tp.bump_mode==STextureParams::tbmUseParallax)
+				{
+					desc.m_spec->m_bump_name	= tp.bump_name;
+					desc.m_spec->m_use_steep_parallax = true;
+				}
 			}
-			else if (tp.bump_mode==STextureParams::tbmUseParallax)
-			{
-				desc.m_spec->m_bump_name	= tp.bump_name;
-				desc.m_spec->m_use_steep_parallax = true;
-			}
-
 		}
 	}
 }

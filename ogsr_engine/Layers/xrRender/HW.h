@@ -67,6 +67,7 @@ public:
 	DXGI_SWAP_CHAIN_DESC	m_ChainDesc;	//	DevPP equivalent
 	D3D_FEATURE_LEVEL		FeatureLevel;
 	
+	bool DX10StaticOnly() const;
     bool DX10Only() const;
     bool DX11Only() const;
     bool DX12Only() const;

@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#pragma hdrstop
 
 #include "SoundRender_CoreA.h"
 
@@ -21,6 +20,7 @@ void CSound_manager_interface::_create(int stage)
 		}
 		else
 			SoundRender->bPresent = TRUE;
+
 	}
 
 	if (!SoundRender->bPresent) return;

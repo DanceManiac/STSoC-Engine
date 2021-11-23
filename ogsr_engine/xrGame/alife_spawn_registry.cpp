@@ -222,22 +222,20 @@ void CALifeSpawnRegistry::build_story_spawns()
 		m_spawn_ids_by_name.emplace(object->name_replace(), id);
 
 		if (object->m_spawn_story_id != INVALID_SPAWN_STORY_ID) {
-#ifdef USE_STORY_ID_AS_SPAWN_ID
 			//Особо умные могут назначить одинаковые спавн айди куче разных объектов.
 			ASSERT_FMT(m_spawn_story_ids.find(object->m_spawn_story_id) == m_spawn_story_ids.end(), "!!Twoy allspawn - xyina, davai po novoy!");
-#endif
+
 			//Msg("--[%s] Adding spawn_id to object: [%s] spawn_story_id: [%u] story_id: [%u] object_id: [%u]", __FUNCTION__, object->name_replace(), object->m_spawn_story_id, object->m_story_id, id);
 			m_spawn_story_ids.emplace(object->m_spawn_story_id, id);
 		}
-#ifdef USE_STORY_ID_AS_SPAWN_ID
-		else if (object->m_story_id != INVALID_STORY_ID) {
+		else if (object->m_story_id != INVALID_STORY_ID)
+		{
 			//Особо умные могут назначить одинаковые спавн/стори айди куче разных объектов либо разные одному и тому же.
 			ASSERT_FMT(m_spawn_story_ids.find(object->m_story_id) == m_spawn_story_ids.end(), "!!Twoy allspawn - xyina, davai po novoy!");
 
 			//Msg("~~[%s] Adding spawn_id (story_id) to object: [%s] spawn_story_id: [%u] story_id: [%u] object_id: [%u]", __FUNCTION__, object->name_replace(), object->m_spawn_story_id, object->m_story_id, id);
 			m_spawn_story_ids.emplace(object->m_story_id, id);
 		}
-#endif
 	}
 }
 

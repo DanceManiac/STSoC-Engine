@@ -12,9 +12,11 @@ public:
 	virtual void	Load			(LPCSTR section);
 	
 	virtual void	switch2_Reload	();
+	virtual void	switch2unmiss	();
 
 	//virtual void	OnShot			();
-	virtual void	OnAnimationEnd	(u32 state);
+	virtual void	OnStateSwitch	(u32 S, u32 oldstate) override;
+	virtual void	OnAnimationEnd	(u32 state) override;
 	virtual void	net_Destroy		();
 	virtual void	OnH_B_Chield	();
 
@@ -33,7 +35,9 @@ public:
 	virtual void	PlayAnimShoot	() override;
 
 	virtual void	UpdateSounds	();
+	BOOL					CheckForMiss		();
 protected:	
+	bool bMiss;
 	virtual bool	AllowFireWhileWorking() {return true;}
 
 	HUD_SOUND			sndClose;

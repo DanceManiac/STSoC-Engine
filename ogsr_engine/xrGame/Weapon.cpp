@@ -494,11 +494,8 @@ void CWeapon::Load		(LPCSTR section)
 				_GetItem(S, it, _addonItem);
 				ASSERT_FMT(pSettings->section_exist(_addonItem), "Section [%s] not found!", _addonItem);
 				m_highlightAddons.emplace_back(_addonItem);
-				if(pSettings->r_string_wb("engine_settings", "engine_mode") == "ogsr_mod")
-				{
-					if (pSettings->line_exist(_addonItem, "real_item_section")) //KRodin: Костыль для огсе-шной системы аддонов, т.к. мне лень по конфигам лазить.
-						m_highlightAddons.emplace_back(pSettings->r_string(_addonItem, "real_item_section"));
-				}
+				if (pSettings->line_exist(_addonItem, "real_item_section")) //KRodin: Костыль для огсе-шной системы аддонов, т.к. мне лень по конфигам лазить.
+					m_highlightAddons.emplace_back(pSettings->r_string(_addonItem, "real_item_section"));
 			}
 		}
 	}

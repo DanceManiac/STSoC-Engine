@@ -126,6 +126,7 @@ public:
 		eFire2,
 		eReload,
 		eMisfire,
+		eMiss,
 		eMagEmpty,
 		eSwitch,
 		eUnJam,

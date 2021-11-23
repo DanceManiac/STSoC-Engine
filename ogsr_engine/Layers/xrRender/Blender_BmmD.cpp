@@ -214,19 +214,22 @@ void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 		C.r_dx10Texture		("s_dt_b",	oB_Name);
 		C.r_dx10Texture		("s_dt_a",	oA_Name);
 
-		C.r_dx10Texture		("s_dn_r",	strconcat(sizeof(mask),mask,oR_Name,"_bump") );
-		C.r_dx10Texture		("s_dn_g",	strconcat(sizeof(mask),mask,oG_Name,"_bump") );
-		C.r_dx10Texture		("s_dn_b",	strconcat(sizeof(mask),mask,oB_Name,"_bump") );
-		C.r_dx10Texture		("s_dn_a",	strconcat(sizeof(mask),mask,oA_Name,"_bump") );
+		if(!HW.DX10StaticOnly())
+		{
+			C.r_dx10Texture		("s_dn_r",	strconcat(sizeof(mask),mask,oR_Name,"_bump") );
+			C.r_dx10Texture		("s_dn_g",	strconcat(sizeof(mask),mask,oG_Name,"_bump") );
+			C.r_dx10Texture		("s_dn_b",	strconcat(sizeof(mask),mask,oB_Name,"_bump") );
+			C.r_dx10Texture		("s_dn_a",	strconcat(sizeof(mask),mask,oA_Name,"_bump") );
 
-		C.r_dx10Texture("s_dnE_r", strconcat(sizeof(mask), mask, oR_Name, "_bump#"));
-		C.r_dx10Texture("s_dnE_g", strconcat(sizeof(mask), mask, oG_Name, "_bump#"));
-		C.r_dx10Texture("s_dnE_b", strconcat(sizeof(mask), mask, oB_Name, "_bump#"));
-		C.r_dx10Texture("s_dnE_a", strconcat(sizeof(mask), mask, oA_Name, "_bump#"));
+			C.r_dx10Texture("s_dnE_r", strconcat(sizeof(mask), mask, oR_Name, "_bump#"));
+			C.r_dx10Texture("s_dnE_g", strconcat(sizeof(mask), mask, oG_Name, "_bump#"));
+			C.r_dx10Texture("s_dnE_b", strconcat(sizeof(mask), mask, oB_Name, "_bump#"));
+			C.r_dx10Texture("s_dnE_a", strconcat(sizeof(mask), mask, oA_Name, "_bump#"));
 
 #if RENDER==R_R4
-		C.r_dx10Texture("s_puddles", "shaders\\puddles");
+			C.r_dx10Texture("s_puddles", "shaders\\puddles");
 #endif
+		}
 		C.r_dx10Sampler		("smp_base");
 		C.r_dx10Sampler		("smp_linear");
 

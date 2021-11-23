@@ -6,10 +6,11 @@
 u32 ps_r_renderer_mode = RENDERER_MODE_DX10;
 constexpr xr_token renderer_mode_token[] =
 {
-	{ "mode_dx10", RENDERER_MODE_DX10 },
-	{ "mode_dx11", RENDERER_MODE_DX11 },
-	{ "mode_dx12", RENDERER_MODE_DX12 },
-	{ nullptr, 0 }
+	{ "mode_dx10_static",	 RENDERER_MODE_DX10_STATIC	},
+	{ "mode_dx10",			 RENDERER_MODE_DX10			},
+	{ "mode_dx11", 			 RENDERER_MODE_DX11 		},
+	{ "mode_dx12", 			 RENDERER_MODE_DX12 		},
+	{ nullptr,				 0							}
 };
 
 // DWM: DT SSR quality option

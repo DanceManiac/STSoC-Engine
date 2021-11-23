@@ -61,6 +61,8 @@ void CWeaponPistol::PlayAnimShow()
 
 void CWeaponPistol::PlayAnimIdleSprint()
 {
+	if(GetState()!=eIdle)
+		return;
 	if (m_opened)
 	{
 		if (AnimationExist("anm_idle_sprint_empty") || AnimationExist("anm_idle_sprint"))
@@ -72,6 +74,8 @@ void CWeaponPistol::PlayAnimIdleSprint()
 
 void CWeaponPistol::PlayAnimIdleMoving()
 {
+	if(GetState()!=eIdle)
+		return;
 	if (m_opened)
 		PlayHUDMotion("anm_idle_moving_empty", TRUE, nullptr, GetState());
 	else
@@ -82,6 +86,8 @@ void CWeaponPistol::PlayAnimIdleMoving()
 void CWeaponPistol::PlayAnimIdle()
 {
 	VERIFY(GetState()==eIdle);
+	if(GetState()!=eIdle)
+		return;
 
 	if (TryPlayAnimIdle()) 
 		return;
@@ -161,6 +167,33 @@ void CWeaponPistol::switch2_Reload()
 	inherited::switch2_Reload();
 }
 
+void CWeaponPistol::switch2unmiss()
+{
+	//PlaySound	(sndShow,get_LastFP());
+
+	SetPending(TRUE);
+	PlayHUDMotion("anm_shots_lightmisfire", /*TRUE*/FALSE, nullptr, GetState());
+	//PlayAnimShow();
+}
+
+#include "HUDManager.h"
+void CWeaponPistol::OnStateSwitch(u32 S, u32 oldState)
+{
+	switch (S)
+	{
+	case eMiss:
+		/*if(smart_cast<CActor*>(this->H_Parent()) && (Level().CurrentViewEntity()==H_Parent()) )
+		{
+			HUD().GetUI()->AddInfoMessage("gun_miss");
+			// Callbacks added by Cribbledirge.
+			//StateSwitchCallback(GameObject::eOnActorWeaponJammed, GameObject::eOnNPCWeaponJammed);
+			switch2unmiss();
+		}*/
+		break;
+	}
+	inherited::OnStateSwitch(S, oldState);
+}
+
 void CWeaponPistol::OnAnimationEnd(u32 state)
 {
 	if(state == eHiding && m_opened) 
@@ -168,6 +201,15 @@ void CWeaponPistol::OnAnimationEnd(u32 state)
 		m_opened = false;
 //		switch2_Hiding();
 	} 
+	switch(state)
+	{
+	case eMiss:
+		{
+			SetPending(FALSE);
+			SwitchState(eIdle);
+			break;
+		}
+	}
 	inherited::OnAnimationEnd(state);
 }
 
@@ -203,4 +245,38 @@ void CWeaponPistol::UpdateSounds()
 
 	if (sndClose.playing())
 		sndClose.set_position(get_LastFP());
+}
+
+BOOL CWeaponPistol::CheckForMiss	()
+{
+	if (OnClient()) return FALSE;
+
+	if ( Core.Features.test( xrCore::Feature::npc_simplified_shooting ) ) {
+	  CActor *actor = smart_cast<CActor*>( H_Parent() );
+	  if ( !actor ) return FALSE;
+	}
+	
+	//float random = ::Random.randF(0.f,1.f);
+	//float rnd = ::Random.randF(0.f,1.f);
+	//float mp = GetConditionMisfireProbability();
+	if(/*AnimationExist("anm_shots_lightmisfire") && random > 0.6f && rnd < mp && */iAmmoElapsed > 1)
+	{
+		FireEnd();
+		
+		bMiss = true;
+		SwitchState(eMiss);	
+		if(smart_cast<CActor*>(this->H_Parent()) && (Level().CurrentViewEntity()==H_Parent()) )
+		{
+			HUD().GetUI()->AddInfoMessage("gun_miss");
+			// Callbacks added by Cribbledirge.
+			//StateSwitchCallback(GameObject::eOnActorWeaponJammed, GameObject::eOnNPCWeaponJammed);
+			switch2unmiss();
+		}		
+		
+		return TRUE;
+	}
+	else
+	{
+		return CWeapon::CheckForMisfire();
+	}
 }

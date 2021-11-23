@@ -597,6 +597,7 @@ void CWeaponMagazined::UpdateSounds	()
 	if (sndZoomChange.playing	())	sndZoomChange.set_position	(get_LastFP());
 }
 
+#include "WeaponPistol.h"
 void CWeaponMagazined::state_Fire	(float dt)
 {
 	VERIFY(fTimeToFire>0.f);
@@ -630,7 +631,8 @@ void CWeaponMagazined::state_Fire	(float dt)
 //	Msg("%d && %d && (%d || %d) && (%d || %d)", !m_magazine.empty(), fTime<=0, IsWorking(), m_bFireSingleShot, m_iQueueSize < 0, m_iShotNum < m_iQueueSize);
 	while (!m_magazine.empty() && fTime<=0 && (IsWorking() || m_bFireSingleShot) && (m_iQueueSize < 0 || m_iShotNum < m_iQueueSize))
 	{
-		if ( bMisfire || (bAfterUnjam && CheckForMisfire()) ) {
+		if (bMisfire || (bAfterUnjam && CheckForMisfire() || (AnimationExist("anm_shots_lightmisfire") && smart_cast<CWeaponPistol*>(this)->CheckForMiss())))
+		{
 			OnEmptyClick();
 			StopShooting();
 			return;
