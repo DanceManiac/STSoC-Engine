@@ -131,7 +131,9 @@ public:
 	//virtual void	PlayAnimBore		();
 	virtual void	PlayAnimIdleMoving	();
 	virtual void	PlayAnimIdleSprint	();
-	void PlayAnimIdleMovingCrouch(); //AVO: new crouch idle animation
+	virtual void	PlayAnimIdleMovingCrouch();
+	virtual void	PlayAnimIdleMovingSlow();
+	virtual void PlayAnimIdleMovingCrouchSlow();
 
 	virtual void	UpdateCL			();
 	virtual void	renderable_Render	();

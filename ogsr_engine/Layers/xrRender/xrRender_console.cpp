@@ -318,7 +318,7 @@ float		ps_current_detail_scale = 1.f;
 #ifdef USE_COP_WEATHER_CONFIGS
 float ps_r2_gloss_factor = 4.0f;
 #else
-float ps_r2_gloss_factor = 1.0f;
+float ps_r2_gloss_factor = 30.0f;
 #endif
 
 // textures 
@@ -896,7 +896,7 @@ void		xrRender_initconsole	()
 	CMD3(CCC_Mask,		"r2_allow_r1_lights",	&ps_r2_ls_flags,			R2FLAG_R1LIGHTS	);
 
 	//- Mad Max
-	CMD4(CCC_Float,		"r2_gloss_factor",		&ps_r2_gloss_factor,		.0f,	10.f	);
+	CMD4(CCC_Float,		"r2_gloss_factor",		&ps_r2_gloss_factor,		.0f,	30.f	);
 	//- Mad Max
 
 #ifdef DEBUG

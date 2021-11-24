@@ -93,7 +93,8 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 	// Зажало-ли меня/уперся - не двигаюсь
 	if (((character_physics_support()->movement()->GetVelocityActual()<0.2f)&&(!(mstate_real&(mcFall|mcJump)))) || character_physics_support()->movement()->bSleep) 
 	{
-		mstate_real				&=~ mcAnyMove;
+#pragma todo("KRodin: этот код работает некорректно, условие срабатывает при входе-выходе из присяда. Из-за этого происходит 'дергание' анимаций оружия. Код этот не сильно важен, я думаю если актор застрянет - он все равно не будет двигаться.")
+		//mstate_real &=~ mcAnyMove;
 	}
 	if (character_physics_support()->movement()->Environment()==CPHMovementControl::peOnGround || character_physics_support()->movement()->Environment()==CPHMovementControl::peAtWall)
 	{
@@ -120,7 +121,7 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 			cam_UnsetLadder();
 		}
 		mstate_real				&=~mcClimb;		
-	};
+	}
 
 	if (mstate_wf != mstate_real){
 		if ((mstate_real&mcCrouch)&&((0==(mstate_wf&mcCrouch)) || mstate_real&mcClimb)){
@@ -134,7 +135,7 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 	if(!CanAccelerate()&&isActorAccelerated(mstate_real, IsZoomAimingMode()))
 	{
 		mstate_real				^=mcAccel;
-	};	
+	}
 
 	if (this == Level().CurrentControlEntity())
 	{
@@ -144,16 +145,9 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 		if (bOnClimbNow != bOnClimbOld )
 		{
 			SetWeaponHideState		(INV_STATE_LADDER, bOnClimbNow );
-		};
-	/*
-	if ((mstate_real&mcSprint) != (mstate_old&mcSprint))
-	{
-		CHudItem* pHudItem = smart_cast<CHudItem*>(inventory().ActiveItem());	
-		if (pHudItem) pHudItem->OnMovementChanged(mcSprint);
-	};
-	*/
-	};
-};
+		}
+	}
+}
 
 static float moving_box_delay = 0;
 static bool  crouch_move      = false;

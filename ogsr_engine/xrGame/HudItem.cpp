@@ -335,13 +335,21 @@ bool CHudItem::TryPlayAnimIdle()
 			}
 			if (!HudBobbingAllowed())
 			{
-				if (Actor()->get_state()&ACTOR_DEFS::mcAnyMove)
+				if (pActor->get_state() & mcAnyMove)
 				{
 					if (!st.bCrouch)
 					{
 						if (AnimationExist("anm_idle_moving"))
 						{
+						if (pActor->get_state() & mcAccel) //Ходьба медленная (SHIFT)
+							PlayAnimIdleMovingSlow();
+						else
 							PlayAnimIdleMoving();
+						return true;
+					}
+					else if(pActor->get_state() & mcAccel) //Ходьба в присяде (CTRL+SHIFT)
+					{
+						PlayAnimIdleMovingCrouchSlow();
 							return true;
 						}
 					}
@@ -361,6 +369,16 @@ bool CHudItem::TryPlayAnimIdle()
 {
 	PlayHUDMotion("anm_bore", TRUE, this, GetState());
 }*/
+
+void CHudItem::PlayAnimIdleMovingSlow()
+{
+	PlayHUDMotion("anm_idle_moving_slow", "anm_idle_moving", true, nullptr, GetState());
+}
+
+void CHudItem::PlayAnimIdleMovingCrouchSlow()
+{
+	PlayHUDMotion("anm_idle_moving_crouch_slow", AnimationExist("anm_idle_moving_crouch") ? "anm_idle_moving_crouch" : "anm_idle_moving", true, nullptr, GetState());
+}
 
 bool CHudItem::AnimationExist(const shared_str& anim_name) const
 {
@@ -402,7 +420,7 @@ void CHudItem::OnMovementChanged(ACTOR_DEFS::EMoveCommand cmd)
 {
 	if (GetState() == eIdle && !m_bStopAtEndAnimIsRunning)
 	{
-		if ((cmd == ACTOR_DEFS::mcSprint) || (cmd == ACTOR_DEFS::mcAnyMove))
+		if ((cmd & mcSprint) || (cmd & mcAnyMove) || (cmd & mcCrouch) || (cmd & mcAccel))
 		{
 			PlayAnimIdle();
 			ResetSubStateTime();

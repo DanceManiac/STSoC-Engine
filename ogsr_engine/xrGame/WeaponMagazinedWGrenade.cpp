@@ -735,10 +735,15 @@ void CWeaponMagazinedWGrenade::PlayAnimIdle()
 				}
 				else if (!HudBobbingAllowed())
 				{
-					if (Actor()->get_state()&ACTOR_DEFS::mcAnyMove)
+					if (pActor->get_state() & mcAnyMove)
 					{
-						if (!st.bCrouch)
-							act_state = 2;
+						if (!st.bCrouch) {
+							if (pActor->get_state() & mcAccel) //Ходьба медленная (SHIFT)
+								act_state = 5;
+							else
+								act_state = 2;
+						} else if (pActor->get_state() & mcAccel) //Ходьба в присяде (CTRL+SHIFT)
+							act_state = 4;
 						else
 							act_state = 3;
 					}
@@ -766,6 +771,12 @@ void CWeaponMagazinedWGrenade::PlayAnimIdle()
 				else if (act_state == 3)
 					if (AnimationExist("anm_idle_moving_crouch_g"))
 						PlayHUDMotion("anm_idle_moving_crouch_g", true, nullptr, GetState());
+				else if (act_state == 4)
+					if (AnimationExist("anm_idle_moving_crouch_slow_g"))
+						PlayHUDMotion("anm_idle_moving_crouch_slow_g", true, nullptr, GetState());
+				else if (act_state == 5)
+					if (AnimationExist("anm_idle_moving_slow_g"))
+						PlayHUDMotion("anm_idle_moving_slow_g", true, nullptr, GetState());
 			}
 			else
 			{
@@ -795,6 +806,12 @@ void CWeaponMagazinedWGrenade::PlayAnimIdle()
 				else if (act_state == 3)
 					if (AnimationExist("anm_idle_moving_crouch_w_gl"))
 						PlayHUDMotion("anm_idle_moving_crouch_w_gl", true, nullptr, GetState());
+				else if (act_state == 4)
+					if (AnimationExist("anm_idle_moving_crouch_slow_w_gl"))
+						PlayHUDMotion("anm_idle_moving_crouch_slow_w_gl", true, nullptr, GetState());
+				else if (act_state == 5)
+					if (AnimationExist("anm_idle_moving_slow_w_gl"))
+						PlayHUDMotion("anm_idle_moving_slow_w_gl", true, nullptr, GetState());
 			}
 		}
 	}

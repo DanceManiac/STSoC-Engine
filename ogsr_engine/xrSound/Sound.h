@@ -40,6 +40,7 @@ XRSOUND_API extern int				psSoundCacheSizeMB;
 XRSOUND_API extern xr_token*		snd_devices_token;
 XRSOUND_API extern u32				snd_device_id;
 XRSOUND_API extern float psSoundTimeFactor; //--#SM+#-- 
+XRSOUND_API extern float psSoundLinearFadeFactor; //--#SM+#--
 
 // Flags
 enum {
@@ -334,7 +335,6 @@ IC void	ref_sound::set_volume(float vol) { VERIFY(!::Sound->i_locked()); 	if (_f
 IC void	ref_sound::set_priority(float p) { VERIFY(!::Sound->i_locked()); 	if (_feedback())	_feedback()->set_priority(p); }
 IC void	ref_sound::stop() { VERIFY(!::Sound->i_locked()); 	if (_feedback())	_feedback()->stop(FALSE); }
 IC void	ref_sound::stop_deffered() { VERIFY(!::Sound->i_locked()); 	if (_feedback())	_feedback()->stop(TRUE); }
-//IC const CSound_params*	ref_sound::get_params() { VERIFY(!::Sound->i_locked()); 	if (_feedback())	return _feedback()->get_params(); else return NULL; }
 IC void	ref_sound::set_params(CSound_params* p)
 {
 	VERIFY(!::Sound->i_locked());

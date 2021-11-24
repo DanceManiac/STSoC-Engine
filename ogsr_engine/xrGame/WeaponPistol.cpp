@@ -82,6 +82,29 @@ void CWeaponPistol::PlayAnimIdleMoving()
 		inherited::PlayAnimIdleMoving();
 }
 
+void CWeaponPistol::PlayAnimIdleMovingCrouch()
+{
+	if (m_opened)
+		PlayHUDMotion("anm_idle_moving_crouch_empty", "anm_empty", true, nullptr, GetState());
+	else
+		inherited::PlayAnimIdleMovingCrouch();
+}
+
+void CWeaponPistol::PlayAnimIdleMovingSlow()
+{
+	if (m_opened)
+		PlayHUDMotion("anm_idle_moving_slow_empty", "anm_idle_moving_empty", true, nullptr, GetState());
+	else
+		inherited::PlayAnimIdleMovingSlow();
+}
+
+void CWeaponPistol::PlayAnimIdleMovingCrouchSlow()
+{
+	if (m_opened)
+		PlayHUDMotion("anm_idle_moving_crouch_slow_empty", AnimationExist("anm_idle_moving_crouch_empty") ? "anm_idle_moving_crouch_empty" : "anm_idle_moving_empty", true, nullptr, GetState());
+	else
+		inherited::PlayAnimIdleMovingCrouchSlow();
+}
 
 void CWeaponPistol::PlayAnimIdle()
 {
@@ -256,10 +279,10 @@ BOOL CWeaponPistol::CheckForMiss	()
 	  if ( !actor ) return FALSE;
 	}
 	
-	//float random = ::Random.randF(0.f,1.f);
-	//float rnd = ::Random.randF(0.f,1.f);
-	//float mp = GetConditionMisfireProbability();
-	if(/*AnimationExist("anm_shots_lightmisfire") && random > 0.6f && rnd < mp && */iAmmoElapsed > 1)
+	float random = ::Random.randF(0.f,1.f);
+	float rnd = ::Random.randF(0.f,1.f);
+	float mp = GetConditionMisfireProbability();
+	if(AnimationExist("anm_shots_lightmisfire") && random > 0.6f && rnd < mp && iAmmoElapsed > 1)
 	{
 		FireEnd();
 		
