@@ -2114,31 +2114,24 @@ void CWeapon::StateSwitchCallback(GameObject::ECallbackType actor_type, GameObje
 void CWeapon::UpdateSecondVP()
 {
 	// + CActor::UpdateCL();
-	CActor* pActor = smart_cast<CActor*>(H_Parent());
+	const auto pActor = smart_cast<CActor*>(H_Parent());
 	if (!pActor)
 		return;
 
-	CInventoryOwner* inv_owner = pActor->cast_inventory_owner();
+	const auto inv_owner = pActor->cast_inventory_owner();
 
-	bool b_is_active_item = inv_owner && (inv_owner->m_inventory->ActiveItem() == this);
-	R_ASSERT(b_is_active_item); // Эта функция должна вызываться только для оружия в руках нашего игрока
+	// Эта функция должна вызываться только для оружия в руках нашего игрока
+	R_ASSERT2(inv_owner && (inv_owner->m_inventory->ActiveItem() == this), "Something strange!");
 
-	bool bCond_1 = m_fZoomRotationFactor > 0.05f;    // Мы должны целиться
-	bool bCond_3 = pActor->cam_Active() == pActor->cam_FirstEye(); // Мы должны быть от 1-го лица
-
-	Device.m_SecondViewport.SetSVPActive(bCond_1 && bCond_3 && SecondVPEnabled());
+	Device.m_SecondViewport.SetSVPActive((m_fZoomRotationFactor > 0.05f) && (pActor->cam_Active() == pActor->cam_FirstEye()) && SecondVPEnabled());
 }
 
 bool CWeapon::SecondVPEnabled() const
-{	
-	bool bCond_2 = m_fSecondVPZoomFactor > 0.0f;     // В конфиге должен быть прописан фактор зума (scope_lense_fov_factor) больше чем 0
-	bool bCond_4 = !IsGrenadeMode();     // Мы не должны быть в режиме подствольника
-	bool bcond_6 = psActorFlags.test(AF_3D_SCOPES);
-
-	return bCond_2 && bCond_4 && bcond_6;
+{
+	return (m_fSecondVPZoomFactor > 0.f) && !IsGrenadeMode() && psActorFlags.test(AF_3D_SCOPES);
 }
 
-// Чувствительность мышкии с оружием в руках во время прицеливания
+// Чувствительность мышки с оружием в руках во время прицеливания
 float CWeapon::GetControlInertionFactor() const
 {
 	float fInertionFactor = inherited::GetControlInertionFactor();
