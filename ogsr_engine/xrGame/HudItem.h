@@ -127,7 +127,7 @@ public:
 
 	virtual void	PlayAnimIdle		();
 	bool			TryPlayAnimIdle		();
-	virtual bool	MovingAnimAllowedNow() { return true; }
+	virtual bool IsZoomed() const { return false; }
 	//virtual void	PlayAnimBore		();
 	virtual void	PlayAnimIdleMoving	();
 	virtual void	PlayAnimIdleSprint	();

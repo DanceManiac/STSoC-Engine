@@ -295,7 +295,7 @@ public:
 	virtual	void			ZoomChange			(bool inc);
 	virtual void			OnZoomIn			();
 	virtual void			OnZoomOut			();
-			bool			IsZoomed			()	const	{return m_bZoomMode;};
+	bool IsZoomed() const override { return m_bZoomMode; }
 	CUIStaticItem*			ZoomTexture			();	
 	bool ZoomHideCrosshair()
 	{
@@ -312,6 +312,7 @@ public:
 	virtual	float			CurrentZoomFactor	();
 	//показывает, что оружие находится в соостоянии поворота для приближенного прицеливания
 			bool			IsRotatingToZoom	() const		{	return (m_fZoomRotationFactor<1.f);}
+			bool			IsRotatingFromZoom() const { return m_fZoomRotationFactor > 0.f; }
 
 	virtual float			Weight				() const;		
 	virtual u32				Cost				() const;
@@ -362,7 +363,6 @@ protected:
     float m_fBACKW_ShootingFactor; // Фактор сдвига худа в сторону лица при стрельбе [0; +1]
 
 	virtual	u8				GetCurrentHudOffsetIdx	() override;
-	virtual bool			MovingAnimAllowedNow	();
 	virtual void			UpdateHudAdditonal		(Fmatrix&);
 	virtual bool			IsHudModeNow			();
 

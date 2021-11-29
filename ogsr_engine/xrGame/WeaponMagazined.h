@@ -192,6 +192,12 @@ protected:
 	virtual void	PlayAnimHide		();
 	virtual void	PlayAnimReload		();
 	virtual void	PlayAnimIdle		();
+	
+private:
+	string64 guns_aim_anm;
+protected:
+	const char* GetAnimAimName();
+	
 	virtual void	PlayAnimIdleMoving	();
 	virtual void	PlayAnimIdleSprint	();
 	virtual void	PlayAnimAim			();

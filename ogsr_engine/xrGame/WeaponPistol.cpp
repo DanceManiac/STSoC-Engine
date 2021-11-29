@@ -115,11 +115,19 @@ void CWeaponPistol::PlayAnimIdle()
 	if (TryPlayAnimIdle()) 
 		return;
 
-	if (m_opened)
-		if(IsZoomed())
-			PlayHUDMotion("anm_idle_aim_empty", TRUE, nullptr, GetState());
-		else
-			PlayHUDMotion("anm_idle_empty", TRUE, nullptr, GetState());
+	if (IsZoomed())
+		PlayAnimAim();
+	else if (m_opened)
+	{
+		if (IsRotatingFromZoom())
+		{
+			if (AnimationExist("anm_idle_aim_end_empty")) {
+				PlayHUDMotion("anm_idle_aim_end_empty", true, nullptr, GetState());
+				return;
+			}
+		}
+		PlayHUDMotion("anm_idle_empty", TRUE, nullptr, GetState());
+	}
 	else
 		inherited::PlayAnimIdle();
 }
@@ -127,7 +135,28 @@ void CWeaponPistol::PlayAnimIdle()
 void CWeaponPistol::PlayAnimAim()
 {
 	if (m_opened)
+	{
+		if (IsRotatingToZoom())
+		{
+			if (AnimationExist("anm_idle_aim_start_empty"))
+			{
+				PlayHUDMotion("anm_idle_aim_start_empty", true, nullptr, GetState());
+				return;
+			}
+		}
+
+		if (const char* guns_aim_anm = GetAnimAimName())
+		{
+			string64 guns_aim_anm_full;
+			xr_strconcat(guns_aim_anm_full, guns_aim_anm, "_empty");
+			if (AnimationExist(guns_aim_anm_full))
+			{
+				PlayHUDMotion(guns_aim_anm_full, true, nullptr, GetState());
+				return;
+			}
+		}
 		PlayHUDMotion("anm_idle_aim_empty", TRUE, nullptr, GetState());
+	}
 	else
 		inherited::PlayAnimAim();
 }

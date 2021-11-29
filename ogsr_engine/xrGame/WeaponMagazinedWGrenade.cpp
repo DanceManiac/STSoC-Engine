@@ -702,47 +702,65 @@ void CWeaponMagazinedWGrenade::PlayAnimIdle()
 		{
 			if (IsRotatingToZoom())
 			{
-				string_path guns_aim_anm{};
+				string32 guns_aim_anm{};
 				xr_strconcat(guns_aim_anm, "anm_idle_aim_start", m_bGrenadeMode ? "_g" : "_w_gl");
 				if (AnimationExist(guns_aim_anm)) {
-					Msg("--[%s] Play anim [%s] for [%s]", __FUNCTION__, guns_aim_anm, this->cNameSect().c_str());
+					//Msg("--[%s] Play anim [%s] for [%s]", __FUNCTION__, guns_aim_anm, this->cNameSect().c_str());
 					PlayHUDMotion(guns_aim_anm, true, nullptr, GetState());
 					return;
 				}
-				else
-					Msg("!![%s] anim [%s] not found for [%s]", __FUNCTION__, guns_aim_anm, this->cNameSect().c_str());
+				//else
+					//Msg("!![%s] anim [%s] not found for [%s]", __FUNCTION__, guns_aim_anm, this->cNameSect().c_str());
+			}
+
+			if (const char* guns_aim_anm = GetAnimAimName())
+			{
+				string64 guns_aim_anm_full;
+				xr_strconcat(guns_aim_anm_full, guns_aim_anm, m_bGrenadeMode ? "_g" : "_w_gl");
+				if (AnimationExist(guns_aim_anm_full)) {
+					PlayHUDMotion(guns_aim_anm_full, true, nullptr, GetState());
+					return;
+				}
 			}
 
 			if (m_bGrenadeMode)
-				PlayHUDMotion("anm_idle_g_aim", /*FALSE*/TRUE, nullptr, GetState());
+				PlayHUDMotion("anm_idle_aim_g", "anm_idle_g_aim", /*FALSE*/TRUE, nullptr, GetState());
 			else
 				if(IsMisfire() && AnimationExist("anm_idle_jammed_w_gl_aim"))
 					PlayHUDMotion("anm_idle_jammed_w_gl_aim", TRUE, nullptr, GetState());
 				else
-					PlayHUDMotion("anm_idle_w_gl_aim", TRUE, nullptr, GetState());
+					PlayHUDMotion("anm_idle_aim_w_gl", "anm_idle_w_gl_aim", TRUE, nullptr, GetState());
 		}
 		else
 		{
-			int act_state = 0;
-			CActor* pActor = smart_cast<CActor*>(H_Parent());
-			if (pActor)
+			if (IsRotatingFromZoom())
 			{
-				CEntity::SEntityState st;
-				pActor->g_State(st);
-				if (st.bSprint)
+				string32 guns_aim_anm;
+				xr_strconcat(guns_aim_anm, "anm_idle_aim_end", m_bGrenadeMode ? "_g" : "_w_gl");
+				if (AnimationExist(guns_aim_anm)) {
+					PlayHUDMotion(guns_aim_anm, true, nullptr, GetState());
+					return;
+				}
+			}
+			
+			int act_state = 0;
+			if (auto pActor = smart_cast<CActor*>(H_Parent()))
+			{
+				const u32 State = pActor->get_state();
+				if (State & mcSprint)
 				{
 					act_state = 1;
 				}
 				else if (!HudBobbingAllowed())
 				{
-					if (pActor->get_state() & mcAnyMove)
+					if (State & mcAnyMove)
 					{
-						if (!st.bCrouch) {
-							if (pActor->get_state() & mcAccel) //Ходьба медленная (SHIFT)
+						if (!(State & mcCrouch)) {
+							if (State & mcAccel) //Ходьба медленная (SHIFT)
 								act_state = 5;
 							else
 								act_state = 2;
-						} else if (pActor->get_state() & mcAccel) //Ходьба в присяде (CTRL+SHIFT)
+						} else if (State & mcAccel) //Ходьба в присяде (CTRL+SHIFT)
 							act_state = 4;
 						else
 							act_state = 3;

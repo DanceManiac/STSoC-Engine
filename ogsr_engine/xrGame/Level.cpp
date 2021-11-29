@@ -457,8 +457,6 @@ extern void draw_wnds_rects();
 
 void CLevel::OnRender()
 {
-	Render->BeforeWorldRender();	//--#SM+#-- +SecondVP+
-
 	inherited::OnRender	();
 	
 	Game().OnRender();

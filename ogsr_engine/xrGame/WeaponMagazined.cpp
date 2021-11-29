@@ -209,7 +209,7 @@ void CWeaponMagazined::FireStart		()
 		}
 	}
 	else if ( IsMisfire() ) {
-	  if ( smart_cast<CActor*>( this->H_Parent() ) && Level().CurrentViewEntity() == H_Parent() )
+	  if ( smart_cast<CActor*>( H_Parent() ) && Level().CurrentViewEntity() == H_Parent() )
 	  {
 		  ++blyat;
 	    HUD().GetUI()->AddInfoMessage( "gun_jammed" );
@@ -496,7 +496,7 @@ void CWeaponMagazined::OnStateSwitch(u32 S, u32 oldState)
 		switch2_Fire2	();
 		break;
 	case eMisfire:
-		if(smart_cast<CActor*>(this->H_Parent()) && (Level().CurrentViewEntity()==H_Parent()) )
+		if(smart_cast<CActor*>(H_Parent()) && (Level().CurrentViewEntity()==H_Parent()) )
 			HUD().GetUI()->AddInfoMessage("gun_jammed");
 		// Callbacks added by Cribbledirge.
 		StateSwitchCallback(GameObject::eOnActorWeaponJammed, GameObject::eOnNPCWeaponJammed);
@@ -1357,8 +1357,39 @@ void CWeaponMagazined::PlayAnimReload()
 	}
 }
 
+const char* CWeaponMagazined::GetAnimAimName()
+{
+	if (auto pActor = smart_cast<const CActor*>(H_Parent())) {
+		if (!HudBobbingAllowed()) {
+			if (const u32 state = pActor->get_state(); state & mcAnyMove) {
+				if (IsScopeAttached()) {
+					strcpy_s(guns_aim_anm, "anm_idle_aim_scope_moving");
+					return guns_aim_anm;
+				}
+				else
+					return xr_strconcat(guns_aim_anm, "anm_idle_aim_moving", (state & mcFwd) ? "_forward" : ((state & mcBack) ? "_back" : ""), (state & mcLStrafe) ? "_left" : ((state & mcRStrafe) ? "_right" : ""));
+			}
+		}
+	}
+	return nullptr;
+}
+
 void CWeaponMagazined::PlayAnimAim()
 { 
+	if (IsRotatingToZoom()) {
+		if (AnimationExist("anm_idle_aim_start")) {
+			PlayHUDMotion("anm_idle_aim_start", true, nullptr, GetState());
+			return;
+		}
+	}
+
+	if (const char* guns_aim_anm = GetAnimAimName())
+		if (AnimationExist(guns_aim_anm))
+		{
+			PlayHUDMotion(guns_aim_anm, true, nullptr, GetState());
+			return;
+		}
+
 	if(IsMisfire() && AnimationExist("anm_idle_aim_jammed"))
 		PlayHUDMotion("anm_idle_aim_jammed", true, nullptr, GetState());
 	else
@@ -1370,24 +1401,14 @@ void CWeaponMagazined::PlayAnimIdle()
 	if (GetState() != eIdle)
 		return;
 
-	if((/*!IsZoomed() && */m_fZoomRotationFactor < 0.f) || (IsZoomed() && IsRotatingToZoom()))
-	{
-		string_path guns_aim_anm{};
-		xr_strconcat(guns_aim_anm, "anm_idle_aim", IsZoomed() ? "_start" : "_end");
-		if (AnimationExist(guns_aim_anm))
-		{
-			Msg("--[%s] Play anim [%s] for [%s]", __FUNCTION__, guns_aim_anm, this->cNameSect().c_str());
-			PlayHUDMotion(guns_aim_anm, true, nullptr, GetState());
-			return;
-		}
-		else
-			Msg("!![%s] anim [%s] not found for [%s]", __FUNCTION__, guns_aim_anm, this->cNameSect().c_str());
-	}
-
 	if (IsZoomed())
-	{
 		PlayAnimAim();
+	else if (IsRotatingFromZoom() && AnimationExist("anm_idle_aim_end"))
+	{
+		PlayHUDMotion("anm_idle_aim_end", true, nullptr, GetState());
+		return;
 	}
+	
 	else if(IsMisfire() && AnimationExist("anm_idle_jammed") && !TryPlayAnimIdle())
 		PlayHUDMotion("anm_idle_jammed", true, nullptr, GetState());
 	else
@@ -1414,7 +1435,7 @@ void CWeaponMagazined::PlayAnimShoot()
 {
 	VERIFY(GetState()==eFire || GetState()==eFire2);
 	string_path guns_shoot_anm{};
-	xr_strconcat(guns_shoot_anm, "anm_shots", (this->IsZoomed() && !this->IsRotatingToZoom()) ? (this->IsScopeAttached() ? "_aim_scope" : "_aim") : "", this->IsSilencerAttached() ? "_sil" : "");
+	xr_strconcat(guns_shoot_anm, "anm_shots", (IsZoomed() && !IsRotatingToZoom()) ? (IsScopeAttached() ? "_aim_scope" : "_aim") : "", IsSilencerAttached() ? "_sil" : "");
 	if (AnimationExist(guns_shoot_anm)) {
 		Msg("--[%s] Play anim [%s] for [%s]", __FUNCTION__, guns_shoot_anm, this->cNameSect().c_str());
 		PlayHUDMotion(guns_shoot_anm, false, this, GetState());

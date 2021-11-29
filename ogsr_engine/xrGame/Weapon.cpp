@@ -936,11 +936,6 @@ bool CWeapon::need_renderable()
 	return !Device.m_SecondViewport.IsSVPFrame() && !(IsZoomed() && ZoomTexture() && !IsRotatingToZoom());
 }
 
-bool CWeapon::MovingAnimAllowedNow()
-{ 
-	return !IsZoomed(); 
-}
-
 void CWeapon::signal_HideComplete()
 {
 	if(H_Parent())
@@ -1042,6 +1037,21 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 			}
 			else
 				return false;
+		}
+		
+		case kSWITCH_SCOPE:
+		{
+			if (flags & CMD_START && !IsPending())
+			{
+				Device.time_factor(0.25f);
+				psSoundTimeFactor = 0.25f;
+			}
+			else
+			{
+				Device.time_factor(1.f);
+				psSoundTimeFactor = 1.f;
+			}
+			return true;
 		}
 
 		case kWPN_ZOOM_INC:

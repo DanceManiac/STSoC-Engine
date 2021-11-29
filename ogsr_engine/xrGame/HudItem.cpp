@@ -321,23 +321,21 @@ void CHudItem::PlayAnimIdle()
 
 bool CHudItem::TryPlayAnimIdle()
 {
-	if (MovingAnimAllowedNow())
+	if (!IsZoomed())
 	{
-		CActor* pActor = smart_cast<CActor*>(object().H_Parent());
-		if (pActor)
+		if (auto pActor = smart_cast<CActor*>(object().H_Parent()))
 		{
-			CEntity::SEntityState st;
-			pActor->g_State(st);
-			if (st.bSprint)
+			const u32 State = pActor->get_state();
+			if (State & mcSprint)
 			{
 				PlayAnimIdleSprint();
 				return true;
 			}
-			if (!HudBobbingAllowed())
+			else if (!HudBobbingAllowed())
 			{
-				if (pActor->get_state() & mcAnyMove)
+				if (State & mcAnyMove)
 				{
-					if (!st.bCrouch)
+					if (!(State & mcCrouch))
 					{
 						if (AnimationExist("anm_idle_moving"))
 						{
@@ -347,7 +345,7 @@ bool CHudItem::TryPlayAnimIdle()
 							PlayAnimIdleMoving();
 						return true;
 					}
-					else if(pActor->get_state() & mcAccel) //Ходьба в присяде (CTRL+SHIFT)
+					else if(State & mcAccel) //Ходьба в присяде (CTRL+SHIFT)
 					{
 						PlayAnimIdleMovingCrouchSlow();
 							return true;

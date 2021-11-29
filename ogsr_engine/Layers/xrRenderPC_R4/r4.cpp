@@ -516,9 +516,6 @@ void CRender::OnFrame()
 	}
 }
 
-// Перед началом рендера мира --#SM+#-- +SecondVP+
-void CRender::BeforeWorldRender() {}
-
 // После рендера мира и пост-эффектов --#SM+#-- +SecondVP+
 void CRender::AfterWorldRender()
 {
