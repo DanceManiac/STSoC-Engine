@@ -9,18 +9,18 @@ IC bool		pred_LI			(const light_indirect& A, const light_indirect& B)
 void	light::gi_generate	()
 {
 	indirect.clear		();
-	indirect_photons	= ps_r2_ls_flags.test(R2FLAG_GI)?ps_r2_GI_photons:0;
+	indirect_photons	= 0;
 
 	CRandom				random;
 	random.seed			(0x12071980);
 
 	xrXRC&		xrc		= RImplementation.Sectors_xrc;
-	CDB::MODEL*	model	= g_pGameLevel->ObjectSpace.GetStaticModel	();
+	/*CDB::MODEL* model = g_pGameLevel->ObjectSpace.GetStaticModel();
 	CDB::TRI*	tris	= g_pGameLevel->ObjectSpace.GetStaticTris	();
-	Fvector*	verts	= g_pGameLevel->ObjectSpace.GetStaticVerts	();
+	Fvector*	verts	= g_pGameLevel->ObjectSpace.GetStaticVerts	();*/
 	xrc.ray_options		(CDB::OPT_CULL|CDB::OPT_ONLYNEAREST);
 
-	for (int it=0; it<int(indirect_photons*8); it++)	{
+	/*for (int it=0; it<int(indirect_photons*8); it++)	{
 		Fvector	dir,idir;
 		switch	(flags.type)		{
 		case IRender_Light::POINT		:	dir.random_dir(random);					break;
@@ -44,12 +44,12 @@ void	light::gi_generate	()
 		LI.S				= spatial.sector;	//. BUG
 
 		indirect.push_back	(LI);
-	}
+	}*/
 
 	// sort & clip
 	std::sort				(indirect.begin(),indirect.end(), pred_LI);
 	if (indirect.size()>indirect_photons)
-		indirect.erase(indirect.begin()+indirect_photons,indirect.end());
+		indirect.erase(indirect.begin(),indirect.end());
 
 	// normalize
 	if (indirect.size())	{
