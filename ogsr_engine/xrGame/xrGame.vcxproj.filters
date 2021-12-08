@@ -4713,6 +4713,9 @@
     <ClInclude Include="SimpleDetectorSHOC.h">
       <Filter>Core\Client\Objects\items &amp; weapons\Devices\Detectors</Filter>
     </ClInclude>
+    <ClInclude Include="Flashlight.h">
+      <Filter>Core\Client\Objects\items &amp; weapons\Devices\Detectors</Filter>
+    </ClInclude>
     <ClInclude Include="Torch.h">
       <Filter>Core\Client\Objects\items &amp; weapons\Devices\Torch</Filter>
     </ClInclude>
@@ -7850,6 +7853,9 @@
       <Filter>Core\Client\Objects\items &amp; weapons\Devices\Detectors</Filter>
     </ClCompile>
     <ClCompile Include="SimpleDetectorSHOC.cpp">
+      <Filter>Core\Client\Objects\items &amp; weapons\Devices\Detectors</Filter>
+    </ClCompile>
+    <ClCompile Include="Flashlight.cpp">
       <Filter>Core\Client\Objects\items &amp; weapons\Devices\Detectors</Filter>
     </ClCompile>
     <ClCompile Include="Torch.cpp">

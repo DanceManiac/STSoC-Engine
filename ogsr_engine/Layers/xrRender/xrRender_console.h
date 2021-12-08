@@ -243,6 +243,7 @@ enum
 {
 	NO_AA,
 	SMAA,
+	FXAA,
 };
 
 // Sunshafts types

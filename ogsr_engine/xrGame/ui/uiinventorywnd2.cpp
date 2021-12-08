@@ -17,6 +17,7 @@
 #include "../script_game_object.h"
 #include "../CustomDetector.h"
 #include "../player_hud.h"
+#include "Flashlight.h"
 
 CUICellItem* CUIInventoryWnd::CurrentItem()
 {
@@ -276,8 +277,10 @@ bool CUIInventoryWnd::ToSlot(CUICellItem* itm, bool force_place)
 
 	if (result && _slot == DETECTOR_SLOT)
 	{
-		if (auto det = smart_cast<CCustomDetector*>(iitem))
+		if (const auto det = smart_cast<CCustomDetector*>(iitem))
 			det->ToggleDetector(g_player_hud->attached_item(0) != nullptr);
+		else if (const auto flashlight = smart_cast<CFlashlight*>(iitem))
+			flashlight->ToggleDevice(g_player_hud->attached_item(0) != nullptr);
 	}
 
 	return result;

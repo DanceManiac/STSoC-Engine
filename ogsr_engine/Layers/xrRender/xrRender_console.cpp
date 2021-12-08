@@ -41,6 +41,7 @@ u32 ps_r_pp_aa_mode = 0;
 constexpr xr_token pp_aa_mode_token[] = {
 	{ "st_opt_off", NO_AA },
 	{ "st_opt_smaa", SMAA },
+	{ "st_opt_fxaa", FXAA },
 	{ nullptr, 0 },
 };
 

@@ -32,6 +32,7 @@
 #include "ai/trader/ai_trader.h"
 #include "CustomDetector.h"
 #include "inventory.h"
+#include "Flashlight.h"
 
 void CActor::AddEncyclopediaArticle( const CInfoPortion* info_portion, bool revert ) const {
   VERIFY( info_portion );
@@ -261,8 +262,10 @@ void CActor::RunTalkDialog(CInventoryOwner* talk_partner)
 
 void CActor::StartTalk (CInventoryOwner* talk_partner, bool)
 {
-	if (auto det = smart_cast<CCustomDetector*>(inventory().ItemFromSlot(DETECTOR_SLOT)))
+	if (const auto det = smart_cast<CCustomDetector*>(inventory().ItemFromSlot(DETECTOR_SLOT)))
 		det->HideDetector(true);
+	else if (const auto flashlight = smart_cast<CFlashlight*>(inventory().ItemFromSlot(DETECTOR_SLOT)))
+		flashlight->HideDevice(true);
 
 	CInventoryOwner::StartTalk(talk_partner);
 }

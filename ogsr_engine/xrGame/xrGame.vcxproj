@@ -410,6 +410,7 @@
     <ClInclude Include="AdvancedDetector.h" />
     <ClInclude Include="EliteDetector.h" />
     <ClInclude Include="SimpleDetectorSHOC.h" />
+    <ClInclude Include="Flashlight.h" />
     <ClInclude Include="ui\ArtefactDetectorUI.h" />
     <ClInclude Include="ai\monsters\anti_aim_ability.h" />
     <ClInclude Include="ai\monsters\group_states\group_state_attack.h" />
@@ -1676,6 +1677,7 @@
     <ClCompile Include="action_base_script.cpp" />
     <ClCompile Include="derived_client_classes.cpp" />
     <ClCompile Include="EliteDetector.cpp" />
+    <ClCompile Include="Flashlight.cpp" />
     <ClCompile Include="IKFoot.cpp" />
     <ClCompile Include="ik_calculate_data.cpp" />
     <ClCompile Include="ik_dbg_matrix.cpp" />
