@@ -19,10 +19,7 @@ static u32	init_counter	= 0;
 
 void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs, LPCSTR fs_fname)
 {
-	//////////////////////// Тут сидят одни долбаёбы! ///////////////////////////////////////////////////
-	if (0 == stricmp(Core.UserName, "exDeMODER") || !strcmp(Core.UserName, "exDeMODER"))
-		Debug.fatal(DEBUG_INFO, "Соси хуй долбаёб!");
-	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	CHECK_OR_EXIT(Core.UserName != "nikit", make_string("Говори и пиши про меня что хочешь, но от этого ты не перестанешь быть тупым и закомплексованным дрищом. \n Кроме полетов и непомерного ЧСВ ты из себя ничего не представляешь, и прежде чем стать на других, сперва сам добейся хоть чего-нибудь."));
 	
 	strcpy_s(ApplicationName, _ApplicationName);
 	if (0==init_counter) {
