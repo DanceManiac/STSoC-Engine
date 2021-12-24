@@ -22,15 +22,14 @@ public:
 
 class CDialogHolder :public ISheduled,public pureFrame
 {
+protected:
 	//dialogs
 	xr_vector<recvItem>										m_input_receivers;
 	xr_vector<dlgItem>										m_dialogsToRender;
 
-
 	void					StartMenu						(CUIDialogWnd* pDialog, bool bDoHideIndicators);
 	void					StopMenu						(CUIDialogWnd* pDialog);
 	void					SetMainInputReceiver			(CUIDialogWnd* ir, bool _find_remove);
-protected:
 	void					DoRenderDialogs					();
 	void					CleanInternals					();
 public:

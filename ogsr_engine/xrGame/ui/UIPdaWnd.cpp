@@ -145,8 +145,8 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 		}
 	}else 
 	{
-		R_ASSERT(m_pActiveDialog);
-		m_pActiveDialog->SendMessage(pWnd, msg, pData);
+		if(!m_pActiveDialog) m_pActiveDialog = smart_cast<CUIWindow*>(UIEventsWnd);
+			m_pActiveDialog->SendMessage(pWnd, msg, pData);
 	}
 }
 

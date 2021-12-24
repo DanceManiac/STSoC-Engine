@@ -8,7 +8,6 @@
 
 #include "PdaMsg.h"
 
-
 class CInventoryOwner;
 class CPda;
 

@@ -161,6 +161,7 @@ constexpr auto CLSID_DETECTOR_ELITE           = MK_CLSID('D','E','T','_','E','L'
 constexpr auto CLSID_DETECTOR_SCIENTIFIC      = MK_CLSID('D','E','T','_','S','C','I','E');
 
 // PDA
+constexpr auto CLSID_DEVICE_3D_PDA            = MK_CLSID('D','_','3','D','P','D','A',' ');
 constexpr auto CLSID_DEVICE_PDA               = MK_CLSID('D','_','P','D','A',' ',' ',' ');
 
 // Devices

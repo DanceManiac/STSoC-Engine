@@ -92,6 +92,7 @@
 #	include "weaponRG6.h"
 #	include "WeaponMounted.h"
 #	include "WeaponStatMgun.h"
+#	include "3D_PDA.h"
 
 #	include "scope.h"
 #	include "silencer.h"
@@ -324,6 +325,7 @@ void CObjectFactory::register_classes	()
 	// Devices
 	ADD(CTorch					,CSE_ALifeItemTorch				,CLSID_DEVICE_TORCH				,"device_torch");
 	ADD(CPda					,CSE_ALifeItemPDA				,CLSID_DEVICE_PDA				,"device_pda");
+	ADD(C3DPDA					,CSE_ALifeItemWeaponMagazined,	CLSID_DEVICE_3D_PDA				,"wpn_3d_pda");
 	ADD(CFlashlight				,CSE_ALifeItem					,CLSID_DEVICE_FLASHLIGHT		,"device_flashlight");
 
 	// objects
