@@ -29,6 +29,7 @@
 #include "../xr_3da/xr_input.h"
 #include "CustomDetector.h"
 #include "Flashlight.h"
+#include "WeaponMagazined.h"
 
 bool g_bAutoClearCrouch = true;
 extern int g_bHudAdjustMode;
@@ -173,8 +174,19 @@ void CActor::IR_OnKeyboardPress(int cmd)
 				}
 			}
 		}break;
+	case kLASER_ON:
+		{
+			if (const auto wpn = smart_cast<CWeapon*>(inventory().ActiveItem()))
+				wpn->SwitchLaser(!wpn->IsLaserOn());
+		}break;
+	case kFLASHLIGHT:
+		{
+			if (const auto wpn = smart_cast<CWeapon*>(inventory().ActiveItem()))
+				wpn->SwitchFlashlight(!wpn->IsFlashlightOn());
+		}break;
 	}
 }
+
 void CActor::IR_OnMouseWheel(int direction)
 {
 	if (g_bHudAdjustMode)

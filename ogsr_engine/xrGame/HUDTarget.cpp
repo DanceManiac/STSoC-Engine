@@ -27,6 +27,9 @@
 #include "inventory.h"
 #include "monster_community.h"
 
+#include "WeaponMagazined.h"
+#include "actor.h"
+
 u32 C_ON_ENEMY		D3DCOLOR_XRGB(0xff,0,0);
 u32 C_ON_NEUTRAL	D3DCOLOR_XRGB(0xff,0xff,0x80);
 u32 C_ON_FRIEND		D3DCOLOR_XRGB(0,0xff,0);
@@ -226,7 +229,10 @@ void CHUDTarget::Render()
 		}
 		clamp(fuzzyShowInfo,0.f,1.f);
 	}
-
+	
+	if (const auto Wpn = smart_cast<CWeapon*>(Actor()->inventory().ActiveItem()); Wpn && Wpn->IsLaserOn())
+		return;
+	
 	//отрендерить кружочек или крестик
 	if(!m_bShowCrosshair){
 		// actual rendering

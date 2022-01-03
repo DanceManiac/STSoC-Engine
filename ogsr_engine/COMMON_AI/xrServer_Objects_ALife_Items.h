@@ -134,6 +134,11 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
 		eWeaponAddonScope = 0x01,
 		eWeaponAddonGrenadeLauncher = 0x02,
 		eWeaponAddonSilencer = 0x04,
+		
+		eWeaponAddonLaserOn = 0x05,
+		eWeaponAddonFlashlightOn = 0x06,
+
+		
 		eWeaponAddonGrip = 0x08,
 		eWeaponAddonMagazine = 0x10,
 		eWeaponAddonScopeMount = 0x20,
