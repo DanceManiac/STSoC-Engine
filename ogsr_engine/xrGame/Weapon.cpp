@@ -45,7 +45,7 @@ extern ENGINE_API Fvector3 w_timers;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CWeapon::CWeapon(LPCSTR name) : /*mod_name(NULL),*/ m_fLR_MovingFactor(0.f), m_fLR_CameraFactor(0.f), m_fLR_ShootingFactor(0.f), m_fUD_ShootingFactor(0.f), m_fBACKW_ShootingFactor(0.f), m_strafe_offset{}
+CWeapon::CWeapon(LPCSTR name) : m_fLR_MovingFactor(0.f), m_fLR_CameraFactor(0.f), m_fLR_ShootingFactor(0.f), m_fUD_ShootingFactor(0.f), m_fBACKW_ShootingFactor(0.f), m_strafe_offset{}
 {
 	SetState				(eHidden);
 	SetNextState			(eHidden);
@@ -237,6 +237,7 @@ constexpr char* wpn_silencer_def_bone = "wpn_silencer";
 constexpr char* wpn_launcher_def_bone_shoc = "wpn_launcher";
 constexpr char* wpn_launcher_def_bone_cop = "wpn_grenade_launcher";
 
+Fvector2      	m_fZoomLimit;
 void CWeapon::Load		(LPCSTR section)
 {
 	inherited::Load					(section);
@@ -524,7 +525,11 @@ void CWeapon::Load		(LPCSTR section)
 	    }
 	  }
 	}
-
+	
+	const float ZoomLimitIn = READ_IF_EXISTS(pSettings, r_float, section, "zoom_in_limit", 1.03f);
+    const float ZoomLimitOut = READ_IF_EXISTS(pSettings, r_float, section, "zoom_out_limit", -0.03f);
+    m_fZoomLimit.set(ZoomLimitIn, ZoomLimitOut);
+	
 	if (!laser_light_render && pSettings->line_exist(section, "laser_light_section"))
 	{
 		has_laser = true;
@@ -1789,7 +1794,7 @@ CUIStaticItem* CWeapon::ZoomTexture()
 	if (UseScopeTexture())
 		return m_UIScope;
 	else
-		return NULL;
+		return nullptr;
 }
 
 void CWeapon::SwitchState(u32 S)
@@ -2026,14 +2031,21 @@ void CWeapon::UpdateHudAdditonal		(Fmatrix& trans)
 		hud_rotation.translate_over(curr_offs);
 		trans.mulB_43(hud_rotation);
 
-		if(pActor->IsZoomAimingMode())
+		if(AnimationExist("anm_idle_aim_start"))
 		{
-			m_fZoomRotationFactor += Device.fTimeDelta/m_fZoomRotateTime;
+			if(pActor->IsZoomAimingMode())
+				m_fZoomRotationFactor += Device.fTimeDelta/m_fZoomRotateTime;
+			else
+				m_fZoomRotationFactor -= Device.fTimeDelta/m_fZoomRotateTime;
 		}
 		else
 		{
-			m_fZoomRotationFactor -= Device.fTimeDelta/m_fZoomRotateTime;
+			const float AimSpeed = m_fZoomRotateTime;  // 8.f normal
+			const float dti = AimSpeed * Device.dwTimeDelta / 50.f;
+			const float targetHeight = pActor->IsZoomAimingMode() ? m_fZoomLimit.x : m_fZoomLimit.y;
+			m_fZoomRotationFactor = (m_fZoomRotationFactor * (1.f - dti)) + (targetHeight * dti);
 		}
+		
 		clamp(m_fZoomRotationFactor, 0.f, 1.f);
 	}
 	clamp(idx, 0ui8, 1ui8);
@@ -2140,7 +2152,7 @@ void CWeapon::AddHUDShootingEffect()
     // Отдача в бока
     float fPowerMin = 0.0f;
     attachable_hud_item* hi = HudItemData();
-    if (hi != nullptr)
+    if (hi)
     {
         fPowerMin = clampr(hi->m_measures.m_shooting_params.m_min_LRUD_power, 0.0f, 0.99f);
     }
@@ -2219,7 +2231,7 @@ void CWeapon::OnDrawUI()
 
 bool CWeapon::IsHudModeNow()
 { 
-	return (HudItemData() != nullptr);
+	return HudItemData();
 }
 
 bool CWeapon::unlimited_ammo() 

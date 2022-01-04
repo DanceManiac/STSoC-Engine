@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////
 //	Файл		: weapon_collision.cpp
 //	Создан		: 12/10/2012
-//	Изменен 	: 10.08.21
+//	Изменен 	: 04/01/2022
 //	Автор		: lost alpha (SkyLoader)
 //	Описание	: Коллизия, стрейфы и т.д. у худа оружия
 //	
@@ -39,8 +39,8 @@ void CWeaponCollision::Load()
 }
 
 static const float SPEED_REMINDER = 0.31f;
-static const float SPEED_REMINDER_STRAFE = 0.25f;
-static const float STRAFE_ANGLE = 0.075f;
+static const float SPEED_REMINDER_STRAFE = 0.5f;
+static const float STRAFE_ANGLE = 0.15f;
 
 void CWeaponCollision::CheckState()
 {
@@ -67,10 +67,10 @@ void CWeaponCollision::Update(Fmatrix &o, float range)
 
     float fYMag = Actor()->fFPCamYawMagnitude;
 	//-> Поворот при стрейфе
-	if ((dwMState&ACTOR_DEFS::mcLStrafe || dwMState&ACTOR_DEFS::mcRStrafe || fYMag != 0.0f) && !Actor()->IsZoomAimingMode())
+	if ((dwMState&ACTOR_DEFS::mcLStrafe || dwMState&ACTOR_DEFS::mcRStrafe || fYMag != 0.0f || (Actor()->get_state_wishful() & mcLLookout) || (Actor()->get_state_wishful() & mcRLookout)) && !Actor()->IsZoomAimingMode())
 	{
 		float k	= ((dwMState & ACTOR_DEFS::mcCrouch) ? 0.5f : 1.f);
-		if (dwMState&ACTOR_DEFS::mcLStrafe || fYMag > 0.f)
+		if (dwMState&ACTOR_DEFS::mcLStrafe || fYMag > 0.f || (Actor()->get_state_wishful() & mcLLookout))
 			k *= -1.f;
 
 		fReminderNeedStrafe = dir.z + (STRAFE_ANGLE * k);
