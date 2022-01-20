@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "trivial_encryptor.h"
 
-trivial_encryptor g_trivial_encryptor;
+XRCORE_API trivial_encryptor g_trivial_encryptor;
 
 class random32
 {
@@ -36,7 +36,7 @@ void trivial_encryptor::initialize(key_flag what)
     else if (what == key_flag::worldwide)
         m_key = m_key_worldwide;
     else
-        R_ASSERT(!"Unknown encryption key!");
+        ASSERT_FMT(0, "Unknown encryption key!");
 
     m_current_key = what;
 

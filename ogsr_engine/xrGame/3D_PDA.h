@@ -11,7 +11,6 @@ public:
 	C3DPDA() {}
 	virtual ~C3DPDA() {}
 
-
 	virtual void OnStateSwitch(u32 S, u32 oldState) override
 	{
 		inherited::OnStateSwitch(S, oldState);
@@ -36,6 +35,7 @@ public:
 			break;	// End of Show
 		}
 	}
+
 	virtual void switch2_Fire() override {}
 	virtual void switch2_Fire2() override {}
 	virtual void switch2_Reload() override {}
