@@ -48,10 +48,14 @@ void	CCar::OnCameraChange		(int type)
 {
 	if(Owner())
 	{
-		if (type==ectFirst) //-> TODO: пофиксить камеру и анимации
-			Owner()->setVisible(TRUE);
-		else
+		if	(type==ectFirst)
+		{
 			Owner()->setVisible(FALSE);
+		}
+		else if(active_camera->tag==ectFirst) //-V595
+		{
+			Owner()->setVisible(TRUE);
+		}
 	}
 	
 	if (!active_camera||active_camera->tag!=type){
