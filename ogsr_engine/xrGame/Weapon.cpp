@@ -589,6 +589,8 @@ void CWeapon::Load		(LPCSTR section)
 		flashlight_glow->set_color(clr);
 		flashlight_glow->set_radius(READ_IF_EXISTS(pSettings, r_float, m_light_section, "glow_radius", 0.3f));
 	}
+	
+	m_bcartridge_in_the_barrel = READ_IF_EXISTS(pSettings, r_bool, section, "cartridge_in_the_barrel", 0);
 }
 
 void CWeapon::LoadFireParams		(LPCSTR section, LPCSTR prefix)
@@ -958,12 +960,14 @@ u8 CWeapon::idle_state() {
 	return eIdle;
 }
 
-
+#include "WeaponShotgun.h"
 void CWeapon::UpdateCL		()
 {
 	inherited::UpdateCL		();
-
 	UpdateHUDAddonsVisibility();
+
+	ProcessAmmo();
+	ProcessAmmoGL();
 
 	//подсветка от выстрела
 	UpdateLight				();
@@ -2473,4 +2477,429 @@ void CWeapon::OnBulletHit() {
 
 bool CWeapon::IsPartlyReloading() {
   return ( m_set_next_ammoType_on_reload == u32(-1) && GetAmmoElapsed() > 0 && !IsMisfire() );
+}
+
+
+// Схема отображения патронов из ганслингера
+
+using namespace std;
+
+IC u32 length(std::string str) { return str.length(); }
+IC u32 length(pcstr str) { return make_string(str).length(); }
+
+IC string leftstr(const string& str, u32 n) { return str.substr(0, n); }
+IC string leftstr(pcstr str, u32 n) { return leftstr(string(str), n); }
+
+IC string rightstr(const string& str, u32 n)
+{
+	if (str.length() < n)
+		n = str.length();
+	return str.substr(str.length() - n, n);
+}
+
+IC string trim_right(const string& str)
+{
+	u32 trimmed_cnt = length(str);
+
+	for (; trimmed_cnt > 0; --trimmed_cnt)
+	{
+		if (str[trimmed_cnt - 1] == ' ')
+			trimmed_cnt--;
+		else
+			break;
+	}
+
+	if (trimmed_cnt == 0)
+		return "";
+	else
+		return leftstr(str, trimmed_cnt);
+}
+
+IC string trim_left(const string& str)
+{
+	u32 trimmed_cnt = length(str);
+
+	for (u32 i = 0; (i < length(str)) && (trimmed_cnt > 0); ++i)
+	{
+		if (str[i] == ' ')
+			trimmed_cnt--;
+		else
+			break;
+	}
+
+	if (trimmed_cnt == 0)
+		return "";
+	else
+		return rightstr(str, trimmed_cnt);
+}
+
+IC string trim(const string& str) { return trim_right(trim_left(str)); }
+IC string trim(pcstr str) { return trim(string(str)); }
+
+IC string inttostr(u32 n)
+{
+	char b[20];
+	xr_sprintf(b, "%d", n);
+	return make_string(b);
+}
+
+bool CWeapon::GetNextSubStr(string& data, string& buf, char separator)
+{
+    u32 p = 0;
+    for (size_t i = 0; i < length(data); ++i)
+    {
+        if (data[i] == separator)
+        {
+            p = i + 1;
+            break;
+        };
+    }
+
+    if (p > 0)
+    {
+        buf = leftstr(data, p - 1);
+        buf = trim(buf);
+        data = rightstr(data, length(data) - p);
+        data = trim(data);
+        return true;
+    }
+    else
+    {
+        if (length(trim(data)) > 0)
+        {
+            buf = trim(data);
+            data = "";
+            return true;
+        }
+        else
+            return false;
+    }
+}
+
+void CWeapon::SetWorldModelMultipleBonesStatus(pcstr bones, bool status)
+{
+    string bones_string = bones;
+    string bone;
+    while (GetNextSubStr(bones_string, bone, ','))
+    {
+        SetWorldModelBoneStatus(bone.c_str(), status);
+    }
+}
+
+void CWeapon::SetWorldModelBoneStatus(pcstr bone_name, bool status)
+{
+    IRenderVisual* v = Visual();
+    IKinematics* ik = v->dcast_PKinematics();
+    if (ik == nullptr)
+        return;
+
+    u16 bid = ik->LL_BoneID(bone_name);
+    if (bid != (u16)(-1))
+    {
+        ik->LL_SetBoneVisible(bid, status, false);
+    }
+}
+
+void CWeapon::SetHudModelBoneStatus(pcstr bone_name, bool status)
+{
+    if (HudItemData() != nullptr)
+    {
+		IKinematics* ik = HudItemData()->m_model;
+        u16 bid = ik->LL_BoneID(bone_name);
+        if (bid != (u16)(-1))
+        {
+            ik->LL_SetBoneVisible(bid, status, false);
+        }
+    }
+}
+
+void CWeapon::SetWeaponModelBoneStatus(pcstr bone_name, bool status)
+{
+    CActor* act = Actor();
+    if ((act != nullptr) &&
+        act->cast_inventory_owner()->m_inventory->ActiveItem() == this)
+    {
+        SetHudModelBoneStatus(bone_name, status);
+    }
+    SetWorldModelBoneStatus(bone_name, status);
+}
+
+void CWeapon::SetWeaponMultipleBonesStatus(pcstr bones, bool status)
+{
+    string bones_string = bones;
+    string bone;
+    while (GetNextSubStr(bones_string, bone, ','))
+    {
+        SetWeaponModelBoneStatus(bone.c_str(), status);
+    }
+}
+
+u8 CWeapon::GetAmmoTypeToReload()
+{ //Вернет индекс для текущего активного магазина (т.е. разные в режиме подствола и обычном)
+    u8 result = m_set_next_ammoType_on_reload;
+    if (result == u32(-1))
+        result = GetAmmoTypeIndex(0);
+    return result;
+}
+
+u8 CWeapon::GetAmmoTypeIndex(bool second)
+{
+    if (second)
+    {
+        return static_cast<CWeaponMagazinedWGrenade*>(this)->m_ammoType2;
+    }
+    else
+    {
+        return m_ammoType;
+    }
+}
+
+u8 CWeapon::GetOrdinalAmmoType()
+{
+    if (READ_IF_EXISTS(pSettings, r_bool, g_player_hud->section_name(), "ammo_params_use_last_cartridge_type", false) && iAmmoElapsed > 0)
+    {
+        //если указан этот параметр, то в остальных режимах за тип секции отвечает тип последнего патрона
+        return xr_new<CCartridge>()->m_LocalAmmoType;
+    }
+    else
+    {
+        return GetAmmoTypeIndex(0);
+    }
+}
+
+void CWeapon::ProcessAmmoAdv(bool forced)
+{
+    LPCSTR hud_sect = this->HudSection().c_str();
+    bool g_b = IsGrenadeMode();
+
+    if ((!g_b) && (GetState() == eFire) && (!forced) &&
+        READ_IF_EXISTS(pSettings, r_bool, hud_sect, "ammo_params_toggle_shooting", false))
+    {
+        //во время стрельбы не производить обновление костей - нужно для корректных гильз у дробовиков
+        return;
+    }
+
+    u32 cnt = (iAmmoElapsed && !m_bcartridge_in_the_barrel) ? iAmmoElapsed - 1 : iAmmoElapsed;
+
+    u32 ammotype = 0;
+    if (g_b)
+    {
+        //Оружие в режиме стрельбы подстволом
+        ammotype = GetOrdinalAmmoType();
+    }
+    else if (GetState() == eReload)
+    {
+        if (IsMisfire())
+        {
+            //идет расклин
+            ammotype = GetOrdinalAmmoType();
+        }
+        else if (IsTriStateReload())
+        {
+            //идет перезарядка по типу дробовика
+            ammotype = GetAmmoTypeToReload();
+            cnt = cnt + 1;
+        }
+        else
+        {
+            //идет обычная перезарядка
+            //патрон в патроннике может быть старого типа! учитываем это
+            //обновление синхронно со счетчиком
+            ammotype = GetAmmoTypeIndex(g_b);
+
+            //Хак для неправильно заанимированных моделей вроде сайги - при обычных релоадах нам может потребоваться
+            //отображать в магазине на один патрон МЕНЬШЕ чем в реальности - они не учитывают патрон в патроннике!
+            //Поэтому если на счетчике 1, и мы жмем релоад, в магазине будет "лишний" патрон! Хотя магазин как раз
+            //должен быть пуст
+			
+			const float _time = READ_IF_EXISTS(pSettings, r_float, hud_sect, (std::string("lock_time_end_") + std::string(m_current_motion.c_str())).c_str(), 0) * 1000.f;
+			const float current_time = Device.dwTimeGlobal - m_dw_curr_substate_time;
+			if (_time && current_time >= _time) {
+				if(m_set_next_ammoType_on_reload != u32(-1)) {		
+					m_ammoType						= m_set_next_ammoType_on_reload;
+					m_set_next_ammoType_on_reload	= u32(-1);
+				}
+				cnt = u32(iMagazineSize);
+			}
+
+            if (READ_IF_EXISTS(pSettings, r_bool, hud_sect, "minus_ammo_in_usual_reloads", false) && (cnt >= 1))
+            {
+                cnt -= 1;
+            }
+        }
+    }
+    else
+    {
+        //не в состоянии перезарядки, подствол выключен
+        ammotype = GetOrdinalAmmoType();
+
+        //Хак для неправильно заанимированных моделей, не учитывающих патрон в патроннике - нам может потребоваться
+        //отображать в магазине на один патрон МЕНЬШЕ
+        if (READ_IF_EXISTS(pSettings, r_bool, hud_sect, "minus_ammo_in_bore", false) && (cnt >= 1))
+        {
+            cnt = cnt - 1;
+        }
+    };
+
+    pcstr bones_sect = nullptr;
+    string sect_w_ammotype = string("ammo_params_section_") + inttostr(ammotype);
+    if (pSettings->line_exist(hud_sect, sect_w_ammotype.c_str()))
+    {
+        bones_sect = pSettings->r_string(hud_sect, sect_w_ammotype.c_str());
+    }
+    else if (pSettings->line_exist(hud_sect, "ammo_params_section"))
+    {
+        bones_sect = pSettings->r_string(hud_sect, "ammo_params_section");
+    }
+
+    if (bones_sect != nullptr)
+    {
+        if (IsMisfire() && pSettings->line_exist(bones_sect, "additional_ammo_bone_when_jammed") &&
+            pSettings->r_bool(bones_sect, "additional_ammo_bone_when_jammed"))
+        {
+            cnt = cnt + 1;
+        }
+
+        //скрываем все
+        pcstr bones = pSettings->r_string(bones_sect, "all_bones");
+        SetWeaponMultipleBonesStatus(bones, false);
+
+        //отображаем нужные
+        string param_name = string("configuration_") + inttostr(cnt);
+        if (pSettings->line_exist(bones_sect, param_name.c_str()))
+        {
+            bones = pSettings->r_string(bones_sect, param_name.c_str());
+            SetWeaponMultipleBonesStatus(bones, true);
+        }
+    }
+}
+
+void CWeapon::ProcessAmmoGL(bool forced)
+{
+	if (!IsGrenadeMode()) return;
+	LPCSTR hud_sect = this->HudSection().c_str();
+	auto wpn_w_gl = smart_cast<CWeaponMagazinedWGrenade*>(this);
+	if (!wpn_w_gl)
+		return;
+
+	u32 cnt = wpn_w_gl->iAmmoElapsed;
+	u32 ammotype = 0;
+	if (GetState() == eReload && cnt == 0)
+	{
+		//Тут нужно использовать именно GetAmmoTypeToReload, а не GetGlAmmoType, иначе при смене типа гранаты после выстрела схема не просечет, что нужно изменить скин, и отрисует грену другого типа
+		ammotype = GetAmmoTypeIndex(0);
+		cnt = 1;
+	}
+	else
+		ammotype = GetAmmoTypeIndex(0);
+
+	if(!READ_IF_EXISTS(pSettings, r_bool, hud_sect, "use_ammo_gl_bones", 0))
+		return;
+
+	LPCSTR bones_sect = nullptr;
+	string sect_w_ammotype = string("gl_ammo_params_section_") + inttostr(ammotype);
+
+	if (pSettings->line_exist(hud_sect, sect_w_ammotype.c_str()))
+		bones_sect = pSettings->r_string(hud_sect, sect_w_ammotype.c_str());
+	else if (pSettings->line_exist(hud_sect, "gl_ammo_params_section"))
+		bones_sect = pSettings->r_string(hud_sect, "gl_ammo_params_section");
+
+	if (bones_sect != nullptr)
+	{
+		//скрываем все
+		LPCSTR bones = pSettings->r_string(bones_sect, "all_bones");
+		SetWeaponMultipleBonesStatus(bones, false);
+
+		//отображаем нужные
+		if (pSettings->line_exist(bones_sect, string("configuration_" + inttostr(cnt)).c_str()))
+		{
+			bones = pSettings->r_string(bones_sect, string("configuration_" + inttostr(cnt)).c_str());
+			SetWeaponMultipleBonesStatus(bones, true);
+		}
+	}
+}
+
+void CWeapon::ProcessAmmo(bool forced)
+{
+    LPCSTR hud_sect = this->HudSection().c_str();
+
+    if (READ_IF_EXISTS(pSettings, r_bool, hud_sect, "use_advanced_ammo_bones", false))
+    {
+        ProcessAmmoAdv(forced);
+        return;
+    }
+	
+    if (!READ_IF_EXISTS(pSettings, r_bool, hud_sect, "use_ammo_bones", false))
+    {
+        return;
+    }
+
+    string prefix = pSettings->r_string(hud_sect, "ammo_bones_prefix");
+	
+    string prefix_hide = READ_IF_EXISTS(pSettings, r_string, hud_sect, "ammo_hide_bones_prefix", "");
+    string prefix_var = READ_IF_EXISTS(pSettings, r_string, hud_sect, "ammo_var_bones_prefix", "");
+    u32 start_index = READ_IF_EXISTS(pSettings, r_u32, hud_sect, "start_ammo_bone_index", 0);
+    u32 limitator = READ_IF_EXISTS(pSettings, r_u32, hud_sect, "end_ammo_bone_index", 0);
+
+    u32 finish_index = start_index + (iAmmoElapsed && !m_bcartridge_in_the_barrel) ? iAmmoElapsed - 1 : iAmmoElapsed;;
+
+    if (IsMisfire() && pSettings->line_exist(hud_sect, "additional_ammo_bone_when_jammed") &&
+        pSettings->r_bool(hud_sect, "additional_ammo_bone_when_jammed"))
+    {
+        finish_index = finish_index + 1;
+    }
+
+    if (pSettings->line_exist(hud_sect, "ammo_divisor_up"))
+    {
+        finish_index = ceil(float(finish_index) / READ_IF_EXISTS(pSettings, r_u32, hud_sect, "ammo_divisor_up", 1));
+    }
+    else if (pSettings->line_exist(hud_sect, "ammo_divisor_down"))
+    {
+        finish_index = floor(float(finish_index) / READ_IF_EXISTS(pSettings, r_u32, hud_sect, "ammo_divisor_down", 1));
+    }
+
+    if (finish_index > limitator)
+    {
+        finish_index = limitator;
+    }
+
+    for (u32 i = start_index; i < finish_index; ++i)
+    {
+        SetWeaponModelBoneStatus((prefix + inttostr(i)).c_str(), true);
+        if (length(prefix_hide) > 0)
+        {
+            SetWeaponModelBoneStatus((prefix_hide + inttostr(i)).c_str(), false);
+        }
+    }
+    for (u32 i = finish_index + 1; i < limitator; ++i)
+    {
+        SetWeaponModelBoneStatus((prefix + inttostr(i)).c_str(), false);
+        if (length(prefix_hide) > 0)
+        {
+            SetWeaponModelBoneStatus((prefix_hide + inttostr(i)).c_str(), true);
+        }
+    }
+
+    if (length(prefix_var) > 0)
+    {
+        for (u32 i = start_index - 1; i < limitator; ++i)
+        {
+            SetWeaponModelBoneStatus((prefix_var + inttostr(i)).c_str(), i == finish_index);
+        }
+    }
+}
+
+void CWeapon::MyLittleReload() //-> i-love-kfc
+{
+	auto wpn_mag = smart_cast<CWeaponMagazined*>(this);
+	R_ASSERT(wpn_mag);
+	if ((!iAmmoElapsed || bAmmoTypeChangingStatus) && m_bcartridge_in_the_barrel && !IsGrenadeMode())
+	{
+		--iMagazineSize;
+		wpn_mag->ReloadMagazine();
+		++iMagazineSize;
+	}
+	else
+		wpn_mag->ReloadMagazine();
+	bAmmoTypeChangingStatus = false;
 }

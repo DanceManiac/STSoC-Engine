@@ -32,8 +32,8 @@ CWeaponMagazined::CWeaponMagazined(LPCSTR name, ESoundTypes eSoundType) : CWeapo
 	m_eSoundEmptyClick	= ESoundTypes(SOUND_TYPE_WEAPON_EMPTY_CLICKING | eSoundType);
 	m_eSoundReload		= ESoundTypes(SOUND_TYPE_WEAPON_RECHARGING | eSoundType);
 	
-	m_pSndShotCurrent = NULL;
-	m_sSilencerFlameParticles = m_sSilencerSmokeParticles = NULL;
+	m_pSndShotCurrent = nullptr;
+	m_sSilencerFlameParticles = m_sSilencerSmokeParticles = nullptr;
 
 	m_bFireSingleShot = false;
 	m_iShotNum = 0;
@@ -180,11 +180,6 @@ void CWeaponMagazined::Load	(LPCSTR section)
 	m_fire_zoomout_time = READ_IF_EXISTS( pSettings, r_u32, section, "fire_zoomout_time", u32(-1) );
 
 	m_str_count_tmpl = READ_IF_EXISTS( pSettings, r_string, "features", "wpn_magazined_str_count_tmpl", "{AE}/{AC}" );
-	
-	m_bcartridge_in_the_barrel = false;
-	
-	if (pSettings->line_exist(section, "cartridge_in_the_barrel"))
-            m_bcartridge_in_the_barrel = pSettings->r_bool(section, "cartridge_in_the_barrel");
 }
 
 void CWeaponMagazined::FireStart		()
@@ -361,7 +356,7 @@ void CWeaponMagazined::ReloadMagazine()
 	//только разных типов патронов
 //	static bool l_lockType = false;
 	if (!m_bLockType) {
-		m_pAmmo		= NULL;
+		m_pAmmo		= nullptr;
 	}
 	
 	if (!m_pCurrentInventory) return;
@@ -745,6 +740,10 @@ void CWeaponMagazined::OnAnimationEnd(u32 state)
 				MyLittleMisfire();
 			else
 				MyLittleReload();
+			SwitchState( eIdle );
+			HUD_SOUND::StopSound(sndReload);
+			HUD_SOUND::StopSound(sndReloadPartly);
+			ResetSubStateTime();
 		    break;
 	    }
 		case eHiding:
@@ -774,24 +773,6 @@ void CWeaponMagazined::OnAnimationEnd(u32 state)
 	}
 }
 
-void CWeaponMagazined::MyLittleReload() //-> i-love-kfc
-{
-	if ((iAmmoElapsed == 0 || bAmmoTypeChangingStatus) && m_bcartridge_in_the_barrel && !IsGrenadeMode())
-	{
-		--iMagazineSize;
-		ReloadMagazine();
-		++iMagazineSize;
-	}
-	else
-	{
-		ReloadMagazine();
-	}
-	bAmmoTypeChangingStatus = false;
-	HUD_SOUND::StopSound(sndReload);
-	HUD_SOUND::StopSound(sndReloadPartly);
-	SwitchState( eIdle );
-}
-
 void CWeaponMagazined::MyLittleMisfire() //-> i-love-kfc
 {
 	bMisfire = false;
@@ -799,7 +780,6 @@ void CWeaponMagazined::MyLittleMisfire() //-> i-love-kfc
 		--iAmmoElapsed;
 	bAfterUnjam = true;
 	HUD_SOUND::StopSound(sndMisfire);
-	SwitchState(eIdle);
 }
 
 void CWeaponMagazined::switch2_Idle()
@@ -1123,7 +1103,7 @@ void CWeaponMagazined::InitZoomParams(LPCSTR section, bool useTexture)
 	m_fMinZoomK = def_min_zoom_k;
 	m_fZoomStepCount = def_zoom_step_count;
 
-	LPCSTR dynamicZoomParams = READ_IF_EXISTS(pSettings, r_string, section, "scope_dynamic_zoom", NULL);
+	LPCSTR dynamicZoomParams = READ_IF_EXISTS(pSettings, r_string, section, "scope_dynamic_zoom", nullptr);
 	if (dynamicZoomParams)
 	{
 		int num_zoom_param = _GetItemCount(dynamicZoomParams);

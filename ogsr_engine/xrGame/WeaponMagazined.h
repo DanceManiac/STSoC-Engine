@@ -68,7 +68,6 @@ protected:
 	virtual void	OnEmptyClick	();
 
 	virtual void	OnAnimationEnd	(u32 state);
-	virtual void	MyLittleReload	();
 	virtual void	MyLittleMisfire	();
 	virtual void	OnStateSwitch	(u32 S, u32 oldState);
 
@@ -77,7 +76,6 @@ protected:
 	bool			TryReload		();
 
 protected:
-	virtual void	ReloadMagazine	();
 			void	ApplySilencerKoeffs	();
 
 	virtual void	state_Fire		(float dt);
@@ -97,6 +95,7 @@ public:
 	virtual void	Reload			();
 	
 
+	virtual void	ReloadMagazine	();
 	virtual	void	UpdateCL		();
 	virtual BOOL	net_Spawn(CSE_Abstract* DC);
 	virtual void	net_Destroy		();
@@ -149,7 +148,6 @@ public:
 	bool			m_bFireSingleShot;
 	//режимы стрельбы
 	bool			m_bHasDifferentFireModes;
-        bool m_bcartridge_in_the_barrel;
 
 	xr_vector<int>	m_aFireModes;
 	int				m_iCurFireMode;

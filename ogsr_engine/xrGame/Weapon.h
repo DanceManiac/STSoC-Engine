@@ -157,6 +157,7 @@ public:
 	EWeaponSubStates		GetReloadState		() const		{ return (EWeaponSubStates)m_sub_state;}
 	u8 idle_state();
 protected:
+
 	bool					m_bTriStateReload;
 	u8						m_sub_state;
 	u8						m_idle_state;
@@ -570,6 +571,26 @@ public:
 
 	virtual void OnBulletHit();
 	bool IsPartlyReloading();
+	
+	/* Схема отображения патронов из ганслингера */
+		
+		bool GetNextSubStr(std::string& data, std::string& buf, char separator);
+		void SetWorldModelMultipleBonesStatus(pcstr bones, bool status);
+		void SetWorldModelBoneStatus(pcstr bone_name, bool status);
+		void SetHudModelBoneStatus(pcstr bone_name, bool status);
+		void SetWeaponModelBoneStatus(pcstr bone_name, bool status);
+		void SetWeaponMultipleBonesStatus(pcstr bones, bool status);
+		u8 GetAmmoTypeToReload();
+		u8 GetAmmoTypeIndex(bool second);
+		u8 GetOrdinalAmmoType();
+		void ProcessAmmoAdv(bool forced = false);
+		void ProcessAmmoGL(bool forced = false);
+		void ProcessAmmo(bool forced = false);
+		void MyLittleReload();
+		
+		bool m_bcartridge_in_the_barrel{};
+	
+	/* */
 
 	virtual void processing_deactivate() override {
 		UpdateLaser();
