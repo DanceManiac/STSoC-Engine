@@ -743,7 +743,6 @@ void CWeaponMagazined::OnAnimationEnd(u32 state)
 			SwitchState( eIdle );
 			HUD_SOUND::StopSound(sndReload);
 			HUD_SOUND::StopSound(sndReloadPartly);
-			ResetSubStateTime();
 		    break;
 	    }
 		case eHiding:
