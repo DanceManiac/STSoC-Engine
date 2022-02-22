@@ -10,8 +10,8 @@
 
 Благодарности:
 
-1) (Dance Maniac)[https://github.com/ign-1997]
+1) [Dance Maniac](https://github.com/ign-1997)
 
-2) (Anomaly)[https://bitbucket.org/anomalymod/xray-monolith]
+2) [Anomaly](https://bitbucket.org/anomalymod/xray-monolith)
 
 3) и ещё там кто-то, но сейчас мне лень искать, если шо - пишите в дис i-love-kfc#0480
