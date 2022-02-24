@@ -15,7 +15,10 @@ public:
 	virtual BOOL	net_Spawn				(CSE_Abstract* DC);
 	virtual void	Load					(LPCSTR section);
 	virtual void	OnEvent					(NET_Packet& P, u16 type);
+	virtual void	FireStart				() override;
+	virtual void	OnAnimationEnd			(u32 state);
 protected:
+	bool			IsShotProhibited		();
 	virtual void	FireTrace(const Fvector& P, const Fvector& D);
 	virtual void	LaunchGrenade(const Fvector& P, const Fvector& D);
 
