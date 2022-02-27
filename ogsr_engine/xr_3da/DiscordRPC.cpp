@@ -7,7 +7,7 @@ ENGINE_API DiscordRPC Discord;
 void DiscordRPC::Init()
 {
 	DiscordEventHandlers nullHandlers{};
-	Discord_Initialize("862971629810221086", &nullHandlers, TRUE, nullptr, 0);
+	Discord_Initialize(READ_IF_EXISTS(pSettings, r_string, "rpc_ettings", "discordrpc_appid", "862971629810221086"), &nullHandlers, TRUE, nullptr, 0);
 
 	start_time = time(nullptr);
 }
@@ -29,9 +29,11 @@ void DiscordRPC::Update(const char* level_name)
 	presenseInfo.smallImageText = Core.GetEngineVersion(); //версия движка на маленькой картинке
 
 	std::string task_txt, lname, lname_and_task;
-
+	
+	using namespace std;
 	if (active_task_text) {
-		task_txt = StringToUTF8(active_task_text);
+		const bool show_text = READ_IF_EXISTS(pSettings, r_bool, "rpc_ettings", "show_current_task", true);
+		task_txt = StringToUTF8(string(string("Задание: ") + string(show_text ? active_task_text : "СКРЫТО")).c_str());
 		presenseInfo.state = task_txt.c_str(); //Активное задание
 	}
 
@@ -39,7 +41,8 @@ void DiscordRPC::Update(const char* level_name)
 		current_level_name = level_name;
 
 	if (current_level_name) {
-		lname = StringToUTF8(current_level_name);
+		const bool show_text = READ_IF_EXISTS(pSettings, r_bool, "rpc_ettings", "show_current_level", true);
+		lname = StringToUTF8(string(string("Уровень: ") + string(show_text ? current_level_name : "СКРЫТО")).c_str());
 		presenseInfo.details = lname.c_str(); //название уровня
 	}
 
