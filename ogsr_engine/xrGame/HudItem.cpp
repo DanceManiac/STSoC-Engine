@@ -333,6 +333,12 @@ bool CHudItem::TryPlayAnimIdle()
 			}
 			else if (!HudBobbingAllowed())
 			{
+				if(AnmSprintStartPlayed && PlayAnimIdleSprintEnd())
+				{
+					AnmSprintStartPlayed = false;
+					return true;
+				}
+				
 				if (State & mcAnyMove)
 				{
 					if (!(State & mcCrouch))
@@ -367,6 +373,15 @@ bool CHudItem::TryPlayAnimIdle()
 {
 	PlayHUDMotion("anm_bore", TRUE, this, GetState());
 }*/
+
+bool CHudItem::PlayAnimIdleSprintEnd()
+{
+	if(AnimationExist("anm_idle_sprint_end")) {
+		PlayHUDMotion("anm_idle_sprint_end", false, nullptr, GetState());
+		return true;
+	}
+	return false;
+}
 
 void CHudItem::PlayAnimIdleMovingSlow()
 {
@@ -411,7 +426,13 @@ void CHudItem::PlayAnimIdleMovingCrouch() { PlayHUDMotion("anm_idle_moving_crouc
 
 void CHudItem::PlayAnimIdleSprint()
 {
-	PlayHUDMotion("anm_idle_sprint", "anm_idle", true, nullptr, GetState());
+	if(!AnmSprintStartPlayed && AnimationExist("anm_idle_sprint_start"))
+	{
+		PlayHUDMotion("anm_idle_sprint_start", false, nullptr, GetState());
+		AnmSprintStartPlayed = true;
+		return;
+	}
+	PlayHUDMotion("anm_idle_sprint", "anm_idle", false, nullptr, GetState());
 }
 
 void CHudItem::OnMovementChanged(ACTOR_DEFS::EMoveCommand cmd)

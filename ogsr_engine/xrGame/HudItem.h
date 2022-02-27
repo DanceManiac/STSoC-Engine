@@ -81,6 +81,8 @@ protected: //чтоб нельзя было вызвать на прямую
 	bool			m_bStopAtEndAnimIsRunning;
 
 	u32				m_dwStateTime;
+	
+	bool AnmSprintStartPlayed = false;
 public:
 	virtual void	Load				(LPCSTR section);
 	virtual CHudItem*cast_hud_item		()	 { return this; }
@@ -131,6 +133,7 @@ public:
 	//virtual void	PlayAnimBore		();
 	virtual void	PlayAnimIdleMoving	();
 	virtual void	PlayAnimIdleSprint	();
+	virtual bool	PlayAnimIdleSprintEnd();
 	virtual void	PlayAnimIdleMovingCrouch();
 	virtual void	PlayAnimIdleMovingSlow();
 	virtual void PlayAnimIdleMovingCrouchSlow();

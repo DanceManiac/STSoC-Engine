@@ -23,6 +23,7 @@ protected:
 	virtual void	PlayAnimIdleMovingSlow() override;
 	virtual void	PlayAnimIdleMovingCrouchSlow() override;
 	virtual void	PlayAnimIdleSprint				();
+	virtual bool	PlayAnimIdleSprintEnd();
 	virtual void	PlayAnimIdle					();
 	virtual void	PlayReloadSound					();
 	virtual void	UpdateSounds() override;

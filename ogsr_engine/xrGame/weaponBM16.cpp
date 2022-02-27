@@ -160,21 +160,40 @@ void CWeaponBM16::PlayAnimIdleMovingCrouchSlow()
 
 void CWeaponBM16::PlayAnimIdleSprint()
 {
+	if(!AnmSprintStartPlayed && AnimationExist(std::string("anm_idle_sprint_start_" + m_magazine.size()).c_str()))
+	{
+		PlayHUDMotion(std::string("anm_idle_sprint_start_" + m_magazine.size()).c_str(), false, nullptr, GetState());
+		AnmSprintStartPlayed = true;
+		return;
+	}
+
 	switch (m_magazine.size())
 	{
-	case 0:
-	{
-			PlayHUDMotion("anm_idle_sprint_0", TRUE, this, GetState());
-	} break;
-	case 1:
-	{
-			PlayHUDMotion("anm_idle_sprint_1", TRUE, this, GetState());
-	} break;
-	case 2:
-	{
-			PlayHUDMotion("anm_idle_sprint_2", TRUE, this, GetState());
-	} break;
+		case 0:
+		{
+			PlayHUDMotion("anm_idle_sprint_0", false, this, GetState());
+			break;
+		}
+		case 1:
+		{
+			PlayHUDMotion("anm_idle_sprint_1", false, this, GetState());
+			break;
+		}
+		case 2:
+		{
+			PlayHUDMotion("anm_idle_sprint_2", false, this, GetState());
+			break;
+		}
 	}
+}
+
+bool CWeaponBM16::PlayAnimIdleSprintEnd()
+{
+	if(AnimationExist(std::string("anm_idle_sprint_end_" + m_magazine.size()).c_str())) {
+		PlayHUDMotion(std::string("anm_idle_sprint_end_" + m_magazine.size()).c_str(), false, nullptr, GetState());
+		return true;
+	}
+	return inherited::PlayAnimIdleSprintEnd();
 }
 
 void CWeaponBM16::PlayAnimIdle()

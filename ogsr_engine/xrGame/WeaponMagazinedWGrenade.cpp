@@ -691,6 +691,16 @@ void CWeaponMagazinedWGrenade::PlayAnimReload()
 		inherited::PlayAnimReload();
 }
 
+bool CWeaponMagazinedWGrenade::PlayAnimIdleSprintEnd()
+{
+	if (IsGrenadeLauncherAttached() && AnimationExist(std::string("anm_idle_sprint_end" + m_bGrenadeMode ? "_g" : "_w_gl").c_str())) {
+		PlayHUDMotion(std::string("anm_idle_sprint_end" + m_bGrenadeMode ? "_g" : "_w_gl").c_str(), false, nullptr, GetState());
+		return true;
+	}
+	else
+		return inherited::PlayAnimIdleSprintEnd();
+}
+
 void CWeaponMagazinedWGrenade::PlayAnimIdle()
 {
 	if(GetState() != eIdle)
@@ -805,6 +815,12 @@ void CWeaponMagazinedWGrenade::PlayAnimIdle()
 						PlayHUDMotion("anm_idle_w_gl", TRUE, nullptr, GetState());
 				else if (act_state == 1)
 				{
+					if(!AnmSprintStartPlayed && AnimationExist("anm_idle_sprint_start"))
+					{
+						PlayHUDMotion(std::string("anm_idle_sprint_start" + m_bGrenadeMode ? "_g" : "_w_gl").c_str(), false, nullptr, GetState());
+						AnmSprintStartPlayed = true;
+						return;
+					}
 					if (AnimationExist("anm_idle_sprint_w_gl"))
 						if(IsMisfire() && AnimationExist("anm_idle_sprint_jammed_w_gl"))
 							PlayHUDMotion("anm_idle_sprint_jammed_w_gl", TRUE, nullptr, GetState());

@@ -36,6 +36,7 @@ public:
 	virtual void	PlayAnimHide	() override;
 	virtual void	PlayAnimReload	() override;
 	virtual void	PlayAnimShoot	() override;
+	virtual bool	PlayAnimIdleSprintEnd() override;
 
 	virtual void	UpdateSounds	();
 	BOOL					CheckForMiss		();
