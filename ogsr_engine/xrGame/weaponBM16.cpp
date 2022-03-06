@@ -11,12 +11,20 @@ void CWeaponBM16::Load	(LPCSTR section)
 	inherited::Load		(section);
 
 	HUD_SOUND::LoadSound(section, "snd_reload_1", m_sndReload1, m_eSoundReload);
+	if(pSettings->line_exist(section, "snd_reload_1_ammochange")) {
+		HUD_SOUND::LoadSound(section, "snd_reload_1_ammochange", m_sndReload1_AmmoChange, m_eSoundReload);
+		HUD_SOUND::LoadSound(section, "snd_reload_2_ammochange", m_sndReload2_AmmoChange, m_eSoundReload);
+	}
 }
 
 void CWeaponBM16::PlayReloadSound()
 {
 	if (bMisfire && AnimationExist("anm_misfire"))
 		PlaySound	(sndMisfire,get_LastFP());
+	else if(m_set_next_ammoType_on_reload != u32(-1) && AnimationExist("anm_reload_ammochange_1") && pSettings->line_exist(this->cNameSect().c_str(), "snd_reload_1_ammochange")) {
+			PlaySound	(iAmmoElapsed ? m_sndReload2_AmmoChange : m_sndReload1_AmmoChange,get_LastFP());
+			return;
+		}
 	else if ( m_magazine.size() == 1 || !HaveCartridgeInInventory( 2 ) )
 		PlaySound	(m_sndReload1,get_LastFP());
 	else
@@ -103,7 +111,11 @@ void CWeaponBM16::PlayAnimReload()
 		bMisfire = false;
 		PlayHUDMotion("anm_misfire", TRUE, nullptr, GetState());
 	}
-	else if (m_magazine.size() == 1 || !HaveCartridgeInInventory(2))
+	else if(iAmmoElapsed && m_set_next_ammoType_on_reload != u32(-1) && AnimationExist("anm_reload_ammochange_1")) {
+			PlayHUDMotion(iAmmoElapsed == 2 ? "anm_reload_ammochange_2" : "anm_reload_ammochange_1", TRUE, this, GetState());
+			return;
+		}
+	else if(m_magazine.size() == 1 || !HaveCartridgeInInventory(2))
 		PlayHUDMotion("anm_reload_1", TRUE, this, GetState());
 	else
 		PlayHUDMotion("anm_reload_2", TRUE, this, GetState());

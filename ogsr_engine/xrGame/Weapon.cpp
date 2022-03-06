@@ -2476,7 +2476,7 @@ void CWeapon::OnBulletHit() {
 
 
 bool CWeapon::IsPartlyReloading() {
-  return ( m_set_next_ammoType_on_reload == u32(-1) && GetAmmoElapsed() > 0 && !IsMisfire() );
+  return ( /*m_set_next_ammoType_on_reload == u32(-1) && */GetAmmoElapsed() > 0 && !IsMisfire() );
 }
 
 

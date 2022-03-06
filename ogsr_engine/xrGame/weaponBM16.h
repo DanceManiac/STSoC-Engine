@@ -8,6 +8,8 @@ class CWeaponBM16 :public CWeaponShotgun
 	typedef CWeaponShotgun inherited;
 protected:
 	HUD_SOUND		m_sndReload1;
+	HUD_SOUND		m_sndReload1_AmmoChange;
+	HUD_SOUND		m_sndReload2_AmmoChange;
 
 public:
 	virtual			~CWeaponBM16					();
