@@ -895,7 +895,7 @@ void		xrRender_initconsole	()
 	CMD3(CCC_Mask,		"r2_allow_r1_lights",	&ps_r2_ls_flags,			R2FLAG_R1LIGHTS	);
 
 	//- Mad Max
-	CMD4(CCC_Float,		"r2_gloss_factor",		&ps_r2_gloss_factor,		.0f,	30.f	);
+	CMD4(CCC_Float,		"r2_gloss_factor",		&ps_r2_gloss_factor,		.0f,	10.f	);
 	//- Mad Max
 
 #ifdef DEBUG
