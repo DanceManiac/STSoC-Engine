@@ -77,6 +77,12 @@ extern ECORE_API	Flags32		ps_r1_flags;			// r1-only
 extern ECORE_API	float		ps_r1_fog_luminance;	//1.f r1-only
 extern ECORE_API	int			ps_r1_SoftwareSkinning;	// r1-only
 
+extern ECORE_API Flags32 ps_r3_pbr_flags;
+enum ePseudoPBR
+{
+	R_FLAG_PSEUDOPBR = (1 << 0),
+};
+
 enum
 {
 	R1FLAG_DLIGHTS				= (1<<0),

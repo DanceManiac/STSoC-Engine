@@ -196,6 +196,10 @@ int			ps_r1_SoftwareSkinning		= 0		;					// r1-only
 float		ps_r2_ssaLOD_A				= 64.f	;
 float		ps_r2_ssaLOD_B				= 48.f	;
 
+float ps_r3_pbr_intensity = 25.0f;
+float ps_r3_pbr_roughness = 0.5f;
+Flags32	ps_r3_pbr_flags = { R_FLAG_PSEUDOPBR };
+
 // R2-specific
 Flags32		ps_r2_ls_flags				= { R2FLAG_SUN 
 	//| R2FLAG_SUN_IGNORE_PORTALS
@@ -984,6 +988,11 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r2_dof_kernel",&ps_r2_dof_kernel_size,				.0f,	10.f);
 	CMD4(CCC_Float,		"r2_dof_sky",	&ps_r2_dof_sky,						-10000.f,	10000.f);
 	CMD3(CCC_Mask,		"r2_dof_enable",&ps_r2_ls_flags,	R2FLAG_DOF);
+	
+	// PseudoPBR
+	CMD4(CCC_Float,		"r3_pbr_intensity",				&ps_r3_pbr_intensity,		.5f, 25.f);
+	CMD4(CCC_Float,		"r3_pbr_roughness",				&ps_r3_pbr_roughness,		.0f, 1.f);
+	CMD3(CCC_Mask,		"r3_pbr",						&ps_r3_pbr_flags,			R_FLAG_PSEUDOPBR);
 	
 //	float		ps_r2_dof_near			= 0.f;					// 0.f
 //	float		ps_r2_dof_focus			= 1.4f;					// 1.4f
