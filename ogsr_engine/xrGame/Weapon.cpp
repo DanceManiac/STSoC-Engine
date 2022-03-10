@@ -1276,15 +1276,7 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 		case kSWITCH_SCOPE:
 		{
 			if (flags & CMD_START && !IsPending())
-			{
-				Device.time_factor(0.25f);
-				psSoundTimeFactor = 0.25f;
-			}
-			else
-			{
-				Device.time_factor(1.f);
-				psSoundTimeFactor = 1.f;
-			}
+				HudItemData()->m_measures.SwitchAimType();
 			return true;
 		}
 
@@ -1979,6 +1971,8 @@ u8 CWeapon::GetCurrentHudOffsetIdx()
 		}
 		else if (has_gl)
 		{
+			if(HudItemData()->m_measures.IsAltAimEnabled())
+				return hud_item_measures::m_hands_offset_type_aim_alt;
 			if (m_bUseScopeZoom && has_scope)
 				return hud_item_measures::m_hands_offset_type_gl_normal_scope;
 			else
@@ -1986,6 +1980,8 @@ u8 CWeapon::GetCurrentHudOffsetIdx()
 		}
 		else
 		{
+			if(HudItemData()->m_measures.IsAltAimEnabled())
+				return hud_item_measures::m_hands_offset_type_aim_alt;
 			if (m_bUseScopeZoom && has_scope)
 				return hud_item_measures::m_hands_offset_type_aim_scope;
 			else
