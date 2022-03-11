@@ -85,6 +85,9 @@ public:
 	virtual void			Hide( bool = false );
 	virtual void			Show( bool = false );
 
+	virtual u32				PlayHUDMotion			(const shared_str& M, BOOL bMixIn, CHudItem* W, u32 state, bool randomAnim = true) override;
+	virtual u32				PlayHUDMotion			(const shared_str& M, const shared_str& M2, BOOL bMixIn, CHudItem* W, u32 state, bool randomAnim = true) override;
+
 	//инициализация если вещь в активном слоте или спрятана на OnH_B_Chield
 	virtual void			OnActiveItem		();
 	virtual void			OnHiddenItem		();

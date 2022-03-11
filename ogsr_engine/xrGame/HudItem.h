@@ -147,8 +147,8 @@ public:
 	virtual void	UpdateHudAdditonal		(Fmatrix&) {};
 	virtual	void	UpdateXForm				() = 0;
 
-	u32				PlayHUDMotion			(const shared_str& M, BOOL bMixIn, CHudItem* W, u32 state, bool randomAnim = true);
-	u32				PlayHUDMotion			(const shared_str& M, const shared_str& M2, BOOL bMixIn, CHudItem* W, u32 state, bool randomAnim = true);
+	virtual u32				PlayHUDMotion			(const shared_str& M, BOOL bMixIn, CHudItem* W, u32 state, bool randomAnim = true);
+	virtual u32				PlayHUDMotion			(const shared_str& M, const shared_str& M2, BOOL bMixIn, CHudItem* W, u32 state, bool randomAnim = true);
 	u32				PlayHUDMotion_noCB		(const shared_str& M, BOOL bMixIn, bool randomAnim = true);
 	bool			AnimationExist			(const shared_str& M) const;
 	void			StopCurrentAnimWithoutCallback();

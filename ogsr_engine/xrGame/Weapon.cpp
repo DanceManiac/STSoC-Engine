@@ -1359,6 +1359,46 @@ void CWeapon::ZoomChange(bool inc)
 	}
 }
 
+u32 CWeapon::PlayHUDMotion(const shared_str& M, BOOL bMixIn, CHudItem* W, u32 state, bool randomAnim)
+{
+	const char* empty_motion_name = std::string(std::string(M.c_str()) + "_empty").c_str();
+	const char* jammed_motion_name = std::string(std::string(M.c_str()) + "_jammed").c_str();
+	if(!iAmmoElapsed && AnimationExist(empty_motion_name))
+	{
+		const shared_str total_motion_name = shared_str(empty_motion_name);
+		return inherited::PlayHUDMotion(total_motion_name, bMixIn, W, state, randomAnim);
+	}
+	else if(IsMisfire() && AnimationExist(jammed_motion_name))
+	{
+		const shared_str total_motion_name = shared_str(jammed_motion_name);
+		return inherited::PlayHUDMotion(total_motion_name, bMixIn, W, state, randomAnim);
+	}
+	else
+		return inherited::PlayHUDMotion(M, bMixIn, W, state, randomAnim);
+}
+
+u32 CWeapon::PlayHUDMotion(const shared_str& M, const shared_str& M2, BOOL bMixIn, CHudItem* W, u32 state, bool randomAnim)
+{
+	const char* empty_motion_name = std::string(std::string(M.c_str()) + "_empty").c_str();
+	const char* empty_motion_name2 = std::string(std::string(M2.c_str()) + "_empty").c_str();
+	const char* jammed_motion_name = std::string(std::string(M.c_str()) + "_jammed").c_str();
+	const char* jammed_motion_name2 = std::string(std::string(M2.c_str()) + "_jammed").c_str();
+	if(!iAmmoElapsed && (AnimationExist(empty_motion_name) || AnimationExist(empty_motion_name2)))
+	{
+		const shared_str total_motion_name = shared_str(empty_motion_name);
+		const shared_str total_motion_name2 = shared_str(empty_motion_name2);
+		return inherited::PlayHUDMotion(total_motion_name, total_motion_name2, bMixIn, W, state, randomAnim);
+	}
+	else if(IsMisfire() && (AnimationExist(jammed_motion_name) || AnimationExist(jammed_motion_name2)))
+	{
+		const shared_str total_motion_name = shared_str(jammed_motion_name);
+		const shared_str total_motion_name2 = shared_str(jammed_motion_name2);
+		return inherited::PlayHUDMotion(total_motion_name, total_motion_name2, bMixIn, W, state, randomAnim);
+	}
+	else
+		return inherited::PlayHUDMotion(M, M2, bMixIn, W, state, randomAnim);
+}
+
 void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect, u32 ParentID) 
 {
 	if(!m_ammoTypes.size())			return;

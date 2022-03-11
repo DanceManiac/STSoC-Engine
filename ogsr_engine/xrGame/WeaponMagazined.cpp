@@ -1289,19 +1289,13 @@ void CWeaponMagazined::ApplySilencerKoeffs	()
 void CWeaponMagazined::PlayAnimShow()
 {
 	VERIFY(GetState()==eShowing);
-	if(IsMisfire() && AnimationExist("anm_show_jammed"))
-		PlayHUDMotion("anm_show_jammed", false, this, GetState());
-	else
-		PlayHUDMotion("anm_show", false, this, GetState());
+	PlayHUDMotion("anm_show", false, this, GetState());
 }
 
 void CWeaponMagazined::PlayAnimHide()
 {
 	VERIFY(GetState()==eHiding);
-	if(IsMisfire() && AnimationExist("anm_hide_jammed"))
-		PlayHUDMotion("anm_hide_jammed", true, this, GetState());
-	else
-		PlayHUDMotion("anm_hide", true, this, GetState());
+	PlayHUDMotion("anm_hide", true, this, GetState());
 }
 
 
@@ -1354,7 +1348,7 @@ const char* CWeaponMagazined::GetAnimAimName()
 }
 
 void CWeaponMagazined::PlayAnimAim()
-{ 
+{
 	if (IsRotatingToZoom()) {
 		if (AnimationExist("anm_idle_aim_start")) {
 			PlayHUDMotion("anm_idle_aim_start", true, nullptr, GetState());
@@ -1368,10 +1362,6 @@ void CWeaponMagazined::PlayAnimAim()
 			PlayHUDMotion(guns_aim_anm, true, nullptr, GetState());
 			return;
 		}
-
-	if(IsMisfire() && AnimationExist("anm_idle_aim_jammed"))
-		PlayHUDMotion("anm_idle_aim_jammed", true, nullptr, GetState());
-	else
 		PlayHUDMotion("anm_idle_aim", true, nullptr, GetState());
 }
 
@@ -1387,27 +1377,18 @@ void CWeaponMagazined::PlayAnimIdle()
 		PlayHUDMotion("anm_idle_aim_end", true, nullptr, GetState());
 		return;
 	}
-	
-	else if(IsMisfire() && AnimationExist("anm_idle_jammed") && !TryPlayAnimIdle())
-		PlayHUDMotion("anm_idle_jammed", true, nullptr, GetState());
 	else
 		inherited::PlayAnimIdle();
 }
 
 void CWeaponMagazined::PlayAnimIdleSprint()
 {
-	if(IsMisfire() && AnimationExist("anm_idle_sprint_jammed"))
-		PlayHUDMotion("anm_idle_sprint_jammed", true, nullptr, GetState());
-	else
-		inherited::PlayAnimIdleSprint();
+	inherited::PlayAnimIdleSprint();
 }
 
 void CWeaponMagazined::PlayAnimIdleMoving()
 { 
-	if(IsMisfire() && AnimationExist("anm_idle_moving_jammed"))
-		PlayHUDMotion("anm_idle_moving_jammed", true, nullptr, GetState());
-	else
-		inherited::PlayAnimIdleMoving();
+	inherited::PlayAnimIdleMoving();
 }
 
 void CWeaponMagazined::PlayAnimShoot()

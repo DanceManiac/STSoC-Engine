@@ -190,7 +190,6 @@ protected:
 	virtual void	PlayAnimHide		();
 	virtual void	PlayAnimReload		();
 	virtual void	PlayAnimIdle		();
-	
 private:
 	string64 guns_aim_anm;
 protected:
