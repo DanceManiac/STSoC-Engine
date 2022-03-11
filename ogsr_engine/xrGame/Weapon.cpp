@@ -1275,7 +1275,7 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 		
 		case kSWITCH_SCOPE:
 		{
-			if (flags & CMD_START && !IsPending())
+			if (HudItemData() && flags & CMD_START && !IsPending())
 				HudItemData()->m_measures.SwitchAimType();
 			return true;
 		}
@@ -1822,7 +1822,7 @@ void CWeapon::OnZoomOut()
 bool CWeapon::UseScopeTexture() {
 	return (( GetAddonsState() & CSE_ALifeItemWeapon::eForcedNotexScope ) == 0) 
 		&& !SecondVPEnabled()
-		&& m_UIScope; // только если есть текстура прицела - для простого создания коллиматоров
+		&& m_UIScope && (!HudItemData() || !HudItemData()->m_measures.IsAltAimEnabled()); // только если есть текстура прицела - для простого создания коллиматоров
 };
 
 CUIStaticItem* CWeapon::ZoomTexture()
@@ -2011,7 +2011,7 @@ u8 CWeapon::GetCurrentHudOffsetIdx()
 		}
 		else if (has_gl)
 		{
-			if(HudItemData()->m_measures.IsAltAimEnabled())
+			if(HudItemData() && HudItemData()->m_measures.IsAltAimEnabled())
 				return hud_item_measures::m_hands_offset_type_aim_alt;
 			if (m_bUseScopeZoom && has_scope)
 				return hud_item_measures::m_hands_offset_type_gl_normal_scope;
@@ -2020,7 +2020,7 @@ u8 CWeapon::GetCurrentHudOffsetIdx()
 		}
 		else
 		{
-			if(HudItemData()->m_measures.IsAltAimEnabled())
+			if(HudItemData() && HudItemData()->m_measures.IsAltAimEnabled())
 				return hud_item_measures::m_hands_offset_type_aim_alt;
 			if (m_bUseScopeZoom && has_scope)
 				return hud_item_measures::m_hands_offset_type_aim_scope;
@@ -2441,7 +2441,7 @@ void CWeapon::UpdateSecondVP()
 
 bool CWeapon::SecondVPEnabled() const
 {
-	return (m_fSecondVPZoomFactor > 0.f) && !IsGrenadeMode() && psActorFlags.test(AF_3D_SCOPES);
+	return (m_fSecondVPZoomFactor > 0.f) && !IsGrenadeMode() && psActorFlags.test(AF_3D_SCOPES) && (!HudItemData() || !HudItemData()->m_measures.IsAltAimEnabled());
 }
 
 // Чувствительность мышки с оружием в руках во время прицеливания
