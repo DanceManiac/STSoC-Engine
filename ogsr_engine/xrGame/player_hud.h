@@ -200,6 +200,88 @@ private:
 	float	m_fScopeZoomFactor;
 };
 
+enum eMovementLayers
+{
+	eAimWalk = 0,
+	eAimCrouch,
+	eCrouch,
+	eWalk,
+	eRun,
+	eSprint,
+	move_anms_end
+};
+
+#include "../xr_3da/ObjectAnimator.h"
+struct movement_layer
+{
+	CObjectAnimator* anm;
+	float blend_amount[2];
+	bool active;
+	float m_power;
+	Fmatrix blend;
+	u8 m_part;
+
+	movement_layer()
+	{
+		blend.identity();
+		anm = xr_new<CObjectAnimator>();
+		blend_amount[0] = 0.f;
+		blend_amount[1] = 0.f;
+		active = false;
+		m_power = 1.f;
+	}
+
+	void Load(LPCSTR name)
+	{
+		if (xr_strcmp(name, anm->Name()))
+			anm->Load(name);
+	}
+
+	void Play(bool bLoop = true)
+	{
+		if (!anm->Name())
+			return;
+
+		if (IsPlaying())
+		{
+			active = true;
+			return;
+		}
+		
+		anm->Play(bLoop);
+		active = true;
+	}
+
+	bool IsPlaying()
+	{
+		return anm->IsPlaying();
+	}
+
+	void Stop(bool bForce)
+	{
+		if (bForce)
+		{
+			anm->Stop();
+			blend_amount[0] = 0.f;
+			blend_amount[1] = 0.f;
+			blend.identity();
+		}
+
+		active = false;
+	}
+
+	const Fmatrix& XFORM(u8 part)
+	{
+		blend.set(anm->XFORM());
+		blend.mul(blend_amount[part] * m_power);
+		blend.m[0][0] = 1.f;
+		blend.m[1][1] = 1.f;
+		blend.m[2][2] = 1.f;
+
+		return blend;
+	}
+};
+
 class player_hud
 {
 public:
@@ -232,7 +314,9 @@ public:
 	u32 motion_length(const motion_descr& M, const CMotionDef*& md, float speed, IKinematicsAnimated* itemModel, attachable_hud_item* pi = nullptr);
 	u32 motion_length(const shared_str& anim_name, const shared_str& hud_name, const CMotionDef*& md);
 	void OnMovementChanged(ACTOR_DEFS::EMoveCommand cmd);
+	void updateMovementLayerState();
 
+	xr_vector<movement_layer*> m_movement_layers;
 private:
 	void update_inertion(Fmatrix& trans);
 	void update_additional(Fmatrix& trans);

@@ -513,6 +513,31 @@ player_hud::player_hud()
 	m_collision			= xr_new<CWeaponCollision>();
 	if (Core.Features.test(xrCore::Feature::wpn_bobbing))
 		m_bobbing = xr_new<CWeaponBobbing>();
+	
+	m_movement_layers.reserve(move_anms_end);
+
+	for (u32 i = 0; i < move_anms_end; i++)
+	{
+		movement_layer* anm = xr_new<movement_layer>();
+
+		char temp[20];
+		string512 tmp;
+		strconcat(sizeof(temp), temp, "movement_layer_", std::to_string(i).c_str());
+		if(!pSettings->line_exist("hud_movement_layers", temp)) {
+			Log(make_string("Missing definition for [hud_movement_layers] %s", temp).c_str());
+			return;
+		}
+		LPCSTR layer_def = pSettings->r_string("hud_movement_layers", temp);
+		R_ASSERT2(_GetItemCount(layer_def) > 0, make_string("Wrong definition for [hud_movement_layers] %s", temp));
+		
+		_GetItem(layer_def, 0, tmp);
+		anm->Load(tmp);
+		_GetItem(layer_def, 1, tmp);
+		anm->anm->Speed() = (atof(tmp) ? atof(tmp) : 1.f);
+		_GetItem(layer_def, 2, tmp);
+		anm->m_power = (atof(tmp) ? atof(tmp) : 1.f);
+		m_movement_layers.push_back(anm);
+	}
 }
 
 player_hud::~player_hud()
@@ -538,6 +563,8 @@ player_hud::~player_hud()
 	
 	if (m_bobbing)
 		xr_delete(m_bobbing);
+	
+	delete_data(m_movement_layers);
 }
 
 void player_hud::load(const shared_str& player_hud_sect)
@@ -738,6 +765,69 @@ void player_hud::update(const Fmatrix& cam_trans)
 	m_model_2->dcast_PKinematics()->CalculateBones_Invalidate();
 	m_model_2->dcast_PKinematics()->CalculateBones(TRUE);
 
+	bool need_blend[2];
+	need_blend[0] = m_attached_items[0] && m_attached_items[0]->m_parent_hud_item->NeedBlendAnm();
+	need_blend[1] = m_attached_items[1] && m_attached_items[1]->m_parent_hud_item->NeedBlendAnm();
+	for (movement_layer* anm : m_movement_layers)
+	{
+		if (!anm || !anm->anm || (!anm->active && anm->blend_amount[0] == 0.f && anm->blend_amount[1] == 0.f))
+			continue;
+
+		if (anm->active && (need_blend[0] || need_blend[1]))
+		{
+			if (need_blend[0])
+			{
+				anm->blend_amount[0] += Device.fTimeDelta / .4f;
+
+				if (!m_attached_items[1])
+					anm->blend_amount[1] += Device.fTimeDelta / .4f;
+				else if (!need_blend[1])
+					anm->blend_amount[1] -= Device.fTimeDelta / .4f;
+			}
+
+			if (need_blend[1])
+			{
+				anm->blend_amount[1] += Device.fTimeDelta / .4f;
+
+				if (!m_attached_items[0])
+					anm->blend_amount[0] += Device.fTimeDelta / .4f;
+				else if (!need_blend[0])
+					anm->blend_amount[0] -= Device.fTimeDelta / .4f;
+			}
+		}
+		else
+		{
+			anm->blend_amount[0] -= Device.fTimeDelta / .4f;
+			anm->blend_amount[1] -= Device.fTimeDelta / .4f;
+		}
+
+		clamp(anm->blend_amount[0], 0.f, 1.f);
+		clamp(anm->blend_amount[1], 0.f, 1.f);
+
+		if (anm->blend_amount[0] == 0.f && anm->blend_amount[1] == 0.f)
+		{
+			anm->Stop(true);
+			continue;
+		}
+
+		anm->anm->Update(Device.fTimeDelta);
+
+		if (anm->blend_amount[0] == anm->blend_amount[1])
+		{
+			Fmatrix blend = anm->XFORM(0);
+			m_transform.mulB_43(blend);
+			m_transform_2.mulB_43(blend);
+		}
+		else
+		{
+			if (anm->blend_amount[0] > 0.f)
+				m_transform.mulB_43(anm->XFORM(0));
+			
+			if (anm->blend_amount[1] > 0.f)
+				m_transform_2.mulB_43(anm->XFORM(1));
+		}
+	}
+
 	if (m_attached_items[0])
 		m_attached_items[0]->update(true);
 
@@ -825,6 +915,42 @@ const Fvector& player_hud::attach_pos(u8 part) const
 		return m_attached_items[!part]->hands_attach_pos();
 
 	return Fvector().set(0.f, 0.f, 0.f);
+}
+
+void player_hud::updateMovementLayerState()
+{
+	CActor* pActor = Actor();
+
+	if (!pActor)
+		return;
+
+	for (movement_layer* anm : m_movement_layers)
+	{
+		anm->Stop(false);
+	}
+
+	bool need_blend = (m_attached_items[0] && m_attached_items[0]->m_parent_hud_item->NeedBlendAnm()) || (m_attached_items[1] && m_attached_items[1]->m_parent_hud_item->NeedBlendAnm());
+
+	if (pActor->AnyMove() && need_blend)
+	{
+		const u32 state = pActor->get_state();
+
+		CWeapon* wep = nullptr;
+
+		if (m_attached_items[0] && m_attached_items[0]->m_parent_hud_item->object().cast_weapon())
+			wep = m_attached_items[0]->m_parent_hud_item->object().cast_weapon();
+
+		if (wep && wep->IsZoomed())
+			state & mcCrouch ? m_movement_layers[eAimCrouch]->Play() : m_movement_layers[eAimWalk]->Play();
+		else if (state & mcCrouch)
+			m_movement_layers[eCrouch]->Play();
+		else if (state & mcSprint)
+			m_movement_layers[eSprint]->Play();
+		else if (!isActorAccelerated(pActor->MovingState(), false))
+			m_movement_layers[eWalk]->Play();
+		else
+			m_movement_layers[eRun]->Play();
+	}
 }
 
 //sync anim of other part to selected part (1 = sync to left hand anim; 2 = sync to right hand anim)
@@ -1011,6 +1137,8 @@ void player_hud::attach_item(CHudItem* item)
 			m_attached_items[1]->m_parent_hud_item->CheckCompatibility(item);
 
 		item->on_a_hud_attach();
+		
+		updateMovementLayerState();
 	}
 	pi->m_parent_hud_item = item;
 }
@@ -1122,6 +1250,7 @@ void player_hud::OnMovementChanged(ACTOR_DEFS::EMoveCommand cmd)
 		if (m_attached_items[1])
 			m_attached_items[1]->m_parent_hud_item->OnMovementChanged(cmd);
 	}
+	updateMovementLayerState();
 }
 
 constexpr char* BOBBING_SECT = "wpn_bobbing_effector";

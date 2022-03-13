@@ -87,28 +87,37 @@ void CObjectAnimator::Update(float dt)
 
 COMotion* CObjectAnimator::Play(bool loop, LPCSTR name)
 {
-	if (name&&name[0]){
-		auto it = std::lower_bound(m_Motions.begin(),m_Motions.end(),name,motion_find_pred);
-        if ((it!=m_Motions.end())&&(0==xr_strcmp((*it)->Name(),name))){
-            bLoop 		= loop;
-            SetActiveMotion(*it);
-			m_MParam.Play	();
-            return 		*it;
-        }else{
-            Debug.fatal	(DEBUG_INFO,"OBJ ANIM::Cycle '%s' not found.",name);
-            return NULL;
-        }
-    }else{
-        if (!m_Motions.empty()){
-            bLoop 		= loop;
-            SetActiveMotion(m_Motions.front());
-			m_MParam.Play	();
-            return 		m_Motions.front();
-        }else{
-            Debug.fatal	(DEBUG_INFO,"OBJ ANIM::Cycle '%s' not found.",name);
-            return NULL;
-        }
-    }
+	if (name && name[0])
+	{
+		auto it = std::lower_bound(m_Motions.begin(), m_Motions.end(), name, motion_find_pred);
+		if ((it != m_Motions.end()) && (0 == xr_strcmp((*it)->Name(), name)))
+		{
+			bLoop = loop;
+			SetActiveMotion(*it);
+			m_MParam.Play();
+			return *it;
+		}
+		else
+		{
+			Debug.fatal(DEBUG_INFO, "OBJ ANIM::Cycle '%s' not found.", name);
+			return nullptr;
+		}
+	}
+	else
+	{
+		if (!m_Motions.empty())
+		{
+			bLoop = loop;
+			SetActiveMotion(m_Motions.front());
+			m_MParam.Play();
+			return m_Motions.front();
+		}
+		else
+		{
+			Debug.fatal(DEBUG_INFO, "OBJ ANIM::Cycle '%s' not found.", name);
+			return nullptr;
+		}
+	}
 }
 
 void CObjectAnimator::Stop()

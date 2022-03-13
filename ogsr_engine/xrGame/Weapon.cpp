@@ -1794,6 +1794,8 @@ void CWeapon::OnZoomIn()
 	CActor* pActor = smart_cast<CActor*>(H_Parent());
 	if ( pActor )
 		pActor->callback(GameObject::eOnActorWeaponZoomIn)(lua_game_object());
+	
+	g_player_hud->updateMovementLayerState();
 }
 
 void CWeapon::OnZoomOut()
@@ -1817,6 +1819,8 @@ void CWeapon::OnZoomOut()
 		GamePersistent().SetPickableEffectorDOF(false);
 
 	ResetSubStateTime();
+	
+	g_player_hud->updateMovementLayerState();
 }
 
 bool CWeapon::UseScopeTexture() {

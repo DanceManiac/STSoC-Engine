@@ -139,10 +139,13 @@ void CHudItem::OnEvent		(NET_Packet& P, u16 type)
 
 void CHudItem::OnStateSwitch(u32 S, u32 oldState)
 {
+	AnmSprintStartPlayed = false;
 	m_dwStateTime = 0;
 	SetState(S);
 	if (object().Remote())
 		SetNextState(S);
+
+	g_player_hud->updateMovementLayerState();
 }
 
 bool CHudItem::Activate( bool now )
@@ -156,6 +159,12 @@ void CHudItem::Deactivate( bool now )
 {
 	Hide( now );
 	OnHiddenItem ();
+}
+
+bool CHudItem::NeedBlendAnm() 
+{
+	u32 state = GetState();
+	return (state != eIdle && state != eHidden);
 }
 
 void CHudItem::UpdateCL()

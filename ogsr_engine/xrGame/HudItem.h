@@ -200,5 +200,7 @@ public:
 	IC CInventoryItem&		item					() const {	VERIFY(m_item);	return(*m_item);}
 
 	virtual void			on_renderable_Render	() = 0;
+	
+	virtual bool			NeedBlendAnm();
 };
 
