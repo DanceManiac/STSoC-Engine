@@ -14,6 +14,11 @@ CBolt::CBolt(void)
 	m_thrower_id				=u16(-1);
 }
 
+void CBolt::Load(LPCSTR section) {
+	inherited::Load(section);
+	HUD_SOUND::LoadSound(section, "snd_throw", m_ThrowSnd, SOUND_TYPE_WEAPON_SHOOTING);
+}
+
 CBolt::~CBolt(void) 
 {
 }
@@ -42,10 +47,10 @@ void CBolt::Deactivate( bool now )
 	Hide( now || ( GetState() == eThrowStart || GetState() == eReady || GetState() == eThrow ) );
 }
 
-void CBolt::Throw(LPCSTR section) 
+void CBolt::Throw() 
 {
-	HUD_SOUND::LoadSound(section, "snd_throw", m_ThrowSnd, SOUND_TYPE_WEAPON_SHOOTING);
-	PlaySound(m_ThrowSnd, Actor()->Position()/* Actor()->Position(), pA, true, false*/);
+	if(Actor())
+		PlaySound(m_ThrowSnd, Actor()->Position());
 	CMissile					*l_pBolt = smart_cast<CMissile*>(m_fake_missile);
 	if(!l_pBolt)				return;
 	l_pBolt->set_destroy_time	(u32(m_dwDestroyTimeMax/phTimefactor));
@@ -60,9 +65,7 @@ bool CBolt::Useful() const
 
 bool CBolt::Action(s32 cmd, u32 flags) 
 {
-	if (inherited::Action(cmd, flags))
-		return true;
-	return false;
+	return inherited::Action(cmd, flags);
 }
 
 void CBolt::Destroy()

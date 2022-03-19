@@ -20,7 +20,9 @@ public:
 	virtual	void SetInitiator(u16 id);
 	virtual	u16	 Initiator();
 
-	virtual void Throw(LPCSTR section);
+	virtual void Throw() override;
+	virtual void Load(LPCSTR section) override;
+	
 	HUD_SOUND m_ThrowSnd;
 	virtual bool Action(s32 cmd, u32 flags);
 	virtual bool Useful() const;
