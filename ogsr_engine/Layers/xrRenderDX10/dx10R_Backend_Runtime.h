@@ -471,7 +471,7 @@ IC void	CBackend::set_ColorWriteEnable(u32 _mask )
 ICF void CBackend::set_CullMode(u32 _mode)
 {
 	StateManager.SetCullMode(_mode);
-	//if (cull_mode		!= _mode)		{ cull_mode = _mode;			CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			_mode				)); }
+    cull_mode = _mode;
 }
 
 IC void CBackend::ApplyVertexLayout()

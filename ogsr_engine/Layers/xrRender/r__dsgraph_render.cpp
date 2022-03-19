@@ -71,6 +71,7 @@ void __fastcall sorted_L1		(mapSorted_Node *N)
 	RCache.set_xform_world			(N->val.Matrix);
 	RImplementation.apply_object	(N->val.pObject);
 	RImplementation.apply_lmaterial	();
+	RImplementation.apply_custom_state();
 	V->Render						(calcLOD(N->key,V->vis.sphere.R));
 }
 
@@ -473,6 +474,11 @@ void R_dsgraph_structure::r_dsgraph_render_hud	()
 
 	// Rendering
 	rmNear						();
+	
+	// preserve culling mode
+	cullMode = RCache.get_CullMode();
+	isActive = true;
+	
 	mapHUD.traverseLR			(sorted_L1);
 	mapHUD.clear				();
 
@@ -487,6 +493,22 @@ void R_dsgraph_structure::r_dsgraph_render_hud	()
 	Device.mProject				= Pold;
 	Device.mFullTransform		= FTold;
 	RCache.set_xform_project	(Device.mProject);
+
+	// restore culling mode
+	RCache.set_CullMode(cullMode);
+	isActive = false;
+}
+
+void R_dsgraph_structure::apply_custom_state()
+{
+	if (!isActive || !psHUD_Flags.test(HUD_LEFT_HANDED))
+		return;
+
+	// Change culling mode if HUD meshes were flipped
+	if (cullMode != CULL_NONE)
+	{
+		RCache.set_CullMode(cullMode == CULL_CW ? CULL_CCW : CULL_CW);
+	}
 }
 
 void R_dsgraph_structure::r_dsgraph_render_hud_ui()

@@ -720,6 +720,20 @@ void player_hud::update(const Fmatrix& cam_trans)
 
 	Fmatrix trans_2 = trans;
 	
+    if (psHUD_Flags.test(HUD_LEFT_HANDED))
+    {
+        // faster than multiplication by flip matrix
+        trans.m[0][0] = -trans.m[0][0];
+        trans.m[0][1] = -trans.m[0][1];
+        trans.m[0][2] = -trans.m[0][2];
+        trans.m[0][3] = -trans.m[0][3];
+		
+        trans_2.m[0][0] = -trans_2.m[0][0];
+        trans_2.m[0][1] = -trans_2.m[0][1];
+        trans_2.m[0][2] = -trans_2.m[0][2];
+        trans_2.m[0][3] = -trans_2.m[0][3];
+    }
+	
 	if(m_attached_items[0])
 		m_attached_items[0]->update_hud_additional(trans);
 	
