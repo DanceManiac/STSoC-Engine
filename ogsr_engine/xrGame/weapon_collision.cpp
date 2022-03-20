@@ -14,6 +14,7 @@
 #include "actor.h"
 #include "ActorCondition.h"
 #include "Weapon.h"
+#include "player_hud.h"
 
 CWeaponCollision::CWeaponCollision()
 {
@@ -62,6 +63,10 @@ void CWeaponCollision::Update(Fmatrix &o, float range)
 		fReminderNeedDist	= xyz.z;
 		fReminderMoving		= xyz.z;
 		fReminderNeedMoving	= xyz.z;
+		fReminderWPNUP		= dir.x;
+		fReminderNeedWPNUP	= dir.x;
+		fReminderNeedStrafe = dir.z;
+		fReminderStrafe = dir.z;
 		bFirstUpdate		= false;
 	}
 
@@ -133,18 +138,18 @@ void CWeaponCollision::Update(Fmatrix &o, float range)
 	//-> Высчитываем координаты позиции худа оружия
 	if (range < 0.8f && !Actor()->IsZoomAimingMode())
 	{
-		fReminderNeedDist	= xyz.z - ((1 - range - 0.2) * 0.6);
-		fReminderNeedWPNUP	= dir.y + ((1 - range - 0.2) * 0.6);
+		fReminderNeedDist	= xyz.z;
+		fReminderNeedWPNUP	= dir.x + ((1 - range - 0.2) * 0.9);
 	}
 	else if(dwMState&ACTOR_DEFS::mcFwd || dwMState&ACTOR_DEFS::mcBack)
 	{
 		fReminderNeedDist	= fReminderNeedMoving;
-		fReminderNeedWPNUP	= dir.y;
+		fReminderNeedWPNUP	= dir.x;
 	}
 	else
 	{
 		fReminderNeedDist	= xyz.z;
-		fReminderNeedWPNUP	= dir.y;
+		fReminderNeedWPNUP	= dir.x;
 	}
 
 	if (!fsimilar(fReminderDist, fReminderNeedDist)) {
@@ -178,9 +183,9 @@ void CWeaponCollision::Update(Fmatrix &o, float range)
 	}
 	
 	//-> Высчитываем координаты поднимания оружия
-	if (!fsimilar(fReminderWPNUP, dir.y))
+	if (!fsimilar(fReminderWPNUP, dir.x))
 	{
-		dir.y 		= fReminderWPNUP * 1.5f;
+		dir.x 		= fReminderWPNUP * 1.5f;
 		Fmatrix m;
 		m.setHPB(dir.x,dir.y,dir.z);
 		Fmatrix tmp;
