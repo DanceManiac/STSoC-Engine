@@ -360,6 +360,15 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 	{
 		LPCSTR state_anm = nullptr;
 
+		if (mstate_real & mcJump/* && !(mstate_old & mcJump)*/) {
+			PIItem itm = inventory().ItemFromSlot(inventory().GetActiveSlot());
+			state_anm = "jump";
+			if(auto wpn = smart_cast<CWeapon*>(itm)) {
+				if(wpn->IsZoomed())
+					state_anm = "jump_aim";
+				state_anm = READ_IF_EXISTS(pSettings, r_string, wpn->HudSection().c_str(), std::string("cam" + std::string(state_anm)).c_str(), state_anm);
+			}
+		}
 		if (mstate_real & mcSprint && !(mstate_old & mcSprint))
 			state_anm = "sprint";
 		else if (mstate_real & mcLStrafe && !(mstate_old & mcLStrafe))
@@ -384,7 +393,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 				{
 					const auto e = xr_new<CAnimatorCamLerpEffectorConst>();
 					constexpr float max_scale = 70.0f;
-					float factor = cam_eff_factor / max_scale;
+					float factor = (state_anm == "jump" || state_anm == "jump_aim") ? 0.25f : cam_eff_factor / max_scale;
 					//Msg("--[%s] adding cam effector [%s], cam_eff_factor: [%f], factor: [%f]", __FUNCTION__, anm_name, cam_eff_factor, factor);
 					e->SetFactor(factor);
 					e->SetType(eCEActorMoving);
