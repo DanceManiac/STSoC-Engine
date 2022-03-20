@@ -360,7 +360,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 	{
 		LPCSTR state_anm = nullptr;
 
-		if (mstate_real & mcJump/* && !(mstate_old & mcJump)*/) {
+		if (mstate_real & mcJump && !(mstate_old & mcJump)) {
 			PIItem itm = inventory().ItemFromSlot(inventory().GetActiveSlot());
 			state_anm = "jump";
 			if(auto wpn = smart_cast<CWeapon*>(itm)) {
