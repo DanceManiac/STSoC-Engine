@@ -39,6 +39,10 @@ public:
 	virtual void		ReInitShownUI			();
 	void				ChangeLevel				(GameGraph::_GRAPH_ID game_vert_id, u32 level_vert_id, Fvector pos, Fvector ang, Fvector pos2, Fvector ang2, bool b);
 
+	// PDA
+	void ShowOrHidePDAMenu();
+	u32 current_tab{};
+
 	virtual void		HideShownDialogs		();
 
 	CUIInventoryWnd*	InventoryMenu;

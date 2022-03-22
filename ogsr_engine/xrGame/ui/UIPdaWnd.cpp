@@ -28,6 +28,7 @@
 #include "UITabButton.h"
 #include "../actor.h"
 #include "UIPdaSpot.h"
+#include "../Inventory.h"
 
 #define		PDA_XML					"pda.xml"
 u32			g_pda_info_state		= 0;
@@ -163,6 +164,9 @@ void CUIPdaWnd::Show()
 void CUIPdaWnd::Hide()
 {
 	inherited::Hide();
+
+	if(CPda* pPda = Actor()->GetPDA(); pPda && pPda->GetState() != pPda->eHiding && pPda->GetState() != pPda->eHidden)
+		Actor()->inventory().Activate(NO_ACTIVE_SLOT);
 
 	InventoryUtilities::SendInfoToActor("ui_pda_hide");
 	HUD().GetUI()->UIMainIngameWnd->SetFlashIconState_(CUIMainIngameWnd::efiPdaTask, false);

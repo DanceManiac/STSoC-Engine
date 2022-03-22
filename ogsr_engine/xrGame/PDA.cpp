@@ -14,17 +14,22 @@
 #include "UIGameSP.h"
 #include "ui/UIPDAWnd.h"
 
+#include "player_hud.h"
+#include "MainMenu.h"
 
-CPda::CPda(void)						
-{										
+CPda::CPda(ESoundTypes eSoundType)						
+{
+	m_eSoundShow		= ESoundTypes(SOUND_TYPE_ITEM_TAKING | eSoundType);
+	m_eSoundHide		= ESoundTypes(SOUND_TYPE_ITEM_HIDING | eSoundType);
+	
 	SetSlot( PDA_SLOT );
 	m_flags.set				(Fruck, TRUE);
 
 	m_idOriginalOwner		= u16(-1);
-	m_SpecificChracterOwner = NULL;
+	m_SpecificChracterOwner = nullptr;
 
-	
-	TurnOff					();
+	m_bTurnedOff = true;
+	m_active_contacts.clear();
 }
 
 CPda::~CPda() 
@@ -54,6 +59,9 @@ void CPda::Load(LPCSTR section)
 	inherited::Load(section);
 
 	m_fRadius = pSettings->r_float(section,"radius");
+	
+	HUD_SOUND::LoadSound(section,"snd_draw"		, sndShow		, m_eSoundShow		);
+	HUD_SOUND::LoadSound(section,"snd_holster"	, sndHide		, m_eSoundHide		);
 }
 
 void CPda::shedule_Update(u32 dt)	
@@ -164,8 +172,9 @@ void CPda::OnH_B_Independent(bool just_before_destroy)
 	
 	//выключить
 	TurnOff();
+	
+	g_player_hud->detach_item(this);
 }
-
 
 CInventoryOwner* CPda::GetOriginalOwner()
 {
@@ -174,8 +183,6 @@ CInventoryOwner* CPda::GetOriginalOwner()
 
 	return pInvOwner;
 }
-
-
 
 xr_map<u16, CPda*> CPda::ActivePDAContacts()
 {
@@ -234,9 +241,10 @@ void CPda::TurnOn() {
 }
 
 
-void CPda::TurnOff() {
-  m_bTurnedOff = true;
-  m_active_contacts.clear();
+void CPda::TurnOff()
+{
+	m_bTurnedOff = true;
+	m_active_contacts.clear();
 }
 
 
@@ -247,4 +255,191 @@ void CPda::net_Relcase( CObject *O ) {
       if ( I != m_active_contacts.end() )
         m_active_contacts.erase( I );
   }
+}
+
+extern CUIWindow* GetPdaWindow();
+void CPda::OnStateSwitch(u32 S, u32 oldState)
+{
+	inherited::OnStateSwitch(S, oldState);
+
+	auto pActor = smart_cast<const CActor*>(H_Parent());
+	if (!pActor) return;
+
+	switch (S)
+	{
+	case eShowing:
+	{
+		g_player_hud->attach_item(this);
+
+		PlayHUDMotion("anm_show", FALSE, this, GetState());
+		PlaySound(sndShow, Actor()->Position());
+
+		SetPending(TRUE);
+	}
+	break;
+	case eHiding:
+	{
+		if (oldState != eHiding)
+		{
+			if(const auto pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame()); pGameSP && GetPdaWindow() && ((CUIPdaWnd*)GetPdaWindow())->IsShown())
+				pGameSP->ShowOrHidePDAMenu();
+
+			PlaySound(sndHide, Actor()->Position());
+			PlayHUDMotion("anm_hide", TRUE, this, GetState());
+			SetPending(TRUE);
+			((CUIPdaWnd*)GetPdaWindow())->Enable(false);
+		}
+	}
+	break;
+	case eHidden:
+	{
+		SetPending(FALSE);
+	}
+	break;
+	case eIdle:
+	{
+		PlayAnimIdle();
+	}
+	break;
+	}
+}
+
+void CPda::OnAnimationEnd(u32 state)
+{
+	inherited::OnAnimationEnd(state);
+	switch (state)
+	{
+	case eShowing:
+	{
+		if(const auto pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame()); pGameSP && (!GetPdaWindow() || !((CUIPdaWnd*)GetPdaWindow())->IsShown()))
+			pGameSP->ShowOrHidePDAMenu();
+		
+		((CUIPdaWnd*)GetPdaWindow())->Enable(true);
+		SetPending(FALSE);
+		SwitchState(eIdle);
+	}
+	break;
+	case eHiding:
+	{
+		SetPending(FALSE);
+		SwitchState(eHidden);
+		g_player_hud->detach_item(this);
+	}
+	break;
+	}
+}
+
+void CPda::UpdateCL()
+{
+	inherited::UpdateCL();
+
+	auto pActor = smart_cast<const CActor*>(H_Parent());
+	if (!pActor) return;
+
+	// For battery icon
+	CUIPdaWnd* pda = (CUIPdaWnd*)GetPdaWindow();
+
+	u32 state = GetState();
+
+	if (pda->IsShown())
+	{
+		if(1)
+		{
+			// Force update PDA UI if it's disabled (no input) and check for deferred enable or zoom in.
+			if (!pda->IsEnabled())
+			{
+				pda->Update();
+			}
+
+			// Disable PDA UI input if player is sprinting and no deferred input enable is expected.
+			else
+			{
+				CEntity::SEntityState st;
+				Actor()->g_State(st);
+				if (st.bSprint && !st.bCrouch)
+				{
+					pda->Enable(false);
+				}
+			}
+		}
+	}
+	else
+	{
+		// Show PDA UI if possible
+		if (!IsMainMenuActive() && state != eHiding && state != eHidden)
+		{
+			pda->Enable(false);
+		}
+	}
+}
+
+void CPda::OnMoveToRuck(EItemPlace prevPlace)
+{
+	inherited::OnMoveToRuck(prevPlace);
+
+	auto pActor = smart_cast<const CActor*>(H_Parent());
+	if (!pActor) return;
+
+	SwitchState(eHidden);
+	g_player_hud->detach_item(this);
+
+	StopCurrentAnimWithoutCallback();
+	SetPending(FALSE);
+}
+
+void CPda::UpdateHudAdditonal(Fmatrix& trans)
+{
+	auto pActor = smart_cast<const CActor*>(H_Parent());
+	if (!pActor) return;
+
+	u8 idx = GetCurrentHudOffsetIdx();
+
+	clamp(idx, 0ui8, 1ui8);
+}
+
+
+void CPda::Hide(bool now)
+{
+	if (now)
+	{
+		OnStateSwitch(eHidden, GetState());
+		SetState(eHidden);
+		StopHUDSounds();
+	}
+	else
+		SwitchState(eHiding);
+}
+
+void CPda::Show(bool now)
+{
+	if (now)
+	{
+		StopCurrentAnimWithoutCallback();
+		OnStateSwitch(eIdle, GetState());
+		SetState(eIdle);
+		StopHUDSounds();
+	}
+	else
+		SwitchState(eShowing);
+}
+
+void CPda::UpdateXForm()
+{
+	CInventoryItem::UpdateXForm();
+}
+
+void CPda::OnActiveItem()
+{
+	auto pActor = smart_cast<const CActor*>(H_Parent());
+	if (!pActor) return;
+
+	SwitchState(eShowing);
+}
+
+void CPda::OnHiddenItem()
+{
+	auto pActor = smart_cast<const CActor*>(H_Parent());
+	if (!pActor) return;
+
+	SwitchState(eHiding);
 }

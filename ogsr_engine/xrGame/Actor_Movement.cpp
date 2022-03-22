@@ -379,13 +379,13 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 
 		if (state_anm)
 		{ // play moving cam effect
-			if(inventory().GetActiveSlot()) {
+			/*if(inventory().GetActiveSlot()) {
 				if(PIItem itm = inventory().ItemFromSlot(inventory().GetActiveSlot()); const auto wpn = smart_cast<CWeapon*>(itm)) {
 					if(wpn->IsZoomed())
 						state_anm = std::string(std::string(state_anm) + "_aim").c_str();
 					state_anm = READ_IF_EXISTS(pSettings, r_string, wpn->HudSection().c_str(), std::string("cam_" + std::string(state_anm)).c_str(), state_anm);
 				}
-			}
+			}*/
 
 			auto control_entity = smart_cast<CActor*>(Level().CurrentControlEntity());
 			R_ASSERT2(control_entity, "current control entity is NULL");

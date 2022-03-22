@@ -92,28 +92,6 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 			m_game->StartStopMenu(InventoryMenu,true);
 			return true;
 		}break;
-
-	case kACTIVE_JOBS:
-		if( !MainInputReceiver() || MainInputReceiver()==PdaMenu){
-			PdaMenu->SetActiveSubdialog(eptQuests);
-			m_game->StartStopMenu(PdaMenu,true);
-			return true;
-		}break;
-
-	case kMAP:
-		if( !MainInputReceiver() || MainInputReceiver()==PdaMenu){
-			PdaMenu->SetActiveSubdialog(eptMap);
-			m_game->StartStopMenu(PdaMenu,true);
-			return true;
-		}break;
-
-	case kCONTACTS:
-		if( !MainInputReceiver() || MainInputReceiver()==PdaMenu){
-			PdaMenu->SetActiveSubdialog(eptContacts);
-			m_game->StartStopMenu(PdaMenu,true);
-			return true;
-		}break;
-
 	case kSCORES:
 		{
 			SDrawStaticStruct* ss	= AddCustomStatic("main_task", true);
@@ -198,6 +176,14 @@ void CUIGameSP::reset_ui()
 	UIChangeLevelWnd->Reset			();
 }
 
+void CUIGameSP::ShowOrHidePDAMenu()
+{
+	if( !MainInputReceiver() || MainInputReceiver() == PdaMenu) {
+		PdaMenu->SetActiveSubdialog((EPdaTabs)current_tab);
+		m_game->StartStopMenu(PdaMenu,true);
+	}
+}
+
 CChangeLevelWnd::CChangeLevelWnd		()
 {
 	m_messageBox			= xr_new<CUIMessageBox>();	m_messageBox->SetAutoDelete(true);
@@ -207,6 +193,7 @@ CChangeLevelWnd::CChangeLevelWnd		()
 	m_messageBox->SetWndPos	(0.0f,0.0f);
 	SetWndSize				(m_messageBox->GetWndSize());
 }
+
 void CChangeLevelWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	if(pWnd==m_messageBox){

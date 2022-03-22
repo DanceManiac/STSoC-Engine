@@ -89,7 +89,7 @@ CInventory::CInventory()
                 m_slots[ i ].setSwitchFast( READ_IF_EXISTS( pSettings, r_bool, "inventory", temp, false ) );
 	}
 
-	m_slots[PDA_SLOT].m_bVisible				= false;
+	m_slots[PDA_SLOT].m_bVisible				= true;
 	m_slots[OUTFIT_SLOT].m_bVisible				= false;
 	m_slots[TORCH_SLOT].m_bVisible				= false;
 	m_slots[HELMET_SLOT].m_bVisible				= false;
@@ -562,6 +562,7 @@ void CInventory::SendActionEvent(s32 cmd, u32 flags)
 	pActor->u_EventSend		(P, net_flags(TRUE, TRUE, FALSE, TRUE));
 };
 
+#include "ui/uipdawnd.h"
 bool CInventory::Action(s32 cmd, u32 flags) 
 {
 	CActor *pActor = smart_cast<CActor*>(m_pOwner);
@@ -634,6 +635,33 @@ bool CInventory::Action(s32 cmd, u32 flags)
 					b_send_event = Activate(cmd - kWPN_1, eKeyAction);
 			}
 		}break;
+	case kCONTACTS:
+	case kMAP:
+	case kACTIVE_JOBS:
+	{
+		if(const auto pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame()))
+		{
+			switch(cmd) 
+			{
+			case kCONTACTS: pGameSP->current_tab = eptContacts; break;
+				case kMAP: pGameSP->current_tab = eptMap; break;
+				case kACTIVE_JOBS: pGameSP->current_tab = eptQuests; break;
+			}
+		}
+		b_send_event = true;
+		if (flags & CMD_START)
+		{
+			if (GetActiveSlot() == PDA_SLOT && ActiveItem())
+			{
+				Activate(NO_ACTIVE_SLOT);
+			}
+			else
+			{
+				Activate(PDA_SLOT);
+			}
+		}
+		break;
+	}
 	}
 
 	if(b_send_event && g_pGameLevel && OnClient() && pActor)
