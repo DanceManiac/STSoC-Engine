@@ -154,14 +154,13 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 		createDeviceFlags |= D3D_CREATE_DEVICE_DEBUG;
 #endif
 
-#ifdef USE_DX11
 	HRESULT R;
-	
-	D3D_FEATURE_LEVEL featureLevels[] =
+	//-> Заюзать это как-нить?	
+	/*D3D_FEATURE_LEVEL featureLevels[] =
 	{
 		D3D_FEATURE_LEVEL_12_1,
 		D3D_FEATURE_LEVEL_12_0,
-	};
+	};*/
     D3D_FEATURE_LEVEL featureLevels2[] =
     {
 		D3D_FEATURE_LEVEL_11_1,
@@ -172,10 +171,6 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
         D3D_FEATURE_LEVEL_10_1,
         D3D_FEATURE_LEVEL_10_0
     };
-    D3D_FEATURE_LEVEL featureLevels4[] =
-    {
-        D3D_FEATURE_LEVEL_10_0
-    };
 
     const auto createDevice = [&](const D3D_FEATURE_LEVEL* level, const u32 levels)
     {
@@ -184,14 +179,10 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
             D3D11_SDK_VERSION, &pDevice, &FeatureLevel, &pContext);
     };
 
-	if (DX10StaticOnly())
-        R = createDevice(featureLevels4, std::size(featureLevels4));
     if (DX10Only())
         R = createDevice(featureLevels3, std::size(featureLevels3));
     else if(DX11Only())
 		R = createDevice(featureLevels2, std::size(featureLevels2));
-	else
-		R = createDevice(featureLevels, std::size(featureLevels));
 
 	R_CHK(pFactory->CreateSwapChain(pDevice, &sd, &m_pSwapChain));
 
@@ -206,32 +197,6 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 	R_CHK(pDevice->QueryInterface(IID_PPV_ARGS(&pDeviceDXGI)));
 	R_CHK(pDeviceDXGI->SetMaximumFrameLatency(1));
 	_RELEASE(pDeviceDXGI);
-#else
-	HRESULT R = D3DX10CreateDeviceAndSwapChain(m_pAdapter,
-                                          m_DriverType,
-                                          nullptr,
-                                          createDeviceFlags,
-                                          &sd,
-                                          &m_pSwapChain,
-		                                    &pDevice );
-
-   pContext = pDevice;
-   FeatureLevel = D3D_FEATURE_LEVEL_10_0;
-   if(!FAILED(R))
-   {
-      D3DX10GetFeatureLevel1( pDevice, &pDevice1 );
-	  FeatureLevel = D3D_FEATURE_LEVEL_10_1;
-   }
-   pContext1 = pDevice1;
-
-	if (FAILED(R))
-	{
-		// Fatal error! Cannot create rendering device AT STARTUP !!!
-		Msg("Failed to initialize graphics hardware.\nPlease try to restart the game.\nCreateDevice returned 0x%08x", R);
-		CHECK_OR_EXIT(!FAILED(R), "Failed to initialize graphics hardware.\nPlease try to restart the game.");
-	}
-	R_CHK(R);
-#endif
 
 	_SHOW_REF	("* CREATE: DeviceREF:",HW.pDevice);
 
@@ -652,11 +617,6 @@ void CHW::UpdateViews()
 	pDepthStencil->Release();
 }
 
-bool CHW::DX10StaticOnly() const
-{
-	return ps_r_renderer_mode == RENDERER_MODE_DX10_STATIC;
-}
-
 bool CHW::DX10Only() const
 {
 	return ps_r_renderer_mode == RENDERER_MODE_DX10;
@@ -665,9 +625,4 @@ bool CHW::DX10Only() const
 bool CHW::DX11Only() const
 {
 	return ps_r_renderer_mode == RENDERER_MODE_DX11;
-}
-
-bool CHW::DX12Only() const
-{
-	return ps_r_renderer_mode == RENDERER_MODE_DX12;
 }

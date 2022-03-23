@@ -1279,7 +1279,6 @@
     <ClInclude Include="purchase_list_inline.h" />
     <ClInclude Include="physic_item.h" />
     <ClInclude Include="ShootingObject.h" />
-	<ClInclude Include="3D_PDA.h" />
     <ClInclude Include="Weapon.h" />
     <ClInclude Include="WeaponAmmo.h" />
     <ClInclude Include="WeaponCustomPistol.h" />
@@ -2217,7 +2216,6 @@
     <ClCompile Include="purchase_list.cpp" />
     <ClCompile Include="physic_item.cpp" />
     <ClCompile Include="ShootingObject.cpp" />
-	<ClCompile Include="3D_PDA.cpp" />
     <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="WeaponDispersion.cpp" />
     <ClCompile Include="WeaponFire.cpp" />

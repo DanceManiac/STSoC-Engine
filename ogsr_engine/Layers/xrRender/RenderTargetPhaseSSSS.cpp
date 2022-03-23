@@ -12,7 +12,7 @@ void CRenderTarget::PhaseSSSS()
 	Fvector4 params{ 0.0f, 0.0f, 0.0f, 0.0f };
 	string_unordered_map<const char*, Fvector4*> consts{ { "ssss_params", &params } };
 	
-	if(ps_r_sunshafts_mode == SS_OGSE_MANOWAR || ps_r_sunshafts_mode == SS_VOLUMETRIC_MRMNWAR_OGSE)
+	if(ps_r_sunshafts_mode == SS_VOLUMETRIC_MRMNWAR_OGSE)
 	{
 		// Рендер MRMNWAR лучей
 		// Mask
@@ -69,7 +69,7 @@ void CRenderTarget::PhaseSSSS()
 		RenderScreenQuad(Device.dwWidth, Device.dwHeight, dest_rt, s_ssss_ogse->E[4], &consts);
 		HW.pContext->CopyResource(rt_Generic_0->pTexture->surface_get(), dest_rt->pTexture->surface_get());
 	}
-	else if (ps_r_sunshafts_mode == SS_SS_MANOWAR || ps_r_sunshafts_mode == SS_VOLUMETRIC_MRMNWAR)
+	else if (ps_r_sunshafts_mode == SS_SS_MANOWAR)
 	{
 		// Mask
 		RenderScreenQuad(Device.dwWidth, Device.dwHeight, rt_SunShaftsMask, s_ssss_mrmnwar->E[0]);
@@ -94,7 +94,7 @@ void CRenderTarget::PhaseSSSS()
 		RenderScreenQuad(Device.dwWidth, Device.dwHeight, dest_rt, s_ssss_mrmnwar->E[4], &consts);
 		HW.pContext->CopyResource(rt_Generic_0->pTexture->surface_get(), dest_rt->pTexture->surface_get());
 	}
-	else if (ps_r_sunshafts_mode == SS_SS_OGSE || ps_r_sunshafts_mode == SS_VOLUMETRIC_OGSE)
+	else if (ps_r_sunshafts_mode == SS_SS_OGSE)
 	{
 		// ***MASK GENERATION***
 		// In this pass generates geometry mask

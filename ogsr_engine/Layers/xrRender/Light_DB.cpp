@@ -36,10 +36,7 @@ void CLight_DB::Load			(IReader *fs)
 			L->flags.bStatic			= true;
 			L->set_type					(IRender_Light::POINT);
 
-			if(HW.DX10StaticOnly())
-				L->set_shadow				(false);
-			else
-				L->set_shadow				(true);
+			L->set_shadow				(true);
 
 			u32 controller				= 0;
 			F->r						(&controller,4);
@@ -103,7 +100,7 @@ void CLight_DB::Load			(IReader *fs)
 void	CLight_DB::LoadHemi	()
 {
 	string_path fn_game;
-	if ( FS.exist( fn_game, "$level$", "build.lights" ) && !HW.DX10StaticOnly() )
+	if ( FS.exist( fn_game, "$level$", "build.lights" ) )
 	{
 		IReader *F	= FS.r_open( fn_game );
 
@@ -189,15 +186,8 @@ void			CLight_DB::add_light		(light* L)
 	if (Device.dwFrame==L->frame_render)	return;
 	L->frame_render							=	Device.dwFrame;
 	if (L->flags.bStatic)					return;
-	if (HW.DX10StaticOnly())
-	{
-		if (L->flags.bStatic) L->export_to(package);
-	}
-	else
-	{
-		if (RImplementation.o.noshadows)		L->flags.bShadow		= FALSE;
-		L->export_to							(package);
-	}
+	if (RImplementation.o.noshadows)		L->flags.bShadow		= FALSE;
+	L->export_to							(package);
 }
 #endif // (RENDER==R_R2) || (RENDER==R_R3) || (RENDER==R_R4)
 

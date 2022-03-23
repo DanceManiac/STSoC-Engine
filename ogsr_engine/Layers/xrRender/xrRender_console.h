@@ -238,10 +238,8 @@ extern BOOL						xrRender_test_hw		();
 
 enum
 {
-	RENDERER_MODE_DX10_STATIC,
 	RENDERER_MODE_DX10		 ,
 	RENDERER_MODE_DX11		 ,
-	RENDERER_MODE_DX12		 ,
 };
 
 // Postprocess anti-aliasing types
@@ -259,8 +257,5 @@ enum
 	SS_VOLUMETRIC,
 	SS_SS_OGSE,
 	SS_SS_MANOWAR,
-	SS_VOLUMETRIC_MRMNWAR,
-	SS_VOLUMETRIC_OGSE,
-	SS_OGSE_MANOWAR,
 	SS_VOLUMETRIC_MRMNWAR_OGSE,
 };

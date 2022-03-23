@@ -6,10 +6,8 @@
 u32 ps_r_renderer_mode = RENDERER_MODE_DX10;
 constexpr xr_token renderer_mode_token[] =
 {
-	{ "mode_dx10_static",	 RENDERER_MODE_DX10_STATIC	},
 	{ "mode_dx10",			 RENDERER_MODE_DX10			},
 	{ "mode_dx11", 			 RENDERER_MODE_DX11 		},
-	{ "mode_dx12", 			 RENDERER_MODE_DX12 		},
 	{ nullptr,				 0							}
 };
 
@@ -45,17 +43,14 @@ constexpr xr_token pp_aa_mode_token[] = {
 	{ nullptr, 0 },
 };
 
-u32 ps_r_sunshafts_mode = SS_VOLUMETRIC_MRMNWAR;
+u32 ps_r_sunshafts_mode = SS_VOLUMETRIC_MRMNWAR_OGSE;
 constexpr xr_token sunshafts_mode_token[] =
 {
 	{ "st_opt_off", SS_OFF        },
 	{ "volumetric", SS_VOLUMETRIC },
 	{ "ss_ogse",    SS_SS_OGSE    },
 	{ "ss_manowar", SS_SS_MANOWAR },
-	{ "ss_vol_manowar", SS_VOLUMETRIC_MRMNWAR },
-	{ "ss_vol_ogse", SS_VOLUMETRIC_OGSE },
-	{ "ss_manowar_ogse", SS_OGSE_MANOWAR },
-	{ "ss_manowar_ogse_vol", SS_VOLUMETRIC_MRMNWAR_OGSE },
+	{ "ss_mixed", SS_VOLUMETRIC_MRMNWAR_OGSE },
 	{ nullptr, 0 }
 };
 
