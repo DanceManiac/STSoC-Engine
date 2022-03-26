@@ -15,6 +15,7 @@ int g_bHudAdjustMode = 0; // g_bHudAdjustMode = 0-return 1-hud_pos 2-hud_rot 3-i
 int g_bHudAdjustItemIdx = 0;
 float g_bHudAdjustDeltaPos = 0.0005f;
 float g_bHudAdjustDeltaRot = 0.05f;
+int g_bHudAdjustModeHandPart = 0;
 
 bool is_attachable_item_tuning_mode()
 {
@@ -228,8 +229,8 @@ void player_hud::tune(Ivector _values)
 		if (idx)
 			_curr_dr /= 20.0f;
 
-		Fvector& pos_ = (idx != 0) ? m_attached_items[g_bHudAdjustItemIdx]->hands_offset_pos() : m_attached_items[g_bHudAdjustItemIdx]->hands_attach_pos();
-		Fvector& rot_ = (idx != 0) ? m_attached_items[g_bHudAdjustItemIdx]->hands_offset_rot() : m_attached_items[g_bHudAdjustItemIdx]->hands_attach_rot();
+		Fvector& pos_ = (idx != 0) ? m_attached_items[g_bHudAdjustItemIdx]->hands_offset_pos() : m_attached_items[g_bHudAdjustItemIdx]->hands_attach_pos(g_bHudAdjustModeHandPart);
+		Fvector& rot_ = (idx != 0) ? m_attached_items[g_bHudAdjustItemIdx]->hands_offset_rot() : m_attached_items[g_bHudAdjustItemIdx]->hands_attach_rot(g_bHudAdjustModeHandPart);
 
 		if (g_bHudAdjustMode == 1)
 		{
@@ -252,8 +253,8 @@ void player_hud::tune(Ivector _values)
 		{
 			if (idx == hud_item_measures::m_hands_offset_type_normal) {
 				Msg("[%s]", m_attached_items[g_bHudAdjustItemIdx]->m_sect_name.c_str());
-				Msg("hands_position%s				= %f,%f,%f", is_16x9 ? "_16x9" : "", pos_.x, pos_.y, pos_.z);
-				Msg("hands_orientation%s			= %f,%f,%f", is_16x9 ? "_16x9" : "", rot_.x, rot_.y, rot_.z);
+				Msg((g_bHudAdjustModeHandPart == 1 ? "hand_2_position%s				= %f,%f,%f" : "hands_position%s				= %f,%f,%f"), is_16x9 ? "_16x9" : "", pos_.x, pos_.y, pos_.z);
+				Msg((g_bHudAdjustModeHandPart == 1 ? "hand_2_orientation%s				= %f,%f,%f" : "hands_orientation%s				= %f,%f,%f"), is_16x9 ? "_16x9" : "", rot_.x, rot_.y, rot_.z);
 				Log("-----------");
 			}
 			else if (idx == hud_item_measures::m_hands_offset_type_aim) {

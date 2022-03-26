@@ -119,14 +119,20 @@ void player_hud_motion_container::load(attachable_hud_item* parent, IKinematicsA
 	}
 }
 
-Fvector& attachable_hud_item::hands_attach_pos()
+Fvector& attachable_hud_item::hands_attach_pos(u8 part)
 {
-	return m_measures.m_hands_attach[0];
+	if(part == 1)
+		return m_measures.m_hands_attach[0];
+	else
+		return m_measures.m_hands_attach[2];
 }
 
-Fvector& attachable_hud_item::hands_attach_rot()
+Fvector& attachable_hud_item::hands_attach_rot(u8 part)
 {
-	return m_measures.m_hands_attach[1];
+	if(part == 1)
+		return m_measures.m_hands_attach[1];
+	else
+		return m_measures.m_hands_attach[3];
 }
 
 Fvector& attachable_hud_item::hands_offset_pos()
@@ -279,8 +285,6 @@ void hud_item_measures::load(const shared_str& sect_name, IKinematics* K)
 	xr_sprintf(_prefix, "%s", is_16x9 ? "_16x9" : "");
 	string128 val_name;
 
-	
-
 	strconcat(sizeof(val_name), val_name, "hands_position", _prefix);
 	if (is_16x9 && !pSettings->line_exist(sect_name, val_name))
 		xr_strcpy(val_name, "hands_position");
@@ -290,6 +294,20 @@ void hud_item_measures::load(const shared_str& sect_name, IKinematics* K)
 	if (is_16x9 && !pSettings->line_exist(sect_name, val_name))
 		xr_strcpy(val_name, "hands_orientation");
 	m_hands_attach[1] = READ_IF_EXISTS(pSettings, r_fvector3, sect_name, val_name, Fvector{});
+
+	m_hands_attach[2] = m_hands_attach[0];
+	m_hands_attach[3] = m_hands_attach[1];
+
+	if (pSettings->line_exist(sect_name, "hand_2_position_16x9"))
+		m_hands_attach[2] = pSettings->r_fvector3(sect_name, "hand_2_position_16x9");
+
+	if (pSettings->line_exist(sect_name, "hand_2_orientation_16x9"))
+		m_hands_attach[3] = pSettings->r_fvector3(sect_name, "hand_2_orientation_16x9");
+
+	strconcat(sizeof(val_name), val_name, "hand_2_orientation", _prefix);
+	if (is_16x9 && !pSettings->line_exist(sect_name, val_name))
+		xr_strcpy(val_name, "hand_2_orientation");
+	m_hands_attach[3] = READ_IF_EXISTS(pSettings, r_fvector3, sect_name, val_name, m_hands_attach[1]);
 
 		m_item_attach[0] = pSettings->r_fvector3(sect_name, "item_position");
 
@@ -914,9 +932,9 @@ u32 player_hud::anim_play(u16 part, const MotionID& M, BOOL bMixIn, const CMotio
 const Fvector& player_hud::attach_rot(u8 part) const
 {
 	if (m_attached_items[part])
-		return m_attached_items[part]->hands_attach_rot();
+		return m_attached_items[part]->hands_attach_rot(part);
 	else if (m_attached_items[!part])
-		return m_attached_items[!part]->hands_attach_rot();
+		return m_attached_items[!part]->hands_attach_rot(part);
 
 	return Fvector().set(0.f, 0.f, 0.f);
 }
@@ -924,9 +942,9 @@ const Fvector& player_hud::attach_rot(u8 part) const
 const Fvector& player_hud::attach_pos(u8 part) const
 {
 	if (m_attached_items[part])
-		return m_attached_items[part]->hands_attach_pos();
+		return m_attached_items[part]->hands_attach_pos(part);
 	else if (m_attached_items[!part])
-		return m_attached_items[!part]->hands_attach_pos();
+		return m_attached_items[!part]->hands_attach_pos(part);
 
 	return Fvector().set(0.f, 0.f, 0.f);
 }

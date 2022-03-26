@@ -85,7 +85,7 @@ struct hud_item_measures
 	u16 m_shell_bone;
 	Fvector m_shell_point_offset;
 
-	Fvector m_hands_attach[2]{}; // pos,rot
+	Fvector m_hands_attach[4]{}; // pos,rot
 
 	void load(const shared_str& sect_name, IKinematics* K);
     bool bReloadShooting; //--#SM+#--
@@ -153,8 +153,8 @@ struct attachable_hud_item
 	void debug_draw_firedeps();
 
 	// hands bind position
-	Fvector& hands_attach_pos();
-	Fvector& hands_attach_rot();
+	Fvector& hands_attach_pos(u8 = 0);
+	Fvector& hands_attach_rot(u8 = 0);
 
 	// hands runtime offset
 	Fvector& hands_offset_pos();

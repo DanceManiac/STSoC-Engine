@@ -73,6 +73,7 @@ extern	int		g_bHudAdjustItemIdx;
 extern	float	g_bHudAdjustDeltaPos;
 extern	float	g_bHudAdjustDeltaRot;
 
+extern int g_bHudAdjustModeHandPart;
 //-----------------------------------------------------------
 
 BOOL	g_bCheckTime			= FALSE;
@@ -1290,6 +1291,7 @@ void CCC_RegisterCommands()
 #endif
 	// adjust mode support
 	CMD4(CCC_Integer,			"hud_adjust_mode",			&g_bHudAdjustMode,		0, 7);
+	CMD4(CCC_Integer,			"hud_adjust_hand_part",			&g_bHudAdjustModeHandPart, 0, 1);
 	//CMD4(CCC_Integer,			"hud_adjust_item_index",	&g_bHudAdjustItemIdx,	0, 1);
 	CMD4(CCC_Float,				"hud_adjust_delta_value",	&g_bHudAdjustDeltaPos,	0.0005f, 1.f);
 	CMD4(CCC_Float,				"hud_adjust_delta_rot",		&g_bHudAdjustDeltaRot,	0.0005f, 10.f);
