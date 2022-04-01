@@ -304,11 +304,6 @@ void hud_item_measures::load(const shared_str& sect_name, IKinematics* K)
 	if (pSettings->line_exist(sect_name, "hand_2_orientation_16x9"))
 		m_hands_attach[3] = pSettings->r_fvector3(sect_name, "hand_2_orientation_16x9");
 
-	strconcat(sizeof(val_name), val_name, "hand_2_orientation", _prefix);
-	if (is_16x9 && !pSettings->line_exist(sect_name, val_name))
-		xr_strcpy(val_name, "hand_2_orientation");
-	m_hands_attach[3] = READ_IF_EXISTS(pSettings, r_fvector3, sect_name, val_name, m_hands_attach[1]);
-
 		m_item_attach[0] = pSettings->r_fvector3(sect_name, "item_position");
 
 		m_item_attach[1] = pSettings->r_fvector3(sect_name, "item_orientation");
