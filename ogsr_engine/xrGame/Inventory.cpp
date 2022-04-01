@@ -662,6 +662,19 @@ bool CInventory::Action(s32 cmd, u32 flags)
 		}
 		break;
 	}
+	case kSLOW_TIME:
+	{
+		if (flags & CMD_START)
+		{
+			Device.time_factor(0.25f);
+			psSoundTimeFactor = 0.25f;
+		}
+		else
+		{
+			Device.time_factor(1.f);
+			psSoundTimeFactor = 1.f;
+		}
+	}
 	}
 
 	if(b_send_event && g_pGameLevel && OnClient() && pActor)

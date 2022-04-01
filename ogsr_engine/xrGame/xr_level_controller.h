@@ -38,6 +38,7 @@ enum	EGameActions
 	kWPN_6,
 	kWPN_8,
 	kSWITCH_SCOPE,
+	kSLOW_TIME,
 	kLASER_ON,
 	kWPN_NEXT,
 	kWPN_FIRE,
