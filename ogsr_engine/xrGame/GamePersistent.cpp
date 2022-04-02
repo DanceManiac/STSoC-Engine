@@ -107,10 +107,10 @@ void CGamePersistent::RegisterModel(IRenderVisual* V)
 		IKinematics* K	= smart_cast<IKinematics*>(V); VERIFY(K);
 		int cnt = K->LL_BoneCount();
 		for (u16 k=0; k<cnt; k++){
-			CBoneData& bd	= K->LL_GetData(k); 
-			if (*(bd.game_mtl_name)){
+			CBoneData& bd	= K->LL_GetData(k);
+			if (*(bd.game_mtl_name) != nullptr){
 				bd.game_mtl_idx	= GMLib.GetMaterialIdx(*bd.game_mtl_name);
-				R_ASSERT2(GMLib.GetMaterialByIdx(bd.game_mtl_idx)->Flags.is(SGameMtl::flDynamic),"Required dynamic game material");
+				R_ASSERT2(GMLib.GetMaterialByIdx(bd.game_mtl_idx) && GMLib.GetMaterialByIdx(bd.game_mtl_idx)->Flags.is(SGameMtl::flDynamic),"Required dynamic game material");
 			}else{
 				bd.game_mtl_idx	= def_idx;
 			}

@@ -142,6 +142,65 @@ IC char*						xr_strlwr				(char* S)
 IC int							xr_strcmp				( const char* S1, const char* S2 )
 {	return strcmp(S1,S2);  }
 
+IC u32 length(std::string str) { return str.length(); }
+IC u32 length(pcstr str) { return make_string(str).length(); }
+
+IC std::string leftstr(const std::string& str, u32 n) { return str.substr(0, n); }
+IC std::string leftstr(pcstr str, u32 n) { return leftstr(std::string(str), n); }
+
+IC std::string rightstr(const std::string& str, u32 n)
+{
+	if (str.length() < n)
+		n = str.length();
+	return str.substr(str.length() - n, n);
+}
+
+IC std::string trim_right(const std::string& str)
+{
+	u32 trimmed_cnt = length(str);
+
+	for (; trimmed_cnt > 0; --trimmed_cnt)
+	{
+		if (str[trimmed_cnt - 1] == ' ')
+			trimmed_cnt--;
+		else
+			break;
+	}
+
+	if (trimmed_cnt == 0)
+		return "";
+	else
+		return leftstr(str, trimmed_cnt);
+}
+
+IC std::string trim_left(const std::string& str)
+{
+	u32 trimmed_cnt = length(str);
+
+	for (u32 i = 0; (i < length(str)) && (trimmed_cnt > 0); ++i)
+	{
+		if (str[i] == ' ')
+			trimmed_cnt--;
+		else
+			break;
+	}
+
+	if (trimmed_cnt == 0)
+		return "";
+	else
+		return rightstr(str, trimmed_cnt);
+}
+
+IC std::string trim(const std::string& str) { return trim_right(trim_left(str)); }
+IC std::string trim(pcstr str) { return trim(std::string(str)); }
+
+IC std::string inttostr(u32 n)
+{
+	char b[20];
+	sprintf(b, "%d", n);
+	return make_string(b);
+}
+
 XRCORE_API char* xr_strdup( const char* string );
 
 template<typename StrType, typename StrType2, typename... Args>

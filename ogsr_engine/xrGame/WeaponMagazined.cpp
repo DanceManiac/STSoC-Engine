@@ -462,27 +462,21 @@ void CWeaponMagazined::ReloadMagazine()
 void CWeaponMagazined::OnStateSwitch(u32 S, u32 oldState)
 {
 	inherited::OnStateSwitch(S, oldState);
-	//auto wpn_w_gl = smart_cast<CWeaponMagazinedWGrenade*>(this);
 	switch (S)
 	{
 	case eWPN_FIREMODE_NEXT:
 	{
 		PlaySound( sndFireModes, get_LastFP() );
-		//if(!IsGrenadeLauncherAttached())
-			switch2_ChangeFireMode();
-		//else
-			//wpn_w_gl->switch2_ChangeFireMode();
+		switch2_ChangeFireMode();
 	}
 	case eWPN_FIREMODE_PREV:
 	{
 		PlaySound( sndFireModes, get_LastFP() );
-		//if (!IsGrenadeLauncherAttached())
-			switch2_ChangeFireMode();
-		//else
-			//wpn_w_gl->switch2_ChangeFireMode();
+		switch2_ChangeFireMode();
 	}
 	case eIdle:
-		switch2_Idle	();
+		if(CanAssignIdleAnimNow())
+			switch2_Idle	();
 		break;
 	case eFire:
 		switch2_Fire	();
@@ -666,6 +660,24 @@ void CWeaponMagazined::state_Fire	(float dt)
 	UpdateSounds			();
 }
 
+void CWeaponMagazined::SpawnShells()
+{
+	// Переменные
+	LPCSTR shell_sect = READ_IF_EXISTS(pSettings, r_string, this->cNameSect().c_str(), "3d_shell_sect", nullptr);
+	
+	if(shell_sect)
+	{
+		// Спавним гильзу
+		CSE_Abstract* pSO = Level().spawn_item(
+			shell_sect, H_Parent()->Position(), u32(-1), H_Parent()->ID(), true);
+
+		NET_Packet P;
+		pSO->Spawn_Write(P, TRUE);
+		Level().Send(P, net_flags(TRUE));
+		F_entity_Destroy(pSO);
+	}
+}
+
 void CWeaponMagazined::state_Misfire	(float /**dt/**/)
 {
 	OnEmptyClick			();
@@ -713,6 +725,7 @@ void CWeaponMagazined::OnShot		()
 	{
 		OnShellDrop					(get_LastSP(), vel);
 	}
+	SpawnShells();
 	
 	// Огонь из ствола
 	StartFlameParticles	();
@@ -756,6 +769,7 @@ void CWeaponMagazined::OnAnimationEnd(u32 state)
 			
 			break;	// End of Hide
 		}
+		case eFire: case eFire2:
 		case eShowing:	SwitchState(eIdle);		break;	// End of Show
 		case eIdle:		switch2_Idle();			break;  // Keep showing idle
 		case eWPN_FIREMODE_PREV:
@@ -779,6 +793,8 @@ void CWeaponMagazined::MyLittleMisfire() //-> i-love-kfc
 	if(bAfterUnjam)
 		--iAmmoElapsed;
 	bAfterUnjam = true;
+	SpawnShells();
+
 	HUD_SOUND::StopSound(sndMisfire);
 }
 
@@ -1380,6 +1396,14 @@ void CWeaponMagazined::PlayAnimIdle()
 	}
 	else
 		inherited::PlayAnimIdle();
+}
+
+bool CWeaponMagazined::CanAssignIdleAnimNow()
+{
+	const char* anm_shoot = "anm_shots";
+	const bool AllowIdleAnimWhileShooting = READ_IF_EXISTS(pSettings, r_bool, this->HudSection().c_str(), "cyclic_shoot_animations", false);
+	
+	return ((m_fZoomRotationFactor > 0.001f) && (m_fZoomRotationFactor < 0.999f)) || (m_current_motion_def == nullptr) || (leftstr(m_current_motion.c_str(), length(anm_shoot)) != anm_shoot) || AllowIdleAnimWhileShooting;
 }
 
 void CWeaponMagazined::PlayAnimIdleSprint()

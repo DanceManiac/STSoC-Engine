@@ -93,8 +93,8 @@ public:
 	int blyat;
 	virtual void	FireEnd			();
 	virtual void	Reload			();
-	
 
+	bool CanAssignIdleAnimNow();
 	virtual void	ReloadMagazine	();
 	virtual	void	UpdateCL		();
 	virtual BOOL	net_Spawn(CSE_Abstract* DC);
@@ -130,6 +130,7 @@ public:
 	virtual bool	StopedAfterQueueFired	()			{return m_bStopedAfterQueueFired; }
 	virtual void	StopedAfterQueueFired	(bool value){m_bStopedAfterQueueFired = value; }
 
+	void SpawnShells();
 public:
 	//максимальный размер очереди, которой можно стрельнуть
 	int				m_iQueueSize;

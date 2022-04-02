@@ -2544,65 +2544,6 @@ bool CWeapon::IsPartlyReloading() {
 
 using namespace std;
 
-IC u32 length(std::string str) { return str.length(); }
-IC u32 length(pcstr str) { return make_string(str).length(); }
-
-IC string leftstr(const string& str, u32 n) { return str.substr(0, n); }
-IC string leftstr(pcstr str, u32 n) { return leftstr(string(str), n); }
-
-IC string rightstr(const string& str, u32 n)
-{
-	if (str.length() < n)
-		n = str.length();
-	return str.substr(str.length() - n, n);
-}
-
-IC string trim_right(const string& str)
-{
-	u32 trimmed_cnt = length(str);
-
-	for (; trimmed_cnt > 0; --trimmed_cnt)
-	{
-		if (str[trimmed_cnt - 1] == ' ')
-			trimmed_cnt--;
-		else
-			break;
-	}
-
-	if (trimmed_cnt == 0)
-		return "";
-	else
-		return leftstr(str, trimmed_cnt);
-}
-
-IC string trim_left(const string& str)
-{
-	u32 trimmed_cnt = length(str);
-
-	for (u32 i = 0; (i < length(str)) && (trimmed_cnt > 0); ++i)
-	{
-		if (str[i] == ' ')
-			trimmed_cnt--;
-		else
-			break;
-	}
-
-	if (trimmed_cnt == 0)
-		return "";
-	else
-		return rightstr(str, trimmed_cnt);
-}
-
-IC string trim(const string& str) { return trim_right(trim_left(str)); }
-IC string trim(pcstr str) { return trim(string(str)); }
-
-IC string inttostr(u32 n)
-{
-	char b[20];
-	xr_sprintf(b, "%d", n);
-	return make_string(b);
-}
-
 bool CWeapon::GetNextSubStr(string& data, string& buf, char separator)
 {
     u32 p = 0;
