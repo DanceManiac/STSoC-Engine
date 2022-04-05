@@ -146,6 +146,24 @@ void CWeaponRG6::FireTrace(const Fvector& P, const Fvector& D)
 	}
 }
 
+void CWeaponRG6::OnAnimationEnd(u32 state)
+{
+	inheritedSG::OnAnimationEnd(state);
+	
+	if(!m_bTriStateReload)
+	{
+		switch(state)
+		{
+			case eReload:
+			{
+				shared_str fake_grenade_name = pSettings->r_string(*m_ammoTypes[m_ammoType], "fake_grenade_name");
+				inheritedRL::SpawnRocket(*fake_grenade_name, this);
+				break;
+			}
+		}
+	}
+}
+
 u8 CWeaponRG6::AddCartridge		(u8 cnt)
 {
 	u8 t = inheritedSG::AddCartridge(cnt);

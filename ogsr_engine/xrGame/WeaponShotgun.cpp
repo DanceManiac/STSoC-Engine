@@ -582,15 +582,20 @@ void CWeaponShotgun::TryReload() {
 }
 
 
-void CWeaponShotgun::ReloadMagazine() {
-  m_dwAmmoCurrentCalcFrame = 0;	
-  bMisfire = false;
-  if ( !m_pCurrentInventory ) return;
+void CWeaponShotgun::ReloadMagazine()
+{
+	if(!m_bTriStateReload) {
+		inherited::ReloadMagazine();
+		return;
+	}
+	m_dwAmmoCurrentCalcFrame = 0;	
+	bMisfire = false;
+	if ( !m_pCurrentInventory ) return;
 
-  u8 cnt = AddCartridge( 1 );
-  while ( cnt == 0 ) {
-    cnt = AddCartridge( 1 );
-  }
+	u8 cnt = AddCartridge( 1 );
+	while ( cnt == 0 ) {
+		cnt = AddCartridge( 1 );
+	}
 }
 
 

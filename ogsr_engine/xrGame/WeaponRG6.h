@@ -20,6 +20,7 @@ protected:
 	virtual void	LaunchGrenade(const Fvector& P, const Fvector& D);
 
 	virtual u8		AddCartridge			(u8 cnt);
+	virtual void OnAnimationEnd(u32 state) override;
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
