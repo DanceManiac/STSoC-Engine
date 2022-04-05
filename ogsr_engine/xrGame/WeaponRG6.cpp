@@ -70,7 +70,8 @@ void CWeaponRG6::LaunchGrenade(const Fvector& p1, const Fvector& d1)
 			Log("H_Parent", H_Parent()->cNameSect().c_str());
 			}
 #endif
-			//E->g_fireParams (this, p1,d);
+			if(!E->cast_actor())
+				E->g_fireParams				(this, p,d);
 		}
 
 		Fmatrix launch_matrix;

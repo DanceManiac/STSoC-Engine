@@ -128,7 +128,8 @@ void CWeaponRPG7::switch2_Fire	()
 			Log("H_Parent", H_Parent()->cNameSect().c_str());
 			}
 #endif
-			E->g_fireParams				(this, p1,d);
+			if(!E->cast_actor())
+				E->g_fireParams				(this, p1,d);
 		}
 
 		Fmatrix								launch_matrix;
