@@ -961,6 +961,8 @@ u8 CWeapon::idle_state() {
 }
 
 #include "WeaponShotgun.h"
+
+extern int g_bHudAdjustMode;
 void CWeapon::UpdateCL		()
 {
 	inherited::UpdateCL		();
@@ -981,18 +983,36 @@ void CWeapon::UpdateCL		()
 	
 	VERIFY(smart_cast<IKinematics*>(Visual()));
 
-        if ( GetState() == eIdle ) {
-          auto state = idle_state();
-          if ( m_idle_state != state ) {
-            m_idle_state = state;
+    if ((GetNextState() == GetState()) && H_Parent() == Level().CurrentEntity())
+    {
+        CActor* pActor = smart_cast<CActor*>(H_Parent());
+        if (pActor && !pActor->AnyMove() && this == pActor->inventory().ActiveItem())
+        {
+            if (g_bHudAdjustMode == 0 && GetState() == eIdle && (Device.dwTimeGlobal - m_dw_curr_substate_time > 20000) &&
+                !IsZoomed() && g_player_hud->attached_item(1) == nullptr)
+            {
+                if (!READ_IF_EXISTS(pSettings, r_bool, this->HudSection().c_str(), "disable_bore", false))
+                    SwitchState(eBore);
+
+                ResetSubStateTime();
+            }
+        }
+    }
+
+	if (GetState() == eIdle)
+	{
+		auto state = idle_state();
+		if (m_idle_state != state)
+		{
+			m_idle_state = state;
 			if (GetNextState() != eMagEmpty && GetNextState() != eReload)
 			{
 				SwitchState(eIdle);
 			}
-          }
-        }
-        else
-          m_idle_state = eIdle;
+		}
+	}
+	else
+		m_idle_state = eIdle;
 
 	UpdateLaser();
 	UpdateFlashlight();

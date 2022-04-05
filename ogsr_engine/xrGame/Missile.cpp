@@ -182,14 +182,16 @@ void CMissile::UpdateCL()
 {
 	inherited::UpdateCL();
 
+    CActor* pActor = smart_cast<CActor*>(H_Parent());
+
 	if (!Core.Features.test(xrCore::Feature::stop_anim_playing))
 	{
-		CActor* pActor = smart_cast<CActor*>(H_Parent());
 		if (pActor && !(pActor->get_state()&EMoveCommand::mcAnyMove) && this == pActor->inventory().ActiveItem())
 		{
 			if (g_bHudAdjustMode == 0 && GetState() == eIdle && (Device.dwTimeGlobal - m_dw_curr_substate_time > 20000))
 			{
-				SwitchState(eBore);
+				if (!READ_IF_EXISTS(pSettings, r_bool, this->HudSection().c_str(), "disable_bore", false))
+					SwitchState(eBore);
 				ResetSubStateTime();
 			}
 		}

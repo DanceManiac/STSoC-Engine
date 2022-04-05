@@ -5,7 +5,6 @@
 
 #include "stdafx.h"
 #include "HudItem.h"
-#include "HudSound.h"
 #include "physic_item.h"
 #include "actor.h"
 #include "actoreffector.h"
@@ -46,6 +45,7 @@ DLL_Pure *CHudItem::_construct	()
 	return				(m_object);
 }
 
+#include "ai_sounds.h"
 void CHudItem::Load(LPCSTR section)
 {
 	//загрузить hud, если он нужен
@@ -61,6 +61,9 @@ void CHudItem::Load(LPCSTR section)
 	}
 
 	m_animation_slot	= pSettings->r_u32(section,"animation_slot");
+
+	if (pSettings->line_exist(section, "snd_bore"))
+		HUD_SOUND::LoadSound(section, "snd_bore", snd_bore, ESoundTypes(SOUND_TYPE_WEAPON_RECHARGING));
 }
 
 void CHudItem::PlaySound(HUD_SOUND& hud_snd, const Fvector& position, bool overlap)
@@ -145,6 +148,22 @@ void CHudItem::OnStateSwitch(u32 S, u32 oldState)
 	if (object().Remote())
 		SetNextState(S);
 
+    switch (S)
+    {
+		case eBore:
+		{
+			SetPending(FALSE);
+
+			PlayAnimBore();
+			if (HudItemData())
+			{
+				Fvector P = HudItemData()->m_item_transform.c;
+				PlaySound(snd_bore, Actor()->Position());
+			}
+			break;
+		}
+    }
+
 	g_player_hud->updateMovementLayerState();
 }
 
@@ -210,6 +229,18 @@ void CHudItem::UpdateCL()
 			}
 		}
 	}
+}
+
+void CHudItem::OnAnimationEnd(u32 state)
+{
+    switch (state)
+    {
+		case eBore:
+		{
+			SwitchState(eIdle);
+			break;
+		}
+    }
 }
 
 void CHudItem::OnH_A_Chield()
@@ -378,10 +409,10 @@ bool CHudItem::TryPlayAnimIdle()
 	return false;
 }
 
-/*void CHudItem::PlayAnimBore()
+void CHudItem::PlayAnimBore()
 {
 	PlayHUDMotion("anm_bore", TRUE, this, GetState());
-}*/
+}
 
 bool CHudItem::PlayAnimIdleSprintEnd()
 {

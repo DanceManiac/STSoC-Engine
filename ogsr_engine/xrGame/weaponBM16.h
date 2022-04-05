@@ -29,6 +29,7 @@ protected:
 	virtual void	PlayAnimIdle					();
 	virtual void	PlayReloadSound					();
 	virtual void	UpdateSounds() override;
+    virtual void PlayAnimBore() override;
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

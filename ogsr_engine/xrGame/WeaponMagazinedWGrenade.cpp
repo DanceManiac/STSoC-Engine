@@ -683,6 +683,19 @@ void CWeaponMagazinedWGrenade::PlayAnimReload()
 		inherited::PlayAnimReload();
 }
 
+void CWeaponMagazinedWGrenade::PlayAnimBore()
+{
+    if (IsGrenadeLauncherAttached())
+    {
+        if (m_bGrenadeMode)
+            PlayHUDMotion("anm_bore_g", "anim_idle_g", TRUE, this, GetState());
+        else
+            PlayHUDMotion("anm_bore_w_gl", "anim_idle_gl", TRUE, this, GetState());
+    }
+    else
+        inherited::PlayAnimBore();
+}
+
 bool CWeaponMagazinedWGrenade::PlayAnimIdleSprintEnd()
 {
 	if (IsGrenadeLauncherAttached() && AnimationExist(std::string("anm_idle_sprint_end" + m_bGrenadeMode ? "_g" : "_w_gl").c_str())) {

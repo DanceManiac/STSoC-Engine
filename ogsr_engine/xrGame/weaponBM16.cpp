@@ -150,6 +150,16 @@ void CWeaponBM16::PlayAnimIdleMovingCrouch()
 	}
 }
 
+void CWeaponBM16::PlayAnimBore()
+{
+    switch (m_magazine.size())
+    {
+    case 0: PlayHUDMotion("anm_bore_0", "anim_idle", TRUE, this, GetState()); break;
+    case 1: PlayHUDMotion("anm_bore_1", "anim_idle_1", TRUE, this, GetState()); break;
+    case 2: PlayHUDMotion("anm_bore_2", "anim_idle_2", TRUE, this, GetState()); break;
+    }
+}
+
 void CWeaponBM16::PlayAnimIdleMovingSlow()
 {
 	switch (m_magazine.size())

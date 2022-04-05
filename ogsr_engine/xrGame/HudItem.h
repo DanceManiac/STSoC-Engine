@@ -4,11 +4,11 @@
 //////////////////////////////////////////////////////////////////////
 
 #pragma once
+#include "hudsound.h"
 
 class CSE_Abstract;
 class CPhysicItem;
 class NET_Packet;
-struct HUD_SOUND;
 class CInventoryItem;
 struct attachable_hud_item;
 class motion_marks;
@@ -35,6 +35,7 @@ private:
 	u32 m_dw_curr_state_time;
 
 protected:
+	HUD_SOUND snd_bore;
 	u32 m_dw_curr_substate_time;
 
 public:
@@ -123,14 +124,14 @@ public:
 	virtual void	OnActiveItem		() {};
 	virtual void	OnHiddenItem		() {};
 
-	virtual void	OnAnimationEnd		(u32 state) {};
+	virtual void	OnAnimationEnd		(u32 state);
 	virtual void	OnMotionMark		(u32 state, const motion_marks&) {};
 	virtual void	OnMovementChanged	(ACTOR_DEFS::EMoveCommand cmd);
 
 	virtual void	PlayAnimIdle		();
 	bool			TryPlayAnimIdle		();
 	virtual bool IsZoomed() const { return false; }
-	//virtual void	PlayAnimBore		();
+	virtual void	PlayAnimBore		();
 	virtual void	PlayAnimIdleMoving	();
 	virtual void	PlayAnimIdleSprint	();
 	virtual bool	PlayAnimIdleSprintEnd();
