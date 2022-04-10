@@ -587,6 +587,7 @@ void CWeaponMagazined::UpdateSounds	()
 }
 
 #include "WeaponPistol.h"
+#include "WeaponRG6.h"
 void CWeaponMagazined::state_Fire	(float dt)
 {
 	VERIFY(fTimeToFire>0.f);
@@ -609,7 +610,7 @@ void CWeaponMagazined::state_Fire	(float dt)
 	}
 #endif
 
-	if(const auto E = smart_cast<CEntity*>	(H_Parent()); E && !E->cast_actor())
+	if(const auto E = smart_cast<CEntity*>	(H_Parent()); E && (!E->cast_actor() || !smart_cast<CWeaponRG6*>(this)))
 		E->g_fireParams	(this, p1,d);
 	if (m_iShotNum == 0)
 	{

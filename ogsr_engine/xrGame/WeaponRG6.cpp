@@ -27,10 +27,8 @@ BOOL	CWeaponRG6::net_Spawn				(CSE_Abstract* DC)
 
 		if (fake_grenade_name.size())
 		{
-			int k=iAmmoElapsed;
-			while (k)
+			for(u32 k = 0; k < iAmmoElapsed; k++)
 			{
-				k--;
 				inheritedRL::SpawnRocket(*fake_grenade_name, this);
 			}
 		}
@@ -61,7 +59,7 @@ void CWeaponRG6::LaunchGrenade(const Fvector& p1, const Fvector& d1)
 		if (E){
 #ifdef DEBUG
 			CInventoryOwner* io		= smart_cast<CInventoryOwner*>(H_Parent());
-			if(NULL == io->inventory().ActiveItem())
+			if(nullptr == io->inventory().ActiveItem())
 			{
 			Log("current_state", GetState() );
 			Log("next_state", GetNextState());
@@ -195,4 +193,47 @@ void CWeaponRG6::OnEvent(NET_Packet& P, u16 type)
 		inheritedRL::DetachRocket(id, bLaunch);
 	} break;
 	}
+}
+
+void CWeaponRG6::FireStart()
+{
+	if(IsShotProhibited())
+		inheritedSG::FireStart();
+}
+
+bool CWeaponRG6::IsShotProhibited()
+{
+	bool result = false;
+	if (getRocketCount())
+	{
+		const auto state = GetState();
+
+		// Когда бюрер вырвал оружие из рук, оно находится в состоянии EHudStates::eHidden. Учитываем эту возможность
+		bool good_state_for_shot = (state == eIdle) || (state == eHidden && !ParentIsActor());
+		if (!good_state_for_shot)
+			return result;
+
+		// [bug] баг - заклинивший РГ-6 плюется гренами
+		if (IsMisfire())
+		{
+			OnEmptyClick();
+			return result;
+		}
+		else if (!iAmmoElapsed)
+		{
+			// [bug] баг - в CWeaponRG6::FireStart не реализованы щелчки при попытке выстрелить из пустого оружия. Добавляем вызов OnEmptyClick(); после проверки GetState() == eIdle и перед getRocketCount()
+			OnEmptyClick();    
+			return result;
+		}
+		else if (ParentIsActor() && READ_IF_EXISTS(pSettings, r_bool, this->HudSection().c_str(), "no_jam_fire", false))
+		{
+			bool flag = CheckForMisfire();
+			if (flag)
+				return result;
+		}
+		result = true;
+	}
+	else
+		result = false;
+	return result;
 }
