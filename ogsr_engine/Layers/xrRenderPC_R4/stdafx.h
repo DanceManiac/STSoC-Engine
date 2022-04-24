@@ -18,6 +18,15 @@
 #include <d3dx/D3Dx11core.h>
 #include <D3DCompiler.h>
 
+//#if __has_include(<d3d11_2.h>)
+	#include <d3d11_2.h>
+	#define HAS_DX11_2
+//#endif
+//#if __has_include(<d3d11_3.h>)
+	#include <d3d11_3.h>
+	#define HAS_DX11_3
+//#endif
+
 #include "../xrRender/xrD3DDefs.h"
 
 #include "../xrRender/Debug/dxPixEventWrapper.h"

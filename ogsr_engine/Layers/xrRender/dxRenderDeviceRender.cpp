@@ -348,6 +348,17 @@ void dxRenderDeviceRender::End()
 	bool bUseVSync = psDeviceFlags.is(rsFullscreen) && psDeviceFlags.test(rsVSync); // xxx: weird tearing glitches when VSync turned on for windowed mode in DX10\11
 	if (!Device.m_SecondViewport.IsSVPFrame() && !Device.m_SecondViewport.m_bCamReady) //--#SM+#-- +SecondVP+ Не выводим кадр из второго вьюпорта на экран (на практике у нас экранная картинка обновляется минимум в два раза реже) [don't flush image into display for SecondVP-frame]
 		HW.m_pSwapChain->Present(bUseVSync ? 1 : 0, 0);
+#ifdef HAS_DX11_2
+    HRESULT r;
+    if (HW.m_pSwapChain2 && HW.UsingFlipPresentationModel())
+    {
+		const float fps = 1.0f / Device.fTimeDelta;// Device.GetStats().fFPS;
+        if (fps < 30)
+            r = HW.m_pSwapChain2->SetSourceSize(Device.dwWidth * 0.85f, Device.dwHeight * 0.85f);
+        else if (fps < 15)
+            r = HW.m_pSwapChain2->SetSourceSize(Device.dwWidth * 0.7f, Device.dwHeight * 0.7f);
+    }
+#endif
 #else	//	USE_DX10
 	CHK_DX(HW.pDevice->EndScene());
 	if (!Device.m_SecondViewport.IsSVPFrame() && !Device.m_SecondViewport.m_bCamReady) //--#SM+#-- +SecondVP+ Не выводим кадр из второго вьюпорта на экран (на практике у нас экранная картинка обновляется минимум в два раза реже) [don't flush image into display for SecondVP-frame]

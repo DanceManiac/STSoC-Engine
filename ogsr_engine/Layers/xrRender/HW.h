@@ -26,6 +26,8 @@ public:
 	void					CreateD3D				();
 	void					DestroyD3D				();
 	void					CreateDevice			(HWND hw, bool move_window);
+    void CreateSwapChain(HWND hwnd);
+    bool CreateSwapChain2(HWND hwnd);
 
 	void					DestroyDevice			();
 
@@ -66,6 +68,14 @@ public:
 	D3D_DRIVER_TYPE		m_DriverType;	//	DevT equivalent
 	DXGI_SWAP_CHAIN_DESC	m_ChainDesc;	//	DevPP equivalent
 	D3D_FEATURE_LEVEL		FeatureLevel;
+    bool ComputeShadersSupported;
+#ifdef HAS_DX11_2
+    IDXGIFactory2* m_pFactory2 = nullptr;
+    IDXGISwapChain2* m_pSwapChain2 = nullptr;
+#endif
+#ifdef HAS_DX11_3
+    ID3D11Device3* pDevice3 = nullptr;
+#endif
 	
     bool DX10Only() const;
     bool DX11Only() const;
@@ -118,6 +128,7 @@ public:
 	void			UpdateViews();
 	DXGI_RATIONAL	selectRefresh(u32 dwWidth, u32 dwHeight, DXGI_FORMAT fmt);
 
+    bool UsingFlipPresentationModel() const;
 	virtual	void	OnAppActivate();
 	virtual void	OnAppDeactivate();
 #endif	//	USE_DX10

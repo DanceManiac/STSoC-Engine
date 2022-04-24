@@ -199,7 +199,10 @@ protected:
 	virtual void	PlayAnimIdleMoving	();
 	virtual void	PlayAnimIdleSprint	();
 	virtual void	PlayAnimAim			();
+
+	bool NeedShootMix();
 	virtual void	PlayAnimShoot		();
+
 	virtual void	PlayReloadSound		();
 
 	virtual	int		ShotsFired			() { return m_iShotNum; }

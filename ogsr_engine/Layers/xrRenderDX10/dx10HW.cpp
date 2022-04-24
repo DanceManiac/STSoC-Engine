@@ -62,6 +62,11 @@ void CHW::DestroyD3D()
 	_SHOW_REF("refCount:m_pAdapter", m_pAdapter);
 	_RELEASE(m_pAdapter);
 
+#ifdef HAS_DX11_2
+    _SHOW_REF("refCount:m_pFactory2", m_pFactory2);
+    _RELEASE(m_pFactory2);
+#endif
+
 	_SHOW_REF("refCount:pFactory", pFactory);
 	_RELEASE(pFactory);
 }
@@ -72,7 +77,7 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 	CreateD3D();
 
 	// General - select adapter and device
-	BOOL  bWindowed			= !psDeviceFlags.is(rsFullscreen);
+	//BOOL  bWindowed			= !psDeviceFlags.is(rsFullscreen);
 
 	m_DriverType = Caps.bForceGPU_REF ? 
 		D3D_DRIVER_TYPE_REFERENCE : D3D_DRIVER_TYPE_HARDWARE;
@@ -98,55 +103,6 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 	//	HACK: DX10: Embed hard target format.
 	fTarget = D3DFMT_X8R8G8B8;	//	No match in DX10. D3DFMT_A8B8G8R8->DXGI_FORMAT_R8G8B8A8_UNORM
 	fDepth = selectDepthStencil(fTarget);
-	
-	// Set up the presentation parameters
-	DXGI_SWAP_CHAIN_DESC	&sd	= m_ChainDesc;
-	ZeroMemory				( &sd, sizeof(sd) );
-
-	selectResolution	(sd.BufferDesc.Width, sd.BufferDesc.Height, bWindowed);
-
-	// Back buffer
-	//.	P.BackBufferWidth		= dwWidth;
-	//. P.BackBufferHeight		= dwHeight;
-	//	TODO: DX10: implement dynamic format selection
-	//sd.BufferDesc.Format		= fTarget;
-	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	sd.BufferCount = 2;
-
-	// Multisample
-	sd.SampleDesc.Count = 1;
-	sd.SampleDesc.Quality = 0;
-
-	// Windoze
-	//P.SwapEffect			= bWindowed?D3DSWAPEFFECT_COPY:D3DSWAPEFFECT_DISCARD;
-	//P.hDeviceWindow			= m_hWnd;
-	//P.Windowed				= bWindowed;
-	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-	sd.OutputWindow = m_hWnd;
-	sd.Windowed = bWindowed;
-
-	// Depth/stencil
-	// DX10 don't need this?
-	//P.EnableAutoDepthStencil= TRUE;
-	//P.AutoDepthStencilFormat= fDepth;
-	//P.Flags					= 0;	//. D3DPRESENTFLAG_DISCARD_DEPTHSTENCIL;
-
-	// Refresh rate
-	//P.PresentationInterval	= D3DPRESENT_INTERVAL_IMMEDIATE;
-	//if( !bWindowed )		P.FullScreen_RefreshRateInHz	= selectRefresh	(P.BackBufferWidth, P.BackBufferHeight,fTarget);
-	//else					P.FullScreen_RefreshRateInHz	= D3DPRESENT_RATE_DEFAULT;
-	if (bWindowed)
-	{
-		sd.BufferDesc.RefreshRate.Numerator = 60;
-		sd.BufferDesc.RefreshRate.Denominator = 1;
-	}
-	else
-	{
-		sd.BufferDesc.RefreshRate = selectRefresh( sd.BufferDesc.Width, sd.BufferDesc.Height, sd.BufferDesc.Format);
-	}
-
-	//	Additional set up
-	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 
 	UINT createDeviceFlags = 0;
 #ifdef DEBUG
@@ -155,14 +111,10 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 #endif
 
 	HRESULT R;
-	//-> Заюзать это как-нить?	
-	/*D3D_FEATURE_LEVEL featureLevels[] =
-	{
-		D3D_FEATURE_LEVEL_12_1,
-		D3D_FEATURE_LEVEL_12_0,
-	};*/
     D3D_FEATURE_LEVEL featureLevels2[] =
     {
+		D3D_FEATURE_LEVEL_12_1,
+		D3D_FEATURE_LEVEL_12_0,
 		D3D_FEATURE_LEVEL_11_1,
 		D3D_FEATURE_LEVEL_11_0,
     };
@@ -182,9 +134,24 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
     if (DX10Only())
         R = createDevice(featureLevels3, std::size(featureLevels3));
     else if(DX11Only())
-		R = createDevice(featureLevels2, std::size(featureLevels2));
+	{
+		//R = createDevice(featureLevels, std::size(featureLevels));
+		//if(FAILED(R))
+			R = createDevice(featureLevels2, std::size(featureLevels2));
+	}
 
-	R_CHK(pFactory->CreateSwapChain(pDevice, &sd, &m_pSwapChain));
+    if (FeatureLevel >= D3D_FEATURE_LEVEL_11_0)
+        ComputeShadersSupported = true;
+    else
+    {
+        D3D11_FEATURE_DATA_D3D10_X_HARDWARE_OPTIONS data;
+        pDevice->CheckFeatureSupport(D3D11_FEATURE_D3D10_X_HARDWARE_OPTIONS,
+            &data, sizeof(data));
+        ComputeShadersSupported = data.ComputeShaders_Plus_RawAndStructuredBuffers_Via_Shader_4_x;
+    }
+
+	//DXGI_SWAP_CHAIN_DESC& sd = m_ChainDesc;
+	//R_CHK(pFactory->CreateSwapChain(pDevice, &sd, &m_pSwapChain));
 
 	/*if (FeatureLevel != D3D_FEATURE_LEVEL_11_1)
 	{
@@ -200,6 +167,15 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 
 	_SHOW_REF	("* CREATE: DeviceREF:",HW.pDevice);
 
+#ifdef HAS_DX11_3
+    pDevice->QueryInterface(__uuidof(ID3D11Device3), reinterpret_cast<void**>(&pDevice3));
+#endif
+
+    if (!CreateSwapChain2(m_hWnd))
+    {
+        CreateSwapChain(m_hWnd);
+    }
+
 	//	Create render target and depth-stencil views here
 	UpdateViews();
 
@@ -208,6 +184,126 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 
 	updateWindowProps							(m_hWnd);
 	fill_vid_mode_list							(this);
+}
+
+void CHW::CreateSwapChain(HWND hwnd)
+{
+    // Set up the presentation parameters
+    DXGI_SWAP_CHAIN_DESC& sd = m_ChainDesc;
+    ZeroMemory(&sd, sizeof(sd));
+    // Back buffer
+    sd.BufferDesc.Width = Device.dwWidth;
+    sd.BufferDesc.Height = Device.dwHeight;
+    //  TODO: DX10: implement dynamic format selection
+    constexpr DXGI_FORMAT formats[] =
+    {
+        //DXGI_FORMAT_R16G16B16A16_FLOAT, // Do we even need this?
+        //DXGI_FORMAT_R10G10B10A2_UNORM, // D3DX11SaveTextureToMemory fails on this format
+        DXGI_FORMAT_B8G8R8X8_UNORM,
+        DXGI_FORMAT_B8G8R8X8_UNORM, // This is not supported for DXGI flip presentation model
+        DXGI_FORMAT_B8G8R8A8_UNORM,
+        DXGI_FORMAT_R8G8B8A8_UNORM,
+    };
+
+    // Select back-buffer format
+    sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    Caps.fTarget = D3DFMT_X8R8G8B8;
+    sd.BufferCount = 1;
+    // Multisample
+    sd.SampleDesc.Count = 1;
+    sd.SampleDesc.Quality = 0;
+    // Windoze
+    /* XXX:
+       Probably the reason of weird tearing
+       glitches reported by Shoker in windowed
+       mode with VSync enabled.
+       XXX: Fix this windoze stuff!!!
+    */
+    sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+
+    /*SDL_SysWMinfo info;
+    SDL_VERSION(&info.version);
+    if (SDL_GetWindowWMInfo(m_sdlWnd, &info))
+    {*/
+       sd.OutputWindow = hwnd;
+/* }
+    else
+        Log("Couldn't get window information: ", SDL_GetError());*/
+    sd.OutputWindow = hwnd;
+
+	BOOL  bWindowed = !psDeviceFlags.is(rsFullscreen);
+    sd.Windowed = bWindowed;
+
+    //  Additional set up
+    sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+
+    R_CHK(pFactory->CreateSwapChain(pDevice, &sd, &m_pSwapChain));
+}
+
+bool CHW::CreateSwapChain2(HWND hwnd)
+{
+    if (strstr(Core.Params, "-no_dx11_2"))
+        return false;
+
+#ifdef HAS_DX11_2
+    m_pAdapter->GetParent(__uuidof(IDXGIFactory2), (void**)&m_pFactory2);
+    if (!m_pFactory2)
+        return false;
+
+    // Set up the presentation parameters
+    DXGI_SWAP_CHAIN_DESC1 desc{};
+
+    // Back buffer
+    desc.Width = Device.dwWidth;
+    desc.Height = Device.dwHeight;
+
+    DXGI_SWAP_CHAIN_FULLSCREEN_DESC fulldesc{};
+    fulldesc.Windowed = !psDeviceFlags.is(rsFullscreen);
+
+    constexpr DXGI_FORMAT formats[] =
+    {
+        //DXGI_FORMAT_R16G16B16A16_FLOAT,
+        //DXGI_FORMAT_R10G10B10A2_UNORM,
+        DXGI_FORMAT_B8G8R8X8_UNORM, // This is not supported for DXGI flip presentation model
+        DXGI_FORMAT_B8G8R8A8_UNORM,
+        DXGI_FORMAT_R8G8B8A8_UNORM,
+    };
+
+    // Select back-buffer format
+    desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    Caps.fTarget = D3DFMT_X8R8G8B8;
+
+    // Multisample
+    desc.SampleDesc.Count = 1;
+    desc.SampleDesc.Quality = 0;
+
+    // Buffering
+    desc.BufferCount = 1; // For DXGI_SWAP_EFFECT_FLIP_DISCARD we need at least two
+    desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+
+    // Windoze
+    //desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD; // XXX: tearing glitches with flip presentation model
+    desc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+    desc.Scaling = DXGI_SCALING_STRETCH;
+
+    IDXGISwapChain1* swapchain = nullptr;
+    HRESULT result = m_pFactory2->CreateSwapChainForHwnd(pDevice, hwnd, &desc,
+        fulldesc.Windowed ? nullptr : &fulldesc, nullptr, &swapchain);
+
+    if (FAILED(result))
+        return false;
+
+    m_pSwapChain = swapchain;
+    m_pSwapChain->GetDesc(&m_ChainDesc);
+
+    m_pSwapChain->QueryInterface(__uuidof(IDXGISwapChain2), reinterpret_cast<void**>(&m_pSwapChain2));
+
+    return true;
+#else // #ifdef HAS_DX11_2
+    UNUSED(hwnd);
+#endif
+
+    return false;
 }
 
 void CHW::DestroyDevice()
@@ -233,7 +329,10 @@ void CHW::DestroyDevice()
 	if (!m_ChainDesc.Windowed) m_pSwapChain->SetFullscreenState( FALSE, nullptr);
 	_SHOW_REF				("refCount:m_pSwapChain",m_pSwapChain);
 	_RELEASE				(m_pSwapChain);
-
+#ifdef HAS_DX11_2
+    _SHOW_REF("refCount:m_pSwapChain2", m_pSwapChain2);
+    _RELEASE(m_pSwapChain2);
+#endif
 #ifdef USE_DX11
 	_RELEASE				(pContext);
 #endif
@@ -244,6 +343,10 @@ void CHW::DestroyDevice()
 	_SHOW_REF				("DeviceREF:",HW.pDevice);
 	_RELEASE				(HW.pDevice);
 
+#ifdef HAS_DX11_3
+    _SHOW_REF("refCount:HW.pDevice3:", HW.pDevice3);
+    _RELEASE(HW.pDevice3);
+#endif
 
 	DestroyD3D				();
 
@@ -299,6 +402,12 @@ void CHW::Reset (HWND hwnd)
 	UpdateViews();
 
 	updateWindowProps	(hwnd);
+}
+
+bool CHW::UsingFlipPresentationModel() const
+{
+    return m_ChainDesc.SwapEffect == DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL
+        || m_ChainDesc.SwapEffect == DXGI_SWAP_EFFECT_FLIP_DISCARD;
 }
 
 D3DFORMAT CHW::selectDepthStencil	(D3DFORMAT fTarget)

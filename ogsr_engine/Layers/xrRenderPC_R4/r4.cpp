@@ -1342,6 +1342,14 @@ HRESULT	CRender::shader_compile			(
    }
 	sh_name[len]='0'+char(HW.FeatureLevel>=D3D_FEATURE_LEVEL_11_0); ++len;
 
+   if( HW.pDevice3 != nullptr )
+   {
+	   defines[def_it].Name		=	"SM_5_1";
+	   defines[def_it].Definition	=	"1";
+	   def_it++;
+   }
+	sh_name[len]='0'+char(HW.pDevice3 != nullptr); ++len;
+
    if (o.dx10_minmax_sm)
    {
 	   defines[def_it].Name		=	"USE_MINMAX_SM";

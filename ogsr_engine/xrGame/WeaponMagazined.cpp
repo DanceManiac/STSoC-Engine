@@ -664,7 +664,7 @@ void CWeaponMagazined::state_Fire	(float dt)
 void CWeaponMagazined::SpawnShells()
 {
 	// Переменные
-	LPCSTR shell_sect = READ_IF_EXISTS(pSettings, r_string, this->cNameSect().c_str(), "3d_shell_sect", nullptr);
+	const char* shell_sect = READ_IF_EXISTS(pSettings, r_string, this->cNameSect().c_str(), "3d_shell_sect", nullptr);
 	
 	if(shell_sect)
 	{
@@ -1417,18 +1417,39 @@ void CWeaponMagazined::PlayAnimIdleMoving()
 	inherited::PlayAnimIdleMoving();
 }
 
+bool CWeaponMagazined::NeedShootMix()
+{
+	if (!ParentIsActor())
+		return false;
+
+	const char* hud_sect = this->HudSection().c_str();
+	const char* cur_anim = m_current_motion.c_str();
+
+	if (READ_IF_EXISTS(pSettings, r_bool, hud_sect, "mix_shoot_after_idle", false) && (leftstr(cur_anim, length("anm_idle")) == "anm_idle"))
+		return true;
+
+	if (READ_IF_EXISTS(pSettings, r_bool, hud_sect, "mix_shoot_after_reload", false) && (leftstr(cur_anim, length("anm_reload")) == "anm_reload"))
+		return true;
+
+	if (READ_IF_EXISTS(pSettings, r_bool, hud_sect, "mix_shoot_after_shoot_in_queue", false) && (leftstr(cur_anim, length("anm_shoot")) == "anm_shoot"))
+		return true;
+	
+	return false;
+}
+
 void CWeaponMagazined::PlayAnimShoot()
 {
 	VERIFY(GetState()==eFire || GetState()==eFire2);
+	
 	string_path guns_shoot_anm{};
 	xr_strconcat(guns_shoot_anm, "anm_shots", (IsZoomed() && !IsRotatingToZoom()) ? (IsScopeAttached() ? "_aim_scope" : "_aim") : "", IsSilencerAttached() ? "_sil" : "");
 	if (AnimationExist(guns_shoot_anm)) {
 		Msg("--[%s] Play anim [%s] for [%s]", __FUNCTION__, guns_shoot_anm, this->cNameSect().c_str());
-		PlayHUDMotion(guns_shoot_anm, false, this, GetState());
+		PlayHUDMotion(guns_shoot_anm, NeedShootMix(), this, GetState());
 	}
 	else {
 		Msg("!![%s] anim [%s] not found for [%s]", __FUNCTION__, guns_shoot_anm, this->cNameSect().c_str());
-		PlayHUDMotion("anim_shoot", "anm_shots", false, this, GetState());
+		PlayHUDMotion("anim_shoot", "anm_shots", NeedShootMix(), this, GetState());
 	}
 }
 
